@@ -6,6 +6,7 @@ Class {
 
 { #category : #baselines }
 BaselineOfClassBlueprint >> baseline: spec [
+	<baseline>
 	spec for: #common do: [
 		"External dependencies"
 		"Packages"
