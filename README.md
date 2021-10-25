@@ -7,4 +7,4 @@ Metacello new
   baseline: 'ClassBlueprint';
   repository: 'github://NourDjihan/ClassBlueprint/src';
   load.
-      ```
+ ```
