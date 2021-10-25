@@ -11,8 +11,8 @@ BaselineOfClassBlueprint >> baseline: spec [
 		"External dependencies"
 		"Packages"
 		spec
-			package: 'Moose-Blueprint';
-			package: 'Moose-Blueprint-Tests' with: [ spec requires: #('Moose-Blueprint') ].
+			package: 'Moose-Blueprint-Models';
+			package: 'Moose-Blueprint-Tests' with: [ spec requires: #('Moose-Blueprint-Models') ].
 			]
 		
 ]
