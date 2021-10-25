@@ -1,6 +1,6 @@
 Class {
 	#name : #BaselineOfClassBlueprint,
-	#superclass : #Object,
+	#superclass : #BaselineOf,
 	#category : #BaselineOfClassBlueprint
 }
 
