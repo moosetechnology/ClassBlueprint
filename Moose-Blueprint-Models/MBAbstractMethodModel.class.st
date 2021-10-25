@@ -1,0 +1,221 @@
+"
+I represent a method of Class Blueprint.
+"
+Class {
+	#name : #MBAbstractMethodModel,
+	#superclass : #MBAbstractModel,
+	#instVars : [
+		'methodInvocations',
+		'accessorInvocations',
+		'attributeAccess',
+		'description'
+	],
+	#category : #'Moose-Blueprint-Models'
+}
+
+{ #category : #'instance creation' }
+MBAbstractMethodModel class >> newFrom: aMethod [
+	^ self new 
+		entity: aMethod;
+		create 
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> accessorInvocations [
+	^ accessorInvocations
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> accessorInvocations: anObject [
+
+	accessorInvocations := anObject
+]
+
+{ #category : #adding }
+MBAbstractMethodModel >> addAccessorInvocation: aConnection [ 
+	accessorInvocations add: aConnection 
+]
+
+{ #category : #adding }
+MBAbstractMethodModel >> addAttributeAccess: anAttributeAccessModel [
+	(self doesNotHave: anAttributeAccessModel) ifTrue: [ attributeAccess add: anAttributeAccessModel ]
+	
+]
+
+{ #category : #adding }
+MBAbstractMethodModel >> addInternalMethodInvocation: aConnection [ 
+	self flag: #TODO.
+]
+
+{ #category : #adding }
+MBAbstractMethodModel >> addMethodInvocation: aMethodInvocationModel [
+	
+	(aMethodInvocationModel source doesNotHave: aMethodInvocationModel target) 
+		ifTrue: [ methodInvocations add: aMethodInvocationModel ]
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> attributeAccess [
+
+	^ attributeAccess
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> attributeAccess: anObject [
+
+	attributeAccess := anObject
+]
+
+{ #category : #'as yet unclassified' }
+MBAbstractMethodModel >> create [ 
+
+	self initializeMethodInvocations.
+	self initializeAccessorInvocation.
+	self initializeAttributeAccess.
+	self initializeDescription.
+	
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> description [ 
+	^ description
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> doesNotHave: targetModels [
+	self flag: #TODO. "Is it only method invocations???"
+	
+	^ ((methodInvocations collect: #target) includes: targetModels) not
+]
+
+{ #category : #initialization }
+MBAbstractMethodModel >> initializeAccessorInvocation [
+
+	"selects the setter and getter methods invokated by this method"
+
+	accessorInvocations := OrderedCollection new.
+]
+
+{ #category : #initialization }
+MBAbstractMethodModel >> initializeAttributeAccess [
+
+	"Selects the attributes invocated by this method"
+
+	attributeAccess := OrderedCollection new. 
+]
+
+{ #category : #initialization }
+MBAbstractMethodModel >> initializeDescription [
+
+	description := MBMethodDescription newFrom: self.
+
+		              
+]
+
+{ #category : #initialization }
+MBAbstractMethodModel >> initializeMethodInvocations [
+
+	"selects the methods invocated by this method"
+
+	methodInvocations := OrderedCollection new.
+	"methodInvocations := (entity queryOutgoing: FamixTInvocation) collect: [ :each | 
+		                     MBMethodInvocationModel newFrom: each ]. "
+
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isAbstract [ 
+	entity isAbstract ifTrue: [ ^ #isAbstract ].
+	^ nil
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isAccessor [ 
+	^ self entity isAccessor 
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isConstant [ 
+	"A method that returns a constant value"
+	entity isConstant ifTrue: [ ^ #isConstant ].
+	^ nil
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isDelegating [ 
+	"Checks if the method delegates an invocation i.e, forwars the method call to another object"
+	
+	" entity isDelegating ifTrue: [ ^ #isDelegating ]."
+	^ nil
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isExtending [
+	"Check if a method extends another by super"
+	
+	 entity isExtending ifTrue: [ ^ #isExtending ].
+	^ nil
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isGetter [ 
+	 entity isGetter ifTrue: [ ^ #isGetter ].
+	^ nil
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isInternal [ 
+	^ entity isInternal
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isInternalImplementation [ 	
+	 entity isInternalImplementation ifTrue: [ ^ #isInternalImplementation ].
+	^ nil
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isOverriding [ 
+	 entity isOverriding ifTrue: [ ^ #isOverriding ].
+	^ nil
+]
+
+{ #category : #testing }
+MBAbstractMethodModel >> isSetter [ 
+	 entity isSetter ifTrue: [ ^ #isSetter ].
+	^ nil
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> methodInvocations [
+
+	^ methodInvocations
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> methodInvocations: anObject [
+
+	methodInvocations := anObject
+]
+
+{ #category : #printing }
+MBAbstractMethodModel >> printOn: aStream [.
+	aStream nextPutAll: '('. 
+	self name asString printOn: aStream.
+	aStream nextPutAll: ')'.
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> shape [
+	| shape |
+	shape := RSBox new
+		model: self;
+		color: (self description color);
+		borderColor: Color lightGray;
+		width: (self entity numberOfOutgoingInvocations max: 5);
+		height: (self entity numberOfLinesOfCode max: 5);
+		popup;
+		yourself.
+	shape @ RSDraggable.
+	^ shape
+]
