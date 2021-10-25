@@ -144,7 +144,7 @@ MBClassModel >> create [
 	"self initializeInternals."
 
 	self initializeInitializers.
-	self initializeHiberners.
+	"self initializeHiberners."
 
 	self makeConnections
 ]

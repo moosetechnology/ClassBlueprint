@@ -59,7 +59,7 @@ FamixStMethod >> isInitializerMethod [
 
 	| calledBy result |
 	" if calledBy isEmpty it returns a false positive"
-	calledBy := self incomingInvocations collect: [ :each | each source ].
+	calledBy := (self incomingInvocations collect: [ :each | each source ]) reject:  [ :each | each == self ] .
 	
 	(calledBy isEmpty and: [ self isNotPureInitializer ]) ifTrue: [ 
 		^ false ].
