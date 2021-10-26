@@ -89,27 +89,10 @@ MBView >> buildLayers [
 			[ :layerName :methods | self buildLayerNamed: layerName withEntities: methods ]
 ]
 
-{ #category : #shapes }
+{ #category : #building }
 MBView >> buildLegend [
 
-	| legend |
-	legend := RSLegend new.
-	legend container: self canvas.
-	legend title: 'Legend'.
-	legend text: 'Series1' withBoxColor: Color orange.
-	legend text: 'Series2' withBoxColor: Color orange.
-	legend legendDo: [ :shape | 
-		shape
-			withBorder;
-			padding: 10;
-			scaleBy: 0.5;
-			draggable ].
-	legend location
-		inner;
-		bottom;
-		left;
-		offset: 0.
-	legend build
+	MBLegend buildFor: self 
 ]
 
 { #category : #accessing }
