@@ -3,18 +3,48 @@ Extension { #name : #FamixStMethod }
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> belongsToHibernerBranch [
 
-	(self incomingInvocations isEmpty and: [ self isHiberner not ]) 
-		ifTrue: [ ^ false ].
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self incomingInvocations allSatisfy: [ :each | 
+	self isHiberner ifFalse: [ ^ true ].
+	^ 
+		  self calledBy allSatisfy: [ :each | 
 			  each sender isHiberner
 				  ifTrue: [ ^ true ]
-				  ifFalse: [ each sender belongsToHibernerBranch ] ] ]
+				  ifFalse: [ each sender belongsToHibernerBranch ] ] 
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> calledBy [
+
+	^ (self incomingInvocations collect: [ :each | each source ]) 
+		  reject: [ :each | each signature == self signature ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> canBeInitializer [
+
+	self isPureAccessor ifTrue: [ ^ false ].
+	self isExternal ifTrue: [ ^ false ].
+
+	^ true
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> canBePureInitializer [
+
+	^ self isPureAccessor not or: [ 
+		  self isConstructor or: [ self isCalledExternally not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> createNewConnection [
 	^ (self isAccessor ifTrue: [ MBAccessorInvocationModel new ] ifFalse: [ MBMethodInvocationModel new ]) initializeDescription
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> inSameClassAs: aMethod [
+
+	^ aMethod parentType == self parentType and: [ 
+		  aMethod parentType mooseName , '_class'
+		  == (self parentType mooseName , '_class') ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -27,6 +57,34 @@ FamixStMethod >> invokedByInitializerMethods [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isAccessor [
 	^ self isSetter or: [ self isGetter  ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isCalledByInitializers [
+
+	| initializers result |
+	initializers := self parentType methods select: #isInitializerMethod.
+	
+	result := initializers includesAny: self calledBy.
+
+	^ result
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isCalledExternally [
+	| result |
+	result := self calledBy isNotEmpty and: [ 
+		  self calledBy anySatisfy: [ :each | 
+			  (each inSameClassAs: self) not ] ].
+
+	^ result
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isCalledInternally [
+
+	^ self calledBy isNotEmpty and: [ 
+		  self calledBy anySatisfy: [ :each | each inSameClassAs: self ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -43,9 +101,7 @@ FamixStMethod >> isExternal [
 
 	"Is external if it  is called at least by one external method, none of the same class and invoked by initializers"
 
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self incomingInvocations allSatisfy: [ :each | 
-			  self parentType ~= each sender parentType and:  [each sender parentType isClassSide not] ]]
+	^ self incomingInvocations isNotEmpty and: [ self isCalledExternally and: [ self isConstructor not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -57,19 +113,15 @@ FamixStMethod >> isHiberner [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isInitializerMethod [
 
-	| calledBy result |
+	| result |
 	" if calledBy isEmpty it returns a false positive"
-	calledBy := (self incomingInvocations collect: [ :each | each source ]) reject:  [ :each | each == self ] .
+	self canBeInitializer ifFalse: [ ^ false ].
 	
-	(calledBy isEmpty and: [ self isNotPureInitializer ]) ifTrue: [ 
-		^ false ].
-
-	(calledBy anySatisfy: [ :each | each parentType ~= self parentType and: [ each  isConstructor not ] ]) ifTrue: [ ^ false ].
-
-	"(calledBy anySatisfy: [ :each | each isExternal  ]) ifTrue: [ ^ false ]."
-	result := calledBy allSatisfy: [ :each |
-		
-		Transcript show: each ;cr.
+	self isConstructor ifTrue: [ ^ true ].
+	result := self calledBy allSatisfy: [ :each | 
+		          Transcript
+			          show: each;
+			          cr.
 		          each isConstructor
 			          ifTrue: [ ^ true ]
 			          ifFalse: [ each isInitializerMethod ] ].
@@ -83,8 +135,9 @@ FamixStMethod >> isInternal [
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
 
 	self isOnlyCalledInternally ifFalse: [ ^ false ].
-	^ ((self parentType methods select: #isInitializerMethod) 
-		   includesAny: (self incomingInvocations collect: #sender)) not
+	self isCalledByInitializers ifTrue: [ ^ false ].
+
+	^ true
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -93,7 +146,8 @@ FamixStMethod >> isInternalImplementation [
 	<FMProperty: #isInternalImplementation type: #Boolean>
 	<derived>
 	<FMComment: 'Public Interface Layer Method'>
-	^ self isOnlyCalledInternally and: [ self isPureAccessor not ] 
+	^ self isInitializerMethod not and: [ 
+		  self isPureAccessor not and: [ self isOnlyCalledInternally ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -104,16 +158,10 @@ FamixStMethod >> isInvokedExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isNotPureInitializer [
-
-	^ self isPureAccessor or: [ 
-		  self isConstructor not or: [ self isConstant ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isOnlyCalledInternally [
 
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self incomingInvocations allSatisfy: [ :each | 
-				  each sender parentType == self parentType ] ] 
+	^ self calledBy isNotEmpty and: [ 
+		  self calledBy allSatisfy: [ :each | 
+			each inSameClassAs: self 
+				  ] ] 
 ]

@@ -15,7 +15,8 @@ Class {
 MBMethodInvocationModel >> addConnection [
 
 	source addMethodInvocation: self.
-	target do: [ :each | each addMethodInvocation: self ]
+	target do: [ :each | each addMethodInvocation: self ].
+
 ]
 
 { #category : #accessing }

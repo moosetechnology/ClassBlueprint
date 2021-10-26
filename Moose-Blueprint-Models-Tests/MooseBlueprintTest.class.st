@@ -37,11 +37,11 @@ MooseBlueprintTest >> setUp [
 		importerClass: SmalltalkImporter;
 		model: model;
 		addFromPackagesMatching: [ :p | 
-			'Famix-PharoSmalltalk-Entities-TestsExample*' match: p name ];
+			'Kernel*' match: p name ];
 		run.
 
-	myClass := (model allModelPackages first classes) 
-		           detect: [ :each | each name = 'MyClassExample' ].
+	myClass := model allModelClasses 
+		           detect: [ :each | each name = 'ByteLayout' ].
 	
 	mbClassModel := MBClassModel newFrom: myClass
 ]
