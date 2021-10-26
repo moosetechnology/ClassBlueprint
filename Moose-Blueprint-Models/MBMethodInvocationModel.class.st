@@ -23,3 +23,8 @@ MBMethodInvocationModel >> addConnection [
 MBMethodInvocationModel >> signature [ 
 	^ entity signature
 ]
+
+{ #category : #accessing }
+MBMethodInvocationModel >> type [ 
+	^ #methodInvocation
+]

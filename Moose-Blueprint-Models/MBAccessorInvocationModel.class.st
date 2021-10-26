@@ -20,3 +20,8 @@ MBAccessorInvocationModel >> addConnection [
 MBAccessorInvocationModel >> signature [ 
 	^ entity signature
 ]
+
+{ #category : #accessing }
+MBAccessorInvocationModel >> type [ 
+	^ #accessorInvocation
+]

@@ -83,3 +83,8 @@ MBAbstractInvocationModel >> target [
 MBAbstractInvocationModel >> target: anEntity [ 
 	target := anEntity 
 ]
+
+{ #category : #accessing }
+MBAbstractInvocationModel >> type [ 
+	self subclassResponsibility 
+]

@@ -23,8 +23,8 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #isSetter forColor: Color lightBlue;
 		addName: #isDelegating forColor: Color brown;
 		addName: #isOther forColor: Color white;
-		"For invocations"addName: #MBMethodInvocationModel
+		"For invocations"addName: #methodInvocation
 		forColor: Color black;
-		addName: #MBAccessorInvocationModel forColor: Color lightBlue;
-		addName: #MBAttributeAccessModel forColor: Color orange
+		addName: #accessorInvocation forColor: Color lightBlue;
+		addName: #attributeAccess forColor: Color orange
 ]

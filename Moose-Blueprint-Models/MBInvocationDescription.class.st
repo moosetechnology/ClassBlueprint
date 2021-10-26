@@ -6,7 +6,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'color',
-		'type',
 		'invocation'
 	],
 	#category : #'Moose-Blueprint-Models'
@@ -33,9 +32,9 @@ MBInvocationDescription >> create [
 ]
 
 { #category : #initialization }
-MBInvocationDescription >> initializeColor [ 
-	color := MiClassBlueprintPalette new colorAt: invocation class name.
+MBInvocationDescription >> initializeColor [
 
+	color := MiClassBlueprintPalette new colorAt: invocation type
 ]
 
 { #category : #accessing }

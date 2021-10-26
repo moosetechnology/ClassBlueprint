@@ -24,3 +24,9 @@ MBAttributeAccessModel >> printOn: aStream [
 	(self target collect: #name) asString printOn: aStream.
 	aStream nextPutAll: ')'.
 ]
+
+{ #category : #accessing }
+MBAttributeAccessModel >> type [
+
+	^ #attributeAccess
+]
