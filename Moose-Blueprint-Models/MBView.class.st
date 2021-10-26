@@ -33,6 +33,7 @@ MBView class >> icon [
 
 { #category : #shapes }
 MBView >> build [
+
 	self buildLayers.
 	self buildEdges.
 	self nestLayers.
@@ -90,32 +91,24 @@ MBView >> buildLayers [
 
 { #category : #shapes }
 MBView >> buildLegend [
+
 	| legend |
 	legend := RSLegend new.
 	legend container: self canvas.
-	legend onDemand.
-	legend title: self class defaultTitle.
-	legend text: 'From left to right:'.
-	legend
-		text:
-			'    Constructors, Public methods, Private methods, Accessors, Variables'.
-	legend
-		text: 'Variable access'
-		withShape:
-			(RSBox new
-				extent: 15 @ 5;
-				color: Color lightBlue).
-	legend
-		text: 'Method invocation'
-		withShape:
-			(RSBox new
-				extent: 15 @ 5;
-				color: Color lightMagenta).
-	legend text: 'Setter' withBoxColor: Color red.
-	legend text: 'Getter' withBoxColor: Color orange.
-	legend text: 'Abstract' withBoxColor: Color cyan.
-	legend text: 'Overriding' withBoxColor: Color brown.
-	legend text: 'Constant' withBoxColor: Color gray.
+	legend title: 'Legend'.
+	legend text: 'Series1' withBoxColor: Color orange.
+	legend text: 'Series2' withBoxColor: Color orange.
+	legend legendDo: [ :shape | 
+		shape
+			withBorder;
+			padding: 10;
+			scaleBy: 0.5;
+			draggable ].
+	legend location
+		inner;
+		bottom;
+		left;
+		offset: 0.
 	legend build
 ]
 
@@ -151,9 +144,7 @@ MBView >> entity: anEntity [
 MBView >> layersEntities [
 
 	^ { 
-		  ('Hiberners' -> (classModel methodModels select: [ :model | 
-			    model class = MBHibernationModel  ])).
-		('Initializers' -> (classModel methodModels select: [ :model | 
+		  ('Initializers' -> (classModel methodModels select: [ :model | 
 			    model class = MBInitializationModel ])).
 		  ('External methods'
 		   -> (classModel methodModels select: [ :each | 
@@ -161,6 +152,8 @@ MBView >> layersEntities [
 		  ('Internal methods'
 		   -> (classModel methodModels select: [ :model | 
 				    model class = MBInternalModel ])).
+			('Hiberners' -> (classModel methodModels select: [ :model | 
+			    model class = MBHibernationModel ])).
 		  ('Accessors' -> (classModel methodModels select: [ :model | 
 			    model class = MBAccessorsModel ])).
 		  ('Attributes' -> classModel attributes) } asOrderedDictionary

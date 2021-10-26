@@ -62,12 +62,12 @@ MBMethodDescription >> initializeType [
 
 	type := methodModel isAbstract ifNil: [ 
 		        methodModel isExtending ifNil: [ 
-			        methodModel isOverriding ifNil: [ "methodModel isDelegating ifNil: ["
+			        methodModel isOverriding ifNil: [ methodModel isDelegating ifNil: [
 				        methodModel isConstant ifNil: [ 
 					        methodModel isGetter ifNil: [ 
 						        methodModel isSetter ifNil: [ 
-							        methodModel isInternalImplementation 
-										ifNil: [ methodModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ]]
+							        methodModel isInternalImplementation ifNil: [ 
+								        methodModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ]
 ]
 
 { #category : #accessing }

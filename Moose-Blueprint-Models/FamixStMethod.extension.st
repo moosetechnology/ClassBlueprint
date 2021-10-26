@@ -15,7 +15,8 @@ FamixStMethod >> belongsToHibernerBranch [
 FamixStMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
-		  reject: [ :each | each signature == self signature ]
+		  reject: [ :each | 
+			  each signature == self signature and: [ self isPureAccessor not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -64,18 +65,19 @@ FamixStMethod >> isCalledByInitializers [
 
 	| initializers result |
 	initializers := self parentType methods select: #isInitializerMethod.
-	
-	result := initializers includesAny: self calledBy.
+
+	result := initializers includesAny: (self incomingInvocations collect: #source).
 
 	^ result
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledExternally [
+
 	| result |
-	result := self calledBy isNotEmpty and: [ 
-		  self calledBy anySatisfy: [ :each | 
-			  (each inSameClassAs: self) not ] ].
+	result := self incomingInvocations isNotEmpty and: [ 
+		          self incomingInvocations anySatisfy: [ :each | 
+			          (each source inSameClassAs: self) not ] ].
 
 	^ result
 ]
@@ -83,8 +85,17 @@ FamixStMethod >> isCalledExternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledInternally [
 
-	^ self calledBy isNotEmpty and: [ 
-		  self calledBy anySatisfy: [ :each | each inSameClassAs: self ] ]
+	^ self incomingInvocations isNotEmpty and: [ 
+		  self incomingInvocations anySatisfy: [ :each | each inSameClassAs: self ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isDelegating [
+
+	^ (self outgoingInvocations flatCollect: #target) anySatisfy: [ 
+		  :each | 
+		  each signature == self signature and: [ 
+			  (each inSameClassAs: self) not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -116,8 +127,8 @@ FamixStMethod >> isInitializerMethod [
 	| result |
 	" if calledBy isEmpty it returns a false positive"
 	self canBeInitializer ifFalse: [ ^ false ].
-	
 	self isConstructor ifTrue: [ ^ true ].
+	self calledBy ifEmpty: [ ^ false ].
 	result := self calledBy allSatisfy: [ :each | 
 		          Transcript
 			          show: each;
@@ -160,8 +171,6 @@ FamixStMethod >> isInvokedExternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isOnlyCalledInternally [
 
-	^ self calledBy isNotEmpty and: [ 
-		  self calledBy allSatisfy: [ :each | 
-			each inSameClassAs: self 
-				  ] ] 
+	^ self incomingInvocations isNotEmpty and: [ 
+		  self incomingInvocations allSatisfy: [ :each | each source inSameClassAs: self ] ]
 ]

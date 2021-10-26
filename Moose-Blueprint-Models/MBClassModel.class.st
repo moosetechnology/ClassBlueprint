@@ -100,10 +100,12 @@ MBClassModel >> connect: source withAll: targets [
 	sourceModel := self models detect: [ :each | each entity = source ].
 	targetModels := (targets collect: [ :aTarget | 
 		                 self models
-			                 detect: [ :model | model entity = aTarget and: [ model entity isAccessor not ] ]
+			                 detect: [ :model | 
+				                 model entity = aTarget "and: [ 
+					                 model entity isAccessor not ]" ]
 			                 ifNone: [ nil "connections with exterior" ] ]) 
 		                reject: #isNil.
-	targetModels ifNotEmpty: [  
+	targetModels ifNotEmpty: [ 
 		connectionInstance source: sourceModel candidates: targetModels ]
 ]
 
@@ -142,6 +144,7 @@ MBClassModel >> create [
 	self initializeExternals.
 	self initializeInternals.
 	self initializeInitializers.
+	self initializeHiberners.
 
 	self makeConnections
 ]

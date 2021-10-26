@@ -142,10 +142,13 @@ MBAbstractMethodModel >> isConstant [
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isDelegating [ 
+MBAbstractMethodModel >> isDelegating [
+
 	"Checks if the method delegates an invocation i.e, forwars the method call to another object"
-	
+
 	" entity isDelegating ifTrue: [ ^ #isDelegating ]."
+
+	entity isDelegating ifTrue: [ ^ #isDelegating ].
 	^ nil
 ]
 

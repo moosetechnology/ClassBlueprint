@@ -34,11 +34,12 @@ MBAbstractInvocationModel >> printOn: aStream [
 	aStream nextPutAll: '('.
 	self source name asString printOn: aStream.
 	aStream nextPutAll: ')'.
-	self source class name asString printOn: aStream.
+	self source description type asString printOn: aStream.
 
 	aStream nextPutAll: '->('.
-	self target size asString printOn: aStream.
-	aStream nextPutAll: ')'
+	(self target collect: #name) asString printOn: aStream.
+	aStream nextPutAll: ')'.
+	self target asOrderedCollection first description type asString printOn: aStream
 ]
 
 { #category : #accessing }
