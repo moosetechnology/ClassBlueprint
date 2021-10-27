@@ -11,11 +11,12 @@ Class {
 MiClassBlueprintPalette >> beDefaultStyle [
 
 	self
-		addName: #attributeModel forColor: Color paleBlue;
-		"has relation with accessor"addName: #isAbstract
-		forColor: Color orange;
+		addName: #attribute forColor: Color paleBlue;
+		"has relation with accessor"
+		addName: #isAbstract forColor: Color orange;
 		addName: #isExtending forColor: Color green;
-		"Attracts the eye"addName: #isOverriding forColor: Color lightGreen;
+		"Attracts the eye"
+		addName: #isOverriding forColor: Color lightGreen;
 		"has a relation with overriding"addName: #isConstant
 		forColor: Color gray;
 		addName: #isInternalImplementation forColor: Color paleYellow;
@@ -23,8 +24,8 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #isSetter forColor: Color lightBlue;
 		addName: #isDelegating forColor: Color brown;
 		addName: #isOther forColor: Color white;
-		"For invocations"addName: #methodInvocation
-		forColor: Color black;
+		"For invocations"
+		addName: #methodInvocation forColor: Color black;
 		addName: #accessorInvocation forColor: Color lightBlue;
-		addName: #attributeAccess forColor: Color orange
+		addName: #attributeAccess forColor: Color blue  
 ]

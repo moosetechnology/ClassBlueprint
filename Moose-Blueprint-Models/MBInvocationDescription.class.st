@@ -3,10 +3,9 @@ I represent the description of the invocation, from a method invocation to an ac
 "
 Class {
 	#name : #MBInvocationDescription,
-	#superclass : #Object,
+	#superclass : #MBShapeDescription,
 	#instVars : [
-		'color',
-		'invocation'
+		'color'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -16,33 +15,17 @@ MBInvocationDescription class >> newFrom: anInvocationModel [
 
 	^ self new
 		  invocation: anInvocationModel;
-			create;
 		  yourself
 ]
 
 { #category : #accessing }
-MBInvocationDescription >> color [
-
-	^ color
-]
-
-{ #category : #operations }
-MBInvocationDescription >> create [
-	self initializeColor.
-]
-
-{ #category : #initialization }
-MBInvocationDescription >> initializeColor [
-
-	color := MiClassBlueprintPalette new colorAt: invocation type
-]
-
-{ #category : #accessing }
 MBInvocationDescription >> invocation [
-	^ invocation 
+
+	^ entityModel
 ]
 
 { #category : #accessing }
 MBInvocationDescription >> invocation: anInvocationModel [
-	invocation := anInvocationModel 
+
+	entityModel := anInvocationModel
 ]

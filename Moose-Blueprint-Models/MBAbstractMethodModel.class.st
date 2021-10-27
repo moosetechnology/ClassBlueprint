@@ -8,7 +8,7 @@ Class {
 		'methodInvocations',
 		'accessorInvocations',
 		'attributeAccess',
-		'description'
+		'type'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -67,18 +67,12 @@ MBAbstractMethodModel >> attributeAccess: anObject [
 ]
 
 { #category : #'as yet unclassified' }
-MBAbstractMethodModel >> create [ 
+MBAbstractMethodModel >> create [
 
-	self initializeMethodInvocations.
-	self initializeAccessorInvocation.
-	self initializeAttributeAccess.
-	self initializeDescription.
-	
-]
-
-{ #category : #accessing }
-MBAbstractMethodModel >> description [ 
-	^ description
+	accessorInvocations := OrderedCollection new.
+	attributeAccess := OrderedCollection new.
+	methodInvocations := OrderedCollection new.
+	"self initializeDescription"
 ]
 
 { #category : #accessing }
@@ -89,38 +83,16 @@ MBAbstractMethodModel >> doesNotHave: targetModels [
 ]
 
 { #category : #initialization }
-MBAbstractMethodModel >> initializeAccessorInvocation [
-
-	"selects the setter and getter methods invokated by this method"
-
-	accessorInvocations := OrderedCollection new.
-]
-
-{ #category : #initialization }
-MBAbstractMethodModel >> initializeAttributeAccess [
-
-	"Selects the attributes invocated by this method"
-
-	attributeAccess := OrderedCollection new. 
-]
-
-{ #category : #initialization }
 MBAbstractMethodModel >> initializeDescription [
 
 	description := MBMethodDescription newFrom: self.
 
-		              
 ]
 
-{ #category : #initialization }
-MBAbstractMethodModel >> initializeMethodInvocations [
+{ #category : #'as yet unclassified' }
+MBAbstractMethodModel >> invocations [
 
-	"selects the methods invocated by this method"
-
-	methodInvocations := OrderedCollection new.
-	"methodInvocations := (entity queryOutgoing: FamixTInvocation) collect: [ :each | 
-		                     MBMethodInvocationModel newFrom: each ]. "
-
+	^ methodInvocations , attributeAccess 
 ]
 
 { #category : #testing }
@@ -210,15 +182,26 @@ MBAbstractMethodModel >> printOn: aStream [.
 
 { #category : #accessing }
 MBAbstractMethodModel >> shape [
+
 	| shape |
 	shape := RSBox new
-		model: self;
-		color: (self description color);
-		borderColor: Color lightGray;
-		width: (self entity numberOfOutgoingInvocations max: 5);
-		height: (self entity numberOfLinesOfCode max: 5);
-		popup;
-		yourself.
+		         model: self;
+		         color: self description color;
+		         borderColor: Color lightGray;
+		         width: (self description width);
+		         height: (self description height);
+		         popup;
+		         yourself.
 	shape @ RSDraggable.
 	^ shape
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> type [
+	^ type
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> type: aType [ 
+	type := aType 
 ]

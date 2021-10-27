@@ -11,10 +11,11 @@ Class {
 }
 
 { #category : #'instance creation' }
-MBAttributeModel class >> newFrom: anEntity [ 
+MBAttributeModel class >> newFrom: anEntity [
+
 	^ self new
-		entity: anEntity;
-		initializeAttributeAccess 
+		  entity: anEntity;
+		  create
 ]
 
 { #category : #initialization }
@@ -26,6 +27,13 @@ MBAttributeModel >> addAttributeAccess: anAttributeAccessModel [
 { #category : #accessing }
 MBAttributeModel >> attributeAccess [
 	^ attributeAccess
+]
+
+{ #category : #operations }
+MBAttributeModel >> create [
+
+	self initializeAttributeAccess.
+	"self initializeDescription"
 ]
 
 { #category : #accessing }
@@ -40,6 +48,13 @@ MBAttributeModel >> initializeAttributeAccess [
 	attributeAccess := OrderedCollection new
 ]
 
+{ #category : #initialization }
+MBAttributeModel >> initializeDescription [
+
+	description := MBAttributeDescription newFrom: self.
+
+]
+
 { #category : #printing }
 MBAttributeModel >> printOn: aStream [.
 	aStream nextPutAll: '('. 
@@ -49,13 +64,19 @@ MBAttributeModel >> printOn: aStream [.
 
 { #category : #accessing }
 MBAttributeModel >> shape [
+
 	| shape |
 	shape := RSBox new
-		model: self;
-		borderColor: Color lightGray;
-		color: Color lightBlue;
-		popup;
-		yourself.
+		         model: self;
+		         borderColor: Color lightGray;
+		         color: self description color;
+		         popup;
+		         yourself.
 	shape @ RSDraggable.
 	^ shape
+]
+
+{ #category : #accessing }
+MBAttributeModel >> type [ 
+	^ #attribute
 ]

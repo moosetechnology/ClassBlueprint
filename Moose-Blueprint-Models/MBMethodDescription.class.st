@@ -6,13 +6,11 @@ Where each type has a specific color defined in MiClassBlueprintPalette
 "
 Class {
 	#name : #MBMethodDescription,
-	#superclass : #Object,
+	#superclass : #MBShapeDescription,
 	#instVars : [
 		'type',
 		'height',
-		'width',
-		'layer',
-		'methodModel'
+		'width'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -24,11 +22,6 @@ MBMethodDescription class >> newFrom: aMethodModel [
 		create
 ]
 
-{ #category : #accessing }
-MBMethodDescription >> color [ 
-	^ MiClassBlueprintPalette new colorAt: self type
-]
-
 { #category : #'instance creation' }
 MBMethodDescription >> create [ 
 	self initializeType.
@@ -36,48 +29,36 @@ MBMethodDescription >> create [
 ]
 
 { #category : #accessing }
-MBMethodDescription >> entity [ 
-	^ methodModel
-]
+MBMethodDescription >> height [
 
-{ #category : #accessing }
-MBMethodDescription >> entity: anEntity [ 
-	methodModel := anEntity 
-]
-
-{ #category : #accessing }
-MBMethodDescription >> height [ 
-	^ self entity 
+	^ height
 ]
 
 { #category : #initialization }
 MBMethodDescription >> initializeSize [
 
-	height := methodModel entity numberOfLinesOfCode.
-	width := methodModel methodInvocations size + methodModel accessorInvocations size
+	height := entityModel entity numberOfLinesOfCode
+	          + MBView defaultBoxesHeight min: MBView maxHeight.
+	width := entityModel invocations isEmpty
+		         ifTrue: [ MBView defaultBoxesWidth ]
+		         ifFalse: [ 
+			         entityModel invocations size + MBView defaultBoxesWidth 
+				         min: MBView maxWidth ]
 ]
 
 { #category : #initialization }
 MBMethodDescription >> initializeType [
 
-	type := methodModel isAbstract ifNil: [ 
-		        methodModel isExtending ifNil: [ 
-			        methodModel isOverriding ifNil: [ methodModel isDelegating ifNil: [
-				        methodModel isConstant ifNil: [ 
-					        methodModel isGetter ifNil: [ 
-						        methodModel isSetter ifNil: [ 
-							        methodModel isInternalImplementation ifNil: [ 
-								        methodModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ]
-]
-
-{ #category : #accessing }
-MBMethodDescription >> type [ 
-	^ type
-]
-
-{ #category : #accessing }
-MBMethodDescription >> type: aTypeSymbol [ 
-	type := aTypeSymbol 
+	type := entityModel isAbstract ifNil: [ 
+		        entityModel isExtending ifNil: [ 
+			        entityModel isOverriding ifNil: [ 
+				        entityModel isDelegating ifNil: [ 
+					        entityModel isConstant ifNil: [ 
+						        entityModel isGetter ifNil: [ 
+							        entityModel isSetter ifNil: [ 
+								        entityModel isInternalImplementation ifNil: [ 
+									        entityModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
+	entityModel type: type
 ]
 
 { #category : #accessing }

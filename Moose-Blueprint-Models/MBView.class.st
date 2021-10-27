@@ -14,6 +14,17 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
+{ #category : #'as yet unclassified' }
+MBView class >> defaultBoxesHeight [
+	^ 10
+]
+
+{ #category : #'as yet unclassified' }
+MBView class >> defaultBoxesWidth [
+
+	^ 10
+]
+
 { #category : #accessing }
 MBView class >> defaultTitle [
 	^ 'Blueprint'
@@ -29,6 +40,18 @@ MBView class >> forType: aFamixType [
 { #category : #accessing }
 MBView class >> icon [
 	^ MooseIcons mooseBlueprint
+]
+
+{ #category : #'as yet unclassified' }
+MBView class >> maxHeight [
+
+	^ 30
+]
+
+{ #category : #'as yet unclassified' }
+MBView class >> maxWidth [
+
+	^ 30
 ]
 
 { #category : #shapes }
@@ -47,46 +70,46 @@ MBView >> buildEdges [
 	"method Invocations"
 	builder := self edgeBuilder.
 	edges := classModel methodInvocations collect: [ :each | 
-					builder
-						color: each description color;
-		         		connectFrom: each source toAll: each target ].
+		         builder
+			         color: each description color;
+			         connectFrom: each source toAll: each target ].
 
 	edges do: #pushBack.
 	"Access Invocations"
-	builder color: Color lightGreen .
 	edges := (classModel accessorInvocations select: [ :each | 
 		          each class = MBAccessorInvocationModel ]) collect: [ 
 		         :accessInvocation | 
-		         builder 
-						color: accessInvocation description color;
+		         builder
+			         color: accessInvocation description color;
 			         connectFrom: accessInvocation source
 			         toAll: accessInvocation target ].
 	edges do: #pushBack.
 	"Attribute Access"
 
 	edges := classModel attributeAccess collect: [ :attributeAccess | 
-					builder color: attributeAccess description color. 
-		         builder 
+		         builder color: attributeAccess description color.
+		         builder
 			         connectFrom: attributeAccess source
 			         toAll: attributeAccess target ].
 	edges do: #pushBack
 ]
 
 { #category : #shapes }
-MBView >> buildLayerNamed: layerName withEntities: methods [
+MBView >> buildLayerNamed: layerName withEntities: models [
+
 	| layer |
-	layer := RSComposite new borderColor: Color gray. 
-	layer
-		addAll: (methods collect: [ :aMethodModel | aMethodModel shape ]).
+	layer := RSComposite new borderColor: Color gray.
+	layer addAll:
+		(models collect: [ :each | each shape ]).
 	layer popupText: layerName.
 	self canvas add: layer
 ]
 
 { #category : #shapes }
 MBView >> buildLayers [
-	self layersEntities  
-		keysAndValuesDo:
-			[ :layerName :methods | self buildLayerNamed: layerName withEntities: methods ]
+
+	self layersEntities keysAndValuesDo: [ :layerName :models | 
+		self buildLayerNamed: layerName withEntities: models ]
 ]
 
 { #category : #building }
