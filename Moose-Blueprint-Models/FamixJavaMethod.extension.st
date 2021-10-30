@@ -11,7 +11,6 @@ FamixJavaMethod >> belongsToHibernerBranch [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-
 FamixJavaMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
@@ -128,14 +127,12 @@ FamixJavaMethod >> isExternal [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-
 FamixJavaMethod >> isHiberner [
 
 	^ self incomingInvocations isEmpty and: [ self isConstructor not ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-
 FamixJavaMethod >> isInitializerMethod [
   ^ self isConstructor
 ]
