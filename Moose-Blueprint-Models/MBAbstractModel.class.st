@@ -5,7 +5,8 @@ Class {
 	#name : #MBAbstractModel,
 	#superclass : #Object,
 	#instVars : [
-		'entity'
+		'entity',
+		'description'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -16,6 +17,11 @@ MBAbstractModel class >> newFrom: anEntity [
 ]
 
 { #category : #accessing }
+MBAbstractModel >> description [
+	^ description
+]
+
+{ #category : #accessing }
 MBAbstractModel >> entity [ 
 	^ entity
 ]
@@ -23,6 +29,11 @@ MBAbstractModel >> entity [
 { #category : #accessing }
 MBAbstractModel >> entity: anEntity [
 	entity := anEntity 
+]
+
+{ #category : #initialization }
+MBAbstractModel >> initializeDescription [
+	self subclassResponsibility 
 ]
 
 { #category : #accessing }

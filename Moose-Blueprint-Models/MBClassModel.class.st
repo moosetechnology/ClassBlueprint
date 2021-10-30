@@ -227,6 +227,11 @@ MBClassModel >> initializeInternals [
 MBClassModel >> initializeInvocations [
 ]
 
+{ #category : #initialization }
+MBClassModel >> initializeModelDescriptions [ 
+	self models do: [ :each | each initializeDescription  ]
+]
+
 { #category : #accessing }
 MBClassModel >> initializers [
 	^ initializers
@@ -248,10 +253,11 @@ MBClassModel >> internals: internalMethods [
 ]
 
 { #category : #'as yet unclassified' }
-MBClassModel >> makeConnections [ 
+MBClassModel >> makeConnections [
 
 	self connectAttributes.
 	self connectInvocations.
+	self initializeModelDescriptions
 ]
 
 { #category : #accessing }

@@ -6,8 +6,7 @@ Class {
 	#superclass : #MBAbstractModel,
 	#instVars : [
 		'source',
-		'target',
-		'description'
+		'target'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -15,11 +14,6 @@ Class {
 { #category : #adding }
 MBAbstractInvocationModel >> addConnection [
 	self subclassResponsibility 
-]
-
-{ #category : #accessing }
-MBAbstractInvocationModel >> description [
-	^ description
 ]
 
 { #category : #initialization }
@@ -34,12 +28,13 @@ MBAbstractInvocationModel >> printOn: aStream [
 	aStream nextPutAll: '('.
 	self source name asString printOn: aStream.
 	aStream nextPutAll: ')'.
-	self source description type asString printOn: aStream.
+	self source type asString printOn: aStream.
 
 	aStream nextPutAll: '->('.
 	(self target collect: #name) asString printOn: aStream.
 	aStream nextPutAll: ')'.
-	self target asOrderedCollection first description type asString printOn: aStream
+	self target asOrderedCollection first type asString 
+		printOn: aStream
 ]
 
 { #category : #accessing }
@@ -60,18 +55,6 @@ MBAbstractInvocationModel >> source: aSource candidates: candidates [
 		  target: candidates;
 		  "A collection of models"addConnection;
 		  yourself
-]
-
-{ #category : #'as yet unclassified' }
-MBAbstractInvocationModel >> source: aSource target: aTarget [ 
-	(aSource entity name == 'printOn:base:nDigits:') ifTrue: [ 1halt ].
-	1halt.
-	^ self 
-		source: aSource;
-		target: aTarget;
-		addConnection;  
-		yourself
-	
 ]
 
 { #category : #accessing }

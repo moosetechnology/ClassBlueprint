@@ -1,3 +1,6 @@
+"
+I am a small class representing the legend of the ClassBlueprint visualization
+"
 Class {
 	#name : #MBLegend,
 	#superclass : #Object,
