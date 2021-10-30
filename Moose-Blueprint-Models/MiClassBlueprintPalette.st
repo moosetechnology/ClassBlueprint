@@ -6,8 +6,6 @@ Class {
 { #category : #visualization }
 MiClassBlueprintPalette >> beDefaultStyle [
 
-beDefaultStyle
-
 	self
 		addName: #attribute forColor: Color blue quiteWhiter quiteWhiter;
 		"has relation with accessor"
