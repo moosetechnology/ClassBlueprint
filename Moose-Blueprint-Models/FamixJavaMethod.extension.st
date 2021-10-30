@@ -11,6 +11,7 @@ FamixJavaMethod >> belongsToHibernerBranch [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+
 FamixJavaMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
@@ -127,28 +128,16 @@ FamixJavaMethod >> isExternal [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+
 FamixJavaMethod >> isHiberner [
 
 	^ self incomingInvocations isEmpty and: [ self isConstructor not ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+
 FamixJavaMethod >> isInitializerMethod [
-
-	| result |
-	" if calledBy isEmpty it returns a false positive"
-	self canBeInitializer ifFalse: [ ^ false ].
-	self isConstructor ifTrue: [ ^ true ].
-	self calledBy ifEmpty: [ ^ false ].
-	result := self calledBy allSatisfy: [ :each | 
-		          Transcript
-			          show: each;
-			          cr.
-		          each isConstructor
-			          ifTrue: [ ^ true ]
-			          ifFalse: [ each isInitializerMethod ] ].
-
-	^ result
+  ^ self isConstructor
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
