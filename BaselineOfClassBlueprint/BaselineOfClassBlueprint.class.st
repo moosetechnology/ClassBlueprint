@@ -13,7 +13,7 @@ BaselineOfClassBlueprint >> baseline: spec [
 		spec
 			package: 'Moose-Blueprint-Models';
 			package: 'Moose-Blueprint-Models-Tests' with: [ spec requires: #('Moose-Blueprint-Models')];
-			package: 'Moose-Blueprint-Models' with: [ spec requires: #('MooseIDE-ColorPalette') ] .
+			"package: 'Moose-Blueprint-Models' with: [ spec requires: #('MooseIDE-ColorPalette')" ] .
 			]
 		
 ]
