@@ -59,7 +59,7 @@ MooseBlueprintTest >> setUp [
 	
 	mbClassModel := MBClassModel newFrom: myClass.
 	
-	javaModel := self importProject: 'pharo-local/icerberg/NourDjihan/ClassBlueprint/VerveineJMSE/VerveineJ.mse'.
+	javaModel := self importProject: 'pharo-local/iceberg/NourDjihan/ClassBlueprint/VerveineJMSE/VerveineJ.mse'.
 	
 	myJavaClass := javaModel allModelClasses 
 		           detect: [ :each | each name = '' ].
