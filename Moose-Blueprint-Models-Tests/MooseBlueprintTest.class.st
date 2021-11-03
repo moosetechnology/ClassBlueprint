@@ -62,5 +62,5 @@ MooseBlueprintTest >> setUp [
 	javaModel := self importProject: 'pharo-local/iceberg/NourDjihan/ClassBlueprint/VerveineJMSE/VerveineJ.mse'.
 	
 	myJavaClass := javaModel allModelClasses 
-		           detect: [ :each | each name = '' ].
+		           detect: [ :each | each name = 'Access' ].
 ]
