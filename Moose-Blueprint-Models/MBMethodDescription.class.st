@@ -38,12 +38,12 @@ MBMethodDescription >> height [
 MBMethodDescription >> initializeSize [
 
 	height := entityModel entity numberOfLinesOfCode
-	          + MBView defaultBoxesHeight min: MBView maxHeight.
+	          + MBView defaultBoxesHeight.
 	width := entityModel invocations isEmpty
 		         ifTrue: [ MBView defaultBoxesWidth ]
 		         ifFalse: [ 
-			         entityModel invocations size + MBView defaultBoxesWidth 
-				         min: MBView maxWidth ]
+			         entityModel invocations size * 2+ MBView defaultBoxesWidth 
+				         ]
 ]
 
 { #category : #initialization }
