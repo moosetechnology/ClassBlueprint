@@ -5,10 +5,24 @@ Class {
 		'model',
 		'classModel',
 		'mbClassModel',
-		'myClass'
+		'myClass',
+		'javaModel',
+		'myJavaClass'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
+
+{ #category : #'as yet unclassified' }
+MooseBlueprintTest >> importProject: aPath [ 
+ 
+	| m |
+	aPath asFileReference 
+		readStreamDo: [ :stream | 
+			m := FamixJavaModel importFromMSEStream: stream.
+			m name: m rootFolder basenameWithoutExtension.
+			 ].	
+		^ m
+]
 
 { #category : #accessing }
 MooseBlueprintTest >> mbClassModel [
@@ -43,5 +57,10 @@ MooseBlueprintTest >> setUp [
 	myClass := model allModelClasses 
 		           detect: [ :each | each name = 'ByteLayout' ].
 	
-	mbClassModel := MBClassModel newFrom: myClass
+	mbClassModel := MBClassModel newFrom: myClass.
+	
+	javaModel := self importProject: 'pharo-local/icerberg/NourDjihan/ClassBlueprint/VerveineJMSE/VerveineJ.mse'.
+	
+	myJavaClass := javaModel allModelClasses 
+		           detect: [ :each | each name = '' ].
 ]
