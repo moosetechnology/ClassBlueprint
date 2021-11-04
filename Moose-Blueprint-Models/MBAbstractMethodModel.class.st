@@ -150,8 +150,10 @@ MBAbstractMethodModel >> isInternalImplementation [
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isOverriding [ 
-	 entity isOverriding ifTrue: [ ^ #isOverriding ].
+MBAbstractMethodModel >> isOverridingMethod [
+
+	entity isOverridingMethod ifTrue: [ ^ #isOverriding ].
+
 	^ nil
 ]
 

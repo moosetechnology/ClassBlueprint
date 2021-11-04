@@ -141,7 +141,7 @@ MBClassModel >> create [
 	self initialize.
 	self initializeAttributes.
 	self initializeAcessors.
-	self initializeExternals.
+	self initializeExternals. 
 	self initializeInternals.
 	self initializeInitializers.
 	self initializeHiberners.

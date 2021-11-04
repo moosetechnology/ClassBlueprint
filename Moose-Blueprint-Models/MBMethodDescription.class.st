@@ -51,7 +51,7 @@ MBMethodDescription >> initializeType [
 
 	type := entityModel isAbstract ifNil: [ 
 		        entityModel isExtending ifNil: [ 
-			        entityModel isOverriding ifNil: [ 
+			        entityModel isOverridingMethod ifNil: [ 
 				        entityModel isDelegating ifNil: [ 
 					        entityModel isConstant ifNil: [ 
 						        entityModel isGetter ifNil: [ 
