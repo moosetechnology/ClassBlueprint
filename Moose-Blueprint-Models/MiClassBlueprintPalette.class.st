@@ -3,6 +3,7 @@ Class {
 	#superclass : #MiVisualizationPalette,
 	#category : #'Moose-Blueprint-Models'
 }
+
 { #category : #visualization }
 MiClassBlueprintPalette >> beDefaultStyle [
 

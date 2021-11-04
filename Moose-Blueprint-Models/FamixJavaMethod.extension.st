@@ -183,3 +183,25 @@ FamixJavaMethod >> isOverriding [
 		anySatisfy:
 			[ :each | each isInterface not and: [ each understands: self signature ] ]
 ]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isOverridingIn: parentSuperClass [
+
+	"<FMProperty: #isOverriding type: #Boolean>"
+
+	<derived>
+	<FMComment:
+	'The method is overrinding a method defined in a super class'>
+	| superclasses |
+	"	Transcript
+		show: parentSuperClass name;
+		cr."
+	superclasses := parentSuperClass directSuperclasses reject:
+		                #isInterface.
+	^ (parentSuperClass implements: self signature)
+		ifTrue: [ true ]
+		ifFalse: [ 
+			(superclasses isEmpty or: [ parentSuperClass name = 'Object' ])
+				ifTrue: [ false ]
+				ifFalse: [ self isOverridingIn: superclasses first ] ]
+]
