@@ -15,8 +15,8 @@ FamixStMethod >> belongsToHibernerBranch [
 FamixStMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
-		  reject: [ :each | 
-			  each signature == self signature and: [ self isPureAccessor not ] ]
+		  "reject: [ :each | 
+			  each signature == self signature and: [ self isPureAccessor not ] ]"
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -173,4 +173,9 @@ FamixStMethod >> isOnlyCalledInternally [
 
 	^ self incomingInvocations isNotEmpty and: [ 
 		  self incomingInvocations allSatisfy: [ :each | each source inSameClassAs: self ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isOverridingMethod [
+		^ self isOverriding 
 ]

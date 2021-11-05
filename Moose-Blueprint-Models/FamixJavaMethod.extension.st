@@ -205,3 +205,8 @@ FamixJavaMethod >> isOverridingIn: parentSuperClass [
 				ifTrue: [ false ]
 				ifFalse: [ self isOverridingIn: superclasses first ] ]
 ]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isOverridingMethod [ 
+	^ self isOverridingIn: (self parentType directSuperclasses reject: #isInterface) first
+]
