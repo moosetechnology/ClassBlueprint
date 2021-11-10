@@ -176,6 +176,6 @@ FamixStMethod >> isOnlyCalledInternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isOverridingMethod [
+FamixStMethod >> isOverriding [
 		^ self isOverriding 
 ]

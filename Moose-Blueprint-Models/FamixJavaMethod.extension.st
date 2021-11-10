@@ -35,6 +35,22 @@ FamixJavaMethod >> canBePureInitializer [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> computeIsGetter [
+
+	^ (self name beginsWith: 'get') and: [ 
+		  self parameters isEmpty and: [ 
+			  self accesses asOrderedCollection size = 1 ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> computeIsSetter [
+
+	^ (self name beginsWith: 'set') and: [ 
+		  self parameters size = 1 and: [ 
+			  self accesses asOrderedCollection size = 1 ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> createNewConnection [
 
 	^ (self isAccessor
@@ -190,33 +206,6 @@ FamixJavaMethod >> isOverriding [
 	^ self parentType directSuperclasses
 		anySatisfy:
 			[ :each | each isInterface not and: [ each understands: self signature ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isOverridingIn: parentSuperClass [
-
-	"<FMProperty: #isOverriding type: #Boolean>"
-
-	<derived>
-	<FMComment:
-	'The method is overrinding a method defined in a super class'>
-	| superclasses |
-	"	Transcript
-		show: parentSuperClass name;
-		cr."
-	superclasses := parentSuperClass directSuperclasses reject:
-		                #isInterface.
-	^ (parentSuperClass implements: self signature)
-		ifTrue: [ true ]
-		ifFalse: [ 
-			(superclasses isEmpty or: [ parentSuperClass name = 'Object' ])
-				ifTrue: [ false ]
-				ifFalse: [ self isOverridingIn: superclasses first ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isOverridingMethod [ 
-	^ self isOverridingIn: (self parentType directSuperclasses reject: #isInterface) first
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
