@@ -74,8 +74,12 @@ FamixJavaMethod >> invokedByInitializerMethods [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isAbstract [ 
-	^ self name includesSubstring: 'Abstract'
+FamixJavaMethod >> isAbstract [
+
+	<FMProperty: #isAbstract type: #Boolean>
+	<generated>
+	<FMComment: 'Entity can be declared abstract'>
+	^ isAbstract
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
