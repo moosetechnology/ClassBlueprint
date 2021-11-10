@@ -177,5 +177,10 @@ FamixStMethod >> isOnlyCalledInternally [
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isOverriding [
-		^ self isOverriding 
+
+	<FMProperty: #isOverriding type: #Boolean>
+	<derived>
+	<FMComment:
+	'The method is overrinding a method defined in a super class'>
+	^ self parentType directSuperclasses anySatisfy: [ :each |  each understands: self signature ] 
 ]
