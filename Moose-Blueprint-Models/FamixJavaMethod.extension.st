@@ -127,6 +127,14 @@ FamixJavaMethod >> isExternal [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isGetter [
+
+	^ (self name beginsWith: 'get') and: [ 
+		  self parameters isEmpty and: [ 
+			  self accesses asOrderedCollection size = 1 ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isHiberner [
 
 	^ self incomingInvocations isEmpty and: [ self isConstructor not ]
@@ -209,4 +217,11 @@ FamixJavaMethod >> isOverridingIn: parentSuperClass [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isOverridingMethod [ 
 	^ self isOverridingIn: (self parentType directSuperclasses reject: #isInterface) first
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isSetter [ 
+	^ (self name beginsWith: 'set') and: [ 
+		  self parameters size = 1 and: [ 
+			  self accesses asOrderedCollection size = 1 ] ]
 ]
