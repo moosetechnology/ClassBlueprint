@@ -56,8 +56,8 @@ MBMethodDescription >> initializeType [
 					        entityModel isConstant ifNil: [ 
 						        entityModel isGetter ifNil: [ 
 							        entityModel isSetter ifNil: [ 
-								        entityModel isInternalImplementation ifNil: [ 
-									        entityModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
+								        entityModel isInternalImplementation ifNil: [ entityModel isHiberner ifNil: [  
+									        entityModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ] ].
 	entityModel type: type
 ]
 

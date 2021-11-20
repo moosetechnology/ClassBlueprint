@@ -87,7 +87,7 @@ MBView >> buildEdges [
 	"Attribute Access"
 
 	edges := classModel attributeAccess collect: [ :attributeAccess | 
-		         builder color: attributeAccess description color.
+
 		         builder
 			         connectFrom: attributeAccess source
 			         toAll: attributeAccess target ].
@@ -130,10 +130,11 @@ MBView >> classModel: aClassModel [
 
 { #category : #shapes }
 MBView >> edgeBuilder [
-	^ RSEdgeBuilder line
-		shapes: (self canvas nodes flatCollect: #children);
-		withHorizontalAttachPoint;
-		yourself
+
+	^ MBEdgeBuilder line
+		  shapes: (self canvas nodes flatCollect: #children);
+		  withHorizontalAttachPoint;
+		  yourself 
 ]
 
 { #category : #'plugin interface' }

@@ -138,6 +138,12 @@ MBAbstractMethodModel >> isGetter [
 	^ nil
 ]
 
+{ #category : #'as yet unclassified' }
+MBAbstractMethodModel >> isHiberner [ 
+	self entity isHiberner ifTrue: [ ^ #isHiberner ].
+	^ nil
+]
+
 { #category : #testing }
 MBAbstractMethodModel >> isInternal [ 
 	^ entity isInternal
@@ -190,10 +196,14 @@ MBAbstractMethodModel >> shape [
 		         model: self;
 		         color: self description color;
 		         borderColor: Color lightGray;
-		         width: (self description width);
-		         height: (self description height);
-		         popup;
-		         yourself.
+		         width: self description width;
+		         height: self description height.
+
+	shape
+		when: RSMouseEnter do: [ :evt | 
+			shape canvas allChildren do: [ :each | each color: Color gray ].
+			evt signalUpdate ];
+		popup.
 	shape @ RSDraggable.
 	^ shape
 ]

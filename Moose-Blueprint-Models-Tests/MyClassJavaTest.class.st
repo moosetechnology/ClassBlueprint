@@ -6,12 +6,13 @@ Class {
 		'attribute',
 		'access',
 		'model',
-		'methodGet',
-		'methodSet',
 		'parameter',
-		'accessGet',
-		'accessSet',
-		'methodConstant'
+		'externalClassModel',
+		'getMethod',
+		'setMethod',
+		'setAccess',
+		'constantMethod',
+		'getAccess'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
@@ -20,40 +21,41 @@ Class {
 MyClassJavaTest >> setUp [
 
 	model := FamixJavaModel new.
-	methodGet := FamixJavaMethod new
+	externalClassModel := FamixJavaModel new.
+	getMethod := FamixJavaMethod new
 		             name: 'getAttribute1()';
 		             mooseModel: model.
 	attribute := FamixJavaAttribute new
 		             name: 'attribute1';
 		             mooseModel: model.
-	accessGet := FamixJavaAccess new
-		             accessor: methodGet;
+	getAccess := FamixJavaAccess new
+		             accessor: getMethod;
 		             variable: attribute;
 		             mooseModel: model.
 	parameter := FamixJavaParameter new name: 'param'.
-	methodSet := FamixJavaMethod new
+	setMethod := FamixJavaMethod new
 		             name: 'setAttribute1()';
 		             addParameter: parameter;
 		             mooseModel: model.
 
-	accessSet := FamixJavaAccess new
-		             accessor: methodSet;
+	setAccess := FamixJavaAccess new
+		             accessor: setMethod;
 		             variable: attribute;
 		             mooseModel: model.
-		
-	methodConstant := FamixJavaMethod new
-		             name: 'constantMethod()';
-		             mooseModel: model.
+
+	constantMethod := FamixJavaMethod new
+		                  name: 'constantMethod()';
+		                  mooseModel: model
 ]
 
 { #category : #tests }
 MyClassJavaTest >> testIsGetter [
 
-	self assert: methodGet isGetter equals: true
+	self assert: getMethod isGetter equals: true
 ]
 
 { #category : #tests }
 MyClassJavaTest >> testIsSetter [
 
-	self assert: methodSet isSetter equals: true
+	self assert: setMethod isSetter equals: true
 ]

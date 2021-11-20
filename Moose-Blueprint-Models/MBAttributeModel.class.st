@@ -5,7 +5,9 @@ Class {
 	#name : #MBAttributeModel,
 	#superclass : #MBAbstractModel,
 	#instVars : [
-		'attributeAccess'
+		'attributeAccess',
+		'internalAccesses',
+		'externalAccesses'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -43,6 +45,13 @@ MBAttributeModel >> doesNotHave: targetModels [
 	^ ((attributeAccess collect: #target) includes: targetModels) not
 ]
 
+{ #category : #accessing }
+MBAttributeModel >> externalAccesses [
+	externalAccesses := entity incomingAccesses select: [ :each | 
+		  each source parentType ~= entity parentType ].
+	^ externalAccesses  
+]
+
 { #category : #initialization }
 MBAttributeModel >> initializeAttributeAccess [
 	attributeAccess := OrderedCollection new
@@ -53,6 +62,12 @@ MBAttributeModel >> initializeDescription [
 
 	description := MBAttributeDescription newFrom: self.
 
+]
+
+{ #category : #accessing }
+MBAttributeModel >> internalAccesses [ 
+	internalAccesses := self entity incomingAccesses select: [ :each | each source parentType = entity parentType ].
+	^ internalAccesses 
 ]
 
 { #category : #printing }
@@ -70,8 +85,13 @@ MBAttributeModel >> shape [
 		         model: self;
 		         borderColor: Color lightGray;
 		         color: self description color;
-		         popup;
-		         yourself.
+		         height: self description height;
+		         width: self description width.
+	shape
+		when: RSMouseEnter do: [ :evt | 
+			shape color: Color red.
+			evt signalUpdate ];
+		popup.
 	shape @ RSDraggable.
 	^ shape
 ]

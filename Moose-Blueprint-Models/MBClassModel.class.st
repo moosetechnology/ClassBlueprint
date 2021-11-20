@@ -113,11 +113,11 @@ MBClassModel >> connect: source withAll: targets [
 MBClassModel >> connectAttributes [
 
 	"the receiver is the variable"
-	attributes do: [ :each | | incomingAccesses |
-		incomingAccesses := each entity incomingAccesses collect: #source.
-		self connect: each entity withAll: incomingAccesses asSet   ]
-	
-	
+
+	attributes do: [ :each | 
+		| incomingAccesses |
+		incomingAccesses := each internalAccesses collect: #source.
+		self connect: each entity withAll: incomingAccesses asSet ]
 ]
 
 { #category : #'as yet unclassified' }
