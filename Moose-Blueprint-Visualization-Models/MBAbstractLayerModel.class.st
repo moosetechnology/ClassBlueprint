@@ -19,3 +19,8 @@ MBAbstractLayerModel >> entities [
 MBAbstractLayerModel >> entities: aCollection [
 	 entities := aCollection 
 ]
+
+{ #category : #accessing }
+MBAbstractLayerModel >> name [ 
+	self subclassResponsibility 
+]

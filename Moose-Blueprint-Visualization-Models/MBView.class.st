@@ -109,22 +109,23 @@ MBView >> buildEdges [
 ]
 
 { #category : #shapes }
-MBView >> buildLayerNamed: layerName withEntities: models [
+MBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 
 	| layer |
-	layer := RSComposite new borderColor: Color gray.
+	layer := RSComposite new
+		         borderColor: Color gray;
+		         model: aLayerModel.
 	layer addAll:
-		(models collect: [ :each | each shape ]).
-	layer popupText: layerName.
+		(aGroup collect: [ :aMethodModel | aMethodModel shape ]).
+	layer popupText: aLayerModel name asString.
 	self canvas add: layer
 ]
 
 { #category : #shapes }
 MBView >> buildLayers [
 
-	self layersEntities keysAndValuesDo: [ :layerName :models | 
-		self buildLayerNamed: layerName withEntities: models ].
-
+	self layersEntities do: [ :aLayerModel | 
+		self buildLayerNamed: aLayerModel withEntities: aLayerModel entities ]
 ]
 
 { #category : #building }
@@ -196,27 +197,33 @@ MBView >> internalsLayer [
 { #category : #initialization }
 MBView >> layersEntities [
 
-	^ { 
-		  (initializersLayer entities: (classModel methodModels select: [ :model | 
-			    model class = MBInitializationModel ])).
+	| layers |
+	layers :=  { 
+		  (initializersLayer entities:
+			   (classModel methodModels select: [ :model | 
+				    model class = MBInitializationModel ])).
 		  (externalsLayer entities:
-		   (classModel methodModels select: [ :each | 
+			   (classModel methodModels select: [ :each | 
 				    each class = MBExternalModel ])).
 		  (internalsLayer entities:
-		    (classModel methodModels select: [ :model | 
+			   (classModel methodModels select: [ :model | 
 				    model class = MBInternalModel ])).
-			(hibernersLayer entities: (classModel methodModels select: [ :model | 
-			    model class = MBHibernationModel ])).
-		  (accessorsLayer entities: (classModel methodModels select: [ :model | 
-			    model class = MBAccessorsModel ])).
-		  (attributesLayer entities: classModel attributes) } asOrderedDictionary
+		  (hibernersLayer entities:
+			   (classModel methodModels select: [ :model | 
+				    model class = MBHibernationModel ])).
+		  (accessorsLayer entities:
+			   (classModel methodModels select: [ :model | 
+				    model class = MBAccessorsModel ])).
+		  (attributesLayer entities: classModel attributes) }
+		  asOrderedCollection.
+		^ layers
 ]
 
 { #category : #shapes }
 MBView >> nestLayers [
 	| layers maxHeight hibernerLayer |
 	hibernerLayer := self canvas nodes detect: [ :each | each model name = 'Hiberners' ].
-	layers := self canvas nodes reject: #hibernerLayer.
+	layers := self canvas nodes reject: [ :each | each = hibernerLayer ] .
 	RSHorizontalTreeLayout new
 		on: (layers flatCollect: #nodes)
 		edges: self canvas edges.
