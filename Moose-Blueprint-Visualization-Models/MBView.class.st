@@ -9,7 +9,13 @@ Class {
 	#name : #MBView,
 	#superclass : #MooseAbstractVisualization,
 	#instVars : [
-		'classModel'
+		'classModel',
+		'initializersLayer',
+		'externalsLayer',
+		'internalsLayer',
+		'accessorsLayer',
+		'attributesLayer',
+		'hibernersLayer'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -52,6 +58,16 @@ MBView class >> maxHeight [
 MBView class >> maxWidth [
 
 	^ 30
+]
+
+{ #category : #accessing }
+MBView >> accessorsLayer [ 
+	^ accessorsLayer
+]
+
+{ #category : #accessing }
+MBView >> attributesLayer [ 
+	^ attributesLayer
 ]
 
 { #category : #shapes }
@@ -107,7 +123,8 @@ MBView >> buildLayerNamed: layerName withEntities: models [
 MBView >> buildLayers [
 
 	self layersEntities keysAndValuesDo: [ :layerName :models | 
-		self buildLayerNamed: layerName withEntities: models ]
+		self buildLayerNamed: layerName withEntities: models ].
+
 ]
 
 { #category : #building }
@@ -145,29 +162,61 @@ MBView >> entity: anEntity [
 	classModel := MBClassBlueprint newFrom: anEntity
 ]
 
+{ #category : #accessing }
+MBView >> externalsLayer [ 
+	^ externalsLayer
+]
+
+{ #category : #accessing }
+MBView >> hibernersLayer [ 
+	^ hibernersLayer
+]
+
+{ #category : #initialization }
+MBView >> initialize [ 
+	super initialize.
+	initializersLayer := MBInitializersLayer new.
+	externalsLayer := MBExternalsLayer new.
+	internalsLayer := MBInternalsLayer new.
+	accessorsLayer := MBAccessorsLayer new.
+	attributesLayer := MBAttributesLayer new.
+	hibernersLayer := MBHibernersLayer new
+]
+
+{ #category : #accessing }
+MBView >> initializersLayer [ 
+	^ initializersLayer
+]
+
+{ #category : #accessing }
+MBView >> internalsLayer [ 
+	^ internalsLayer
+]
+
 { #category : #initialization }
 MBView >> layersEntities [
 
 	^ { 
-		  ('Initializers' -> (classModel methodModels select: [ :model | 
+		  (initializersLayer entities: (classModel methodModels select: [ :model | 
 			    model class = MBInitializationModel ])).
-		  ('External methods'
-		   -> (classModel methodModels select: [ :each | 
+		  (externalsLayer entities:
+		   (classModel methodModels select: [ :each | 
 				    each class = MBExternalModel ])).
-		  ('Internal methods'
-		   -> (classModel methodModels select: [ :model | 
+		  (internalsLayer entities:
+		    (classModel methodModels select: [ :model | 
 				    model class = MBInternalModel ])).
-			('Hiberners' -> (classModel methodModels select: [ :model | 
+			(hibernersLayer entities: (classModel methodModels select: [ :model | 
 			    model class = MBHibernationModel ])).
-		  ('Accessors' -> (classModel methodModels select: [ :model | 
+		  (accessorsLayer entities: (classModel methodModels select: [ :model | 
 			    model class = MBAccessorsModel ])).
-		  ('Attributes' -> classModel attributes) } asOrderedDictionary
+		  (attributesLayer entities: classModel attributes) } asOrderedDictionary
 ]
 
 { #category : #shapes }
 MBView >> nestLayers [
-	| layers maxHeight |
-	layers := self canvas nodes.
+	| layers maxHeight hibernerLayer |
+	hibernerLayer := self canvas nodes detect: [ :each | each model name = 'Hiberners' ].
+	layers := self canvas nodes reject: #hibernerLayer.
 	RSHorizontalTreeLayout new
 		on: (layers flatCollect: #nodes)
 		edges: self canvas edges.
