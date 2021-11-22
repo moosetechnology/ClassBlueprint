@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'entityModel'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }

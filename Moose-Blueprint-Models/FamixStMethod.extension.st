@@ -36,11 +36,6 @@ FamixStMethod >> canBePureInitializer [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> createNewConnection [
-	^ (self isAccessor ifTrue: [ MBAccessorInvocationModel new ] ifFalse: [ MBMethodInvocationModel new ]) initializeDescription
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> inSameClassAs: aMethod [
 
 	^ aMethod parentType == self parentType and: [ 
@@ -183,4 +178,17 @@ FamixStMethod >> isOverriding [
 	<FMComment:
 	'The method is overrinding a method defined in a super class'>
 	^ self parentType directSuperclasses anySatisfy: [ :each |  each understands: self signature ] 
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> newIncomingConnection [
+	^ (self isAccessor 
+		ifTrue: [ MBAccessorInvocationModel new ] 
+		ifFalse: [ MBIncomingInvocationsCollector new ]) initializeDescription
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> newOutgoingConnection [
+
+	^ MBOutgoingInvocationsCollector new initializeDescription
 ]

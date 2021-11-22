@@ -1,6 +1,8 @@
 Extension { #name : #FamixStAttribute }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStAttribute >> createNewConnection [ 
-	^ MBAttributeAccessModel new initializeDescription; yourself
+FamixStAttribute >> newIncomingConnection [ 
+	^ MBAttributeAccessModel new 
+		initializeDescription; 
+		yourself
 ]

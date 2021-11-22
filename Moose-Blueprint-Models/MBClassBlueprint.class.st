@@ -2,7 +2,7 @@
 I represent a model for a FAMIXClass
 "
 Class {
-	#name : #MBClassModel,
+	#name : #MBClassBlueprint,
 	#superclass : #MBAbstractModel,
 	#instVars : [
 		'attributes',
@@ -16,7 +16,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-MBClassModel class >> newFrom: aFamixClassEntity [
+MBClassBlueprint class >> newFrom: aFamixClassEntity [
 
 	^ self new 
 		entity: aFamixClassEntity;
@@ -24,22 +24,22 @@ MBClassModel class >> newFrom: aFamixClassEntity [
 ]
 
 { #category : #accessing }
-MBClassModel >> accessorInvocations [ 
+MBClassBlueprint >> accessorInvocations [ 
 	^ self methodModels flatCollect: #accessorInvocations
 ]
 
 { #category : #accessing }
-MBClassModel >> accessors [ 
+MBClassBlueprint >> accessors [ 
 	^ accessors
 ]
 
 { #category : #accessing }
-MBClassModel >> accessors: accessorMethods [
+MBClassBlueprint >> accessors: accessorMethods [
 	accessors :=accessorMethods 
 ]
 
 { #category : #'as yet unclassified' }
-MBClassModel >> allAccessorsInvocations [
+MBClassBlueprint >> allAccessorsInvocations [
 
 	| allAccessorInvocations |
 	"For the case of the accessor, the invocations are incoming, because we call it"
@@ -54,7 +54,7 @@ MBClassModel >> allAccessorsInvocations [
 ]
 
 { #category : #'as yet unclassified' }
-MBClassModel >> allMethodInvocations [
+MBClassBlueprint >> allMethodInvocations [
 
 	^ ((self models flatCollect: [ :each | 
 		    each entity queryOutgoing: FamixTInvocation ]) asSet 
@@ -62,41 +62,66 @@ MBClassModel >> allMethodInvocations [
 ]
 
 { #category : #accessing }
-MBClassModel >> attributeAccess [
-	^ self models flatCollect: #attributeAccess
+MBClassBlueprint >> attributeAccess [
+	^ self methodModels flatCollect: #attributeAccess
 ]
 
 { #category : #accessing }
-MBClassModel >> attributes [ 
+MBClassBlueprint >> attributes [ 
 	^ attributes
 ]
 
 { #category : #accessing }
-MBClassModel >> attributes: attributeModels [
+MBClassBlueprint >> attributes: attributeModels [
 	attributes := attributeModels
 ]
 
 { #category : #'as yet unclassified' }
-MBClassModel >> connect: source with: target [
+MBClassBlueprint >> connectAttributes [
 
-	| connectionInstance sourceModel targetModel |
-	"the source is the instance variable/attribute"
-	connectionInstance := source createNewConnection.
-	sourceModel := self models
-		               detect: [ :each | each entity = source ].
-	targetModel := self models
-		               detect: [ :each | each entity = target ]
-		               ifNone: [ 
-			               nil "connect with external class if method invocation because outgoing the target is somewhere else" ].
-	targetModel ifNotNil: [ 
-		connectionInstance source: sourceModel target: targetModel ]
+	"the receiver is the variable"
+
+	attributes do: [ :each | 
+		| incomingAccesses |
+		incomingAccesses := each internalAccesses collect: #source.
+		self connectTarget: each entity withAll: incomingAccesses asSet ]
 ]
 
 { #category : #'as yet unclassified' }
-MBClassModel >> connect: source withAll: targets [
+MBClassBlueprint >> connectIncomingInvocations [ 
+
+	self models do: [ :each | 
+		| candidateTargets |
+		candidateTargets := ((each entity queryIncoming: FamixTInvocation) 
+			                    flatCollect: #candidates) asSet.
+		candidateTargets ifNotEmpty: [ self connectTarget: each entity withAll: candidateTargets ] ]
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> connectInvocations [
+
+	"the source is the method itself => outgoing"
+	self flag: #todo. "May be each entity could be the model of the entity and then change the message createNewConnection"
+
+	self connectOutgoingInvocations.
+	self connectIncomingInvocations. 
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> connectOutgoingInvocations [ 
+
+	self models do: [ :each | 
+		| candidateTargets |
+		candidateTargets := ((each entity queryOutgoing: FamixTInvocation) 
+			                    flatCollect: #candidates) asSet.
+		candidateTargets ifNotEmpty: [ self connectSource: each entity withAll: candidateTargets ] ]
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> connectSource: source withAll: targets [
 
 	| connectionInstance sourceModel targetModels |
-	connectionInstance := source createNewConnection.
+	connectionInstance := source newOutgoingConnection.
 	sourceModel := self models detect: [ :each | each entity = source ].
 	targetModels := (targets collect: [ :aTarget | 
 		                 self models
@@ -106,35 +131,28 @@ MBClassModel >> connect: source withAll: targets [
 			                 ifNone: [ nil "connections with exterior" ] ]) 
 		                reject: #isNil.
 	targetModels ifNotEmpty: [ 
-		connectionInstance source: sourceModel candidates: targetModels ]
+		connectionInstance source: sourceModel targets: targetModels ]
 ]
 
 { #category : #'as yet unclassified' }
-MBClassModel >> connectAttributes [
+MBClassBlueprint >> connectTarget: aTarget withAll: sources [
 
-	"the receiver is the variable"
-
-	attributes do: [ :each | 
-		| incomingAccesses |
-		incomingAccesses := each internalAccesses collect: #source.
-		self connect: each entity withAll: incomingAccesses asSet ]
+	| connectionInstance targetModel sourceModels |
+	connectionInstance := aTarget newIncomingConnection.
+	targetModel := self models detect: [ :each | each entity = aTarget ].
+	sourceModels := (sources collect: [ :aSource | 
+		                 self models
+			                 detect: [ :model | 
+				                 model entity = aSource "and: [ 
+					                 model entity isAccessor not ]" ]
+			                 ifNone: [ nil "connections with exterior" ] ]) 
+		                reject: #isNil.
+	sourceModels ifNotEmpty: [ 
+		connectionInstance target: targetModel sources: sourceModels ]
 ]
 
 { #category : #'as yet unclassified' }
-MBClassModel >> connectInvocations [
-
-	"the source is the method itself => outgoing"
-	self flag: #todo. "May be each entity could be the model of the entity and then change the message createNewConnection"
-
-	self models do: [ :each | 
-		| candidateTargets |
-		candidateTargets := ((each entity queryOutgoing: FamixTInvocation) 
-			                    flatCollect: #candidates) asSet.
-		candidateTargets ifNotEmpty: [ self connect: each entity withAll: candidateTargets ] ]
-]
-
-{ #category : #'as yet unclassified' }
-MBClassModel >> create [
+MBClassBlueprint >> create [
 
 	"the order is important in the sens that: internals are defined as invoked by methods in the same class, and hiberners are methods that are also invoked internally/externally and can belong to a dead branche"
 
@@ -150,22 +168,22 @@ MBClassModel >> create [
 ]
 
 { #category : #accessing }
-MBClassModel >> externals [ 
+MBClassBlueprint >> externals [ 
 	^ externals
 ]
 
 { #category : #accessing }
-MBClassModel >> externals: externalMethods [
+MBClassBlueprint >> externals: externalMethods [
 	externals := externalMethods
 ]
 
 { #category : #accessing }
-MBClassModel >> hiberners [ 
+MBClassBlueprint >> hiberners [ 
 	^ hiberners
 ]
 
 { #category : #initialization }
-MBClassModel >> initialize [
+MBClassBlueprint >> initialize [
 
 	accessors := OrderedCollection new.
 	attributes := OrderedCollection new.
@@ -176,7 +194,7 @@ MBClassModel >> initialize [
 ]
 
 { #category : #initialization }
-MBClassModel >> initializeAcessors [
+MBClassBlueprint >> initializeAcessors [
 
 	accessors := self methods 
 		              select: [ :each | each isAccessor ] thenCollect: [ :each | 
@@ -184,14 +202,14 @@ MBClassModel >> initializeAcessors [
 ]
 
 { #category : #initialization }
-MBClassModel >> initializeAttributes [
+MBClassBlueprint >> initializeAttributes [
 
 	attributes := entity attributes collect: [ :anAttribute | 
 		              MBAttributeModel newFrom: anAttribute ]
 ]
 
 { #category : #initialization }
-MBClassModel >> initializeExternals [
+MBClassBlueprint >> initializeExternals [
 
 	externals := self methods
 		              select: [ :each | each isExternal ] thenCollect: [ :each | 
@@ -199,7 +217,7 @@ MBClassModel >> initializeExternals [
 ]
 
 { #category : #initialization }
-MBClassModel >> initializeHiberners [
+MBClassBlueprint >> initializeHiberners [
 
 	hiberners := self methods
 		              select: [ :each | each isHiberner or: [ each belongsToHibernerBranch ]] 
@@ -207,7 +225,7 @@ MBClassModel >> initializeHiberners [
 ]
 
 { #category : #initialization }
-MBClassModel >> initializeInitializers [
+MBClassBlueprint >> initializeInitializers [
 
 	
 	initializers := self methods select: [ :each | 
@@ -216,7 +234,7 @@ MBClassModel >> initializeInitializers [
 ]
 
 { #category : #initialization }
-MBClassModel >> initializeInternals [
+MBClassBlueprint >> initializeInternals [
 
 	
 	internals := self methods select: [ :each | each isInternal ] thenCollect: [ :each | 
@@ -224,36 +242,41 @@ MBClassModel >> initializeInternals [
 ]
 
 { #category : #initialization }
-MBClassModel >> initializeInvocations [
+MBClassBlueprint >> initializeInvocations [
 ]
 
 { #category : #initialization }
-MBClassModel >> initializeModelDescriptions [ 
+MBClassBlueprint >> initializeModelDescriptions [ 
 	self models do: [ :each | each initializeDescription  ]
 ]
 
 { #category : #accessing }
-MBClassModel >> initializers [
+MBClassBlueprint >> initializers [
 	^ initializers
 ]
 
 { #category : #accessing }
-MBClassModel >> initializers: initializerMethods [
+MBClassBlueprint >> initializers: initializerMethods [
 	initializers := initializerMethods
 ]
 
 { #category : #accessing }
-MBClassModel >> internals [
+MBClassBlueprint >> internals [
 	^ internals
 ]
 
 { #category : #accessing }
-MBClassModel >> internals: internalMethods [
+MBClassBlueprint >> internals: internalMethods [
 	internals := internalMethods
 ]
 
+{ #category : #accessing }
+MBClassBlueprint >> invocations [ 
+	^ self methodModels collect: [ :each | each invocations ]
+]
+
 { #category : #'as yet unclassified' }
-MBClassModel >> makeConnections [
+MBClassBlueprint >> makeConnections [
 
 	self connectAttributes.
 	self connectInvocations.
@@ -261,24 +284,19 @@ MBClassModel >> makeConnections [
 ]
 
 { #category : #accessing }
-MBClassModel >> methodInvocations [ 
-	^ self methodModels flatCollect: #methodInvocations
-]
-
-{ #category : #accessing }
-MBClassModel >> methodModels [
+MBClassBlueprint >> methodModels [
 
 	^ initializers , internals , externals , accessors, hiberners
 ]
 
 { #category : #accessing }
-MBClassModel >> methods [ 
+MBClassBlueprint >> methods [ 
 	^ entity methods reject: [ :each | 
 		                  (self methodModels collect: [ :aMethod | aMethod entity ]) includes:
 			                  each ]
 ]
 
 { #category : #accessing }
-MBClassModel >> models [ 
+MBClassBlueprint >> models [ 
 	^ self methodModels , self attributes
 ]

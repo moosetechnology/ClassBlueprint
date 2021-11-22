@@ -11,7 +11,7 @@ Class {
 	#instVars : [
 		'classModel'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #'as yet unclassified' }
@@ -69,10 +69,9 @@ MBView >> buildEdges [
 	| builder edges |
 	"method Invocations"
 	builder := self edgeBuilder.
-	edges := classModel methodInvocations collect: [ :each | 
+	edges := (classModel invocations flatCollect: #incoming) collect: [ :each | 
 		         builder
-			         color: each description color;
-			         connectFrom: each source toAll: each target ].
+			         connectFrom: each source toAll: ((classModel invocations flatCollect: #outgoing) collect: [ :invocation | invocation target]) ].
 
 	edges do: #pushBack.
 	"Access Invocations"
@@ -80,17 +79,16 @@ MBView >> buildEdges [
 		          each class = MBAccessorInvocationModel ]) collect: [ 
 		         :accessInvocation | 
 		         builder
-			         color: accessInvocation description color;
-			         connectFrom: accessInvocation source
-			         toAll: accessInvocation target ].
+			         connectFrom: accessInvocation target
+			         toAll: accessInvocation sources ].
 	edges do: #pushBack.
 	"Attribute Access"
 
 	edges := classModel attributeAccess collect: [ :attributeAccess | 
 
 		         builder
-			         connectFrom: attributeAccess source
-			         toAll: attributeAccess target ].
+			         connectFrom: attributeAccess target
+			         toAll: attributeAccess sources ].
 	edges do: #pushBack
 ]
 
@@ -144,7 +142,7 @@ MBView >> entities [
 
 { #category : #accessing }
 MBView >> entity: anEntity [ 
-	classModel := MBClassModel newFrom: anEntity
+	classModel := MBClassBlueprint newFrom: anEntity
 ]
 
 { #category : #initialization }

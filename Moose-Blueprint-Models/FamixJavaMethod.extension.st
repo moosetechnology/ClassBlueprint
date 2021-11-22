@@ -51,14 +51,6 @@ FamixJavaMethod >> computeIsSetter [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> createNewConnection [
-
-	^ (self isAccessor
-		   ifTrue: [ MBAccessorInvocationModel new ]
-		   ifFalse: [ MBMethodInvocationModel new ]) initializeDescription
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> inSameClassAs: aMethod [
 
 	^ aMethod parentType == self parentType and: [ 
@@ -217,4 +209,18 @@ FamixJavaMethod >> isSetter [
 	^ (self name beginsWith: 'set') and: [ 
 		  self parameters size = 1 and: [ 
 			  self accesses asOrderedCollection size = 1 ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> newIncomingConnection [
+
+	^ (self isAccessor
+		   ifTrue: [ MBAccessorInvocationModel new initializeDescription;yourself]
+		   ifFalse: [ MBIncomingInvocationsCollector new ]) 
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> newOutgoingConnection [
+
+	^ MBOutgoingInvocationsCollector new
 ]

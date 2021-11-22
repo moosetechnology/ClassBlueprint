@@ -46,5 +46,5 @@ MBAttributeModelTest >> setUp [
 		                     accessor: externalGetMethod;
 		                     variable: attribute;
 		                     mooseModel: externalModel.
-	classBlueprint := MBClassModel newFrom: model
+	classBlueprint := MBClassBlueprint newFrom: model
 ]

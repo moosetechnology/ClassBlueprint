@@ -1,7 +1,10 @@
+"
+I am the edge builder for the class blueprint
+"
 Class {
 	#name : #MBEdgeBuilder,
 	#superclass : #RSEdgeBuilder,
-	#category : #'Moose-Blueprint-Models'
+	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #'public - line' }

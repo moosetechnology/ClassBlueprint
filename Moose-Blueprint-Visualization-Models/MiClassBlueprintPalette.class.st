@@ -1,7 +1,10 @@
+"
+I am the palette for the class blueprint visualization. I hold the colors of class types.
+"
 Class {
 	#name : #MiClassBlueprintPalette,
 	#superclass : #MiVisualizationPalette,
-	#category : #'Moose-Blueprint-Models'
+	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #visualization }
@@ -21,7 +24,7 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #isGetter forColor: Color cyan;
 		addName: #isSetter forColor: Color cyan;
 		addName: #isDelegating forColor: (Color r: 150 g: 115 b: 70);
-		addName: #isOther forColor: Color white;
+		addName: #isOther forColor: Color orange;
 		"For invocations"addName: #methodInvocation
 		forColor: Color lightGray muchDarker;
 		addName: #accessorInvocation forColor: Color lightGray quiteWhiter;

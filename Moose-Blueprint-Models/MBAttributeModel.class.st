@@ -5,9 +5,7 @@ Class {
 	#name : #MBAttributeModel,
 	#superclass : #MBAbstractModel,
 	#instVars : [
-		'attributeAccess',
-		'internalAccesses',
-		'externalAccesses'
+		'accesses'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -23,12 +21,19 @@ MBAttributeModel class >> newFrom: anEntity [
 { #category : #initialization }
 MBAttributeModel >> addAttributeAccess: anAttributeAccessModel [
 
-	attributeAccess add: anAttributeAccessModel
+	accesses add: anAttributeAccessModel
+]
+
+{ #category : #accessing }
+MBAttributeModel >> alreadyWentTo: targetModels [
+	self flag: #TODO. "Is it only method invocations???"
+	
+	^ ((accesses collect: #targets) includes: targetModels) not
 ]
 
 { #category : #accessing }
 MBAttributeModel >> attributeAccess [
-	^ attributeAccess
+	^ accesses
 ]
 
 { #category : #operations }
@@ -39,22 +44,14 @@ MBAttributeModel >> create [
 ]
 
 { #category : #accessing }
-MBAttributeModel >> doesNotHave: targetModels [
-	self flag: #TODO. "Is it only method invocations???"
-	
-	^ ((attributeAccess collect: #target) includes: targetModels) not
-]
-
-{ #category : #accessing }
 MBAttributeModel >> externalAccesses [
-	externalAccesses := entity incomingAccesses select: [ :each | 
+	^entity incomingAccesses select: [ :each | 
 		  each source parentType ~= entity parentType ].
-	^ externalAccesses  
 ]
 
 { #category : #initialization }
 MBAttributeModel >> initializeAttributeAccess [
-	attributeAccess := OrderedCollection new
+	accesses := OrderedCollection new
 ]
 
 { #category : #initialization }
@@ -66,8 +63,7 @@ MBAttributeModel >> initializeDescription [
 
 { #category : #accessing }
 MBAttributeModel >> internalAccesses [ 
-	internalAccesses := self entity incomingAccesses select: [ :each | each source parentType = entity parentType ].
-	^ internalAccesses 
+	^ self entity incomingAccesses select: [ :each | each source parentType = entity parentType ].
 ]
 
 { #category : #printing }

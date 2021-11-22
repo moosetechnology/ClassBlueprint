@@ -5,10 +5,10 @@ Class {
 	#name : #MBAbstractMethodModel,
 	#superclass : #MBAbstractModel,
 	#instVars : [
-		'methodInvocations',
 		'accessorInvocations',
 		'attributeAccess',
-		'type'
+		'type',
+		'invocations'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -38,8 +38,14 @@ MBAbstractMethodModel >> addAccessorInvocation: aConnection [
 
 { #category : #adding }
 MBAbstractMethodModel >> addAttributeAccess: anAttributeAccessModel [
-	(self doesNotHave: anAttributeAccessModel) ifTrue: [ attributeAccess add: anAttributeAccessModel ]
+	(self alreadyWentTo: anAttributeAccessModel) ifTrue: [ attributeAccess add: anAttributeAccessModel ]
 	
+]
+
+{ #category : #adding }
+MBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
+	
+	((self invocations incoming collect: #source) includes: aMethodInvocationModel source) ifFalse: [ invocations incoming add: aMethodInvocationModel ]
 ]
 
 { #category : #adding }
@@ -48,10 +54,24 @@ MBAbstractMethodModel >> addInternalMethodInvocation: aConnection [
 ]
 
 { #category : #adding }
-MBAbstractMethodModel >> addMethodInvocation: aMethodInvocationModel [
+MBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 	
-	(aMethodInvocationModel source doesNotHave: aMethodInvocationModel target) 
-		ifTrue: [ methodInvocations add: aMethodInvocationModel ]
+	((self invocations outgoing collect:#target) includes: aMethodInvocationModel target) ifFalse: 
+	 [ invocations outgoing add: aMethodInvocationModel ]
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> alreadyCameFrom: sources [
+	self flag: #TODO. "Is it only method invocations???"
+	
+	^ ((invocations incoming collect: #sources) includes: sources)
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> alreadyWentTo: targetModels [
+	self flag: #TODO. "Is it only method invocations???"
+	
+	^ ((invocations outgoing collect: #targets) includes: targetModels)
 ]
 
 { #category : #accessing }
@@ -71,15 +91,8 @@ MBAbstractMethodModel >> create [
 
 	accessorInvocations := OrderedCollection new.
 	attributeAccess := OrderedCollection new.
-	methodInvocations := OrderedCollection new.
+	invocations := MBInvocations new.
 	"self initializeDescription"
-]
-
-{ #category : #accessing }
-MBAbstractMethodModel >> doesNotHave: targetModels [
-	self flag: #TODO. "Is it only method invocations???"
-	
-	^ ((methodInvocations collect: #target) includes: targetModels) not
 ]
 
 { #category : #initialization }
@@ -89,10 +102,16 @@ MBAbstractMethodModel >> initializeDescription [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MBAbstractMethodModel >> invocations [
 
-	^ methodInvocations , attributeAccess 
+	^ invocations
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> invocations: anObject [
+
+	invocations := anObject
 ]
 
 { #category : #testing }
@@ -169,18 +188,6 @@ MBAbstractMethodModel >> isSetter [
 	^ nil
 ]
 
-{ #category : #accessing }
-MBAbstractMethodModel >> methodInvocations [
-
-	^ methodInvocations
-]
-
-{ #category : #accessing }
-MBAbstractMethodModel >> methodInvocations: anObject [
-
-	methodInvocations := anObject
-]
-
 { #category : #printing }
 MBAbstractMethodModel >> printOn: aStream [.
 	aStream nextPutAll: '('. 
@@ -197,12 +204,12 @@ MBAbstractMethodModel >> shape [
 		         color: self description color;
 		         borderColor: Color lightGray;
 		         width: self description width;
-		         height: self description height.
+		         height: self description height;
 
-	shape
+	"shape
 		when: RSMouseEnter do: [ :evt | 
 			shape canvas allChildren do: [ :each | each color: Color gray ].
-			evt signalUpdate ];
+			evt signalUpdate ];"
 		popup.
 	shape @ RSDraggable.
 	^ shape

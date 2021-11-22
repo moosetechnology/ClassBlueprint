@@ -8,7 +8,7 @@ Class {
 		'height',
 		'width'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #'instance creation' }

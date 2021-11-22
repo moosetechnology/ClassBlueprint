@@ -12,7 +12,7 @@ Class {
 		'height',
 		'width'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #'instance creation' }
@@ -39,10 +39,10 @@ MBMethodDescription >> initializeSize [
 
 	height := entityModel entity numberOfLinesOfCode
 	          + MBView defaultBoxesHeight.
-	width := entityModel invocations isEmpty
+	width := entityModel invocations outgoing isEmpty
 		         ifTrue: [ MBView defaultBoxesWidth ]
 		         ifFalse: [ 
-			         entityModel invocations size * 2+ MBView defaultBoxesWidth 
+			         entityModel invocations outgoing size * 2+ MBView defaultBoxesWidth 
 				         ]
 ]
 

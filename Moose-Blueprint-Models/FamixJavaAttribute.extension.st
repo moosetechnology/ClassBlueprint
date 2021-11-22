@@ -1,7 +1,7 @@
 Extension { #name : #FamixJavaAttribute }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> createNewConnection [
+FamixJavaAttribute >> newIncomingConnection [
 
 	^ MBAttributeAccessModel new
 		  initializeDescription;

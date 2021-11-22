@@ -3,17 +3,17 @@ I represent the invocation relation of an accessor: direct access
 "
 Class {
 	#name : #MBAccessorInvocationModel,
-	#superclass : #MBAbstractInvocationModel,
-	#category : #'Moose-Blueprint-Models'
+	#superclass : #MBAbstractAccessingModel,
+	#category : #'Moose-Blueprint-Invocations-Models'
 }
 
 { #category : #adding }
-MBAccessorInvocationModel >> addConnection [
+MBAccessorInvocationModel >> addIncomingConnections [
 
 	"the target here are the candidates"
 
-	source addAccessorInvocation: self.
 	target addAccessorInvocation: self.
+	sources do: [ :each | each addAccessorInvocation: self].
 ]
 
 { #category : #accessing }
