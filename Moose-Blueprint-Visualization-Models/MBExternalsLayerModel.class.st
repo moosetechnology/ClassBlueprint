@@ -1,14 +1,14 @@
 "
-I represent the attributes layer
+I represent the External methods layer
 
 "
 Class {
-	#name : #MBAttributesLayer,
+	#name : #MBExternalsLayerModel,
 	#superclass : #MBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBAttributesLayer >> name [ 
-	^ #Attributes
+MBExternalsLayerModel >> name [ 
+	^ #Externals
 ]

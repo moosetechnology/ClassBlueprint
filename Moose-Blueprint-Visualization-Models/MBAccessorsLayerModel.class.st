@@ -1,14 +1,14 @@
 "
-I represent the External methods layer
+I represent the getters/setters layer
 
 "
 Class {
-	#name : #MBExternalsLayer,
+	#name : #MBAccessorsLayerModel,
 	#superclass : #MBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBExternalsLayer >> name [ 
-	^ #Externals
+MBAccessorsLayerModel >> name [ 
+	^ #Accessors
 ]

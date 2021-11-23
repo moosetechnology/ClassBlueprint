@@ -205,12 +205,11 @@ MBAbstractMethodModel >> shape [
 		         borderColor: Color lightGray;
 		         width: self description width;
 		         height: self description height;
-
-	"shape
+		         "shape
 		when: RSMouseEnter do: [ :evt | 
 			shape canvas allChildren do: [ :each | each color: Color gray ].
 			evt signalUpdate ];"
-		popup.
+			         popup.
 	shape @ RSDraggable.
 	^ shape
 ]

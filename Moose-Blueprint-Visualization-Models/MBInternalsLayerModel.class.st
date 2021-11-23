@@ -1,14 +1,13 @@
 "
-I represent the getters/setters layer
-
+I represent the Internal methods layer
 "
 Class {
-	#name : #MBAccessorsLayer,
+	#name : #MBInternalsLayerModel,
 	#superclass : #MBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBAccessorsLayer >> name [ 
-	^ #Accessors
+MBInternalsLayerModel >> name [ 
+	^ #Internals
 ]

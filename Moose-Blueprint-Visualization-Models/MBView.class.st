@@ -15,7 +15,9 @@ Class {
 		'internalsLayer',
 		'accessorsLayer',
 		'attributesLayer',
-		'hibernersLayer'
+		'hibernersLayer',
+		'hibernerAttributesLayer',
+		'classVarsLayer'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -144,6 +146,11 @@ MBView >> classModel: aClassModel [
 	classModel := aClassModel
 ]
 
+{ #category : #accessing }
+MBView >> classVarsLayer [ 
+	^ classVarsLayer
+]
+
 { #category : #shapes }
 MBView >> edgeBuilder [
 
@@ -169,19 +176,28 @@ MBView >> externalsLayer [
 ]
 
 { #category : #accessing }
-MBView >> hibernersLayer [ 
-	^ hibernersLayer
+MBView >> hibernerAttributesLayer [
+
+	^ hibernerAttributesLayer
+]
+
+{ #category : #accessing }
+MBView >> hibernersLayer [
+	^ hibernersLayer 
 ]
 
 { #category : #initialization }
-MBView >> initialize [ 
+MBView >> initialize [
+
 	super initialize.
-	initializersLayer := MBInitializersLayer new.
-	externalsLayer := MBExternalsLayer new.
-	internalsLayer := MBInternalsLayer new.
-	accessorsLayer := MBAccessorsLayer new.
-	attributesLayer := MBAttributesLayer new.
-	hibernersLayer := MBHibernersLayer new
+	initializersLayer := MBInitializersLayerModel new.
+	externalsLayer := MBExternalsLayerModel new.
+	internalsLayer := MBInternalsLayerModel new.
+	accessorsLayer := MBAccessorsLayerModel new.
+	attributesLayer := MBAttributesLayerModel new.
+	hibernersLayer := MBHibernerMethodsLayerModel new.
+	hibernerAttributesLayer := MBHibernerAttributesLayerModel new.
+	classVarsLayer := MBClassVarsLayerModel new 
 ]
 
 { #category : #accessing }
@@ -221,18 +237,34 @@ MBView >> layersEntities [
 
 { #category : #shapes }
 MBView >> nestLayers [
-	| layers maxHeight hibernerLayer |
-	hibernerLayer := self canvas nodes detect: [ :each | each model name = 'Hiberners' ].
-	layers := self canvas nodes reject: [ :each | each = hibernerLayer ] .
-	RSHorizontalTreeLayout new
-		on: (layers flatCollect: #nodes)
-		edges: self canvas edges.
-	layers do: [ :layer | layer padding: 10 ].
-	maxHeight := layers max: [ :layer | layer height ].
-	layers do: [ :layer | layer height: maxHeight ].
-	RSHorizontalLineLayout new
+
+	| groups maxHeight |
+	groups := { 
+		          { 
+			          hibernersLayer.
+			          hibernerAttributesLayer }.
+		          { 
+			          initializersLayer.
+			          externalsLayer.
+			          internalsLayer.
+			          accessorsLayer.
+			          attributesLayer }.
+		          { classVarsLayer } } collect: [ :row | 
+		          | shapes |
+		          shapes := self canvas shapesFromModels: row.
+
+		          RSHorizontalTreeLayout new
+			          on: (shapes flatCollect: #nodes)
+			          edges: self canvas edges.
+		          shapes do: [ :each | each padding: 10 ].
+		          RSHorizontalLineLayout new
+			          gapSize: 0;
+			          on: (shapes as: RSGroup). 
+		          shapes as: RSGroup ].
+	RSVerticalLineLayout new
 		gapSize: 0;
-		on: layers
+		on: groups.
+	canvas @ RSCanvasController
 ]
 
 { #category : #initialization }

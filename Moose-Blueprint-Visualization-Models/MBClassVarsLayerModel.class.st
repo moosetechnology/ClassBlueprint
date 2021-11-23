@@ -1,13 +1,10 @@
-"
-I represent the Internal methods layer
-"
 Class {
-	#name : #MBInternalsLayer,
+	#name : #MBClassVarsLayerModel,
 	#superclass : #MBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBInternalsLayer >> name [ 
-	^ #Internals
+MBClassVarsLayerModel >> name [ 
+	^ #ClassVariables
 ]

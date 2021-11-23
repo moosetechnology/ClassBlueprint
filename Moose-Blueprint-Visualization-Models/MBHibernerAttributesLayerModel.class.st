@@ -1,14 +1,10 @@
-"
-I represent the Initializers methods layer
-
-"
 Class {
-	#name : #MBInitializersLayer,
+	#name : #MBHibernerAttributesLayerModel,
 	#superclass : #MBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBInitializersLayer >> name [ 
-	^ #Initializers
+MBHibernerAttributesLayerModel >> name [ 
+	^ #HibernerAttributes
 ]

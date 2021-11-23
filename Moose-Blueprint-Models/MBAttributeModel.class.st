@@ -82,12 +82,12 @@ MBAttributeModel >> shape [
 		         borderColor: Color lightGray;
 		         color: self description color;
 		         height: self description height;
-		         width: self description width.
+		         width: self description width;
+		         popup. ".
 	shape
 		when: RSMouseEnter do: [ :evt | 
 			shape color: Color red.
-			evt signalUpdate ];
-		popup.
+			evt signalUpdate ]"
 	shape @ RSDraggable.
 	^ shape
 ]
