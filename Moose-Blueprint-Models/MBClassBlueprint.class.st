@@ -10,7 +10,9 @@ Class {
 		'externals',
 		'internals',
 		'accessors',
-		'hiberners'
+		'hiberners',
+		'hibernerAttributes',
+		'hibernerMethods'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -177,9 +179,21 @@ MBClassBlueprint >> externals: externalMethods [
 	externals := externalMethods
 ]
 
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> hibernerAttributes [
+
+	^ hibernerAttributes
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> hibernerAttributes: aCollection [ 
+	hibernerAttributes := aCollection
+]
+
 { #category : #accessing }
-MBClassBlueprint >> hiberners [ 
-	^ hiberners
+MBClassBlueprint >> hiberners [
+
+	^ hibernerMethods 
 ]
 
 { #category : #initialization }
@@ -217,11 +231,24 @@ MBClassBlueprint >> initializeExternals [
 ]
 
 { #category : #initialization }
+MBClassBlueprint >> initializeHibernMethods [ 
+	hiberners := self methods
+		             select: [ :each | 
+		             each isHiberner or: [ each belongsToHibernerBranch ] ]
+		             thenCollect: [ :each | 
+		             MBHibernationModel newFrom: each ]
+]
+
+{ #category : #initialization }
+MBClassBlueprint >> initializeHibernerAttributes [ 
+	
+]
+
+{ #category : #initialization }
 MBClassBlueprint >> initializeHiberners [
 
-	hiberners := self methods
-		              select: [ :each | each isHiberner or: [ each belongsToHibernerBranch ]] 
-		             thenCollect: [ :each | MBHibernationModel newFrom: each ]
+	self initializeHibernerMethods.
+	self initializeHibernerAttributes.
 ]
 
 { #category : #initialization }
