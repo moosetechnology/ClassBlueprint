@@ -19,8 +19,8 @@ MBOutgoingInvocationsCollector >> addOutgoingConnection [
 				                     source: source;
 				                     target: each;yourself ].
 	invocationsModels ifNotEmpty: [  
-	invocationsModels do: [ :each | source addIncoming: each ].
-	targets do: [ :each |  each addOutgoing: (invocationsModels detect: [ :invocation | invocation target = each ])  ] ]
+	invocationsModels do: [ :each | source addOutgoing: each ].
+	targets do: [ :each |  each addIncoming: (invocationsModels detect: [ :invocation | invocation target = each ])  ] ]
 
 ]
 

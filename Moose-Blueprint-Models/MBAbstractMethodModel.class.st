@@ -49,29 +49,10 @@ MBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
 ]
 
 { #category : #adding }
-MBAbstractMethodModel >> addInternalMethodInvocation: aConnection [ 
-	self flag: #TODO.
-]
-
-{ #category : #adding }
 MBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 	
 	((self invocations outgoing collect:#target) includes: aMethodInvocationModel target) ifFalse: 
 	 [ invocations outgoing add: aMethodInvocationModel ]
-]
-
-{ #category : #accessing }
-MBAbstractMethodModel >> alreadyCameFrom: sources [
-	self flag: #TODO. "Is it only method invocations???"
-	
-	^ ((invocations incoming collect: #sources) includes: sources)
-]
-
-{ #category : #accessing }
-MBAbstractMethodModel >> alreadyWentTo: targetModels [
-	self flag: #TODO. "Is it only method invocations???"
-	
-	^ ((invocations outgoing collect: #targets) includes: targetModels)
 ]
 
 { #category : #accessing }
@@ -121,8 +102,9 @@ MBAbstractMethodModel >> isAbstract [
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isAccessor [ 
-	^ self entity isAccessor 
+MBAbstractMethodModel >> isAccessor [
+	 (entity isGetter or: [ entity isSetter ]) ifTrue: [ ^ #accessor ].
+	^ nil
 ]
 
 { #category : #testing }
@@ -151,12 +133,6 @@ MBAbstractMethodModel >> isExtending [
 	^ nil
 ]
 
-{ #category : #testing }
-MBAbstractMethodModel >> isGetter [ 
-	 entity isGetter ifTrue: [ ^ #isGetter ].
-	^ nil
-]
-
 { #category : #'as yet unclassified' }
 MBAbstractMethodModel >> isHiberner [ 
 	self entity isHiberner ifTrue: [ ^ #isHiberner ].
@@ -179,12 +155,6 @@ MBAbstractMethodModel >> isOverriding [
 
 	entity isOverriding ifTrue: [ ^ #isOverriding ].
 
-	^ nil
-]
-
-{ #category : #testing }
-MBAbstractMethodModel >> isSetter [ 
-	 entity isSetter ifTrue: [ ^ #isSetter ].
 	^ nil
 ]
 

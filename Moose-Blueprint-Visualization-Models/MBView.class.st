@@ -87,26 +87,24 @@ MBView >> buildEdges [
 	| builder edges |
 	"method Invocations"
 	builder := self edgeBuilder.
-	edges := (classModel invocations flatCollect: #incoming) collect: [ :each | 
+	edges := (classModel invocations flatCollect: #outgoing) collect: [ :each | 
 		         builder
-			         connectFrom: each source toAll: ((classModel invocations flatCollect: #outgoing) collect: [ :invocation | invocation target]) ].
+			         connectFrom: each source toAll: (classModel targetsOf: each source)].
 
 	edges do: #pushBack.
 	"Access Invocations"
-	edges := (classModel accessorInvocations select: [ :each | 
-		          each class = MBAccessorInvocationModel ]) collect: [ 
-		         :accessInvocation | 
+	edges := classModel accessorInvocations select: [ :each |  
 		         builder
-			         connectFrom: accessInvocation target
-			         toAll: accessInvocation sources ].
+			         connectFrom: each source
+			         toAll: (classModel targetsOf: each source) ].
 	edges do: #pushBack.
 	"Attribute Access"
 
-	edges := classModel attributeAccess collect: [ :attributeAccess | 
+	edges := classModel attributeAccess collect: [ :each | 
 
 		         builder
-			         connectFrom: attributeAccess target
-			         toAll: attributeAccess sources ].
+			         connectFrom: each source
+			         toAll: (classModel targetsOf: each source) ].
 	edges do: #pushBack
 ]
 
@@ -162,7 +160,7 @@ MBView >> edgeBuilder [
 
 { #category : #'plugin interface' }
 MBView >> entities [ 
-	^ classModel methodModels
+	^ classModel models
 ]
 
 { #category : #accessing }
@@ -214,53 +212,60 @@ MBView >> internalsLayer [
 MBView >> layersEntities [
 
 	| layers |
-	layers :=  { 
-		  (initializersLayer entities:
-			   (classModel methodModels select: [ :model | 
-				    model class = MBInitializationModel ])).
-		  (externalsLayer entities:
-			   (classModel methodModels select: [ :each | 
-				    each class = MBExternalModel ])).
-		  (internalsLayer entities:
-			   (classModel methodModels select: [ :model | 
-				    model class = MBInternalModel ])).
-		  (hibernersLayer entities:
-			   (classModel methodModels select: [ :model | 
-				    model class = MBHibernationModel ])).
-		  (accessorsLayer entities:
-			   (classModel methodModels select: [ :model | 
-				    model class = MBAccessorsModel ])).
-		  (attributesLayer entities: classModel attributes) }
-		  asOrderedCollection.
-		^ layers
+	layers := { 
+		          (initializersLayer entities: classModel initializers).
+		          (externalsLayer entities: classModel externals).
+		          (internalsLayer entities: classModel internals).
+		          (hibernersLayer entities:
+			           (classModel hibernerMethods )).
+		          (accessorsLayer entities:classModel accessors).
+		          (attributesLayer entities: classModel attributes).
+		          (hibernerAttributesLayer entities:
+			           classModel hibernerAttributes).
+			(classVarsLayer entities: classModel classVars) } asOrderedCollection.
+	^ layers
 ]
 
 { #category : #shapes }
 MBView >> nestLayers [
 
-	| groups maxHeight |
-	groups := { 
-		          { 
-			          hibernersLayer.
-			          hibernerAttributesLayer }.
-		          { 
-			          initializersLayer.
-			          externalsLayer.
-			          internalsLayer.
-			          accessorsLayer.
-			          attributesLayer }.
-		          { classVarsLayer } } collect: [ :row | 
+	| groups maxHeight maxWidth extent layers |
+	extent := 500 @ 800.
+	maxHeight := 0.
+	maxWidth := 0.
+	layers := { 
+		          ({ 
+			           ( attributesLayer   -> 0.80).
+			           (  hibernerAttributesLayer -> 0.2) } -> 0.20).
+		          ({ 
+			           (initializersLayer -> 0.20).
+			           (externalsLayer -> 0.20).
+			           (internalsLayer -> 0.20).
+			           (accessorsLayer -> 0.20).
+			           (hibernersLayer -> 0.20) } -> 0.5).
+		          ({ (classVarsLayer -> 1) } -> 0.25) }. 
+	self canvas shapes@RSDraggable.
+	groups := layers collect: [ :row | 
 		          | shapes |
-		          shapes := self canvas shapesFromModels: row.
-
-		          RSHorizontalTreeLayout new
+		          shapes := row key
+			                    collect: [ :modelAssoc | 
+				                    (self canvas shapeFromModel: modelAssoc key) 
+					                    ifNil: [ modelAssoc key traceCr ] ]
+			                    as: RSGroup.
+					 RSHorizontalTreeLayout new
 			          on: (shapes flatCollect: #nodes)
 			          edges: self canvas edges.
-		          shapes do: [ :each | each padding: 10 ].
+				
+			  shapes do: [ :each | each adjustToChildren ].
+		          shapes with: row key do: [ :aShape :assoc | 
+			          aShape width: extent x * assoc value.
+			          aShape height: extent y * row value ].
+		
 		          RSHorizontalLineLayout new
 			          gapSize: 0;
-			          on: (shapes as: RSGroup). 
-		          shapes as: RSGroup ].
+			          on: (shapes as: RSGroup).
+		          shapes ].
+
 	RSVerticalLineLayout new
 		gapSize: 0;
 		on: groups.

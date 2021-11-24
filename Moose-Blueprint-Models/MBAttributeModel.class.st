@@ -25,13 +25,6 @@ MBAttributeModel >> addAttributeAccess: anAttributeAccessModel [
 ]
 
 { #category : #accessing }
-MBAttributeModel >> alreadyWentTo: targetModels [
-	self flag: #TODO. "Is it only method invocations???"
-	
-	^ ((accesses collect: #targets) includes: targetModels) not
-]
-
-{ #category : #accessing }
 MBAttributeModel >> attributeAccess [
 	^ accesses
 ]
@@ -40,7 +33,7 @@ MBAttributeModel >> attributeAccess [
 MBAttributeModel >> create [
 
 	self initializeAttributeAccess.
-	"self initializeDescription"
+	self initializeDescription
 ]
 
 { #category : #accessing }

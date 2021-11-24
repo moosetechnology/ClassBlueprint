@@ -9,8 +9,15 @@ Class {
 
 { #category : #adding }
 MBAttributeAccessModel >> addIncomingConnections [
-	target addAttributeAccess: self.
-	sources do: [ :each | each addAttributeAccess: self ]
+
+	| invocationsModels |
+	invocationsModels := sources collect: [ :each |  MBInvocationModel new
+				                     source: each;
+				                     target: target;
+				yourself ].
+	invocationsModels ifNotEmpty: [  
+	invocationsModels do: [ :each | target attributeAccess add: each ].
+	sources do: [ :each |  each attributeAccess add: (invocationsModels detect: [ :invocation | invocation source = each ])  ] ] 
 ]
 
 { #category : #accessing }

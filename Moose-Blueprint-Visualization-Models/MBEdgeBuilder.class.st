@@ -45,9 +45,10 @@ c open
 			               (aFromBlock rsValue: e model).
 		tes := self toShapes shapesFromModels:
 			       (aBlockOrASymbol rsValue: e model).
+			
 		tes ifNotNil: [ 
 			tes do: [ :toE | 
-				self color: toE color.
+				self color: fromElement color.
 				self createEdgeIfNecessaryFrom: fromElement to: toE ] ] ].
 	self moveBehindIfNecessary: createdEdges.
 	^ createdEdges

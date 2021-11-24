@@ -10,9 +10,9 @@ Class {
 		'externals',
 		'internals',
 		'accessors',
-		'hiberners',
 		'hibernerAttributes',
-		'hibernerMethods'
+		'hibernerMethods',
+		'classVars'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -27,7 +27,7 @@ MBClassBlueprint class >> newFrom: aFamixClassEntity [
 
 { #category : #accessing }
 MBClassBlueprint >> accessorInvocations [ 
-	^ self methodModels flatCollect: #accessorInvocations
+	^ self accessors flatCollect: #accessorInvocations
 ]
 
 { #category : #accessing }
@@ -56,16 +56,24 @@ MBClassBlueprint >> allAccessorsInvocations [
 ]
 
 { #category : #'as yet unclassified' }
-MBClassBlueprint >> allMethodInvocations [
+MBClassBlueprint >> allAttributes [
 
-	^ ((self models flatCollect: [ :each | 
-		    each entity queryOutgoing: FamixTInvocation ]) asSet 
-		   reject: [ :each | each candidates isEmpty ]) 
+	^ attributes , hibernerAttributes
+]
+
+{ #category : #accessing }
+MBClassBlueprint >> allInvocations [ 
+	^ (self methodModels collect: [ :each | each invocations incoming , each invocations outgoing ]) , (self allAttributes collect: [ :each | each attributeAccess ]) , (self accessors collect: [ :each | each accessorInvocations ] ) flattened
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> allMethodInvocations [ 
+	^ self methodModels flatCollect: [ :each | each invocations incoming , each invocations outgoing ]
 ]
 
 { #category : #accessing }
 MBClassBlueprint >> attributeAccess [
-	^ self methodModels flatCollect: #attributeAccess
+	^ self attributes flatCollect: #attributeAccess
 ]
 
 { #category : #accessing }
@@ -78,25 +86,30 @@ MBClassBlueprint >> attributes: attributeModels [
 	attributes := attributeModels
 ]
 
+{ #category : #accessing }
+MBClassBlueprint >> classVars [ 
+	^ classVars
+]
+
 { #category : #'as yet unclassified' }
 MBClassBlueprint >> connectAttributes [
 
 	"the receiver is the variable"
 
-	attributes do: [ :each | 
-		| incomingAccesses |
-		incomingAccesses := each internalAccesses collect: #source.
-		self connectTarget: each entity withAll: incomingAccesses asSet ]
+	self allAttributes do: [ :each |  
+		| sources |
+		sources := each internalAccesses collect: #source.
+		self connectTarget: each entity withAll: sources asSet ]
 ]
 
 { #category : #'as yet unclassified' }
 MBClassBlueprint >> connectIncomingInvocations [ 
 
 	self models do: [ :each | 
-		| candidateTargets |
-		candidateTargets := ((each entity queryIncoming: FamixTInvocation) 
+		| sources |
+		sources := ((each entity queryIncoming: FamixTInvocation) 
 			                    flatCollect: #candidates) asSet.
-		candidateTargets ifNotEmpty: [ self connectTarget: each entity withAll: candidateTargets ] ]
+		sources ifNotEmpty: [ self connectTarget: each entity withAll: sources ] ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -160,8 +173,9 @@ MBClassBlueprint >> create [
 
 	self initialize.
 	self initializeAttributes.
+	self initializeClassVars.
 	self initializeAcessors.
-	self initializeExternals. 
+	self initializeExternals.
 	self initializeInternals.
 	self initializeInitializers.
 	self initializeHiberners.
@@ -191,7 +205,7 @@ MBClassBlueprint >> hibernerAttributes: aCollection [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> hiberners [
+MBClassBlueprint >> hibernerMethods [
 
 	^ hibernerMethods 
 ]
@@ -204,7 +218,8 @@ MBClassBlueprint >> initialize [
 	externals := OrderedCollection new.
 	initializers := OrderedCollection new.
 	internals := OrderedCollection new.
-	hiberners := OrderedCollection new.
+	hibernerMethods := OrderedCollection new.
+	hibernerAttributes := OrderedCollection new
 ]
 
 { #category : #initialization }
@@ -218,8 +233,15 @@ MBClassBlueprint >> initializeAcessors [
 { #category : #initialization }
 MBClassBlueprint >> initializeAttributes [
 
-	attributes := entity attributes collect: [ :anAttribute | 
+	attributes := (entity attributes select: [ :each | 
+		               each incomingAccesses isNotEmpty and: [ 
+			               each isClassVariable not ] ]) collect: [ :anAttribute | 
 		              MBAttributeModel newFrom: anAttribute ]
+]
+
+{ #category : #accessing }
+MBClassBlueprint >> initializeClassVars [ 
+	classVars := (entity attributes select: [ :each | each isClassVariable ]) collect: [ :each | MBAttributeModel newFrom: each ]
 ]
 
 { #category : #initialization }
@@ -231,17 +253,22 @@ MBClassBlueprint >> initializeExternals [
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeHibernMethods [ 
-	hiberners := self methods
+MBClassBlueprint >> initializeHibernerAttributes [
+
+	hibernerAttributes := (entity attributes select: [ :each | 
+		                       each incomingAccesses isEmpty and: [ each isClassVariable not ] ]) collect: [ 
+		                      :anAttribute | 
+		                      MBAttributeModel newFrom: anAttribute ]
+]
+
+{ #category : #initialization }
+MBClassBlueprint >> initializeHibernerMethods [
+
+	hibernerMethods := self methods
 		             select: [ :each | 
 		             each isHiberner or: [ each belongsToHibernerBranch ] ]
 		             thenCollect: [ :each | 
 		             MBHibernationModel newFrom: each ]
-]
-
-{ #category : #initialization }
-MBClassBlueprint >> initializeHibernerAttributes [ 
-	
 ]
 
 { #category : #initialization }
@@ -269,12 +296,8 @@ MBClassBlueprint >> initializeInternals [
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeInvocations [
-]
-
-{ #category : #initialization }
 MBClassBlueprint >> initializeModelDescriptions [ 
-	self models do: [ :each | each initializeDescription  ]
+	self methodModels do: [ :each | each initializeDescription  ]
 ]
 
 { #category : #accessing }
@@ -313,7 +336,7 @@ MBClassBlueprint >> makeConnections [
 { #category : #accessing }
 MBClassBlueprint >> methodModels [
 
-	^ initializers , internals , externals , accessors, hiberners
+	^ initializers , internals , externals , hibernerMethods
 ]
 
 { #category : #accessing }
@@ -324,6 +347,12 @@ MBClassBlueprint >> methods [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> models [ 
-	^ self methodModels , self attributes
+MBClassBlueprint >> models [
+
+	^ self methodModels , self attributes , self hibernerAttributes , self accessors
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> targetsOf: aSource [ 
+	^ (self allInvocations flattened select: [ :each | each source = aSource ]) collect: [ :each | each target ]
 ]

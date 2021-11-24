@@ -10,10 +10,14 @@ Class {
 { #category : #adding }
 MBAccessorInvocationModel >> addIncomingConnections [
 
-	"the target here are the candidates"
-
-	target addAccessorInvocation: self.
-	sources do: [ :each | each addAccessorInvocation: self].
+	| invocationsModels |
+	invocationsModels := sources collect: [ :each |  MBInvocationModel new
+				                     source: each;
+				                     target: target;
+				yourself ].
+	invocationsModels ifNotEmpty: [  
+	invocationsModels do: [ :each | target accessorInvocations add: each ].
+	sources do: [ :each |  each addAccessorInvocation: (invocationsModels detect: [ :invocation | invocation source = each ])  ] ] 
 ]
 
 { #category : #accessing }

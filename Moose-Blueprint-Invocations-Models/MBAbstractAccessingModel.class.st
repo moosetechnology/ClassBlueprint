@@ -13,6 +13,7 @@ Class {
 
 { #category : #adding }
 MBAbstractAccessingModel >> addIncomingConnections [
+
 	self subclassResponsibility 
 ]
 

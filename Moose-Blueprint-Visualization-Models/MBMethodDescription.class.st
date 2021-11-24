@@ -54,10 +54,9 @@ MBMethodDescription >> initializeType [
 			        entityModel isOverriding ifNil: [ 
 				        entityModel isDelegating ifNil: [ 
 					        entityModel isConstant ifNil: [ 
-						        entityModel isGetter ifNil: [ 
-							        entityModel isSetter ifNil: [ 
+						        entityModel isAccessor ifNil: [ 
 								        entityModel isInternalImplementation ifNil: [ entityModel isHiberner ifNil: [  
-									        entityModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ] ].
+									        entityModel isAbstract ifNil: [ #isOther ] ]  ] ] ] ] ] ] ].
 	entityModel type: type
 ]
 

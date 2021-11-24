@@ -21,8 +21,7 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #isInternalImplementation
 		forColor: Color yellow quiteWhiter;
 		addName: #isHiberner forColor: Color blue darker;
-		addName: #isGetter forColor: Color cyan;
-		addName: #isSetter forColor: Color cyan;
+		addName: #accessor forColor: Color cyan;
 		addName: #isDelegating forColor: (Color r: 150 g: 115 b: 70);
 		addName: #isOther forColor: Color orange;
 		"For invocations"addName: #methodInvocation
