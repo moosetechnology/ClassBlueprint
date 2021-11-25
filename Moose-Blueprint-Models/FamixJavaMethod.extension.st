@@ -59,13 +59,6 @@ FamixJavaMethod >> inSameClassAs: aMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> invokedByInitializerMethods [
-
-	^ self incomingInvocations anySatisfy: [ :each | 
-		  each sender isInitializerMethod ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isAbstract [
 
 	<FMProperty: #isAbstract type: #Boolean>
@@ -143,7 +136,7 @@ FamixJavaMethod >> isGetter [
 
 	^ (self name beginsWith: 'get') and: [ 
 		  self parameters isEmpty and: [ 
-			  self accesses asOrderedCollection size = 1 ] ]
+			  self accesses asOrderedCollection size = 1 and: [ self outgoingInvocations isEmpty ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -205,10 +198,11 @@ FamixJavaMethod >> isOverriding [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isSetter [ 
+FamixJavaMethod >> isSetter [
+
 	^ (self name beginsWith: 'set') and: [ 
 		  self parameters size = 1 and: [ 
-			  self accesses asOrderedCollection size = 1 ] ]
+			  self accesses asOrderedCollection size = 1 and: [ self outgoingInvocations isEmpty] ]]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

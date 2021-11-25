@@ -3,26 +3,33 @@ I represent a model for getters and setters
 "
 Class {
 	#name : #MBAccessorsModel,
-	#superclass : #MBAbstractModel,
+	#superclass : #Object,
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
 		'type',
-		'invocations'
+		'invocations',
+		'entity'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
 
 { #category : #'instance creation' }
 MBAccessorsModel class >> newFrom: aMethod [
-	^ self new 
-		entity: aMethod;
-		create 
+
+	^ self new
+		  entity: aMethod;
+		yourself
 ]
 
 { #category : #accessing }
 MBAccessorsModel >> accessorInvocations [
 	^ accessorInvocations
+]
+
+{ #category : #adding }
+MBAccessorsModel >> addIncoming: anInvocation [ 
+	accessorInvocations add: anInvocation 
 ]
 
 { #category : #accessing }
@@ -35,24 +42,34 @@ MBAccessorsModel >> color [
 	^ MiClassBlueprintPalette new colorAt: self type
 ]
 
-{ #category : #operations }
-MBAccessorsModel >> create [
-
-	accessorInvocations := OrderedCollection new.
-	attributeAccess := OrderedCollection new.
-	invocations := MBInvocations new.
-	"self initializeDescription"
-]
-
-{ #category : #initialization }
-MBAccessorsModel >> initialize [ 
-	super initialize.
-	accessorInvocations := OrderedCollection new.
+{ #category : #accessing }
+MBAccessorsModel >> entity [ 
+	^ entity
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> invocations [ 
-	^ invocations
+MBAccessorsModel >> entity: anEntity [ 
+	entity := anEntity 
+]
+
+{ #category : #initialization }
+MBAccessorsModel >> initialize [
+
+	super initialize.
+	accessorInvocations := OrderedCollection new.
+	attributeAccess := OrderedCollection new
+]
+
+{ #category : #accessing }
+MBAccessorsModel >> name [ 
+	^ entity name
+]
+
+{ #category : #printing }
+MBAccessorsModel >> printOn: aStream [ 
+	aStream nextPutAll: '('. 
+	self name asString printOn: aStream.
+	aStream nextPutAll: ')'.
 ]
 
 { #category : #accessing }

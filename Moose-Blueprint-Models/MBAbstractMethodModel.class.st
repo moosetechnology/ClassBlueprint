@@ -37,15 +37,9 @@ MBAbstractMethodModel >> addAccessorInvocation: aConnection [
 ]
 
 { #category : #adding }
-MBAbstractMethodModel >> addAttributeAccess: anAttributeAccessModel [
+MBAbstractMethodModel >> addIncoming: anAttributeAccessModel [
 	(self alreadyWentTo: anAttributeAccessModel) ifTrue: [ attributeAccess add: anAttributeAccessModel ]
 	
-]
-
-{ #category : #adding }
-MBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
-	
-	((self invocations incoming collect: #source) includes: aMethodInvocationModel source) ifFalse: [ invocations incoming add: aMethodInvocationModel ]
 ]
 
 { #category : #adding }
@@ -53,6 +47,27 @@ MBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 	
 	((self invocations outgoing collect:#target) includes: aMethodInvocationModel target) ifFalse: 
 	 [ invocations outgoing add: aMethodInvocationModel ]
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> allInvocations [
+
+	^ self invocations incoming , self invocations  outgoing
+]
+
+{ #category : #'as yet unclassified' }
+MBAbstractMethodModel >> alreadyCameFrom: anInvocation [
+
+	self flag: #TODO. "Is it only method invocations???"
+
+	^ (invocations incoming collect: #source) includes: anInvocation source
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> alreadyWentTo: anInvocationModel [
+	self flag: #TODO. "Is it only method invocations???"
+	
+	^ ((invocations outgoing collect: #target) includes: anInvocationModel target)
 ]
 
 { #category : #accessing }

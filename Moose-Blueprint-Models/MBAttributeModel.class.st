@@ -19,9 +19,16 @@ MBAttributeModel class >> newFrom: anEntity [
 ]
 
 { #category : #initialization }
-MBAttributeModel >> addAttributeAccess: anAttributeAccessModel [
+MBAttributeModel >> addIncoming: anAttributeAccessModel [
 
 	accesses add: anAttributeAccessModel
+]
+
+{ #category : #accessing }
+MBAttributeModel >> alreadyWentTo: targetModels [
+	self flag: #TODO. "Is it only method invocations???"
+	
+	^ ((accesses collect: #targets) includes: targetModels) not
 ]
 
 { #category : #accessing }
