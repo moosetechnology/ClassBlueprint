@@ -69,6 +69,15 @@ MBView >> accessorsLayer [
 	^ accessorsLayer
 ]
 
+{ #category : #accessing }
+MBView >> attributes [
+
+	^ { 
+		  hibernerAttributesLayer.
+		  attributesLayer.
+		  classVarsLayer } collect: [ :each | self canvas shapeFromModel: each ]
+]
+
 { #category : #layers }
 MBView >> attributesLayer [ 
 	^ attributesLayer
@@ -168,8 +177,11 @@ MBView >> classModel: aClassModel [
 ]
 
 { #category : #'accessing - parallel hierarchy' }
-MBView >> classSide [ 
-	^ { self classSideMethods . self classSideVars  }
+MBView >> classSide [
+
+	^ { 
+		  self classSideMethods".
+		  self classSideVars" }
 ]
 
 { #category : #accessing }
@@ -177,7 +189,7 @@ MBView >> classSideMethods [
 
 	| shape |
 	shape := self canvas shapeFromModel: classMethodsLayer.
-	RSVerticalLineLayout new on: shape nodes.
+	RSHorizontalFlowLayout new on: shape nodes.
 	^ shape
 ]
 
@@ -218,11 +230,22 @@ MBView >> externalsLayer [
 	^ externalsLayer
 ]
 
+{ #category : #'as yet unclassified' }
+MBView >> fifthLayer [
+
+	
+	| shape |
+	shape := self canvas shapeFromModel: attributesLayer.
+	RSVerticalLineLayout new on: shape nodes.
+	^ shape
+]
+
 { #category : #composite }
 MBView >> firstLayer [
 
-	| hiberners layers maxHeight |
-	self flag: #TODO. "Make this a Layout. MBVerticalLayout new on: nodes {right . left}"
+	^ self hibernerMethodsComposite
+	"| hiberners layers maxHeight |
+	self flag: #TODO. ""Make this a Layout. MBVerticalLayout new on: nodes {right . left}""
 	hiberners := self hiberners.
 	hiberners do: [ :layer | layer padding: 10 ].
 	maxHeight := hiberners max: [ :layer | layer height ].
@@ -230,7 +253,26 @@ MBView >> firstLayer [
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: (hiberners as: RSGroup).
-	^ hiberners asShapeFor: hiberners
+	^ hiberners asShapeFor: hiberners"
+]
+
+{ #category : #'as yet unclassified' }
+MBView >> fouthLayer [
+
+	| shape |
+	shape := self canvas shapeFromModel: hibernerAttributesLayer.
+	RSVerticalLineLayout new on: shape nodes.
+	^ shape
+	"	| layers maxWidth |
+	layers := self attributes.
+	RSVerticalLineLayout on: (layers flatCollect: #nodes).
+	layers do: [ :each | each padding: 10 ].
+	maxWidth := layers max: [ :each | each width ].
+	layers do: [ :each | each width: maxWidth ].
+	RSVerticalLineLayout new
+		gapSize: 0;
+		on: layers.
+	^ layers asShapeFor: layers"
 ]
 
 { #category : #'attributes composites' }
@@ -261,8 +303,8 @@ MBView >> hibernerMethodsComposite [
 MBView >> hiberners [
 
 	^ { 
-		  self hibernerMethodsComposite.
-		  self hibernerAttributesComposite } 
+		  self hibernerMethodsComposite".
+		  self hibernerAttributesComposite" }
 ]
 
 { #category : #layers }
@@ -302,9 +344,20 @@ MBView >> initializersLayer [
 	^ initializersLayer
 ]
 
+{ #category : #accessing }
+MBView >> instSide [
+
+	^ { 
+		  initializersLayer.
+		  externalsLayer.
+		  internalsLayer.
+		  accessorsLayer.
+		  "attributesLayer" } asOrderedCollection
+]
+
 { #category : #'accessing - parallel hierarchy' }
 MBView >> instanceSide [ 
-	^ self methodsLayers collect: [ :each | self canvas shapeFromModel: each ]
+	^ self instSide collect: [ :each | self canvas shapeFromModel: each ]
 ]
 
 { #category : #layers }
@@ -331,30 +384,56 @@ MBView >> layersEntities [
 	^ layers
 ]
 
-{ #category : #accessing }
-MBView >> methodsLayers [
-
-	^ { 
-		  initializersLayer.
-		  externalsLayer.
-		  internalsLayer.
-		  accessorsLayer } asOrderedCollection
-]
-
 { #category : #shapes }
 MBView >> nestLayers [
 
-	| newCanvas maxWidth |
-	newCanvas := RSCanvas new
-		             add: self firstLayer;
-		             add: self secondLayer;
-		             add: self thirdLayer;
-		             yourself.
-	maxWidth := self canvas nodes max: [ :layer | layer width ].
-	self canvas nodes do: [ :layer | layer width: maxWidth ].
-	RSVerticalLineLayout new
+	| newCanvas right maxWidth left dict layers |
+	newCanvas := RSCanvas new.
+	dict := { 
+		        (self firstLayer -> self fouthLayer).
+		        (self secondLayer -> self fifthLayer).
+		        (self thirdLayer -> self sixthLayer) } asOrderedDictionary.
+
+	dict keysDo: [ :each | each padding: 10 ].
+	maxWidth := dict keys max: [ :each | each width ].
+	dict keysDo: [ :layer | layer width: maxWidth ].
+
+	dict valuesDo: [ :each | each padding: 10 ].
+	left := dict keys asGroup asShapeFor: dict keys.
+	maxWidth := dict values max: [ :each | each width ].
+	dict valuesDo: [ :layer | layer width: maxWidth ].
+	dict associationsDo: [ :assoc | 
+		| maxHeight |
+		maxHeight := { 
+			             assoc key.
+			             assoc value } max: [ :each | each height ].
+		assoc key height: maxHeight.
+		assoc value height: maxHeight ].
+	{ 
+		dict keys.
+		dict values } do: [ :each | 
+		RSVerticalLineLayout new
+			gapSize: 0;
+			on: each ].
+	right := dict values asGroup asShapeFor: dict values.
+	{ 
+		left.
+		right } asOrderedCollection do: [ :each | each padding: 0 ].
+	RSHorizontalLineLayout new
 		gapSize: 0;
-		on: newCanvas nodes.
+		on: { 
+				left.
+				right }.
+	layers := { 
+		          left.
+		          right } asGroup asShapeFor: { 
+			          left.
+			          right }.
+	self canvas: (newCanvas
+			 add: (layers
+					  border: border;
+					  yourself);
+			 yourself).
 	newCanvas @ RSDraggable.
 	newCanvas @ RSZoomableCanvasInteraction.
 	newCanvas @ RSDraggableCanvasInteraction.
@@ -368,18 +447,27 @@ MBView >> secondLayer [
 	instanceSide := self instanceSide.
 	RSHorizontalTreeLayout new on: (instanceSide flatCollect: #nodes).
 	instanceSide do: [ :layer | layer padding: 10 ].
-	maxHeight:= instanceSide max: [ :layer | layer height ].
+	maxHeight := instanceSide max: [ :layer | layer height ].
 	instanceSide do: [ :layer | layer height: maxHeight ].
-	RSHorizontalLineLayout new
+	RSHorizontalFlowLayout new
 		gapSize: 0;
 		on: (instanceSide as: RSGroup).
 	^ (instanceSide as: RSGroup) asShapeFor: instanceSide
 ]
 
 { #category : #'as yet unclassified' }
+MBView >> sixthLayer [
+	| shape |
+	shape := self canvas shapeFromModel: classVarsLayer.
+	RSVerticalLineLayout new on: shape nodes.
+	^ shape
+]
+
+{ #category : #'as yet unclassified' }
 MBView >> thirdLayer [
 
-	| classSide maxHeight |
+	^ self classSideMethods
+	"| classSide maxHeight |
 	classSide := self classSide.
 	classSide do: [ :layer | layer padding: 10 ].
 	maxHeight := classSide max: [ :layer | layer height ].
@@ -387,7 +475,7 @@ MBView >> thirdLayer [
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: (classSide as: RSGroup).
-	^ classSide asShapeFor: classSide
+	^ classSide asShapeFor: classSide"
 ]
 
 { #category : #initialization }
