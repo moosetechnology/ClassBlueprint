@@ -10,7 +10,8 @@ Class {
 	#instVars : [
 		'type',
 		'height',
-		'width'
+		'width',
+		'border'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -20,6 +21,11 @@ MBMethodDescription class >> newFrom: aMethodModel [
 	^ self new 
 		entity: aMethodModel;
 		create
+]
+
+{ #category : #accessing }
+MBMethodDescription >> border [ 
+	^ border
 ]
 
 { #category : #'instance creation' }

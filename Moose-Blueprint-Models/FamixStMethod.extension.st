@@ -183,12 +183,12 @@ FamixStMethod >> isOverriding [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> newIncomingConnection [
 	^ (self isAccessor 
-		ifTrue: [ MBAccessorInvocationModel new ] 
-		ifFalse: [ MBIncomingInvocationsCollector new ]) initializeDescription
+		ifTrue: [ MBAccessorInvocationModel new initializeDescription;yourself] 
+		ifFalse: [ MBIncomingInvocationsCollector new ]) 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> newOutgoingConnection [
 
-	^ MBOutgoingInvocationsCollector new initializeDescription
+	^ MBOutgoingInvocationsCollector new 
 ]

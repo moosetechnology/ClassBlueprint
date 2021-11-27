@@ -5,7 +5,7 @@ Class {
 	#name : #MBAttributeModel,
 	#superclass : #MBAbstractModel,
 	#instVars : [
-		'accesses'
+		'attributeAccess'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -21,19 +21,19 @@ MBAttributeModel class >> newFrom: anEntity [
 { #category : #initialization }
 MBAttributeModel >> addIncoming: anAttributeAccessModel [
 
-	accesses add: anAttributeAccessModel
+	attributeAccess add: anAttributeAccessModel
 ]
 
 { #category : #accessing }
 MBAttributeModel >> alreadyWentTo: targetModels [
 	self flag: #TODO. "Is it only method invocations???"
 	
-	^ ((accesses collect: #targets) includes: targetModels) not
+	^ ((attributeAccess collect: #targets) includes: targetModels) not
 ]
 
 { #category : #accessing }
 MBAttributeModel >> attributeAccess [
-	^ accesses
+	^ attributeAccess
 ]
 
 { #category : #operations }
@@ -51,7 +51,7 @@ MBAttributeModel >> externalAccesses [
 
 { #category : #initialization }
 MBAttributeModel >> initializeAttributeAccess [
-	accesses := OrderedCollection new
+	attributeAccess := OrderedCollection new
 ]
 
 { #category : #initialization }

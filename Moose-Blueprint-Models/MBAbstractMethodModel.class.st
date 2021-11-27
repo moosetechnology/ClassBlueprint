@@ -187,9 +187,10 @@ MBAbstractMethodModel >> shape [
 	shape := RSBox new
 		         model: self;
 		         color: self description color;
-		         borderColor: Color lightGray;
+		        	border: self description border;
 		         width: self description width;
 		         height: self description height;
+					
 		         "shape
 		when: RSMouseEnter do: [ :evt | 
 			shape canvas allChildren do: [ :each | each color: Color gray ].

@@ -19,7 +19,9 @@ Class {
 		'hibernerAttributesLayer',
 		'classVarsLayer',
 		'border',
-		'classMethodsLayer'
+		'classMethodsLayer',
+		'shapes',
+		'secondLayer'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -87,7 +89,7 @@ MBView >> attributesLayer [
 MBView >> build [
 
 	self buildLayers.
-	self buildEdges.
+		self buildEdges.
 	self nestLayers.
 	super build
 ]
@@ -98,16 +100,16 @@ MBView >> buildEdges [
 	| builder edges |
 	"method Invocations"
 	builder := self edgeBuilder.
-
 	edges := (classModel methodInvocations flatCollect: #outgoing) collect: [ 
 		         :each | 
+	
 		         builder
 			         connectFrom: each source
 			         toAll: {each target} ].
-
+	
 	edges do: #pushBack.
 	"Access Invocations"
-	edges := classModel accessorInvocations select: [ :each | 
+	edges := classModel accessorInvocations flattened collect: [ :each | 
 		         builder
 			         connectFrom: each source
 			         toAll: (classModel accessorInvocationsFrom: each source) ].
@@ -119,7 +121,9 @@ MBView >> buildEdges [
 		         builder
 			         connectFrom: each source
 			         toAll: (classModel attributeAccessesFrom: each source) ].
-	edges do: #pushBack
+				
+	edges do: #pushBack.
+
 ]
 
 { #category : #shapes }
@@ -130,7 +134,8 @@ MBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 	layer addAll: (aGroup collect: [ :aModel | aModel shape ]).
 	layer popupText: aLayerModel name asString.
 	layer adjustToChildren.
-	self canvas add: layer
+	"shapes add: (aLayerModel -> layer)"
+	self canvas add: layer.
 ]
 
 { #category : #shapes }
@@ -188,7 +193,7 @@ MBView >> classSide [
 MBView >> classSideMethods [
 
 	| shape |
-	shape := self canvas shapeFromModel: classMethodsLayer.
+	shape := 	self canvas shapeFromModel: classMethodsLayer.
 	RSHorizontalFlowLayout new on: shape nodes.
 	^ shape
 ]
@@ -237,31 +242,23 @@ MBView >> fifthLayer [
 	| shape |
 	shape := self canvas shapeFromModel: attributesLayer.
 	RSVerticalLineLayout new on: shape nodes.
+	shape padding: 10.
 	^ shape
 ]
 
 { #category : #composite }
 MBView >> firstLayer [
 
-	^ self hibernerMethodsComposite
-	"| hiberners layers maxHeight |
-	self flag: #TODO. ""Make this a Layout. MBVerticalLayout new on: nodes {right . left}""
-	hiberners := self hiberners.
-	hiberners do: [ :layer | layer padding: 10 ].
-	maxHeight := hiberners max: [ :layer | layer height ].
-	hiberners do: [ :layer | layer height: maxHeight ].
-	RSHorizontalLineLayout new
-		gapSize: 0;
-		on: (hiberners as: RSGroup).
-	^ hiberners asShapeFor: hiberners"
+	^ self hibernerMethodsComposite padding: 10.
 ]
 
 { #category : #'as yet unclassified' }
-MBView >> fouthLayer [
+MBView >> fourthLayer [
 
 	| shape |
 	shape := self canvas shapeFromModel: hibernerAttributesLayer.
 	RSVerticalLineLayout new on: shape nodes.
+	shape padding: 10.
 	^ shape
 	"	| layers maxWidth |
 	layers := self attributes.
@@ -336,7 +333,8 @@ MBView >> initialize [
 	border := RSBorder new
 		          color: Color black muchDarker;
 		width: 3;
-		          yourself
+		          yourself.
+	shapes := MBDictionary new
 ]
 
 { #category : #layers }
@@ -387,38 +385,17 @@ MBView >> layersEntities [
 { #category : #shapes }
 MBView >> nestLayers [
 
-	| newCanvas right maxWidth left dict layers |
-	newCanvas := RSCanvas new.
+	| right left dict layers |
 	dict := { 
-		        (self firstLayer -> self fouthLayer).
+		        (self firstLayer -> self fourthLayer).
 		        (self secondLayer -> self fifthLayer).
 		        (self thirdLayer -> self sixthLayer) } asOrderedDictionary.
-
-	dict keysDo: [ :each | each padding: 10 ].
-	maxWidth := dict keys max: [ :each | each width ].
-	dict keysDo: [ :layer | layer width: maxWidth ].
-
-	dict valuesDo: [ :each | each padding: 10 ].
+	self setSize: dict.	
 	left := dict keys asGroup asShapeFor: dict keys.
-	maxWidth := dict values max: [ :each | each width ].
-	dict valuesDo: [ :layer | layer width: maxWidth ].
-	dict associationsDo: [ :assoc | 
-		| maxHeight |
-		maxHeight := { 
-			             assoc key.
-			             assoc value } max: [ :each | each height ].
-		assoc key height: maxHeight.
-		assoc value height: maxHeight ].
-	{ 
-		dict keys.
-		dict values } do: [ :each | 
-		RSVerticalLineLayout new
-			gapSize: 0;
-			on: each ].
 	right := dict values asGroup asShapeFor: dict values.
 	{ 
 		left.
-		right } asOrderedCollection do: [ :each | each padding: 0 ].
+		right } asOrderedCollection .
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: { 
@@ -429,15 +406,10 @@ MBView >> nestLayers [
 		          right } asGroup asShapeFor: { 
 			          left.
 			          right }.
-	self canvas: (newCanvas
-			 add: (layers
-					  border: border;
-					  yourself);
-			 yourself).
-	newCanvas @ RSDraggable.
-	newCanvas @ RSZoomableCanvasInteraction.
-	newCanvas @ RSDraggableCanvasInteraction.
-	self canvas: newCanvas
+	self canvas add: (layers border: border;yourself).
+	self canvas @ RSDraggable.
+	self canvas @ RSZoomableCanvasInteraction.
+	self canvas @ RSDraggableCanvasInteraction.
 ]
 
 { #category : #'as yet unclassified' }
@@ -449,10 +421,37 @@ MBView >> secondLayer [
 	instanceSide do: [ :layer | layer padding: 10 ].
 	maxHeight := instanceSide max: [ :layer | layer height ].
 	instanceSide do: [ :layer | layer height: maxHeight ].
-	RSHorizontalFlowLayout new
+	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: (instanceSide as: RSGroup).
-	^ (instanceSide as: RSGroup) asShapeFor: instanceSide
+	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
+	^ secondLayer 
+]
+
+{ #category : #initialization }
+MBView >> setSize: dict [ 
+		| maxWidth |
+	maxWidth := dict values max: [ :each | each width ].
+	dict valuesDo: [ :layer | layer width: maxWidth ].
+	
+	maxWidth := dict keys max: [ :each | each width ].
+	dict keysDo: [ :layer | layer width: maxWidth ].
+	dict associationsDo: [ :assoc | 
+		| maxHeight |
+		maxHeight := { 
+			             assoc key.
+			             assoc value } max: [ :each | each height ].
+		assoc key height: maxHeight.
+		assoc value height: maxHeight.
+		assoc key = secondLayer ifTrue: [ secondLayer nodes do: [ :each | each height: maxHeight ]  ] ].
+	"Left layer children as well as right one children are vertically aligned"
+	{ 
+		dict keys.
+		dict values } do: [ :each | 
+		RSVerticalLineLayout new
+			gapSize: 0;
+			on: each ].
+		dict
 ]
 
 { #category : #'as yet unclassified' }
@@ -460,13 +459,14 @@ MBView >> sixthLayer [
 	| shape |
 	shape := self canvas shapeFromModel: classVarsLayer.
 	RSVerticalLineLayout new on: shape nodes.
+	shape padding: 10.
 	^ shape
 ]
 
 { #category : #'as yet unclassified' }
 MBView >> thirdLayer [
 
-	^ self classSideMethods
+	^ self classSideMethods padding: 10
 	"| classSide maxHeight |
 	classSide := self classSide.
 	classSide do: [ :layer | layer padding: 10 ].

@@ -29,7 +29,10 @@ MBClassBlueprint class >> newFrom: aFamixClassEntity [
 
 { #category : #accessing }
 MBClassBlueprint >> accessorInvocations [ 
-	^ self accessors flatCollect: #accessorInvocations
+	| result |
+	result := self accessors flatCollect: #accessorInvocations.
+
+	^ result
 ]
 
 { #category : #accessing }
@@ -69,9 +72,11 @@ MBClassBlueprint >> attributeAccess [
 
 { #category : #accessing }
 MBClassBlueprint >> attributeAccessesFrom: aSource [
-
-	^ (self accessorInvocations asSet flattened select: [ :each | 
-		   each source = aSource ]) collect: [ :each | each target ]
+	| result |
+	result := (self attributeAccess asSet flattened select: [ :each | 
+		   each source = aSource ]) collect: [ :each | each target ].
+	
+				^ result
 ]
 
 { #category : #accessing }
@@ -367,8 +372,10 @@ MBClassBlueprint >> makeConnections [
 
 { #category : #accessing }
 MBClassBlueprint >> methodInvocations [
+	| result |
+	result :=  (self methodModels difference: accessors) collect: [ :each | each invocations ].
 
-	^ self methodModels collect: [ :each | each invocations ]
+	^ result
 ]
 
 { #category : #accessing }
@@ -381,7 +388,7 @@ MBClassBlueprint >> methodInvocationsFrom: aSource [
 { #category : #accessing }
 MBClassBlueprint >> methodModels [
 
-	^ initializers , externals , internals , hibernerMethods
+	^ initializers , externals , internals , accessors, hibernerMethods
 ]
 
 { #category : #accessing }

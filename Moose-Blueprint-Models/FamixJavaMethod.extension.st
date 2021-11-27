@@ -35,6 +35,11 @@ FamixJavaMethod >> canBePureInitializer [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> complexity [ 
+	^ MBCyclomaticComplexity newFrom: self 
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> computeIsGetter [
 
 	^ (self name beginsWith: 'get') and: [ 
