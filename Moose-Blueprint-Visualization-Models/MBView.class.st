@@ -26,6 +26,16 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
+{ #category : #initialization }
+MBView class >> defaultBorderColor [ 
+	^ Color black
+]
+
+{ #category : #initialization }
+MBView class >> defaultBorderWidth [
+	^ 1
+]
+
 { #category : #'as yet unclassified' }
 MBView class >> defaultBoxesHeight [
 	^ 10
@@ -334,7 +344,6 @@ MBView >> initialize [
 		          color: Color black muchDarker;
 		width: 3;
 		          yourself.
-	shapes := MBDictionary new
 ]
 
 { #category : #layers }

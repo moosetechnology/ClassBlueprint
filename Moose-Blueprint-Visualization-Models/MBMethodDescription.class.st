@@ -28,16 +28,49 @@ MBMethodDescription >> border [
 	^ border
 ]
 
+{ #category : #'as yet unclassified' }
+MBMethodDescription >> borderDictionary [
+
+	| borderDict |
+	borderDict := { 
+		              (entityModel entity cyclomaticComplexity > 50
+		               -> self highComplexityBorder).
+		              ((entityModel entity cyclomaticComplexity
+			                between: 10
+			                and: 50) -> self moderateComplexityBorder) }
+		              asOrderedDictionary.
+	^ borderDict
+]
+
 { #category : #'instance creation' }
-MBMethodDescription >> create [ 
+MBMethodDescription >> create [
+
 	self initializeType.
-	self initializeSize
+	self initializeSize.
+	self initializeBorder
 ]
 
 { #category : #accessing }
 MBMethodDescription >> height [
 
 	^ height
+]
+
+{ #category : #'as yet unclassified' }
+MBMethodDescription >> highComplexityBorder [
+
+	^ Color red
+]
+
+{ #category : #initialization }
+MBMethodDescription >> initializeBorder [
+	" the borderDict keys: booleans values: aColor"
+	| borderDict |
+	border := RSBorder new.
+	borderDict := self borderDictionary.
+	border color: (borderDict keys
+			 detect: [ :condition | condition ]
+			 ifNone: [ MBView defaultBorderColor ])
 ]
 
 { #category : #initialization }
@@ -64,6 +97,12 @@ MBMethodDescription >> initializeType [
 								        entityModel isInternalImplementation ifNil: [ entityModel isHiberner ifNil: [  
 									        entityModel isAbstract ifNil: [ #isOther ] ]  ] ] ] ] ] ] ].
 	entityModel type: type
+]
+
+{ #category : #'as yet unclassified' }
+MBMethodDescription >> moderateComplexityBorder [
+
+	^ Color black
 ]
 
 { #category : #accessing }

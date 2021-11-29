@@ -270,10 +270,10 @@ MBClassBlueprint >> initializeAttributes [
 
 { #category : #initialization }
 MBClassBlueprint >> initializeClassMethods [
-
 	classMethods := self methods
-		                select: [ :each | each isClassSide ]
-		                thenCollect: [ :each | 
+		                select: [ :each | each isClassSide ].
+	classMethods ifEmpty: [ ^{} ].
+	classMethods := classMethods collect: [ :each | 
 		                MBClassSideMethod newFrom: each ]
 ]
 
