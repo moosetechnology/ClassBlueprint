@@ -28,6 +28,11 @@ MBMethodDescription >> border [
 	^ border
 ]
 
+{ #category : #accessing }
+MBMethodDescription >> border: aBorder [ 
+	border := aBorder 
+]
+
 { #category : #'as yet unclassified' }
 MBMethodDescription >> borderDictionary [
 
