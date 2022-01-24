@@ -99,7 +99,7 @@ MBView >> attributesLayer [
 MBView >> build [
 
 	self buildLayers.
-		self buildEdges.
+	self buildEdges.
 	self nestLayers.
 	super build
 ]
@@ -161,21 +161,6 @@ MBView >> buildLegend [
 	MBLegend buildFor: self 
 ]
 
-{ #category : #composite }
-MBView >> classComposite [
-
-	| composite |
-	composite := RSComposite new
-		             add: self allMethodsComposite;"
-		             add: self allAttributesComposite;" 
-		             yourself.
-	RSVerticalLineLayout new
-		gapSize: 0;
-		on: composite nodes.
-	composite adjustToChildren.
-	^ composite
-]
-
 { #category : #layers }
 MBView >> classMethodsLayer [ 
 	^ classMethodsLayer 
@@ -204,7 +189,7 @@ MBView >> classSideMethods [
 
 	| shape |
 	shape := 	self canvas shapeFromModel: classMethodsLayer.
-	RSHorizontalFlowLayout new on: shape nodes.
+	RSHorizontalLineLayout new on: shape nodes.
 	^ shape
 ]
 
@@ -418,6 +403,7 @@ MBView >> nestLayers [
 	self canvas add: (layers border: border;yourself).
 	self canvas @ RSDraggable.
 	self canvas @ RSZoomableCanvasInteraction.
+	self canvas edges do: [ :each | each update ].
 	self canvas @ RSDraggableCanvasInteraction.
 ]
 
@@ -426,10 +412,12 @@ MBView >> secondLayer [
 
 	| instanceSide maxHeight |
 	instanceSide := self instanceSide.
-	RSHorizontalTreeLayout new on: (instanceSide flatCollect: #nodes).
+	RSVerticalLineLayout new on: (instanceSide flatCollect: #nodes).
 	instanceSide do: [ :layer | layer padding: 10 ].
+	
 	maxHeight := instanceSide max: [ :layer | layer height ].
 	instanceSide do: [ :layer | layer height: maxHeight ].
+	
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: (instanceSide as: RSGroup).
