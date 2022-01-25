@@ -63,7 +63,7 @@ MBAttributeModel >> initializeDescription [
 
 { #category : #accessing }
 MBAttributeModel >> internalAccesses [ 
-	^ self entity incomingAccesses select: [ :each | each source parentType = entity parentType ].
+	^ self entity queryIncomingAccesses select: [ :each | each source parentType = entity parentType ].
 ]
 
 { #category : #printing }

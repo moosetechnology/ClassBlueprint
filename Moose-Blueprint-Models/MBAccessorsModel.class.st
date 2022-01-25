@@ -7,8 +7,6 @@ Class {
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
-		'type',
-		'invocations',
 		'entity'
 	],
 	#category : #'Moose-Blueprint-Models'
@@ -29,14 +27,15 @@ MBAccessorsModel >> accessorInvocations [
 
 { #category : #adding }
 MBAccessorsModel >> addIncoming: anInvocation [ 
-	accessorInvocations add: anInvocation 
+	((accessorInvocations collect: #target) includes: anInvocation target) ifFalse: [  
+	accessorInvocations add: anInvocation ]
 ]
 
 { #category : #adding }
-MBAccessorsModel >> addOutgoing: aMethodInvocationModel [
-	
-	(( accessorInvocations collect:#target) includes: aMethodInvocationModel target) ifFalse: 
-	 [ accessorInvocations add: aMethodInvocationModel ]
+MBAccessorsModel >> addOutgoing: anAttributeAccess [
+
+	((attributeAccess collect: #source) includes: anAttributeAccess source) ifFalse: [  
+	attributeAccess add: anAttributeAccess ]
 ]
 
 { #category : #accessing }

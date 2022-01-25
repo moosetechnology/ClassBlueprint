@@ -106,6 +106,9 @@ MBClassBlueprint >> classVars: aCollection [
 
 { #category : #'as yet unclassified' }
 MBClassBlueprint >> connectAccessors [
+
+	self connectOutgoingAccesses.
+	self connectIncomingAccesses.
 ]
 
 { #category : #building }
@@ -117,6 +120,15 @@ MBClassBlueprint >> connectAttributes [
 		| sources |
 		sources := each internalAccesses collect: #source.
 		self connectTarget: each entity withAll: sources asSet ]
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> connectIncomingAccesses [
+	
+	 accessors do: [ :each | 
+		| sources |
+		sources := each entity incomingInvocations collect: #source.
+		sources ifNotEmpty: [ self connectTarget: each entity withAll: sources ] ]
 ]
 
 { #category : #building }
@@ -136,6 +148,16 @@ MBClassBlueprint >> connectInvocations [
 	self connectIncomingInvocations
 ]
 
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> connectOutgoingAccesses [
+	
+	 accessors do: [ :accessor | 
+		| att |
+		att := (accessor entity queryOutgoingAccesses collect: #target) asSet.
+		att ifNotEmpty: [ 
+			self connectSource: accessor entity withAll: att ] ]
+]
+
 { #category : #building }
 MBClassBlueprint >> connectOutgoingInvocations [
 
@@ -152,6 +174,7 @@ MBClassBlueprint >> connectSource: source withAll: targets [
 
 	| connectionInstance sourceModel targetModels |
 	connectionInstance := source newOutgoingConnection.
+
 	sourceModel := self models detect: [ :each | each entity = source ].
 	targetModels := (targets collect: [ :aTarget | 
 		                 self models
@@ -160,6 +183,7 @@ MBClassBlueprint >> connectSource: source withAll: targets [
 					                 model entity isAccessor not ]" ]
 			                 ifNone: [ nil "connections with exterior" ] ]) 
 		                reject: #isNil.
+	
 	targetModels ifNotEmpty: [ 
 		connectionInstance source: sourceModel targets: targetModels ]
 ]
@@ -254,7 +278,7 @@ MBClassBlueprint >> initialize [
 { #category : #initialization }
 MBClassBlueprint >> initializeAcessors [
 
-	accessors := self methods 
+	accessors := self entity methods
 		              select: [ :each | each isAccessor ] thenCollect: [ :each | 
 		             MBAccessorsModel newFrom: each ]
 ]
@@ -373,7 +397,7 @@ MBClassBlueprint >> makeConnections [
 { #category : #accessing }
 MBClassBlueprint >> methodInvocations [
 	| result |
-	result :=  (self methodModels difference: accessors) collect: [ :each | each invocations ].
+	result :=  self methodModels collect: [ :each | each invocations ].
 
 	^ result
 ]
@@ -388,14 +412,14 @@ MBClassBlueprint >> methodInvocationsFrom: aSource [
 { #category : #accessing }
 MBClassBlueprint >> methodModels [
 
-	^ initializers , externals , internals , accessors, hibernerMethods
+	^ initializers , externals , internals , hibernerMethods, classMethods 
 ]
 
 { #category : #accessing }
 MBClassBlueprint >> methods [ 
-	^ entity methods reject: [ :each | 
+	^ (entity methods reject: [ :each | 
 		                  (self methodModels collect: [ :aMethod | aMethod entity ]) includes:
-			                  each ]
+			                  each ]) reject: #isAccessor
 ]
 
 { #category : #accessing }

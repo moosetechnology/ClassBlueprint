@@ -17,8 +17,9 @@ MBInvocationModel >> printOn: aStream [
 		nextPutAll: '(Source: ';
 		nextPutAll: source name;
 		nextPutAll: ' -> ';
-		nextPutAll: '(Target: ';
-		nextPutAll: target name
+		nextPutAll: 'Target: ';
+		nextPutAll: target name;
+		nextPutAll: ')'.
 ]
 
 { #category : #accessing }
