@@ -32,6 +32,13 @@ MBAccessorsModel >> addIncoming: anInvocation [
 	accessorInvocations add: anInvocation 
 ]
 
+{ #category : #adding }
+MBAccessorsModel >> addOutgoing: aMethodInvocationModel [
+	
+	(( accessorInvocations collect:#target) includes: aMethodInvocationModel target) ifFalse: 
+	 [ accessorInvocations add: aMethodInvocationModel ]
+]
+
 { #category : #accessing }
 MBAccessorsModel >> attributeAccess [ 
 	^ attributeAccess

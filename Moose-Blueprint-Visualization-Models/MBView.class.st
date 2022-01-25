@@ -410,18 +410,27 @@ MBView >> nestLayers [
 { #category : #'as yet unclassified' }
 MBView >> secondLayer [
 
-	| instanceSide maxHeight |
+	| instanceSide maxHeight maxWidth maxLayerWidth defaultWidth |
 	instanceSide := self instanceSide.
 	RSVerticalLineLayout new on: (instanceSide flatCollect: #nodes).
 	instanceSide do: [ :layer | layer padding: 10 ].
-	
+	"fix the width of the layers"
+	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
+	maxWidth := {secondLayer . self firstLayer . self thirdLayer } max: [ :each | each width ].
+	(maxWidth = secondLayer width) ifFalse: [  
+		defaultWidth := (maxWidth /4) + 10. 
+		maxLayerWidth  := instanceSide max: [ :each | each width ].
+		instanceSide do: [ :each | each width <= maxLayerWidth ifTrue: [ each width: defaultWidth ] ].
+		 ].
+	"Fix the height"
 	maxHeight := instanceSide max: [ :layer | layer height ].
 	instanceSide do: [ :layer | layer height: maxHeight ].
-	
+
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: (instanceSide as: RSGroup).
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
+
 	^ secondLayer 
 ]
 
