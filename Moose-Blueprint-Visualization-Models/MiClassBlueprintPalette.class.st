@@ -18,12 +18,11 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		"Attracts the eye"addName: #isOverriding forColor: Color lightGreen;
 		"has a relation with overriding"addName: #isConstant
 		forColor: Color lightGray;
-		addName: #isInternalImplementation
-		forColor: Color yellow quiteWhiter;
+		addName: #isInternalImplementation forColor: Color orange;
 		addName: #isHiberner forColor: Color blue darker;
 		addName: #accessor forColor: Color cyan;
-		addName: #isDelegating forColor: (Color r: 150 g: 115 b: 70);
-		addName: #isOther forColor: Color orange;
+		addName: #isDelegating forColor: Color brown quiteWhiter ;
+		addName: #isOther forColor: Color yellow quiteWhiter;
 		"For invocations"addName: #methodInvocation
 		forColor: Color lightGray muchDarker;
 		addName: #accessorInvocation forColor: Color lightGray quiteWhiter;
