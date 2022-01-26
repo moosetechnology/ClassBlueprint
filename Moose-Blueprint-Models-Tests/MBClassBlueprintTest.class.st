@@ -20,7 +20,14 @@ Class {
 		'internal1',
 		'classBlueprint',
 		'access1',
-		'class'
+		'class',
+		'initializerAccess2',
+		'externalInvocation',
+		'externalInvocation2',
+		'externalInvocation1',
+		'externalClass',
+		'externalModel',
+		'externalMethod'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
@@ -81,28 +88,68 @@ MBClassBlueprintTest >> classVars [
 ]
 
 { #category : #actions }
-MBClassBlueprintTest >> defineClass [ 
-	class := FamixJavaClass new 
-		name: 'class';
-		addMethod: hibernerMethod1;
-		addMethod: initializer1;
-		addMethod: initializer2;
-		addMethod: accessor1;
-		addMethod: accessor2;
-		"addMethod: classMethod1;"
-		"addMethod: external1;
-		addMethod: internal1;"
-		addAttribute: hibernerAttribute;
-		addAttribute: attribute1;
-		mooseModel: model.
+MBClassBlueprintTest >> defineClass [
+
+	class := FamixJavaClass new
+		         name: 'class';
+		         addMethod: hibernerMethod1;
+		         addMethod: initializer1;
+		         addMethod: initializer2;
+		         addMethod: accessor1;
+		         addMethod: accessor2;
+					addMethod: external1;
+					addMethod: classMethod1;
+					addMethod: external1;
+					addMethod: internal1;
+					addAttribute: hibernerAttribute;
+		         addAttribute: attribute1;
+					addAttribute: classVar1;
+					addAttribute: classVar2 ;
+		         mooseModel: model.
 ]
 
 { #category : #accessing }
-MBClassBlueprintTest >> externals [ 
+MBClassBlueprintTest >> externalClassConf [
+
+	externalModel := FamixJavaModel new.
+	externalMethod := FamixJavaMethod new
+		                  name: 'externalMethod()';
+		                  mooseModel: externalModel;
+		                  yourself.
+	externalClass := FamixJavaClass new
+		                 name: 'externalClass';
+		                 addMethod: externalMethod;
+		                 mooseModel: externalModel.
+	externalInvocation := FamixJavaInvocation new
+		                      sender: externalMethod;
+		                      addCandidate: externalMethod;
+		                      receiver: external1;
+		                      mooseModel: model
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> externals [
 
 	external1 := FamixJavaMethod new
-		name: 'external1()';
-		mooseModel: model.
+		             name: 'external1()';
+		             parentType: class;
+		             mooseModel: model.
+	externalInvocation1 := FamixJavaInvocation new
+		                       sender: initializer1;
+		                       addCandidate: initializer1;
+		                       "addCandidate: hibernerMethod1;"
+		                       receiver: external1;
+		                       mooseModel: model;
+		                       yourself.
+	externalInvocation2 := FamixJavaInvocation new
+		                       sender: hibernerMethod1;
+		                       addCandidate: initializer1;
+		                       "addCandidate: hibernerMethod1;"
+		                       receiver: external1;
+		                       mooseModel: model;
+		                       yourself.
+		1halt.
+	self externalClassConf
 ]
 
 { #category : #'as yet unclassified' }
@@ -117,14 +164,16 @@ MBClassBlueprintTest >> hiberners [
 ]
 
 { #category : #accessing }
-MBClassBlueprintTest >> initializers [ 
+MBClassBlueprintTest >> initializers [
 
 	initializer1 := FamixJavaMethod new
-		name: 'initializer1()';
-		mooseModel: model.
+		                name: 'initializer1()';
+		                isConstructor: true;
+		                mooseModel: model.
 	initializer2 := FamixJavaMethod new
-		name: 'initializer2()';
-		mooseModel: model.
+		                name: 'initializer2()';
+		isConstructor: true;
+		                mooseModel: model.
 ]
 
 { #category : #accessing }
@@ -136,18 +185,22 @@ MBClassBlueprintTest >> internals [
 ]
 
 { #category : #initialization }
-MBClassBlueprintTest >> setUp [ 
+MBClassBlueprintTest >> setUp [
 
 	model := FamixJavaModel new.
 	self accessors.
 	self classVars.
 	self attributes.
 	self initializers.
-	self hiberners.		        
-	self accesses.   
+	self hiberners.
+	self externals.
+	self internals.
+	self accesses.
+	self classMethods.
 	self defineClass.
-	classBlueprint := MBClassBlueprint newFrom: model allModelClasses first.
-	
+
+	classBlueprint := MBClassBlueprint newFrom:
+		                  model allModelClasses first
 ]
 
 { #category : #test }
@@ -159,8 +212,58 @@ MBClassBlueprintTest >> testAttributes [
 ]
 
 { #category : #test }
+MBClassBlueprintTest >> testExternals [
+
+	self
+		assert:
+			(classBlueprint models detect: [ :each | each name = 'external1()' ]) entity
+				isExternal
+		equals: true
+]
+
+{ #category : #test }
 MBClassBlueprintTest >> testHibernerAttributes [
 
-	self flag: #toImplement.
-	self assert: false
+	self
+		assert: (classBlueprint hibernerAttributes collect: #entity)
+		equals: { 
+				hibernerAttribute } asOrderedCollection
+]
+
+{ #category : #test }
+MBClassBlueprintTest >> testInitializers [
+
+	self
+		assert: (classBlueprint initializers collect: #entity) size
+		equals: { 
+				initializer1.
+				initializer2} size
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprintTest >> testIsInitializetMethod [
+
+	self
+		assert:
+			(classBlueprint models detect: [ :each | 
+				 each name = 'initializer2()' ]) entity isInitializerMethod
+		equals: true
+]
+
+{ #category : #test }
+MBClassBlueprintTest >> testModels [
+
+	self assert: (classBlueprint models collect: #entity) size equals: { 
+			hibernerMethod1.
+			hibernerAttribute.
+			initializer1.
+			initializer2.
+			accessor1.
+			accessor2.
+			classVar1.
+			classVar2.
+			attribute1.
+			classMethod1.
+			external1.
+			internal1 } size
 ]

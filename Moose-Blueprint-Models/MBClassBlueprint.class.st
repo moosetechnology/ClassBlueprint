@@ -423,8 +423,8 @@ MBClassBlueprint >> methods [
 { #category : #accessing }
 MBClassBlueprint >> models [
 
-	^ self methodModels , self hibernerMethods , self accessors , self attributes
-	  , self hibernerAttributes , self classVars
+	^ self methodModels ,  self accessors
+	  , self attributes , self hibernerAttributes , self classVars
 ]
 
 { #category : #'as yet unclassified' }
