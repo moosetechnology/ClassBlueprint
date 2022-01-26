@@ -19,7 +19,8 @@ Class {
 		'external1',
 		'internal1',
 		'classBlueprint',
-		'access1'
+		'access1',
+		'class'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
@@ -42,6 +43,11 @@ MBClassBlueprintTest >> accessors [
 	accessor2 := FamixJavaMethod new 
 		name: 'accessor2()';
 		mooseModel: model. 
+]
+
+{ #category : #test }
+MBClassBlueprintTest >> attribute1 [ 
+	^ attribute1
 ]
 
 { #category : #accessing }
@@ -72,6 +78,23 @@ MBClassBlueprintTest >> classVars [
 		name: 'classVar2()';
 		isClassSide: true;
 		mooseModel: model
+]
+
+{ #category : #actions }
+MBClassBlueprintTest >> defineClass [ 
+	class := FamixJavaClass new 
+		name: 'class';
+		addMethod: hibernerMethod1;
+		addMethod: initializer1;
+		addMethod: initializer2;
+		addMethod: accessor1;
+		addMethod: accessor2;
+		"addMethod: classMethod1;"
+		"addMethod: external1;
+		addMethod: internal1;"
+		addAttribute: hibernerAttribute;
+		addAttribute: attribute1;
+		mooseModel: model.
 ]
 
 { #category : #accessing }
@@ -121,15 +144,18 @@ MBClassBlueprintTest >> setUp [
 	self attributes.
 	self initializers.
 	self hiberners.		        
-	self accesses.    
-	"classBlueprint := MBClassBlueprint newFrom: model."
+	self accesses.   
+	self defineClass.
+	classBlueprint := MBClassBlueprint newFrom: model allModelClasses first.
 	
 ]
 
 { #category : #test }
 MBClassBlueprintTest >> testAttributes [
 
-	self assert: classBlueprint allAttributes equals: 'ok'
+	self
+		assert: (classBlueprint allAttributes collect: #entity)
+		equals: { attribute1 . hibernerAttribute } asOrderedCollection
 ]
 
 { #category : #test }
