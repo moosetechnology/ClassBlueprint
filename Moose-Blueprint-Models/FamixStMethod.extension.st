@@ -125,9 +125,9 @@ FamixStMethod >> isInitializerMethod [
 	self isConstructor ifTrue: [ ^ true ].
 	self calledBy ifEmpty: [ ^ false ].
 	result := self calledBy allSatisfy: [ :each | 
-		          Transcript
+		         " Transcript
 			          show: each;
-			          cr.
+			          cr."
 		          each isConstructor
 			          ifTrue: [ ^ true ]
 			          ifFalse: [ each isInitializerMethod ] ].

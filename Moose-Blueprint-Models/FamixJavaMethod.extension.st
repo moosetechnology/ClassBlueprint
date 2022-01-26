@@ -132,8 +132,7 @@ FamixJavaMethod >> isExternal [
 
 	"Is external if it  is called at least by one external method, none of the same class and invoked by initializers"
 
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self isCalledExternally and: [ self isConstructor not ] ]
+	^  self isCalledExternally and: [ self isConstructor not ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

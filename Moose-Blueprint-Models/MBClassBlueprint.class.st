@@ -29,10 +29,8 @@ MBClassBlueprint class >> newFrom: aFamixClassEntity [
 
 { #category : #accessing }
 MBClassBlueprint >> accessorInvocations [ 
-	| result |
-	result := self accessors flatCollect: #accessorInvocations.
+	^ self accessors flatCollect: #accessorInvocations.
 
-	^ result
 ]
 
 { #category : #accessing }
