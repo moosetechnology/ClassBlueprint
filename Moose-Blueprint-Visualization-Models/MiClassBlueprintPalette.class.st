@@ -15,7 +15,7 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		"has relation with accessor"addName: #isAbstract
 		forColor: Color purple quiteWhiter;
 		addName: #isExtending forColor: Color green muchDarker;
-		"Attracts the eye"addName: #isOverriding forColor: Color lightGreen;
+		"Attracts the eye"addName: #isOverriding forColor: Color lightGreen darker;
 		"has a relation with overriding"addName: #isConstant
 		forColor: Color lightGray;
 		addName: #isInternalImplementation forColor: Color orange;
@@ -29,7 +29,5 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #isOther forColor: Color yellow darker;
 		"For invocations"addName: #methodInvocation
 		forColor: Color lightGray muchDarker;
-		addName: #accessorInvocation forColor: Color lightGray quiteWhiter;
-		addName: #attributeAccess
-		forColor: Color blue quiteWhiter quiteWhiter
+		addName: #accessorInvocation forColor: Color lightGray quiteWhiter
 ]
