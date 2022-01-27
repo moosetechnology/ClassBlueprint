@@ -84,6 +84,9 @@ MBClassBlueprint >> attributes: attributeModels [
 
 { #category : #'as yet unclassified' }
 MBClassBlueprint >> connectAccessors [
+
+	self connectOutgoingAccesses.
+	self connectIncomingAccesses.
 ]
 
 { #category : #building }
@@ -95,6 +98,15 @@ MBClassBlueprint >> connectAttributes [
 		| sources |
 		sources := each internalAccesses collect: #source.
 		self connectTarget: each entity withAll: sources asSet ]
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> connectIncomingAccesses [
+	
+	 accessors do: [ :each | 
+		| sources |
+		sources := each entity incomingInvocations collect: #source.
+		sources ifNotEmpty: [ self connectTarget: each entity withAll: sources ] ]
 ]
 
 { #category : #building }
@@ -112,6 +124,16 @@ MBClassBlueprint >> connectInvocations [
 
 	self connectOutgoingInvocations.
 	self connectIncomingInvocations
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> connectOutgoingAccesses [
+	
+	 accessors do: [ :accessor | 
+		| att |
+		att := (accessor entity queryOutgoingAccesses collect: #target) asSet.
+		att ifNotEmpty: [ 
+			self connectSource: accessor entity withAll: att ] ]
 ]
 
 { #category : #building }
@@ -284,7 +306,7 @@ MBClassBlueprint >> makeConnections [
 { #category : #accessing }
 MBClassBlueprint >> methodInvocations [
 	| result |
-	result :=  (self methodModels difference: accessors) collect: [ :each | each invocations ].
+	result :=  self methodModels collect: [ :each | each invocations ].
 
 	^ result
 ]
@@ -299,7 +321,7 @@ MBClassBlueprint >> methodInvocationsFrom: aSource [
 { #category : #accessing }
 MBClassBlueprint >> methodModels [
 
-	^ initializers , externals , internals , accessors 
+	^ initializers , externals , internals  
 ]
 
 { #category : #accessing }

@@ -29,7 +29,15 @@ MBAccessorsModel >> accessorInvocations [
 
 { #category : #adding }
 MBAccessorsModel >> addIncoming: anInvocation [ 
-	accessorInvocations add: anInvocation 
+	((accessorInvocations collect: #target) includes: anInvocation target) ifFalse: [  
+	accessorInvocations add: anInvocation ]
+]
+
+{ #category : #adding }
+MBAccessorsModel >> addOutgoing: anAttributeAccess [
+
+	((attributeAccess collect: #source) includes: anAttributeAccess source) ifFalse: [  
+	attributeAccess add: anAttributeAccess ]
 ]
 
 { #category : #accessing }
