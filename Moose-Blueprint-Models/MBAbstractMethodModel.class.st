@@ -173,6 +173,14 @@ MBAbstractMethodModel >> isOverriding [
 	^ nil
 ]
 
+{ #category : #'as yet unclassified' }
+MBAbstractMethodModel >> openInBrowser [
+	| class |
+	class := Smalltalk environment classNamed: self entity parentType name.
+
+	(class >> self entity name asSymbol) browse. 
+]
+
 { #category : #printing }
 MBAbstractMethodModel >> printOn: aStream [.
 	aStream nextPutAll: '('. 
@@ -187,14 +195,10 @@ MBAbstractMethodModel >> shape [
 	shape := RSBox new
 		         model: self;
 		         color: self description color;
-		        	border: self description border;
+		         border: self description border;
 		         width: self description width;
 		         height: self description height;
-					
-		         "shape
-		when: RSMouseEnter do: [ :evt | 
-			shape canvas allChildren do: [ :each | each color: Color gray ].
-			evt signalUpdate ];"
+					when: RSMouseRightClick do: [ :evt | self openInBrowser ];
 			         popup.
 	shape @ RSDraggable.
 	^ shape

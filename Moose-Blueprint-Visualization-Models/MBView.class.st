@@ -140,12 +140,13 @@ MBView >> buildEdges [
 MBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 
 	| layer |
-	layer := RSComposite new model: aLayerModel; border: border.
+	layer := RSComposite new
+		         model: aLayerModel;
+		         border: border.
 	layer addAll: (aGroup collect: [ :aModel | aModel shape ]).
 	layer popupText: aLayerModel name asString.
 	layer adjustToChildren.
-	"shapes add: (aLayerModel -> layer)"
-	self canvas add: layer.
+	self canvas add: layer
 ]
 
 { #category : #shapes }
@@ -327,7 +328,7 @@ MBView >> initialize [
 	classMethodsLayer := MBClassMethodsLayerModel new.
 	border := RSBorder new
 		          color: Color black muchDarker;
-		width: 3;
+		width: 1;
 		          yourself.
 ]
 
@@ -344,7 +345,7 @@ MBView >> instSide [
 		  externalsLayer.
 		  internalsLayer.
 		  accessorsLayer.
-		  "attributesLayer" } asOrderedCollection
+		   } asOrderedCollection
 ]
 
 { #category : #'accessing - parallel hierarchy' }

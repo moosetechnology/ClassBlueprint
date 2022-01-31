@@ -70,12 +70,13 @@ MBMethodDescription >> highComplexityBorder [
 { #category : #initialization }
 MBMethodDescription >> initializeBorder [
 	" the borderDict keys: booleans values: aColor"
-	| borderDict |
+	| borderDict borderColor |
 	border := RSBorder new.
 	borderDict := self borderDictionary.
-	border color: (borderDict keys
+	borderColor := (borderDict keys
 			 detect: [ :condition | condition ]
-			 ifNone: [ MBView defaultBorderColor ])
+			 ifNone: [ MBView defaultBorderColor ]).
+	border color: Color black
 ]
 
 { #category : #initialization }
