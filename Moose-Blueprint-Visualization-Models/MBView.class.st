@@ -412,7 +412,7 @@ MBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth maxLayerWidth defaultWidth |
 	instanceSide := self instanceSide.
-	RSVerticalLineLayout new on: (instanceSide flatCollect: #nodes).
+	RSHorizontalTreeLayout new on: (instanceSide flatCollect: #nodes).
 	instanceSide do: [ :layer | layer padding: 10 ].
 	"fix the width of the layers"
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
