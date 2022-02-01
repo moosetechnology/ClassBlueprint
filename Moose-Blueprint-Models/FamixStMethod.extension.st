@@ -118,25 +118,6 @@ FamixStMethod >> isHiberner [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isInitializerMethod [
-
-	| result |
-	" if calledBy isEmpty it returns a false positive"
-	self canBeInitializer ifFalse: [ ^ false ].
-	self isConstructor ifTrue: [ ^ true ].
-	self calledBy ifEmpty: [ ^ false ].
-	result := self calledBy allSatisfy: [ :each | 
-		         " Transcript
-			          show: each;
-			          cr."
-		          each isConstructor
-			          ifTrue: [ ^ true ]
-			          ifFalse: [ each isInitializerMethod ] ].
-
-	^ result
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isInternal [
 
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"

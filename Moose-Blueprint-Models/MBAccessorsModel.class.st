@@ -44,8 +44,11 @@ MBAccessorsModel >> attributeAccess [
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> color [ 
-	^ MiClassBlueprintPalette new colorAt: self type
+MBAccessorsModel >> color [
+
+	^ self entity isHiberner
+		ifTrue: [ MiClassBlueprintPalette new colorAt: #isHiberner ]
+		ifFalse: [  MiClassBlueprintPalette new colorAt: self type ]
 ]
 
 { #category : #accessing }
@@ -81,14 +84,18 @@ MBAccessorsModel >> printOn: aStream [
 { #category : #accessing }
 MBAccessorsModel >> shape [
 
-	| shape |
+	| shape border |
+	border := RSBorder new
+		          width: 1;
+		          color: Color black;
+		          yourself.
 	shape := RSBox new
 		         model: self;
-		         borderColor: Color lightGray;
+		         border: border;
 		         color: self color;
 		         " height: self description height;
 		         width: self description width;"
-			       popupText: self name asString.
+		         popupText: self name asString.
 	shape @ RSDraggable.
 	^ shape
 ]

@@ -17,6 +17,15 @@ MBAttributeDescription class >> newFrom: anAttributeModel [
 	^ self new entity: anAttributeModel;create
 ]
 
+{ #category : #accessing }
+MBAttributeDescription >> border [
+
+	^ RSBorder new
+		  width: 1;
+		  color: Color black;
+		yourself
+]
+
 { #category : #operations }
 MBAttributeDescription >> create [ 
 	self initializeSize.

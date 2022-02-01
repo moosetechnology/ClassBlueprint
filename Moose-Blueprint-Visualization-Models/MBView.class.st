@@ -256,16 +256,6 @@ MBView >> fourthLayer [
 	RSVerticalLineLayout new on: shape nodes.
 	shape padding: 10.
 	^ shape
-	"	| layers maxWidth |
-	layers := self attributes.
-	RSVerticalLineLayout on: (layers flatCollect: #nodes).
-	layers do: [ :each | each padding: 10 ].
-	maxWidth := layers max: [ :each | each width ].
-	layers do: [ :each | each width: maxWidth ].
-	RSVerticalLineLayout new
-		gapSize: 0;
-		on: layers.
-	^ layers asShapeFor: layers"
 ]
 
 { #category : #'attributes composites' }
@@ -474,15 +464,6 @@ MBView >> sixthLayer [
 MBView >> thirdLayer [
 
 	^ self classSideMethods padding: 10
-	"| classSide maxHeight |
-	classSide := self classSide.
-	classSide do: [ :layer | layer padding: 10 ].
-	maxHeight := classSide max: [ :layer | layer height ].
-	classSide do: [ :layer | layer height: maxHeight ].
-	RSHorizontalLineLayout new
-		gapSize: 0;
-		on: (classSide as: RSGroup).
-	^ classSide asShapeFor: classSide"
 ]
 
 { #category : #initialization }

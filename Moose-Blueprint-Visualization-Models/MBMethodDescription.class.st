@@ -24,8 +24,12 @@ MBMethodDescription class >> newFrom: aMethodModel [
 ]
 
 { #category : #accessing }
-MBMethodDescription >> border [ 
-	^ border
+MBMethodDescription >> border [
+
+	^ RSBorder new
+		  width: 1;
+		  color: Color black;
+		  yourself
 ]
 
 { #category : #accessing }

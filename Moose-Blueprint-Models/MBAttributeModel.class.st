@@ -80,7 +80,7 @@ MBAttributeModel >> shape [
 	| shape |
 	shape := RSBox new
 		         model: self;
-		         borderColor: Color lightGray;
+		         border: self description border;
 		         color: self description color;
 		         height: self description height;
 		         width: self description width;
