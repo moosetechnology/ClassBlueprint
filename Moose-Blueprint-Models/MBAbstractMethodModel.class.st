@@ -175,10 +175,12 @@ MBAbstractMethodModel >> isOverriding [
 
 { #category : #'as yet unclassified' }
 MBAbstractMethodModel >> openInBrowser [
-	| class |
-	class := Smalltalk environment classNamed: self entity parentType name.
 
-	(class >> self entity name asSymbol) browse. 
+	| class |
+	class := Smalltalk environment classNamed:
+		         self entity parentType name.
+	class ifNil: [ self entity inspect ] ifNotNil: [ (class >> self entity name asSymbol) browse ]
+	
 ]
 
 { #category : #printing }
@@ -197,9 +199,10 @@ MBAbstractMethodModel >> shape [
 		         color: self description color;
 		         border: self description border;
 		         width: self description width;
-		         height: self description height;
-					when: RSMouseRightClick do: [ :evt | self openInBrowser ];
-			         popup.
+		         height: self description height.
+	shape when: RSMouseRightClick do: [ :evt | self openInBrowser ].
+	shape when: RSMouseEnter do: [ :evt | 
+		evt shiftPressed ifTrue: [ shape popupText: self entity sourceText ] ].
 	shape @ RSDraggable.
 	^ shape
 ]
