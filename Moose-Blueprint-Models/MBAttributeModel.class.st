@@ -67,10 +67,11 @@ MBAttributeModel >> internalAccesses [
 ]
 
 { #category : #printing }
-MBAttributeModel >> printOn: aStream [.
-	aStream nextPutAll: '('. 
+MBAttributeModel >> printOn: aStream [
+
+	aStream nextPutAll: ''.
 	self name asString printOn: aStream.
-	aStream nextPutAll: ')'.
+	aStream nextPutAll: ''
 ]
 
 { #category : #accessing }

@@ -203,6 +203,7 @@ MBAbstractMethodModel >> shape [
 	shape when: RSMouseRightClick do: [ :evt | self openInBrowser ].
 	shape when: RSMouseEnter do: [ :evt | 
 		evt shiftPressed ifTrue: [ shape popupText: self entity sourceText ] ].
+	shape when: RSMouseLeave do: [ :evt | shape popupText: self name asString].
 	shape @ RSDraggable.
 	^ shape
 ]
