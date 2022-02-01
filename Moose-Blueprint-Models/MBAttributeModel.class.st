@@ -84,7 +84,7 @@ MBAttributeModel >> shape [
 		         color: self description color;
 		         height: self description height;
 		         width: self description width;
-		         popup. ".
+		         popupText: self name asString. ".
 	shape
 		when: RSMouseEnter do: [ :evt | 
 			shape color: Color red.

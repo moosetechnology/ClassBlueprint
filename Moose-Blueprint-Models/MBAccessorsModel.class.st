@@ -86,9 +86,9 @@ MBAccessorsModel >> shape [
 		         model: self;
 		         borderColor: Color lightGray;
 		         color: self color;
-		        " height: self description height;
+		         " height: self description height;
 		         width: self description width;"
-		         popup.
+			       popupText: self name asString.
 	shape @ RSDraggable.
 	^ shape
 ]
