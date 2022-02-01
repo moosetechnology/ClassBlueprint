@@ -344,9 +344,9 @@ MBClassBlueprint >> initializeHiberners [
 { #category : #initialization }
 MBClassBlueprint >> initializeInitializers [
 
-	
-	initializers := self methods select: [ :each | 
-		                 each isInitializerMethod ] thenCollect: [ :each | 
+	initializers := self methods
+		                select: [ :each | each isInitializer ]
+		                thenCollect: [ :each | 
 		                MBInitializationModel newFrom: each ]
 ]
 

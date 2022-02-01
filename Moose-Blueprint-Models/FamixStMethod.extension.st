@@ -47,7 +47,7 @@ FamixStMethod >> inSameClassAs: aMethod [
 FamixStMethod >> invokedByInitializerMethods [
 
 	^ self incomingInvocations anySatisfy: [ :each | 
-		  each sender isInitializerMethod ]
+		  each sender isInitializer ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -59,9 +59,10 @@ FamixStMethod >> isAccessor [
 FamixStMethod >> isCalledByInitializers [
 
 	| initializers result |
-	initializers := self parentType methods select: #isInitializerMethod.
+	initializers := self parentType methods select: #isInitializer.
 
-	result := initializers includesAny: (self incomingInvocations collect: #source).
+	result := initializers includesAny:
+		          (self incomingInvocations collect: #source).
 
 	^ result
 ]
@@ -152,15 +153,16 @@ FamixStMethod >> isInternalImplementation [
 	<FMProperty: #isInternalImplementation type: #Boolean>
 	<derived>
 	<FMComment: 'Public Interface Layer Method'>
-	^ self isInitializerMethod not and: [ 
+	^ self isInitializer not and: [ 
 		  self isPureAccessor not and: [ self isOnlyCalledInternally ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isInvokedExternally [
 
-	^ (self incomingInvocations reject: [ :each | each sender isInitializerMethod]) 
-		  noneSatisfy: [ :each | self parentType == each sender parentType ]
+	^ (self incomingInvocations reject: [ :each | 
+		   each sender isInitializer ]) noneSatisfy: [ :each | 
+		  self parentType == each sender parentType ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

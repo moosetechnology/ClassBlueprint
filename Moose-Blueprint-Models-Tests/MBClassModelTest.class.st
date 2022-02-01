@@ -42,12 +42,18 @@ MBClassModelTest >> testInitializeExternals [
 
 { #category : #test }
 MBClassModelTest >> testInitializeHiberners [
+
 	| hiberners |
-	hiberners := 
-	self
-		assert: (mbClassModel hibernerMethods collect: #entity) size
-		equals: (((((self myClass methods reject: #isPureAccessor) select: [ :each | 
-				 each belongsToHibernerBranch or: [ each isHiberner ] ]) reject: #isInternal) reject: #isExternal) reject: #isInitializerMethod) size
+	hiberners := self
+		             assert:
+		             (mbClassModel hibernerMethods collect: #entity) size
+		             equals:
+			             (((((self myClass methods reject: #isPureAccessor) 
+				                 select: [ :each | 
+				                 each belongsToHibernerBranch or: [ 
+					                 each isHiberner ] ]) reject: #isInternal) 
+				               reject: #isExternal) reject: #isInitializer)
+				             size
 ]
 
 { #category : #test }

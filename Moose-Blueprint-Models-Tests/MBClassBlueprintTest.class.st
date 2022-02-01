@@ -246,7 +246,7 @@ MBClassBlueprintTest >> testIsInitializetMethod [
 	self
 		assert:
 			(classBlueprint models detect: [ :each | 
-				 each name = 'initializer2()' ]) entity isInitializerMethod
+				 each name = 'initializer2()' ]) entity isInitializer
 		equals: true
 ]
 

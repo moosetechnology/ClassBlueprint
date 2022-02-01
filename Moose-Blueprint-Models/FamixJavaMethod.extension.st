@@ -82,7 +82,7 @@ FamixJavaMethod >> isAccessor [
 FamixJavaMethod >> isCalledByInitializers [
 
 	| initializers result |
-	initializers := self parentType methods select: #isInitializerMethod.
+	initializers := self parentType methods select: #isInitializer.
 
 	result := initializers includesAny:
 		          (self incomingInvocations collect: #source).
@@ -171,7 +171,7 @@ FamixJavaMethod >> isInternalImplementation [
 	<FMProperty: #isInternalImplementation type: #Boolean>
 	<derived>
 	<FMComment: 'Public Interface Layer Method'>
-	^ self isInitializerMethod not and: [ 
+	^ self isInitializer not and: [ 
 		  self isPureAccessor not and: [ self isOnlyCalledInternally ] ]
 ]
 
@@ -179,7 +179,7 @@ FamixJavaMethod >> isInternalImplementation [
 FamixJavaMethod >> isInvokedExternally [
 
 	^ (self incomingInvocations reject: [ :each | 
-		   each sender isInitializerMethod ]) noneSatisfy: [ :each | 
+		   each sender isInitializer ]) noneSatisfy: [ :each | 
 		  self parentType == each sender parentType ]
 ]
 
