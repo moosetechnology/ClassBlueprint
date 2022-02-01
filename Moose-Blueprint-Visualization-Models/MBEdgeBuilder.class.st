@@ -39,20 +39,22 @@ c open
 	"
 
 	| fromElement tes |
-	
 	self resetCreatedEdges.
-	
+
 	self canvas deepNodes copy do: [ :e | 
 		fromElement := self fromShapes shapeFromModel:
 			               (aFromBlock rsValue: e model).
 		tes := self toShapes shapesFromModels:
 			       (aBlockOrASymbol rsValue: e model).
-					
+
 		tes ifNotNil: [ 
 			tes do: [ :toE | 
-				self color: fromElement color.
+				self color: (fromElement color = Color white
+						 ifTrue: [ Color gray ]
+						 ifFalse: [ fromElement color ]).
+
 				self createEdgeIfNecessaryFrom: fromElement to: toE ] ] ].
 	self moveBehindIfNecessary: createdEdges.
-	
+
 	^ createdEdges
 ]

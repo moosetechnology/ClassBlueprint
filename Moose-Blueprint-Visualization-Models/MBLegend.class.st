@@ -27,7 +27,8 @@ MBLegend >> build [
 	"legend container: self canvas."
 	legend title: 'Legend'.
 	self legendInfo keysAndValuesDo: [ :key :value | 
-		legend text:  key withBoxColor:  value ].
+		legend text: key withBoxColor: value ].
+
 	legend legendDo: [ :shape | 
 		shape
 			withBorder;
@@ -50,6 +51,7 @@ MBLegend >> buildFor: aVisualization [
 	legend := RSLegend new.
 	legend container: aVisualization canvas.
 	legend title: 'Legend'.
+
 	self legendInfo keysAndValuesDo: [ :key :value | 
 		legend text: key withBoxColor: value ].
 	legend legendDo: [ :shape | 
@@ -58,6 +60,8 @@ MBLegend >> buildFor: aVisualization [
 			padding: 10;
 			scaleBy: 0.5;
 			draggable ].
+	(legend shapes difference: { legend shapes first }) do: [ :each | 
+		each padding: 2.5 ].
 	legend location
 		outer;
 		right;

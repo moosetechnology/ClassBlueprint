@@ -159,7 +159,7 @@ MBView >> buildLayers [
 { #category : #building }
 MBView >> buildLegend [
 
-	MBLegend buildFor: self 
+	MBLegend buildFor: self
 ]
 
 { #category : #layers }

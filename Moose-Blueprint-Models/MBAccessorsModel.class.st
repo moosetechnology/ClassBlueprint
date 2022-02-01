@@ -101,6 +101,6 @@ MBAccessorsModel >> shape [
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> type [ 
-	^ #accessor
+MBAccessorsModel >> type [
+	^ self entity isGetter ifTrue: [ #isGetter ] ifFalse: [ #isSetter ]
 ]
