@@ -401,28 +401,36 @@ MBView >> nestLayers [
 { #category : #'as yet unclassified' }
 MBView >> secondLayer [
 
-	| instanceSide maxHeight maxWidth maxLayerWidth defaultWidth |
+	| instanceSide maxHeight maxWidth emptyNodes filledNodesWidth restWidth |
 	instanceSide := self instanceSide.
 	RSHorizontalTreeLayout new on: (instanceSide flatCollect: #nodes).
 	instanceSide do: [ :layer | layer padding: 10 ].
 	"fix the width of the layers"
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
-	maxWidth := {secondLayer . self firstLayer . self thirdLayer } max: [ :each | each width ].
-	(maxWidth = secondLayer width) ifFalse: [  
-		defaultWidth := (maxWidth /4) + 10. 
-		maxLayerWidth  := instanceSide max: [ :each | each width ].
-		instanceSide do: [ :each | each width <= maxLayerWidth ifTrue: [ each width: defaultWidth ] ].
-		 ].
+	maxWidth := { 
+		            secondLayer.
+		            self firstLayer.
+		            self thirdLayer } max: [ :each | each width ].
+
+	emptyNodes := (instanceSide select: [ :each | each nodes isEmpty ])
+		              size.
+	filledNodesWidth := (instanceSide select: [ :each | 
+		                     each nodes isNotEmpty ]) sum: [ :each | 
+		                    each width ].
+	restWidth := emptyNodes isZero
+		             ifTrue: [ maxWidth - filledNodesWidth ]
+		             ifFalse: [ maxWidth - filledNodesWidth / emptyNodes ].
+	maxWidth == secondLayer width ifFalse: [ 
+		instanceSide do: [ :each | 
+			each nodes isEmpty ifTrue: [ each width: restWidth + 10 ] ] ].
 	"Fix the height"
 	maxHeight := instanceSide max: [ :layer | layer height ].
 	instanceSide do: [ :layer | layer height: maxHeight ].
-
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: (instanceSide as: RSGroup).
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
-
-	^ secondLayer 
+	^ secondLayer
 ]
 
 { #category : #initialization }
