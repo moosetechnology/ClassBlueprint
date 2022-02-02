@@ -207,8 +207,10 @@ MBClassBlueprintTest >> setUp [
 MBClassBlueprintTest >> testAttributes [
 
 	self
-		assert: (classBlueprint allAttributes collect: #entity)
-		equals: { attribute1 . hibernerAttribute } asOrderedCollection
+		assert: ((classBlueprint attributes , classBlueprint hibernerAttributes) collect: #entity)
+		equals: { 
+				attribute1.
+				hibernerAttribute } asOrderedCollection
 ]
 
 { #category : #test }

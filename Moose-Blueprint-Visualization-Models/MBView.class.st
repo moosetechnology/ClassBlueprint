@@ -110,16 +110,14 @@ MBView >> buildEdges [
 	| builder edges |
 	"method Invocations"
 	builder := self edgeBuilder.
-	edges := (classModel methodInvocations flatCollect: #outgoing) collect: [ 
-		         :each | 
-	
-		         builder
-			         connectFrom: each source
-			         toAll: {each target} ].
-	
+	edges := (classModel methodInvocations flatCollect: #outgoing) 
+		         collect: [ :each | 
+		         builder connectFrom: each source toAll: { each target } ].
+
 	edges do: #pushBack.
 	"Access Invocations"
 	edges := classModel accessorInvocations flattened collect: [ :each | 
+		         1 halt.
 		         builder
 			         connectFrom: each source
 			         toAll: (classModel accessorInvocationsFrom: each source) ].
@@ -131,9 +129,8 @@ MBView >> buildEdges [
 		         builder
 			         connectFrom: each source
 			         toAll: (classModel attributeAccessesFrom: each source) ].
-				
-	edges do: #pushBack.
 
+	edges do: #pushBack
 ]
 
 { #category : #shapes }

@@ -28,9 +28,11 @@ MBClassBlueprint class >> newFrom: aFamixClassEntity [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> accessorInvocations [ 
-	^ self accessors flatCollect: #accessorInvocations.
+MBClassBlueprint >> accessorInvocations [
+	| accessorInvocations |
+	accessorInvocations := self accessors flatCollect: #accessorInvocations.
 
+	^ accessorInvocations
 ]
 
 { #category : #accessing }
@@ -59,13 +61,16 @@ MBClassBlueprint >> allAttributeAccesses [
 { #category : #accessing }
 MBClassBlueprint >> allAttributes [
 
-	^ attributes , hibernerAttributes
+	^ attributes , hibernerAttributes , classVars 
 ]
 
 { #category : #accessing }
 MBClassBlueprint >> attributeAccess [
 
-	^ self attributes collect: #attributeAccess
+	| attributeAccess |
+	attributeAccess := self allAttributes flatCollect: #attributeAccess.
+
+	^ attributeAccess
 ]
 
 { #category : #accessing }
@@ -114,7 +119,7 @@ MBClassBlueprint >> connectAttributes [
 
 	"the receiver is the variable"
 
-	self allAttributes do: [ :each |  
+	self attributes , hibernerAttributes  do: [ :each | 
 		| sources |
 		sources := each internalAccesses collect: #source.
 		self connectTarget: each entity withAll: sources asSet ]
