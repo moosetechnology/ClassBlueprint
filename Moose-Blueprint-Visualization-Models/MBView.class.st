@@ -117,7 +117,7 @@ MBView >> buildEdges [
 	edges do: #pushBack.
 	"Access Invocations"
 	edges := classModel accessorInvocations flattened collect: [ :each | 
-		         1 halt.
+	
 		         builder
 			         connectFrom: each source
 			         toAll: (classModel accessorInvocationsFrom: each source) ].

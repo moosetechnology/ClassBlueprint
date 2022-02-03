@@ -211,7 +211,7 @@ MBClassBlueprint >> connectTarget: aTarget withAll: sources [
 { #category : #building }
 MBClassBlueprint >> create [
 
-	"the order is important in the sens that: internals are defined as invoked by methods in the same class, and hiberners are methods that are also invoked internally/externally and can belong to a dead branche"
+	"the order is important"
 
 	self initialize.
 	self initializeAcessors.

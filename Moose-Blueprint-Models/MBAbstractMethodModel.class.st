@@ -37,9 +37,11 @@ MBAbstractMethodModel >> addAccessorInvocation: aConnection [
 ]
 
 { #category : #adding }
-MBAbstractMethodModel >> addIncoming: anAttributeAccessModel [
-	(self alreadyWentTo: anAttributeAccessModel) ifTrue: [ attributeAccess add: anAttributeAccessModel ]
-	
+MBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
+
+	((self invocations incoming collect: #source) includes:
+		 aMethodInvocationModel source) ifFalse: [ 
+		invocations incoming add: aMethodInvocationModel ]
 ]
 
 { #category : #adding }
