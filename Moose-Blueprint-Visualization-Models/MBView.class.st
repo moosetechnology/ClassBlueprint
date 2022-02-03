@@ -21,7 +21,8 @@ Class {
 		'border',
 		'classMethodsLayer',
 		'shapes',
-		'secondLayer'
+		'secondLayer',
+		'superAttributesLayer'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -81,13 +82,23 @@ MBView >> accessorsLayer [
 	^ accessorsLayer
 ]
 
+{ #category : #'as yet unclassified' }
+MBView >> attSide [
+
+	^ { 
+		  superAttributesLayer.
+		  attributesLayer } asOrderedCollection 
+]
+
 { #category : #accessing }
 MBView >> attributes [
 
 	^ { 
 		  hibernerAttributesLayer.
+		  "superAttributesLayer."
 		  attributesLayer.
-		  classVarsLayer } collect: [ :each | self canvas shapeFromModel: each ]
+		  classVarsLayer } collect: [ :each | 
+		  self canvas shapeFromModel: each ]
 ]
 
 { #category : #layers }
@@ -231,12 +242,33 @@ MBView >> externalsLayer [
 { #category : #'as yet unclassified' }
 MBView >> fifthLayer [
 
-	
-	| shape |
-	shape := self canvas shapeFromModel: attributesLayer.
-	RSVerticalLineLayout new on: shape nodes.
-	shape padding: 10.
-	^ shape
+	| middleAttributeSide fifthLayer maxWidth maxHeight |
+	middleAttributeSide := self middleAttributeSide.
+	self setNodesOf: middleAttributeSide withLayout: RSVerticalLineLayout.
+	fifthLayer := (middleAttributeSide as: RSGroup) asShapeFor:
+		              middleAttributeSide.
+	"Adjust the height of the fifth layer"
+	maxHeight := { 
+		             secondLayer.
+		             fifthLayer } max: [ :each | each height ].
+	fifthLayer height: maxHeight.
+	fifthLayer height
+	= (middleAttributeSide sum: [ :each | each height ]) ifFalse: [ 
+		middleAttributeSide do: [ :each | 
+			each height: each height + maxHeight / fifthLayer nodes size ] ].
+	"set Width"
+	maxWidth := { 
+		            self fourthLayer.
+		            fifthLayer.
+		            self sixthLayer } max: [ :each | each width ].
+	fifthLayer width: maxWidth.
+	middleAttributeSide do: [ :each | each width: maxWidth  ].
+	RSVerticalLineLayout new
+		gapSize: 0;
+		on: (middleAttributeSide as: RSGroup).
+	fifthLayer adjustToChildren.
+
+	^ fifthLayer
 ]
 
 { #category : #composite }
@@ -309,14 +341,15 @@ MBView >> initialize [
 	internalsLayer := MBInternalsLayerModel new.
 	accessorsLayer := MBAccessorsLayerModel new.
 	attributesLayer := MBAttributesLayerModel new.
+	superAttributesLayer := MBSuperAttributesLayer new.
 	hibernersLayer := MBHibernerMethodsLayerModel new.
 	hibernerAttributesLayer := MBHibernerAttributesLayerModel new.
 	classVarsLayer := MBClassVarsLayerModel new.
 	classMethodsLayer := MBClassMethodsLayerModel new.
 	border := RSBorder new
 		          color: Color black muchDarker;
-		width: 1;
-		          yourself.
+		          width: 1;
+		          yourself
 ]
 
 { #category : #layers }
@@ -359,9 +392,15 @@ MBView >> layersEntities [
 		          (hibernerAttributesLayer entities:
 			           classModel hibernerAttributes).
 		          (classVarsLayer entities: classModel classVars).
-		(classMethodsLayer entities: classModel classMethods) }
+		          (classMethodsLayer entities: classModel classMethods) .
+		          (superAttributesLayer entities: classModel superAttributes) }
 		          asOrderedCollection.
 	^ layers
+]
+
+{ #category : #accessing }
+MBView >> middleAttributeSide [ 
+	^ self attSide collect: [ :each | self canvas shapeFromModel: each ]
 ]
 
 { #category : #shapes }
@@ -400,8 +439,7 @@ MBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth emptyNodes filledNodesWidth restWidth |
 	instanceSide := self instanceSide.
-	RSHorizontalTreeLayout new on: (instanceSide flatCollect: #nodes).
-	instanceSide do: [ :layer | layer padding: 10 ].
+	self setNodesOf: instanceSide withLayout: RSHorizontalTreeLayout. 
 	"fix the width of the layers"
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
 	maxWidth := { 
@@ -428,6 +466,14 @@ MBView >> secondLayer [
 		on: (instanceSide as: RSGroup).
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
 	^ secondLayer
+]
+
+{ #category : #initialization }
+MBView >> setNodesOf: object withLayout: aLayout [
+
+	aLayout new on: (object flatCollect: #nodes).
+	object do: [ :layer | layer padding: 10 ].
+
 ]
 
 { #category : #initialization }
@@ -463,6 +509,11 @@ MBView >> sixthLayer [
 	RSVerticalLineLayout new on: shape nodes.
 	shape padding: 10.
 	^ shape
+]
+
+{ #category : #accessing }
+MBView >> superAttributesLayer [ 
+	^ superAttributesLayer 
 ]
 
 { #category : #'as yet unclassified' }

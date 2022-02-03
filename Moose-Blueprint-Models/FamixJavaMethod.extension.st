@@ -171,7 +171,7 @@ FamixJavaMethod >> isInternalImplementation [
 	<FMProperty: #isInternalImplementation type: #Boolean>
 	<derived>
 	<FMComment: 'Public Interface Layer Method'>
-	^ self isInitializer not and: [ 
+	^ self isConstructor not and: [ 
 		  self isPureAccessor not and: [ self isOnlyCalledInternally ] ]
 ]
 

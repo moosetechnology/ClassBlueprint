@@ -14,7 +14,8 @@ Class {
 		'hibernerMethods',
 		'classVars',
 		'classMethods',
-		'entity'
+		'entity',
+		'superAttributes'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -61,7 +62,7 @@ MBClassBlueprint >> allAttributeAccesses [
 { #category : #accessing }
 MBClassBlueprint >> allAttributes [
 
-	^ attributes , hibernerAttributes , classVars 
+	^ hibernerAttributes, superAttributes , attributes  , classVars
 ]
 
 { #category : #accessing }
@@ -119,9 +120,12 @@ MBClassBlueprint >> connectAttributes [
 
 	"the receiver is the variable"
 
-	self attributes , hibernerAttributes  do: [ :each | 
-		| sources |
+	| sources |
+	hibernerAttributes , attributes , classVars do: [ :each | 
 		sources := each internalAccesses collect: #source.
+		self connectTarget: each entity withAll: sources asSet ].
+	superAttributes do: [ :each | 
+		sources := each entity incomingAccesses collect: #source.
 		self connectTarget: each entity withAll: sources asSet ]
 ]
 
@@ -217,6 +221,7 @@ MBClassBlueprint >> create [
 	self initializeAcessors.
 	self initializeClassVars.
 	self initializeAttributes.
+	self initializeSuperAttributes.
 	self initializeClassMethods.
 	self initializeExternals.
 	self initializeInternals.
@@ -269,13 +274,14 @@ MBClassBlueprint >> initialize [
 
 	accessors := OrderedCollection new.
 	attributes := OrderedCollection new.
+	superAttributes := OrderedCollection new.
 	externals := OrderedCollection new.
 	initializers := OrderedCollection new.
 	internals := OrderedCollection new.
 	hibernerMethods := OrderedCollection new.
 	hibernerAttributes := OrderedCollection new.
 	classVars := OrderedCollection new.
-	classMethods := OrderedCollection new.
+	classMethods := OrderedCollection new
 ]
 
 { #category : #initialization }
@@ -292,7 +298,7 @@ MBClassBlueprint >> initializeAttributes [
 	attributes := (entity attributes select: [ :each | 
 		               each incomingAccesses isNotEmpty and: [ 
 			               each isClassSide not ] ]) collect: [ :anAttribute | 
-		              MBAttributeModel newFrom: anAttribute ]
+		              MBAttributeModel newFrom: anAttribute ].
 ]
 
 { #category : #initialization }
@@ -364,8 +370,19 @@ MBClassBlueprint >> initializeInternals [
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeModelDescriptions [ 
-	self pureMethodModels do: [ :each | each initializeDescription  ]
+MBClassBlueprint >> initializeModelDescriptions [
+
+	self methodModels do: [ :each | each initializeDescription ]
+]
+
+{ #category : #initialization }
+MBClassBlueprint >> initializeSuperAttributes [
+
+	superAttributes := (((self entity superclassHierarchy flatCollect: [ 
+		                      :each | each attributes ]) reject: [ :each | 
+		                     each isClassSide ]) select: [ :each | 
+		                    each isCalledIn: self entity ]) collect: [ :each | 
+		                   MBAttributeModel newFrom: each ] 
 ]
 
 { #category : #accessing }
@@ -428,12 +445,16 @@ MBClassBlueprint >> methods [
 { #category : #accessing }
 MBClassBlueprint >> models [
 
-	^ self methodModels ,  self accessors
-	  , self attributes , self hibernerAttributes , self classVars
+	^ self methodModels , self accessors , self attributes
+	  , self hibernerAttributes , self classVars, self superAttributes 
 ]
 
-{ #category : #'as yet unclassified' }
-MBClassBlueprint >> pureMethodModels [
+{ #category : #accessing }
+MBClassBlueprint >> superAttributes [
+	^ superAttributes
+]
 
-	^ initializers , externals , internals , hibernerMethods, classMethods 
+{ #category : #accessing }
+MBClassBlueprint >> superAttributes: aCollection [ 
+	superAttributes := aCollection 
 ]

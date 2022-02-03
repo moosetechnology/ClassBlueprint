@@ -122,10 +122,7 @@ FamixStMethod >> isInternal [
 
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
 
-	self isOnlyCalledInternally ifFalse: [ ^ false ].
-	self isCalledByInitializers ifTrue: [ ^ false ].
-
-	^ true
+	^ (self isOnlyCalledInternally and: [ self belongsToHibernerBranch not and: [ self isCalledByInitializers not ] ]) 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
