@@ -437,34 +437,33 @@ MBView >> nestLayers [
 { #category : #'as yet unclassified' }
 MBView >> secondLayer [
 
-	| instanceSide maxHeight maxWidth emptyNodes filledNodesWidth restWidth |
+	| instanceSide maxHeight maxWidth |
 	instanceSide := self instanceSide.
-	self setNodesOf: instanceSide withLayout: RSHorizontalTreeLayout. 
-	"fix the width of the layers"
+	self setNodesOf: instanceSide withLayout: RSHorizontalTreeLayout.
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
+	"fix the width of the layers"
 	maxWidth := { 
-		            secondLayer.
 		            self firstLayer.
+		            secondLayer.
 		            self thirdLayer } max: [ :each | each width ].
+	secondLayer width: maxWidth.
+	
+	secondLayer width = (instanceSide sum: [ :each | each width ]) 
+		ifFalse: [ 
+			instanceSide do: [ :each | 
+				each width: each width + (maxWidth / secondLayer nodes size) ] ].
 
-	emptyNodes := (instanceSide select: [ :each | each nodes isEmpty ])
-		              size.
-	filledNodesWidth := (instanceSide select: [ :each | 
-		                     each nodes isNotEmpty ]) sum: [ :each | 
-		                    each width ].
-	restWidth := emptyNodes isZero
-		             ifTrue: [ maxWidth - filledNodesWidth ]
-		             ifFalse: [ maxWidth - filledNodesWidth / emptyNodes ].
-	maxWidth == secondLayer width ifFalse: [ 
-		instanceSide do: [ :each | 
-			each nodes isEmpty ifTrue: [ each width: restWidth + 10 ] ] ].
-	"Fix the height"
-	maxHeight := instanceSide max: [ :layer | layer height ].
-	instanceSide do: [ :layer | layer height: maxHeight ].
+	"set height"
+	maxHeight := { 
+		             secondLayer.
+		             self fifthLayer } max: [ :each | each height ].
+	secondLayer height: maxHeight.
+	instanceSide do: [ :each | each height: maxHeight ].
 	RSHorizontalLineLayout new
 		gapSize: 0;
-		on: (instanceSide as: RSGroup).
-	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
+		on: secondLayer nodes.
+
+	secondLayer adjustToChildren.
 	^ secondLayer
 ]
 
