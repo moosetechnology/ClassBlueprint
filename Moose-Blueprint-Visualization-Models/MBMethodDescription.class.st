@@ -104,8 +104,9 @@ MBMethodDescription >> initializeType [
 				        entityModel isDelegating ifNil: [ 
 					        entityModel isConstant ifNil: [ 
 						        entityModel isAccessor ifNil: [ 
-								        entityModel isInternalImplementation ifNil: [ entityModel isHiberner ifNil: [  
-									        entityModel isAbstract ifNil: [ #isOther ] ]  ] ] ] ] ] ] ].
+							        entityModel isInternalImplementation ifNil: [ 
+								        entityModel isAbstract ifNil: [ 
+									        entityModel isHiberner ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
 	entityModel type: type
 ]
 

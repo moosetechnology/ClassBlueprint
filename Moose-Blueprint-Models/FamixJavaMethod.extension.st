@@ -3,11 +3,13 @@ Extension { #name : #FamixJavaMethod }
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> belongsToHibernerBranch [
 
-	self isHiberner ifFalse: [ ^ true ].
+	"self isHiberner ifFalse: [ ^ true ]."
+
 	^ self calledBy allSatisfy: [ :each | 
-		  each sender isHiberner
+		each parentType isTestCase ifTrue: [ ^ false ].
+		  each isHiberner
 			  ifTrue: [ ^ true ]
-			  ifFalse: [ each sender belongsToHibernerBranch ] ]
+			  ifFalse: [ each belongsToHibernerBranch ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -15,7 +17,8 @@ FamixJavaMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
 		  reject: [ :each | 
-			  each signature == self signature and: [ self isPureAccessor not ] ]
+			  each signature == self signature and: [ 
+				  self isPureAccessor not  ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -159,10 +162,10 @@ FamixJavaMethod >> isInternal [
 
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
 
-	self isOnlyCalledInternally ifFalse: [ ^ false ].
-	self isCalledByInitializers ifTrue: [ ^ false ].
+	^ self isOnlyCalledInternally and: [ 
 
-	^ true
+		  self belongsToHibernerBranch not and: [ 
+			  self isCalledByInitializers not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

@@ -3,12 +3,13 @@ Extension { #name : #FamixStMethod }
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> belongsToHibernerBranch [
 
-	self isHiberner ifFalse: [ ^ true ].
-	^ 
-		  self calledBy allSatisfy: [ :each | 
-			  each sender isHiberner
+	"self isHiberner ifFalse: [ ^ true ]."
+
+	^ self calledBy 
+		  allSatisfy: [ :each |
+			  each isHiberner
 				  ifTrue: [ ^ true ]
-				  ifFalse: [ each sender belongsToHibernerBranch ] ] 
+				  ifFalse: [ each belongsToHibernerBranch ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -16,7 +17,8 @@ FamixStMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
 		  reject: [ :each | 
-			  each signature == self signature and: [ self isPureAccessor not ] ]
+			  each signature == self signature and: [ 
+				  self isPureAccessor not  ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -108,7 +110,8 @@ FamixStMethod >> isExternal [
 
 	"Is external if it  is called at least by one external method, none of the same class and invoked by initializers"
 
-	^ self incomingInvocations isNotEmpty and: [ self isCalledExternally and: [ self isConstructor not ] ]
+	^ self incomingInvocations isNotEmpty and: [ 
+		  self isCalledExternally and: [ self isConstructor not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -122,7 +125,9 @@ FamixStMethod >> isInternal [
 
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
 
-	^ (self isOnlyCalledInternally and: [ self belongsToHibernerBranch not and: [ self isCalledByInitializers not ] ]) 
+	^ self isOnlyCalledInternally and: [ 
+		  self belongsToHibernerBranch not and: [ 
+			  self isCalledByInitializers not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

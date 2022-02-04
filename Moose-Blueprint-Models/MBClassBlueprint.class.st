@@ -223,10 +223,10 @@ MBClassBlueprint >> create [
 	self initializeAttributes.
 	self initializeSuperAttributes.
 	self initializeClassMethods.
+	self initializeInitializers.
 	self initializeExternals.
 	self initializeInternals.
-	self initializeInitializers.
-	self initializeHiberners.
+		self initializeHiberners.
 
 	self makeConnections
 ]
@@ -349,7 +349,7 @@ MBClassBlueprint >> initializeHibernerMethods [
 MBClassBlueprint >> initializeHiberners [
 
 	self initializeHibernerMethods.
-	self initializeHibernerAttributes.
+	self initializeHibernerAttributes
 ]
 
 { #category : #initialization }
