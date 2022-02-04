@@ -24,13 +24,7 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #attribute forColor: Color blue;
 		addName: #isInternalImplementation forColor: Color veryDarkGray;
 		addName: #isHiberner forColor: Color green darker duller;
-		addName: #isOther forColor: Color white
-	"For invocations""addName: #methodInvocation
-		forColor: Color lightGray muchDarker;
-		addName: #accessorInvocation forColor: Color lightGray quiteWhiter"
-	"(Color
-				 r: 0.0
-				 g: 0.7595307917888563
-				 b: 0.7595307917888563
-				 alpha: 1.0);"
+		addName: #isOther forColor: Color white;
+		addName: #attributeCalledInSubclass
+		forColor: Color green muchDarker duller
 ]

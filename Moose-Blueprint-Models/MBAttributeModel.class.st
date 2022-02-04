@@ -94,6 +94,10 @@ MBAttributeModel >> shape [
 ]
 
 { #category : #accessing }
-MBAttributeModel >> type [ 
+MBAttributeModel >> type [
+
+	| subclasses |
+	subclasses := entity parentType subclassHierarchy.
+	(((entity incomingAccesses collect: #source) collect: [ :each | each parentType ]) anySatisfy: [ :each | subclasses includes: each ]) ifTrue: [ ^ #attributeCalledInSubclass ].
 	^ #attribute
 ]
