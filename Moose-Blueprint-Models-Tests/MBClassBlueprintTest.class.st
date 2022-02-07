@@ -33,206 +33,153 @@ Class {
 }
 
 { #category : #accessing }
-MBClassBlueprintTest >> accesses [ 
-
-	access1 := FamixJavaAccess new
-		                     accessor: accessor1 ;
-		                     variable: attribute1;
-		                     mooseModel: model.
+MBClassBlueprintTest >> accesses [
+	self shouldBeImplemented 
 ]
 
 { #category : #accessing }
-MBClassBlueprintTest >> accessors [ 
-
-	accessor1 := FamixJavaMethod new 
-		name: 'accessors1()';
-		mooseModel: model.
-	accessor2 := FamixJavaMethod new 
-		name: 'accessor2()';
-		mooseModel: model. 
-]
-
-{ #category : #test }
-MBClassBlueprintTest >> attribute1 [ 
-	^ attribute1
+MBClassBlueprintTest >> accessors [
+	self shouldBeImplemented 
 ]
 
 { #category : #accessing }
-MBClassBlueprintTest >> attributes [ 
-
-	attribute1 := FamixJavaAttribute new 
-		name: 'attribute1';
-		mooseModel: model.
+MBClassBlueprintTest >> attributes [
+		self shouldBeImplemented 
 ]
 
 { #category : #accessing }
-MBClassBlueprintTest >> classMethods [ 
-
-	classMethod1 := FamixJavaMethod new 
-		name: 'classMethod1()';
-		isClassSide: true;
-		mooseModel: model.
+MBClassBlueprintTest >> classMethods [
+	self shouldBeImplemented 
 ]
 
 { #category : #accessing }
-MBClassBlueprintTest >> classVars [ 
-
-	classVar1 := FamixJavaAttribute new 
-		name: 'classVar1()';
-		isClassSide: true;
-		mooseModel: model.
-	classVar2 := FamixJavaAttribute new 
-		name: 'classVar2()';
-		isClassSide: true;
-		mooseModel: model
+MBClassBlueprintTest >> classVars [
+		self shouldBeImplemented 
 ]
 
-{ #category : #actions }
+{ #category : #accessing }
+MBClassBlueprintTest >> createModel [
+	self shouldBeImplemented 
+]
+
+{ #category : #accessing }
 MBClassBlueprintTest >> defineClass [
-
-	class := FamixJavaClass new
-		         name: 'class';
-		         addMethod: hibernerMethod1;
-		         addMethod: initializer1;
-		         addMethod: initializer2;
-		         addMethod: accessor1;
-		         addMethod: accessor2;
-					addMethod: external1;
-					addMethod: classMethod1;
-					addMethod: external1;
-					addMethod: internal1;
-					addAttribute: hibernerAttribute;
-		         addAttribute: attribute1;
-					addAttribute: classVar1;
-					addAttribute: classVar2 ;
-		         mooseModel: model.
+	self shouldBeImplemented 
 ]
 
 { #category : #accessing }
 MBClassBlueprintTest >> externalClassConf [
-
-	externalModel := FamixJavaModel new.
-	externalMethod := FamixJavaMethod new
-		                  name: 'externalMethod()';
-		                  mooseModel: externalModel;
-		                  yourself.
-	externalClass := FamixJavaClass new
-		                 name: 'externalClass';
-		                 addMethod: externalMethod;
-		                 mooseModel: externalModel.
-	externalInvocation := FamixJavaInvocation new
-		                      sender: externalMethod;
-		                      addCandidate: externalMethod;
-		                      receiver: external1;
-		                      mooseModel: model
+		self shouldBeImplemented 
 ]
 
 { #category : #accessing }
 MBClassBlueprintTest >> externals [
-
-	external1 := FamixJavaMethod new
-		             name: 'external1()';
-		             parentType: class;
-		             mooseModel: model.
-	externalInvocation1 := FamixJavaInvocation new
-		                       sender: initializer1;
-		                       addCandidate: initializer1;
-		                       "addCandidate: hibernerMethod1;"
-		                       receiver: external1;
-		                       mooseModel: model;
-		                       yourself.
-	externalInvocation2 := FamixJavaInvocation new
-		                       sender: hibernerMethod1;
-		                       addCandidate: initializer1;
-		                       "addCandidate: hibernerMethod1;"
-		                       receiver: external1;
-		                       mooseModel: model;
-		                       yourself.
-		1halt.
-	self externalClassConf
+	self shouldBeImplemented 
 ]
 
-{ #category : #'as yet unclassified' }
-MBClassBlueprintTest >> hiberners [ 
-
-	hibernerMethod1 := FamixJavaMethod new 
-		name: 'hibernerMethod1()';
-		mooseModel: model.
-	hibernerAttribute := FamixJavaAttribute new 
-		name: 'hibernerAttribute';
-		mooseModel: model. 
+{ #category : #accessing }
+MBClassBlueprintTest >> hiberners [
+	self shouldBeImplemented 
 ]
 
 { #category : #accessing }
 MBClassBlueprintTest >> initializers [
-
-	initializer1 := FamixJavaMethod new
-		                name: 'initializer1()';
-		                isConstructor: true;
-		                mooseModel: model.
-	initializer2 := FamixJavaMethod new
-		                name: 'initializer2()';
-		isConstructor: true;
-		                mooseModel: model.
+	self shouldBeImplemented 
 ]
 
 { #category : #accessing }
-MBClassBlueprintTest >> internals [ 
-
-	internal1 := FamixJavaMethod new
-		name: 'internal1()';
-		mooseModel: model.
+MBClassBlueprintTest >> internals [
+		self shouldBeImplemented 
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MBClassBlueprintTest >> setUp [
 
-	model := FamixJavaModel new.
+	self createModel.
 	self accessors.
 	self classVars.
 	self attributes.
 	self initializers.
 	self hiberners.
 	self externals.
+	self externalClassConf.
 	self internals.
 	self accesses.
 	self classMethods.
 	self defineClass.
 
 	classBlueprint := MBClassBlueprint newFrom:
-		                  model allModelClasses first
+		                 ( model allModelClasses detect: [:c | c name = 'class' ] ).
+		
 ]
 
-{ #category : #test }
+{ #category : #accessing }
+MBClassBlueprintTest >> testAccessOnClassVar [
+	| access mbVarClass |
+	access := FamixStAccess new
+		           accessor: classMethod1 ;
+		           variable: classVar1 ;
+		           mooseModel: model. 
+	mbVarClass := classBlueprint classVars detect: [ :cv | cv name includesSubstring: 'classVar1' ].
+	self
+		assert: mbVarClass attributeAccess isNotEmpty.
+	self assert: mbVarClass attributeAccess first source entity
+		equals:  classMethod1  .
+	self assert: mbVarClass attributeAccess first target entity
+		equals: classVar1  
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> testAccessOnInstVar [
+	| mbInstVar |
+
+	mbInstVar := classBlueprint attributes detect: [ :cv | cv name includesSubstring: 'attribute1' ].
+	self
+		assert: mbInstVar attributeAccess isNotEmpty.
+	self assert: mbInstVar attributeAccess first source entity
+		equals:  accessor1 .
+	self assert: mbInstVar attributeAccess first target entity
+		equals: attribute1 
+]
+
+{ #category : #accessing }
 MBClassBlueprintTest >> testAttributes [
 
 	self
-		assert: ((classBlueprint attributes , classBlueprint hibernerAttributes) collect: #entity)
-		equals: { 
-				attribute1.
-				hibernerAttribute } asOrderedCollection
+		assert: (classBlueprint allAttributes collect: #entity)
+		equals: { attribute1 . hibernerAttribute } asOrderedCollection
 ]
 
-{ #category : #test }
+{ #category : #accessing }
+MBClassBlueprintTest >> testClassVar [
+
+	self
+		assert: (classBlueprint classVars collect: #entity )
+		equals: { classVar1  . classVar2  } asOrderedCollection
+]
+
+{ #category : #accessing }
 MBClassBlueprintTest >> testExternals [
 
 	self
 		assert:
-			(classBlueprint models detect: [ :each | each name = 'external1()' ]) entity
+			(classBlueprint models detect: [ :each | each name = 'external1' ]) entity
 				isExternal
-		equals: true
+		equals: true.
+	self deny: (classBlueprint models detect: [ :each | each name = 'internal1' ]) entity
+				isExternal
 ]
 
-{ #category : #test }
+{ #category : #accessing }
 MBClassBlueprintTest >> testHibernerAttributes [
 
 	self
-		assert: (classBlueprint hibernerAttributes collect: #entity)
-		equals: { 
+		assertCollection: (classBlueprint hibernerAttributes collect: #entity)
+		hasSameElements: { 
 				hibernerAttribute } asOrderedCollection
 ]
 
-{ #category : #test }
+{ #category : #accessing }
 MBClassBlueprintTest >> testInitializers [
 
 	self
@@ -242,17 +189,17 @@ MBClassBlueprintTest >> testInitializers [
 				initializer2} size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MBClassBlueprintTest >> testIsInitializetMethod [
 
 	self
 		assert:
 			(classBlueprint models detect: [ :each | 
-				 each name = 'initializer2()' ]) entity isInitializer
+				 each name includesSubstring: 'initialize' ]) entity isInitializer
 		equals: true
 ]
 
-{ #category : #test }
+{ #category : #accessing }
 MBClassBlueprintTest >> testModels [
 
 	self assert: (classBlueprint models collect: #entity) size equals: { 
@@ -261,7 +208,6 @@ MBClassBlueprintTest >> testModels [
 			initializer1.
 			initializer2.
 			accessor1.
-			accessor2.
 			classVar1.
 			classVar2.
 			attribute1.
