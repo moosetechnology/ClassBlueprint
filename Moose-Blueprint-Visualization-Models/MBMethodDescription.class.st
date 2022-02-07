@@ -26,10 +26,11 @@ MBMethodDescription class >> newFrom: aMethodModel [
 { #category : #accessing }
 MBMethodDescription >> border [
 
-	^ RSBorder new
-		  width: 1;
-		  color: Color black;
-		  yourself
+	entityModel modelType = #polymorphic ifTrue: [ 
+		^ self polymorphicBorder ].
+	entityModel modelType = #megamorphic ifTrue: [ 
+		^ self megamorphicBorder ].
+	^ self defaultBorder 
 ]
 
 { #category : #accessing }
@@ -57,6 +58,14 @@ MBMethodDescription >> create [
 	self initializeType.
 	self initializeSize.
 	self initializeBorder
+]
+
+{ #category : #defaults }
+MBMethodDescription >> defaultBorder [ 
+	^ RSBorder new
+		  width: 1;
+		  color: Color black;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -111,9 +120,28 @@ MBMethodDescription >> initializeType [
 ]
 
 { #category : #'as yet unclassified' }
+MBMethodDescription >> megamorphicBorder [
+
+	^ RSBorder new
+		  width: 8;
+		  color: Color black;
+		  yourself
+]
+
+{ #category : #'as yet unclassified' }
 MBMethodDescription >> moderateComplexityBorder [
 
 	^ Color black
+]
+
+{ #category : #'as yet unclassified' }
+MBMethodDescription >> polymorphicBorder [
+
+	^ RSBorder new
+		  width: 2;
+		  color: Color black;
+		  yourself
+	
 ]
 
 { #category : #accessing }

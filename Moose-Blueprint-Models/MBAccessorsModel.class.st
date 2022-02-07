@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
-		'entity'
+		'entity',
+		'modelType'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -67,6 +68,16 @@ MBAccessorsModel >> initialize [
 	super initialize.
 	accessorInvocations := OrderedCollection new.
 	attributeAccess := OrderedCollection new
+]
+
+{ #category : #accessing }
+MBAccessorsModel >> modelType [
+	^ modelType
+]
+
+{ #category : #accessing }
+MBAccessorsModel >> modelType: aSymbol [
+	modelType := aSymbol 
 ]
 
 { #category : #accessing }

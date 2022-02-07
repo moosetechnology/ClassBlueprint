@@ -8,7 +8,8 @@ Class {
 		'accessorInvocations',
 		'attributeAccess',
 		'type',
-		'invocations'
+		'invocations',
+		'modelType'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -55,21 +56,6 @@ MBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 MBAbstractMethodModel >> allInvocations [
 
 	^ self invocations incoming , self invocations  outgoing
-]
-
-{ #category : #'as yet unclassified' }
-MBAbstractMethodModel >> alreadyCameFrom: anInvocation [
-
-	self flag: #TODO. "Is it only method invocations???"
-
-	^ (invocations incoming collect: #source) includes: anInvocation source
-]
-
-{ #category : #accessing }
-MBAbstractMethodModel >> alreadyWentTo: anInvocationModel [
-	self flag: #TODO. "Is it only method invocations???"
-	
-	^ ((invocations outgoing collect: #target) includes: anInvocationModel target)
 ]
 
 { #category : #accessing }
@@ -173,6 +159,16 @@ MBAbstractMethodModel >> isOverriding [
 	entity isOverriding ifTrue: [ ^ #isOverriding ].
 
 	^ nil
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> modelType [ 
+	^ modelType
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> modelType: aSymbol [
+	modelType := aSymbol 
 ]
 
 { #category : #'as yet unclassified' }

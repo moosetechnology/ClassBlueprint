@@ -83,6 +83,18 @@ MBClassBlueprint >> attributeAccessesFrom: aSource [
 				^ result
 ]
 
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> attributeMethodTypes [
+
+	| methodsBag |
+	methodsBag := (self methodModels , accessors collect: [ :each | 
+		               each name ]) asBag.
+	methodsBag do: [ :each | 
+		(self methodModels , accessors detect: [ :aMethod | aMethod name = each ]) modelType:
+			(self methodOccurrences: (methodsBag occurrencesOf: each)) ].
+		
+]
+
 { #category : #accessing }
 MBClassBlueprint >> attributes [ 
 	^ attributes
@@ -226,9 +238,10 @@ MBClassBlueprint >> create [
 	self initializeInitializers.
 	self initializeExternals.
 	self initializeInternals.
-		self initializeHiberners.
+	self initializeHiberners.
 
-	self makeConnections
+	self makeConnections.
+	self attributeMethodTypes.
 ]
 
 { #category : #accessing }
@@ -433,6 +446,14 @@ MBClassBlueprint >> methodInvocationsFrom: aSource [
 MBClassBlueprint >> methodModels [
 
 	^ initializers , externals , internals , hibernerMethods, classMethods 
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> methodOccurrences: aNumber [
+
+	aNumber = 1 ifTrue: [ ^ #monomorphic ].
+	(aNumber between: 2 and: 8) ifTrue: [ ^ #polymorphic ].
+	aNumber >= 8 ifTrue: [ ^ #megamorphic ]
 ]
 
 { #category : #accessing }
