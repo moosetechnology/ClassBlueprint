@@ -1,6 +1,10 @@
 Extension { #name : #FamixJavaPackage }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaPackage >> classes [ 
-	^ (self toScope: FamixTClass) select: [ :each | each container = self ]
+FamixJavaPackage >> classes [
+
+	^ self
+		  cacheAt: #classes
+		  ifAbsentPut: [ 
+		  self childEntities select: [ :child | child isClass ] ]
 ]
