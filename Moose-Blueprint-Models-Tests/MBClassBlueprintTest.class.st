@@ -48,6 +48,12 @@ MBClassBlueprintTest >> attributes [
 ]
 
 { #category : #accessing }
+MBClassBlueprintTest >> classBlueprint [
+
+	^ classBlueprint
+]
+
+{ #category : #accessing }
 MBClassBlueprintTest >> classMethods [
 	self shouldBeImplemented 
 ]
@@ -83,6 +89,14 @@ MBClassBlueprintTest >> hiberners [
 ]
 
 { #category : #accessing }
+MBClassBlueprintTest >> initializeClassBluePrint [
+
+	classBlueprint := MBClassBlueprint newFrom:
+		                  (model allModelClasses detect: [ :c | 
+			                   c name = 'class' ])
+]
+
+{ #category : #accessing }
 MBClassBlueprintTest >> initializers [
 	self shouldBeImplemented 
 ]
@@ -107,10 +121,7 @@ MBClassBlueprintTest >> setUp [
 	self accesses.
 	self classMethods.
 	self defineClass.
-
-	classBlueprint := MBClassBlueprint newFrom:
-		                 ( model allModelClasses detect: [:c | c name = 'class' ] ).
-		
+	self initializeClassBluePrint
 ]
 
 { #category : #accessing }
@@ -120,6 +131,7 @@ MBClassBlueprintTest >> testAccessOnClassVar [
 		           accessor: classMethod1 ;
 		           variable: classVar1 ;
 		           mooseModel: model. 
+	self initializeClassBluePrint.
 	mbVarClass := classBlueprint classVars detect: [ :cv | cv name includesSubstring: 'classVar1' ].
 	self
 		assert: mbVarClass attributeAccess isNotEmpty.
@@ -146,8 +158,8 @@ MBClassBlueprintTest >> testAccessOnInstVar [
 MBClassBlueprintTest >> testAttributes [
 
 	self
-		assert: (classBlueprint allAttributes collect: #entity)
-		equals: { attribute1 . hibernerAttribute } asOrderedCollection
+		assertCollection:  (classBlueprint allAttributes collect: #entity)
+		 hasSameElements:  { attribute1 . hibernerAttribute } asOrderedCollection
 ]
 
 { #category : #accessing }
@@ -156,6 +168,13 @@ MBClassBlueprintTest >> testClassVar [
 	self
 		assert: (classBlueprint classVars collect: #entity )
 		equals: { classVar1  . classVar2  } asOrderedCollection
+]
+
+{ #category : #tests }
+MBClassBlueprintTest >> testDeadAccessor [
+	self assert: (self classBlueprint accessors select: #isDead) isEmpty .
+	self assert: ((self classBlueprint hibernerMethods collect: #entity ) select: #isAccessor ) equals: accessor1
+	
 ]
 
 { #category : #accessing }
