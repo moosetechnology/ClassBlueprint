@@ -157,9 +157,14 @@ MBClassBlueprintTest >> testAccessOnInstVar [
 { #category : #accessing }
 MBClassBlueprintTest >> testAttributes [
 
+	
 	self
-		assertCollection:  (classBlueprint allAttributes collect: #entity)
-		 hasSameElements:  { attribute1 . hibernerAttribute } asOrderedCollection
+		assert: (classBlueprint allAttributes collect: #entity) size
+		equals: { 
+				attribute1.
+				hibernerAttribute.
+				classVar1.
+				classVar2 } size
 ]
 
 { #category : #accessing }
