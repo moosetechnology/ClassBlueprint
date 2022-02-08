@@ -67,15 +67,6 @@ FamixJavaMethod >> inSameClassAs: aMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isAbstract [
-
-	<FMProperty: #isAbstract type: #Boolean>
-	<generated>
-	<FMComment: 'Entity can be declared abstract'>
-	^ isAbstract ifNil: [ false ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isAccessor [
 
 	^ self isSetter or: [ self isGetter ]
