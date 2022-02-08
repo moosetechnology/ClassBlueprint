@@ -141,9 +141,9 @@ FamixJavaMethod >> isExternal [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isGetter [
 
-	^ (self name beginsWith: 'get') and: [ 
+	^ (#getter = self kind) or: [(self name beginsWith: 'get') and: [ 
 		  self parameters isEmpty and: [ 
-			  self accesses asOrderedCollection size = 1 and: [ self outgoingInvocations isEmpty ] ] ]
+			  self accesses asOrderedCollection size = 1 and: [ self outgoingInvocations isEmpty ] ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
