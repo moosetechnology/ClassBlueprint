@@ -118,6 +118,12 @@ MBAbstractMethodModel >> isConstant [
 	^ nil
 ]
 
+{ #category : #'as yet unclassified' }
+MBAbstractMethodModel >> isDead [ 
+	self entity isDead ifTrue: [ ^ #isDead ].
+	^ nil
+]
+
 { #category : #testing }
 MBAbstractMethodModel >> isDelegating [
 
@@ -134,12 +140,6 @@ MBAbstractMethodModel >> isExtending [
 	"Check if a method extends another by super"
 	
 	 entity isExtending ifTrue: [ ^ #isExtending ].
-	^ nil
-]
-
-{ #category : #'as yet unclassified' }
-MBAbstractMethodModel >> isHiberner [ 
-	self entity isHiberner ifTrue: [ ^ #isHiberner ].
 	^ nil
 ]
 

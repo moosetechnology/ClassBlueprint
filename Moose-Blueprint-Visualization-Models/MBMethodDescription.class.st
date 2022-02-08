@@ -115,7 +115,7 @@ MBMethodDescription >> initializeType [
 						        entityModel isAccessor ifNil: [ 
 							        entityModel isInternalImplementation ifNil: [ 
 								        entityModel isAbstract ifNil: [ 
-									        entityModel isHiberner ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
+									        entityModel isDead ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
 	entityModel type: type
 ]
 

@@ -47,8 +47,8 @@ MBAccessorsModel >> attributeAccess [
 { #category : #accessing }
 MBAccessorsModel >> color [
 
-	^ self entity isHiberner
-		ifTrue: [ MiClassBlueprintPalette new colorAt: #isHiberner ]
+	^ self entity isDead
+		ifTrue: [ MiClassBlueprintPalette new colorAt: #isDead ]
 		ifFalse: [  MiClassBlueprintPalette new colorAt: self type ]
 ]
 

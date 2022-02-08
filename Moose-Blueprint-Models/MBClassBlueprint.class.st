@@ -10,8 +10,8 @@ Class {
 		'externals',
 		'internals',
 		'accessors',
-		'hibernerAttributes',
-		'hibernerMethods',
+		'deadAttributes',
+		'deadMethods',
 		'classVars',
 		'classMethods',
 		'entity',
@@ -62,7 +62,7 @@ MBClassBlueprint >> allAttributeAccesses [
 { #category : #accessing }
 MBClassBlueprint >> allAttributes [
 
-	^ hibernerAttributes, superAttributes , attributes  , classVars
+	^ deadAttributes, superAttributes , attributes  , classVars
 ]
 
 { #category : #accessing }
@@ -133,7 +133,7 @@ MBClassBlueprint >> connectAttributes [
 	"the receiver is the variable"
 
 	| sources |
-	hibernerAttributes , attributes , classVars do: [ :each | 
+	deadAttributes , attributes , classVars do: [ :each | 
 		sources := each internalAccesses collect: #source.
 		self connectTarget: each entity withAll: sources asSet ].
 	superAttributes do: [ :each | 
@@ -245,6 +245,23 @@ MBClassBlueprint >> create [
 ]
 
 { #category : #accessing }
+MBClassBlueprint >> deadAttributes [
+
+	^ deadAttributes
+]
+
+{ #category : #accessing }
+MBClassBlueprint >> deadAttributes: aCollection [ 
+	deadAttributes := aCollection
+]
+
+{ #category : #accessing }
+MBClassBlueprint >> deadMethods [
+
+	^ deadMethods 
+]
+
+{ #category : #accessing }
 MBClassBlueprint >> entity [ 
 	^ entity
 ]
@@ -265,23 +282,6 @@ MBClassBlueprint >> externals: externalMethods [
 	externals := externalMethods
 ]
 
-{ #category : #accessing }
-MBClassBlueprint >> hibernerAttributes [
-
-	^ hibernerAttributes
-]
-
-{ #category : #accessing }
-MBClassBlueprint >> hibernerAttributes: aCollection [ 
-	hibernerAttributes := aCollection
-]
-
-{ #category : #accessing }
-MBClassBlueprint >> hibernerMethods [
-
-	^ hibernerMethods 
-]
-
 { #category : #initialization }
 MBClassBlueprint >> initialize [
 
@@ -291,8 +291,8 @@ MBClassBlueprint >> initialize [
 	externals := OrderedCollection new.
 	initializers := OrderedCollection new.
 	internals := OrderedCollection new.
-	hibernerMethods := OrderedCollection new.
-	hibernerAttributes := OrderedCollection new.
+	deadMethods := OrderedCollection new.
+	deadAttributes := OrderedCollection new.
 	classVars := OrderedCollection new.
 	classMethods := OrderedCollection new
 ]
@@ -342,7 +342,7 @@ MBClassBlueprint >> initializeExternals [
 { #category : #initialization }
 MBClassBlueprint >> initializeHibernerAttributes [
 
-	hibernerAttributes := (entity attributes select: [ :each | 
+	deadAttributes := (entity attributes select: [ :each | 
 		                       each incomingAccesses isEmpty and: [ each isClassSide not ] ]) collect: [ 
 		                      :anAttribute | 
 		                      MBAttributeModel newFrom: anAttribute ]
@@ -351,9 +351,9 @@ MBClassBlueprint >> initializeHibernerAttributes [
 { #category : #initialization }
 MBClassBlueprint >> initializeHibernerMethods [
 
-	hibernerMethods := self methods
+	deadMethods := self methods
 		             select: [ :each | 
-		             each isHiberner or: [ each belongsToHibernerBranch ] ]
+		             each isDead or: [ each belongsToHibernerBranch ] ]
 		             thenCollect: [ :each | 
 		             MBHibernationModel newFrom: each ]
 ]
@@ -445,7 +445,7 @@ MBClassBlueprint >> methodInvocationsFrom: aSource [
 { #category : #accessing }
 MBClassBlueprint >> methodModels [
 
-	^ initializers , externals , internals , hibernerMethods, classMethods 
+	^ initializers , externals , internals , deadMethods, classMethods 
 ]
 
 { #category : #'as yet unclassified' }
@@ -467,7 +467,7 @@ MBClassBlueprint >> methods [
 MBClassBlueprint >> models [
 
 	^ self methodModels , self accessors , self attributes
-	  , self hibernerAttributes , self classVars, self superAttributes 
+	  , self deadAttributes , self classVars, self superAttributes 
 ]
 
 { #category : #accessing }

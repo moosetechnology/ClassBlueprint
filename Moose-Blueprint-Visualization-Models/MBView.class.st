@@ -386,11 +386,11 @@ MBView >> layersEntities [
 		          (initializersLayer entities: classModel initializers).
 		          (externalsLayer entities: classModel externals).
 		          (internalsLayer entities: classModel internals).
-		          (hibernersLayer entities: classModel hibernerMethods).
+		          (hibernersLayer entities: classModel deadMethods).
 		          (accessorsLayer entities: classModel accessors).
 		          (attributesLayer entities: classModel attributes).
 		          (hibernerAttributesLayer entities:
-			           classModel hibernerAttributes).
+			           classModel deadAttributes).
 		          (classVarsLayer entities: classModel classVars).
 		          (classMethodsLayer entities: classModel classMethods) .
 		          (superAttributesLayer entities: classModel superAttributes) }

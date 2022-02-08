@@ -223,7 +223,7 @@ MBClassBlueprintForStModelTest >> testHibernerAttributes [
 
 	self
 		assertCollection:
-		(classBlueprint hibernerAttributes collect: #entity)
+		(classBlueprint deadAttributes collect: #entity)
 		hasSameElements: { hibernerAttribute } asOrderedCollection
 ]
 

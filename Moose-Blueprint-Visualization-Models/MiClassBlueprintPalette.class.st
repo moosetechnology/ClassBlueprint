@@ -23,7 +23,7 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #isGetter forColor: Color orange darker;
 		addName: #attribute forColor: Color blue;
 		addName: #isInternalImplementation forColor: Color veryDarkGray;
-		addName: #isHiberner forColor: Color green darker duller;
+		addName: #isDead forColor: Color green darker duller;
 		addName: #isOther forColor: Color white;
 		addName: #attributeCalledInSubclass
 		forColor: Color green muchDarker duller

@@ -7,7 +7,7 @@ FamixStMethod >> belongsToHibernerBranch [
 
 	^ self calledBy 
 		  allSatisfy: [ :each |
-			  each isHiberner
+			  each isDead
 				  ifTrue: [ ^ true ]
 				  ifFalse: [ each belongsToHibernerBranch ] ]
 ]
@@ -88,6 +88,12 @@ FamixStMethod >> isCalledInternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isDead [
+
+	^ self incomingInvocations isEmpty and: [ self isConstructor not ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDelegating [
 
 	^ (self outgoingInvocations flatCollect: #target) anySatisfy: [ 
@@ -112,12 +118,6 @@ FamixStMethod >> isExternal [
 
 	^ self incomingInvocations isNotEmpty and: [ 
 		  self isCalledExternally and: [ self isConstructor not ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isHiberner [
-
-	^ self incomingInvocations isEmpty and: [ self isConstructor not ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

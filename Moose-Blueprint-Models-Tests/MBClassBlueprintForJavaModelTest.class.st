@@ -25,6 +25,7 @@ MBClassBlueprintForJavaModelTest >> accessors [
 
 	accessor1 := FamixJavaMethod new 
 		name: 'accessors1()';
+		kind: #isAccessor;
 		mooseModel: model.
 	accessor2 := FamixJavaMethod new 
 		name: 'accessor2()';
@@ -196,6 +197,13 @@ MBClassBlueprintForJavaModelTest >> testClassVar [
 		equals: { classVar1  . classVar2  } asOrderedCollection
 ]
 
+{ #category : #tests }
+MBClassBlueprintForJavaModelTest >> testDeadAccessor [
+	self assert: (self classBlueprint accessors select: #isDead) isEmpty .
+	self assert: (((self classBlueprint deadMethods collect: #entity )) includes: accessor1)  equals: true
+	
+]
+
 { #category : #accessing }
 MBClassBlueprintForJavaModelTest >> testExternals [
 
@@ -212,7 +220,7 @@ MBClassBlueprintForJavaModelTest >> testExternals [
 MBClassBlueprintForJavaModelTest >> testHibernerAttributes [
 
 	self
-		assertCollection: (classBlueprint hibernerAttributes collect: #entity)
+		assertCollection: (classBlueprint deadAttributes collect: #entity)
 		hasSameElements: { 
 				hibernerAttribute } asOrderedCollection
 ]

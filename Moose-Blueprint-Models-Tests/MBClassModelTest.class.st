@@ -46,12 +46,12 @@ MBClassModelTest >> testInitializeHiberners [
 	| hiberners |
 	hiberners := self
 		             assert:
-		             (mbClassModel hibernerMethods collect: #entity) size
+		             (mbClassModel deadMethods collect: #entity) size
 		             equals:
 			             (((((self myClass methods reject: #isPureAccessor) 
 				                 select: [ :each | 
 				                 each belongsToHibernerBranch or: [ 
-					                 each isHiberner ] ]) reject: #isInternal) 
+					                 each isDead ] ]) reject: #isInternal) 
 				               reject: #isExternal) reject: #isInitializer)
 				             size
 ]

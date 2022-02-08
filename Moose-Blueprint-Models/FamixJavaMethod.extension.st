@@ -6,8 +6,8 @@ FamixJavaMethod >> belongsToHibernerBranch [
 	"self isHiberner ifFalse: [ ^ true ]."
 
 	^ self calledBy allSatisfy: [ :each | 
-		each parentType isTestCase ifTrue: [ ^ false ].
-		  each isHiberner
+		"each parentType isTestCase ifTrue: [ ^ false ]."
+		  each isDead
 			  ifTrue: [ ^ true ]
 			  ifFalse: [ each belongsToHibernerBranch ] ]
 ]
@@ -103,6 +103,12 @@ FamixJavaMethod >> isCalledInternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isDead [
+
+	^ self incomingInvocations isEmpty and: [ self isConstructor not ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isDelegating [
 
 	^ (self outgoingInvocations flatCollect: #target) anySatisfy: [ :each | 
@@ -135,12 +141,6 @@ FamixJavaMethod >> isGetter [
 	^ (#getter = self kind) or: [(self name beginsWith: 'get') and: [ 
 		  self parameters isEmpty and: [ 
 			  self accesses asOrderedCollection size = 1 and: [ self outgoingInvocations isEmpty ] ] ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isHiberner [
-
-	^ self incomingInvocations isEmpty and: [ self isConstructor not ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
