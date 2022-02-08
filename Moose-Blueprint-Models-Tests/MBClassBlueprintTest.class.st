@@ -48,6 +48,12 @@ MBClassBlueprintTest >> attributes [
 ]
 
 { #category : #accessing }
+MBClassBlueprintTest >> classBlueprint [
+
+	^ classBlueprint
+]
+
+{ #category : #accessing }
 MBClassBlueprintTest >> classMethods [
 	self shouldBeImplemented 
 ]
@@ -83,6 +89,14 @@ MBClassBlueprintTest >> hiberners [
 ]
 
 { #category : #accessing }
+MBClassBlueprintTest >> initializeClassBluePrint [
+
+	classBlueprint := MBClassBlueprint newFrom:
+		                  (model allModelClasses detect: [ :c | 
+			                   c name = 'class' ])
+]
+
+{ #category : #accessing }
 MBClassBlueprintTest >> initializers [
 	self shouldBeImplemented 
 ]
@@ -106,8 +120,116 @@ MBClassBlueprintTest >> setUp [
 	self accesses.
 	self externals.
 	self defineClass.
+	self initializeClassBluePrint
+]
 
-	classBlueprint := MBClassBlueprint newFrom:
-		                 (model allModelClasses detect: [:c | c name = 'class' ] ).
-		
+{ #category : #accessing }
+MBClassBlueprintTest >> testAccessOnClassVar [
+	| access mbVarClass |
+	access := FamixStAccess new
+		           accessor: classMethod1 ;
+		           variable: classVar1 ;
+		           mooseModel: model. 
+	self initializeClassBluePrint.
+	mbVarClass := classBlueprint classVars detect: [ :cv | cv name includesSubstring: 'classVar1' ].
+	self
+		assert: mbVarClass attributeAccess isNotEmpty.
+	self assert: mbVarClass attributeAccess first source entity
+		equals:  classMethod1  .
+	self assert: mbVarClass attributeAccess first target entity
+		equals: classVar1  
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> testAccessOnInstVar [
+	| mbInstVar |
+
+	mbInstVar := classBlueprint attributes detect: [ :cv | cv name includesSubstring: 'attribute1' ].
+	self
+		assert: mbInstVar attributeAccess isNotEmpty.
+	self assert: mbInstVar attributeAccess first source entity
+		equals:  accessor1 .
+	self assert: mbInstVar attributeAccess first target entity
+		equals: attribute1 
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> testAttributes [
+
+	self
+		assertCollection:  (classBlueprint allAttributes collect: #entity)
+		 hasSameElements:  { attribute1 . hibernerAttribute } asOrderedCollection
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> testClassVar [
+
+	self
+		assert: (classBlueprint classVars collect: #entity )
+		equals: { classVar1  . classVar2  } asOrderedCollection
+]
+
+{ #category : #tests }
+MBClassBlueprintTest >> testDeadAccessor [
+	self assert: (self classBlueprint accessors select: #isDead) isEmpty .
+	self assert: ((self classBlueprint hibernerMethods collect: #entity ) select: #isAccessor ) equals: accessor1
+	
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> testExternals [
+
+	self
+		assert:
+			(classBlueprint models detect: [ :each | each name = 'external1' ]) entity
+				isExternal
+		equals: true.
+	self deny: (classBlueprint models detect: [ :each | each name = 'internal1' ]) entity
+				isExternal
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> testHibernerAttributes [
+
+	self
+		assertCollection: (classBlueprint hibernerAttributes collect: #entity)
+		hasSameElements: { 
+				hibernerAttribute } asOrderedCollection
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> testInitializers [
+
+	self
+		assert: (classBlueprint initializers collect: #entity) size
+		equals: { 
+				initializer1.
+				initializer2} size
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> testIsInitializetMethod [
+
+	self
+		assert:
+			(classBlueprint models detect: [ :each | 
+				 each name includesSubstring: 'initialize' ]) entity isInitializer
+		equals: true
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> testModels [
+
+	self assert: (classBlueprint models collect: #entity) size equals: { 
+			hibernerMethod1.
+			hibernerAttribute.
+			initializer1.
+			initializer2.
+			accessor1.
+			classVar1.
+			classVar2.
+			attribute1.
+			classMethod1.
+			external1.
+			internal1 } size
 ]
