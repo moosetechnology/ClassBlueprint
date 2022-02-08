@@ -100,6 +100,7 @@ MBAbstractMethodModel >> invocations: anObject [
 
 { #category : #testing }
 MBAbstractMethodModel >> isAbstract [ 
+
 	entity isAbstract ifTrue: [ ^ #isAbstract ].
 	^ nil
 ]

@@ -144,7 +144,7 @@ FamixJavaMethod >> isHiberner [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isInitializerMethod [
+FamixJavaMethod >> isInitializer [
   ^ self isConstructor
 ]
 
