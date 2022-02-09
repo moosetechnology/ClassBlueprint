@@ -168,8 +168,10 @@ MBAbstractMethodModel >> isInternal [
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isInternalImplementation [ 	
-	 entity isInternalImplementation ifTrue: [ ^ #isInternalImplementation ].
+MBAbstractMethodModel >> isInternalImplementation [
+
+	entity isInternal ifTrue: [ 
+		^ #isInternalImplementation ].
 	^ nil
 ]
 
