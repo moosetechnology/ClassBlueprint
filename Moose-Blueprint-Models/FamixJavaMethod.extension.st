@@ -142,16 +142,6 @@ FamixJavaMethod >> isInternal [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isInternalImplementation [
-
-	<FMProperty: #isInternalImplementation type: #Boolean>
-	<derived>
-	<FMComment: 'Public Interface Layer Method'>
-	^ self isConstructor not and: [ 
-		  self isPureAccessor not and: [ self isOnlyCalledInternally ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isInvokedExternally [
 
 	^ (self incomingInvocations reject: [ :each | 
