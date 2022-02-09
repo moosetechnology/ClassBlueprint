@@ -215,6 +215,14 @@ MBView >> classVarsLayer [
 	^ classVarsLayer
 ]
 
+{ #category : #'as yet unclassified' }
+MBView >> deads [
+
+	^ { 
+		  self hibernerMethodsComposite".
+		  self hibernerAttributesComposite" }
+]
+
 { #category : #shapes }
 MBView >> edgeBuilder [
 
@@ -309,14 +317,6 @@ MBView >> hibernerMethodsComposite [
 	shape := self canvas shapeFromModel: hibernersLayer.
 	RSHorizontalLineLayout new on: shape nodes.
 	^ shape
-]
-
-{ #category : #'as yet unclassified' }
-MBView >> hiberners [
-
-	^ { 
-		  self hibernerMethodsComposite".
-		  self hibernerAttributesComposite" }
 ]
 
 { #category : #layers }

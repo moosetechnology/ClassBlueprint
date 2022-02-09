@@ -69,6 +69,11 @@ MBClassBlueprintTest >> createModel [
 ]
 
 { #category : #accessing }
+MBClassBlueprintTest >> deads [
+	self shouldBeImplemented 
+]
+
+{ #category : #accessing }
 MBClassBlueprintTest >> defineClass [
 	self shouldBeImplemented 
 ]
@@ -80,11 +85,6 @@ MBClassBlueprintTest >> externalClassConf [
 
 { #category : #accessing }
 MBClassBlueprintTest >> externals [
-	self shouldBeImplemented 
-]
-
-{ #category : #accessing }
-MBClassBlueprintTest >> hiberners [
 	self shouldBeImplemented 
 ]
 
@@ -114,7 +114,7 @@ MBClassBlueprintTest >> setUp [
 	self classVars.
 	self attributes.
 	self initializers.
-	self hiberners.
+	self deads.
 	self internals.
 	self classMethods.
 	self accesses.

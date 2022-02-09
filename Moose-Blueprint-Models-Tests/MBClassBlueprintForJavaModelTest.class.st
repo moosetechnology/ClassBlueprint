@@ -74,6 +74,17 @@ MBClassBlueprintForJavaModelTest >> createModel [
 ]
 
 { #category : #accessing }
+MBClassBlueprintForJavaModelTest >> deads [ 
+
+	hibernerMethod1 := FamixJavaMethod new 
+		name: 'hibernerMethod1()';
+		mooseModel: model.
+	hibernerAttribute := FamixJavaAttribute new 
+		name: 'hibernerAttribute';
+		mooseModel: model. 
+]
+
+{ #category : #accessing }
 MBClassBlueprintForJavaModelTest >> defineClass [
 
 	class := FamixJavaClass new
@@ -121,17 +132,6 @@ MBClassBlueprintForJavaModelTest >> externals [
 		             parentType: class;
 		             mooseModel: model.
 	self externalClassConf
-]
-
-{ #category : #accessing }
-MBClassBlueprintForJavaModelTest >> hiberners [ 
-
-	hibernerMethod1 := FamixJavaMethod new 
-		name: 'hibernerMethod1()';
-		mooseModel: model.
-	hibernerAttribute := FamixJavaAttribute new 
-		name: 'hibernerAttribute';
-		mooseModel: model. 
 ]
 
 { #category : #accessing }

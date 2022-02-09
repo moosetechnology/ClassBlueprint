@@ -76,6 +76,17 @@ MBClassBlueprintForStModelTest >> createModel [
 ]
 
 { #category : #accessing }
+MBClassBlueprintForStModelTest >> deads [
+
+	hibernerMethod1 := FamixStMethod new
+		                   name: 'hibernerMethod1()';
+		                   mooseModel: model.
+	hibernerAttribute := FamixStAttribute new
+		                     name: 'hibernerAttribute';
+		                     mooseModel: model
+]
+
+{ #category : #accessing }
 MBClassBlueprintForStModelTest >> defineClass [
 
 	class := FamixStClass new
@@ -122,17 +133,6 @@ MBClassBlueprintForStModelTest >> externals [
 		             parentType: class;
 		             mooseModel: model.
 	self externalClassConf
-]
-
-{ #category : #accessing }
-MBClassBlueprintForStModelTest >> hiberners [
-
-	hibernerMethod1 := FamixStMethod new
-		                   name: 'hibernerMethod1()';
-		                   mooseModel: model.
-	hibernerAttribute := FamixStAttribute new
-		                     name: 'hibernerAttribute';
-		                     mooseModel: model
 ]
 
 { #category : #accessing }
@@ -205,6 +205,13 @@ MBClassBlueprintForStModelTest >> testClassVar [
 	self assert: (classBlueprint classVars collect: #entity) equals: { 
 			classVar1.
 			classVar2 } asOrderedCollection
+]
+
+{ #category : #tests }
+MBClassBlueprintForStModelTest >> testDeadAccessor [
+	self assert: (self classBlueprint accessors select: #isDead) isEmpty .
+	self assert: (((self classBlueprint deadMethods collect: #entity )) includes: accessor1)  equals: true
+	
 ]
 
 { #category : #tests }
