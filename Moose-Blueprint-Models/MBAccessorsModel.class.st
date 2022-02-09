@@ -47,9 +47,9 @@ MBAccessorsModel >> attributeAccess [
 { #category : #accessing }
 MBAccessorsModel >> color [
 
-	^ self entity isDead
-		ifTrue: [ MiClassBlueprintPalette new colorAt: #isDead ]
-		ifFalse: [  MiClassBlueprintPalette new colorAt: self type ]
+	^ self entity isDeadMethod
+		  ifTrue: [ MiClassBlueprintPalette new colorAt: #isDeadMethod ]
+		  ifFalse: [ MiClassBlueprintPalette new colorAt: self type ]
 ]
 
 { #category : #accessing }

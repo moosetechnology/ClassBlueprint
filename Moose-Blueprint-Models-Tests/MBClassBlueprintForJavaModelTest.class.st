@@ -199,9 +199,14 @@ MBClassBlueprintForJavaModelTest >> testClassVar [
 
 { #category : #tests }
 MBClassBlueprintForJavaModelTest >> testDeadAccessor [
-	self assert: (self classBlueprint accessors select: #isDead) isEmpty .
-	self assert: (((self classBlueprint deadMethods collect: #entity )) includes: accessor1)  equals: true
-	
+
+	self assert:
+		((self classBlueprint accessors collect: #entity) select: #isDeadMethod)
+			isEmpty.
+	self
+		assert: ((self classBlueprint deadMethods collect: #entity) select:
+				 #isAccessor)
+		equals: accessor1
 ]
 
 { #category : #accessing }

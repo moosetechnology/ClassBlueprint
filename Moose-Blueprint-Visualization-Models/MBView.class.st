@@ -151,7 +151,7 @@ MBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 	layer := RSComposite new
 		         model: aLayerModel;
 		         border: border.
-	layer addAll: (aGroup collect: [ :aModel | aModel shape ]).
+	layer addAll: (aGroup collect: [ :aModel | aModel shape.  ]).
 	layer popupText: aLayerModel name asString.
 	layer adjustToChildren.
 	self canvas add: layer

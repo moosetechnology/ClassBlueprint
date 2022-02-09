@@ -1,15 +1,14 @@
 Extension { #name : #FamixStMethod }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> belongsToHibernerBranch [
+FamixStMethod >> belongsToDeadBranch [
 
 	"self isHiberner ifFalse: [ ^ true ]."
 
-	^ self calledBy 
-		  allSatisfy: [ :each |
-			  each isDead
-				  ifTrue: [ ^ true ]
-				  ifFalse: [ each belongsToHibernerBranch ] ]
+	^ self calledBy allSatisfy: [ :each | 
+		  each isDeadMethod
+			  ifTrue: [ ^ true ]
+			  ifFalse: [ each belongsToDeadBranch ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -17,8 +16,8 @@ FamixStMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
 		  reject: [ :each | 
-			  each signature == self signature and: [ 
-				  self isPureAccessor not  ] ]
+			  each == self or: [ 
+				  each parentType superclass isTestCase ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -81,16 +80,9 @@ FamixStMethod >> isCalledExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isCalledInternally [
+FamixStMethod >> isDeadMethod [
 
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self incomingInvocations anySatisfy: [ :each | each inSameClassAs: self ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isDead [
-
-	^ self incomingInvocations isEmpty and: [ self isConstructor not ]
+	^ self incomingInvocations isEmpty and: [ self isInitializer not ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -126,18 +118,8 @@ FamixStMethod >> isInternal [
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
 
 	^ self isOnlyCalledInternally and: [ 
-		  self belongsToHibernerBranch not and: [ 
+		  self belongsToDeadBranch not and: [ 
 			  self isCalledByInitializers not ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isInternalImplementation [
-
-	<FMProperty: #isInternalImplementation type: #Boolean>
-	<derived>
-	<FMComment: 'Public Interface Layer Method'>
-	^ self isInitializer not and: [ 
-		  self isPureAccessor not and: [ self isOnlyCalledInternally ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -153,16 +135,6 @@ FamixStMethod >> isOnlyCalledInternally [
 
 	^ self incomingInvocations isNotEmpty and: [ 
 		  self incomingInvocations allSatisfy: [ :each | each source inSameClassAs: self ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isOverriding [
-
-	<FMProperty: #isOverriding type: #Boolean>
-	<derived>
-	<FMComment:
-	'The method is overrinding a method defined in a super class'>
-	^ self parentType directSuperclasses anySatisfy: [ :each |  each understands: self signature ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

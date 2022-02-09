@@ -11,7 +11,8 @@ Class {
 		'type',
 		'height',
 		'width',
-		'border'
+		'border',
+		'complex'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -25,12 +26,16 @@ MBMethodDescription class >> newFrom: aMethodModel [
 
 { #category : #accessing }
 MBMethodDescription >> border [
-
+	| myBorder |
+	myBorder := 
 	entityModel modelType = #polymorphic ifTrue: [ 
 		^ self polymorphicBorder ].
 	entityModel modelType = #megamorphic ifTrue: [ 
-		^ self megamorphicBorder ].
-	^ self defaultBorder 
+		^ self megamorphicBorder ]. 
+	myBorder ifNil: [ myBorder := self defaultBorder ].
+	complex ifTrue: [ myBorder color: Color red ].
+	^ myBorder 
+
 ]
 
 { #category : #accessing }
@@ -38,18 +43,19 @@ MBMethodDescription >> border: aBorder [
 	border := aBorder 
 ]
 
-{ #category : #'as yet unclassified' }
-MBMethodDescription >> borderDictionary [
+{ #category : #accessing }
+MBMethodDescription >> complex [ 
+	^ complex
+]
 
-	| borderDict |
-	borderDict := { 
-		              (entityModel entity cyclomaticComplexity > 50
-		               -> self highComplexityBorder).
-		              ((entityModel entity cyclomaticComplexity
-			                between: 10
-			                and: 50) -> self moderateComplexityBorder) }
-		              asOrderedDictionary.
-	^ borderDict
+{ #category : #accessing }
+MBMethodDescription >> complex: aBoolean [
+	 complex := aBoolean
+]
+
+{ #category : #initialization }
+MBMethodDescription >> complexBorderColor [ 
+	^ Color red
 ]
 
 { #category : #'instance creation' }
@@ -57,15 +63,20 @@ MBMethodDescription >> create [
 
 	self initializeType.
 	self initializeSize.
-	self initializeBorder
+	complex := false.
 ]
 
 { #category : #defaults }
 MBMethodDescription >> defaultBorder [ 
 	^ RSBorder new
 		  width: 1;
-		  color: Color black;
+		color: Color black;
 		  yourself
+]
+
+{ #category : #initialization }
+MBMethodDescription >> defaultBorderColor [ 
+	^ Color black
 ]
 
 { #category : #accessing }
@@ -115,7 +126,7 @@ MBMethodDescription >> initializeType [
 						        entityModel isAccessor ifNil: [ 
 							        entityModel isInternalImplementation ifNil: [ 
 								        entityModel isAbstract ifNil: [ 
-									        entityModel isDead ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
+									        entityModel isDeadMethod ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
 	entityModel type: type
 ]
 
@@ -124,14 +135,8 @@ MBMethodDescription >> megamorphicBorder [
 
 	^ RSBorder new
 		  width: 8;
-		  color: Color black;
+			color: Color black;
 		  yourself
-]
-
-{ #category : #'as yet unclassified' }
-MBMethodDescription >> moderateComplexityBorder [
-
-	^ Color black
 ]
 
 { #category : #'as yet unclassified' }
@@ -139,7 +144,7 @@ MBMethodDescription >> polymorphicBorder [
 
 	^ RSBorder new
 		  width: 2;
-		  color: Color black;
+		color: Color black;
 		  yourself
 	
 ]

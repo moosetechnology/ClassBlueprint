@@ -50,10 +50,9 @@ MBClassModelTest >> testInitializeHiberners [
 		             equals:
 			             (((((self myClass methods reject: #isPureAccessor) 
 				                 select: [ :each | 
-				                 each belongsToHibernerBranch or: [ 
-					                 each isDead ] ]) reject: #isInternal) 
-				               reject: #isExternal) reject: #isInitializer)
-				             size
+				                 each belongsToDeadBranch or: [ each isDeadMethod ] ]) 
+				                reject: #isInternal) reject: #isExternal) reject:
+				              #isInitializer) size
 ]
 
 { #category : #test }

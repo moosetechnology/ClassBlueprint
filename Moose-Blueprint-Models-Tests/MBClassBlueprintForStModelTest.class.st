@@ -25,10 +25,12 @@ MBClassBlueprintForStModelTest >> accesses [
 MBClassBlueprintForStModelTest >> accessors [
 
 	accessor1 := FamixStMethod new
-		             name: 'accessors1()';
+		             name: 'accessors1';
+						beGetter;
 		             mooseModel: model.
 	accessor2 := FamixStMethod new
-		             name: 'accessor2()';
+		             name: 'accessor2';
+						beSetter;
 		             mooseModel: model
 ]
 
@@ -209,9 +211,14 @@ MBClassBlueprintForStModelTest >> testClassVar [
 
 { #category : #tests }
 MBClassBlueprintForStModelTest >> testDeadAccessor [
-	self assert: (self classBlueprint accessors select: #isDead) isEmpty .
-	self assert: (((self classBlueprint deadMethods collect: #entity )) includes: accessor1)  equals: true
-	
+
+	self assert:
+		((self classBlueprint accessors collect: #entity) select: #isDeadMethod)
+			isEmpty.
+	self
+		assert: ((self classBlueprint deadMethods collect: #entity) select:
+				 #isAccessor)
+		equals: accessor1
 ]
 
 { #category : #tests }

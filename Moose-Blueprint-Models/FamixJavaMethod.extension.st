@@ -1,15 +1,14 @@
 Extension { #name : #FamixJavaMethod }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> belongsToHibernerBranch [
+FamixJavaMethod >> belongsToDeadBranch [
 
 	"self isHiberner ifFalse: [ ^ true ]."
 
-	^ self calledBy allSatisfy: [ :each | 
-		"each parentType isTestCase ifTrue: [ ^ false ]."
-		  each isDead
+	^ self calledBy allSatisfy: [ :each | "each parentType isTestCase ifTrue: [ ^ false ]."
+		  each isDeadMethod
 			  ifTrue: [ ^ true ]
-			  ifFalse: [ each belongsToHibernerBranch ] ]
+			  ifFalse: [ each belongsToDeadBranch ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -17,8 +16,7 @@ FamixJavaMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
 		  reject: [ :each | 
-			  each signature == self signature and: [ 
-				  self isPureAccessor not  ] ]
+		  each == self or: [ each parentType superclass isTestCase ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -95,17 +93,9 @@ FamixJavaMethod >> isCalledExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isCalledInternally [
+FamixJavaMethod >> isDeadMethod [
 
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self incomingInvocations anySatisfy: [ :each | 
-			  each inSameClassAs: self ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isDead [
-
-	^ self incomingInvocations isEmpty and: [ self isConstructor not ]
+	^ self incomingInvocations isEmpty and: [ self isInitializer not ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -136,14 +126,6 @@ FamixJavaMethod >> isExternal [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isGetter [
-
-	^ (#getter = self kind) or: [(self name beginsWith: 'get') and: [ 
-		  self parameters isEmpty and: [ 
-			  self accesses asOrderedCollection size = 1 and: [ self outgoingInvocations isEmpty ] ] ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isInitializer [
   ^ self isConstructor
 ]
@@ -155,7 +137,7 @@ FamixJavaMethod >> isInternal [
 
 	^ self isOnlyCalledInternally and: [ 
 
-		  self belongsToHibernerBranch not and: [ 
+		  self belongsToDeadBranch not and: [ 
 			  self isCalledByInitializers not ] ]
 ]
 
@@ -183,24 +165,6 @@ FamixJavaMethod >> isOnlyCalledInternally [
 	^ self incomingInvocations isNotEmpty and: [ 
 		  self incomingInvocations allSatisfy: [ :each | 
 			  each source inSameClassAs: self ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isOverriding [
-	<FMProperty: #isOverriding type: #Boolean>
-	<derived>
-	<FMComment: 'The method is overrinding a method defined in a super class'>
-	^ self parentType directSuperclasses
-		anySatisfy:
-			[ :each | each isInterface not and: [ each understands: self signature ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isSetter [
-
-	^ (self name beginsWith: 'set') and: [ 
-		  self parameters size = 1 and: [ 
-			  self accesses asOrderedCollection size = 1 and: [ self outgoingInvocations isEmpty] ]]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

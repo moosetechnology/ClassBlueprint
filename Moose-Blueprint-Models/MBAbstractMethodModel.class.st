@@ -9,7 +9,8 @@ Class {
 		'attributeAccess',
 		'type',
 		'invocations',
-		'modelType'
+		'modelType',
+		'complexity'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -30,6 +31,12 @@ MBAbstractMethodModel >> accessorInvocations [
 MBAbstractMethodModel >> accessorInvocations: anObject [
 
 	accessorInvocations := anObject
+]
+
+{ #category : #'as yet unclassified' }
+MBAbstractMethodModel >> activateRedBorder [ 
+	self description complex: true
+
 ]
 
 { #category : #adding }
@@ -70,12 +77,23 @@ MBAbstractMethodModel >> attributeAccess: anObject [
 	attributeAccess := anObject
 ]
 
+{ #category : #accessing }
+MBAbstractMethodModel >> complexity [
+	^ complexity
+]
+
+{ #category : #accessing }
+MBAbstractMethodModel >> complexity: aNumber [
+	complexity := aNumber
+]
+
 { #category : #'as yet unclassified' }
 MBAbstractMethodModel >> create [
 
 	accessorInvocations := OrderedCollection new.
 	attributeAccess := OrderedCollection new.
 	invocations := MBInvocations new.
+	complexity := entity computeCyclomaticComplexity.
 	"self initializeDescription"
 ]
 
@@ -119,8 +137,9 @@ MBAbstractMethodModel >> isConstant [
 ]
 
 { #category : #'as yet unclassified' }
-MBAbstractMethodModel >> isDead [ 
-	self entity isDead ifTrue: [ ^ #isDead ].
+MBAbstractMethodModel >> isDeadMethod [
+
+	self entity isDeadMethod ifTrue: [ ^ #isDeadMethod ].
 	^ nil
 ]
 
@@ -199,6 +218,7 @@ MBAbstractMethodModel >> shape [
 		         border: self description border;
 		         width: self description width;
 		         height: self description height.
+	
 	shape when: RSMouseRightClick do: [ :evt | self openInBrowser ].
 	shape when: RSMouseEnter do: [ :evt | 
 		evt shiftPressed ifTrue: [ shape popupText: self entity sourceText ] ].

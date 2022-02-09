@@ -41,6 +41,7 @@ MBLegend >> build [
 		left;
 		offset: 0.
 	legend build.
+	legend onDemand: 'Legend';build.
 	^ legend
 ]
 
@@ -66,7 +67,7 @@ MBLegend >> buildFor: aVisualization [
 		outer;
 		right;
 		offset: 70 @ -200.
-	legend build.
+	legend onDemand: 'Legend';build.
 	^ legend
 ]
 

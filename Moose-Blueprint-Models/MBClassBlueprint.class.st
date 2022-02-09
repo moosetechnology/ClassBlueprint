@@ -242,6 +242,8 @@ MBClassBlueprint >> create [
 
 	self makeConnections.
 	self attributeMethodTypes.
+	self detectComplexityBetween: 5 and: 10.
+
 ]
 
 { #category : #accessing }
@@ -259,6 +261,15 @@ MBClassBlueprint >> deadAttributes: aCollection [
 MBClassBlueprint >> deadMethods [
 
 	^ deadMethods 
+]
+
+{ #category : #'as yet unclassified' }
+MBClassBlueprint >> detectComplexityBetween: beginning and: end [
+
+	| methods |
+	methods := self methodModels select: [ :each | each complexity between: beginning  and: end  ].
+	methods do: [ :each | each activateRedBorder ]. 
+	
 ]
 
 { #category : #accessing }
@@ -352,10 +363,10 @@ MBClassBlueprint >> initializeHibernerAttributes [
 MBClassBlueprint >> initializeHibernerMethods [
 
 	deadMethods := self methods
-		             select: [ :each | 
-		             each isDead or: [ each belongsToHibernerBranch ] ]
-		             thenCollect: [ :each | 
-		             MBHibernationModel newFrom: each ]
+		               select: [ :each | 
+		               each isDeadMethod or: [ each belongsToDeadBranch ] ]
+		               thenCollect: [ :each | 
+		               MBHibernationModel newFrom: each ]
 ]
 
 { #category : #initialization }
