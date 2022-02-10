@@ -16,8 +16,8 @@ FamixStMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
 		  reject: [ :each | 
-			  each == self or: [ 
-				  each parentType superclass isTestCase ] ]
+			  each == self "or: [ 
+				  each parentType superclass isTestCase ]" ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

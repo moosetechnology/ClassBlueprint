@@ -19,7 +19,7 @@ MBOutgoingInvocationsCollector >> addOutgoingConnection [
 				                     source: source;
 				                     target: each;
 				yourself ].
-	
+
 	invocationsModels ifNotEmpty: [  
 	invocationsModels do: [ :each | source addOutgoing: each ].
 	targets do: [ :each |  each addIncoming: (invocationsModels detect: [ :invocation | invocation target = each ])  ] ]
@@ -53,7 +53,6 @@ MBOutgoingInvocationsCollector >> source: aSource [
 MBOutgoingInvocationsCollector >> source: aSource targets: candidates [
 
 	"Deleting the source from the candidates is risky in case of a recursive function"
-
 	^ self
 		  source: aSource;
 		  targets: (candidates reject: [ :each | each = aSource ]);

@@ -155,8 +155,9 @@ MBClassBlueprint >> connectIncomingInvocations [
 
 	self models do: [ :each | 
 		| sources |
+
 		sources := ((each entity queryIncoming: FamixTInvocation) 
-			                    flatCollect: #candidates) asSet.
+			                    collect: #sender) asSet.
 		sources ifNotEmpty: [ self connectTarget: each entity withAll: sources ] ]
 ]
 
@@ -183,9 +184,9 @@ MBClassBlueprint >> connectOutgoingInvocations [
 	self methodModels do: [ :each | 
 		| candidateTargets |
 		candidateTargets := ((each entity queryOutgoing: FamixTInvocation) 
-			                     flatCollect: #candidates) asSet.
+			                     flatCollect: #candidates) asSet.	
 		candidateTargets ifNotEmpty: [ 
-			self connectSource: each entity withAll: candidateTargets ] ]
+			self connectSource: each entity withAll: candidateTargets asSet ] ]
 ]
 
 { #category : #building }
@@ -193,16 +194,14 @@ MBClassBlueprint >> connectSource: source withAll: targets [
 
 	| connectionInstance sourceModel targetModels |
 	connectionInstance := source newOutgoingConnection.
-
 	sourceModel := self models detect: [ :each | each entity = source ].
-	targetModels := (targets collect: [ :aTarget | 
+	targetModels := (targets asSet collect: [ :aTarget | 
 		                 self models
 			                 detect: [ :model | 
 				                 model entity = aTarget "and: [ 
 					                 model entity isAccessor not ]" ]
 			                 ifNone: [ nil "connections with exterior" ] ]) 
 		                reject: #isNil.
-	
 	targetModels ifNotEmpty: [ 
 		connectionInstance source: sourceModel targets: targetModels ]
 ]
@@ -242,7 +241,8 @@ MBClassBlueprint >> create [
 
 	self makeConnections.
 	self attributeMethodTypes.
-	self detectComplexityBetween: 5 and: 10.
+	self detectComplexityBetween: 5 and: 50.
+	"self detectComplexitySuperiorTo: 50."
 
 ]
 

@@ -5,7 +5,7 @@ FamixJavaMethod >> belongsToDeadBranch [
 
 	"self isHiberner ifFalse: [ ^ true ]."
 
-	^ self calledBy allSatisfy: [ :each | "each parentType isTestCase ifTrue: [ ^ false ]."
+	^ self calledBy allSatisfy: [ :each | 
 		  each isDeadMethod
 			  ifTrue: [ ^ true ]
 			  ifFalse: [ each belongsToDeadBranch ] ]

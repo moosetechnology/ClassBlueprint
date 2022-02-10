@@ -54,7 +54,7 @@ MBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
 
 { #category : #adding }
 MBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
-	
+	(aMethodInvocationModel source name = 'resourcesCache' and: [ aMethodInvocationModel source entity isClassSide ] )ifTrue: [ 1halt ].
 	((self invocations outgoing collect:#target) includes: aMethodInvocationModel target) ifFalse: 
 	 [ invocations outgoing add: aMethodInvocationModel ]
 ]

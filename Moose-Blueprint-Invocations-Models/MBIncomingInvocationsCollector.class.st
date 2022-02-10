@@ -19,6 +19,7 @@ MBIncomingInvocationsCollector >> addIncomingConnections [
 				                     source: each;
 				                     target: target;
 				yourself ].
+
 	invocationsModels ifNotEmpty: [  
 	invocationsModels do: [ :each | target addIncoming: each ].
 	sources do: [ :each |  each addOutgoing: (invocationsModels detect: [ :invocation | invocation source = each ])  ] ]
