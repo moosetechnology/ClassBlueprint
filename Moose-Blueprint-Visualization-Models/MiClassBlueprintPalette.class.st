@@ -20,7 +20,7 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #isExtending forColor: Color orange darker duller;
 		addName: #isConstant forColor: Color lightGray;
 		addName: #isSetter forColor: Color red duller;
-		addName: #isGetter forColor: Color orange darker;
+		addName: #isGetter forColor: Color pink;
 		addName: #attribute forColor: Color blue;
 		addName: #isInternalImplementation forColor: Color veryDarkGray;
 		addName: #isDeadMethod forColor: Color green darker duller;
