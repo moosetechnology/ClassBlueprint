@@ -94,10 +94,10 @@ MBLegend >> methodBoxDescription [
 		               yourself.
 	secondLayer adjustToChildren.
 	RSVerticalGridLayout new
-		gapSize: 5;
+		gapSize: 15;
 		on: firstLayer nodes.
 	RSHorizontalLineLayout new
-		gapSize: 5;
+		gapSize: 15;
 		on: secondLayer nodes.
 	^ secondLayer
 ]
@@ -148,7 +148,7 @@ MBLegend >> methodWidthInfo [
 				             widthLabel };
 		             yourself.
 	RSVerticalLineLayout new
-		gapSize: 10;
+		gapSize: 5;
 		on: widthInfo nodes.
 	^ widthInfo
 ]
