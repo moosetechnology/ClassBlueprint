@@ -4,6 +4,9 @@ I am a small class representing the legend of the ClassBlueprint visualization
 Class {
 	#name : #MBLegend,
 	#superclass : #Object,
+	#classInstVars : [
+		'legendState'
+	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
@@ -19,6 +22,18 @@ MBLegend class >> buildFor: aVisualization [
 		buildFor: aVisualization 
 ]
 
+{ #category : #accessing }
+MBLegend class >> legendState [
+
+	^ legendState ifNil: [  true ]
+]
+
+{ #category : #accessing }
+MBLegend class >> legendState: aBoolean [
+
+	 legendState := aBoolean
+]
+
 { #category : #'as yet unclassified' }
 MBLegend >> boxLabelExtent [ 
 	^ 25@15
@@ -30,25 +45,37 @@ MBLegend >> buildFor: aVisualization [
 	| legend |
 	legend := RSLegend new.
 	legend container: aVisualization canvas.
-	legend title: 'Legend'.
+	legend defaultBox withBorder.
 
 	self legendInfo keysAndValuesDo: [ :key :value | 
 		legend text: key withBoxColor: value ].
-	(legend shapes difference: { legend shapes first }) do: [ :each | 
-		each padding: 2.5 ].
-	legend shapes add: self methodBoxDescription2 .
+	legend layout layout gapSize: self gapSize.
+	legend shapes add: self methodBoxDescription.
 	legend legendDo: [ :shape | 
 		shape
 			withBorder;
-			padding: 10;
-			scaleBy: 0.5;
-			draggable ].
+			padding: 20;
+			color: (Color white alpha: 0.95) ].
 	legend location
 		outer;
 		right;
 		offset: 70 @ -200.
-	legend build. "onDemand: 'Legend';"
+	legend
+		beFixedWithTitle: 'Legend';
+		build.
+		aVisualization canvas fixedShapes
+			select: [ :each | each class = RSComposite ]
+			thenDo: [ :each | 
+			
+					self class legendState ifFalse: [ each click ].
+					each when: RSMouseClick send: #onClick to: self ].
 	^ legend
+]
+
+{ #category : #accessing }
+MBLegend >> gapSize [
+
+	^ 3
 ]
 
 { #category : #building }
@@ -68,43 +95,6 @@ MBLegend >> marker [
 { #category : #'as yet unclassified' }
 MBLegend >> methodBoxDescription [
 
-	| composite label widthInfo heightInfo firstLayer secondLayer |
-	composite := RSComposite new
-		             withBorder;
-		             extent: self boxLabelExtent;
-		             color: Color white;
-		             yourself.
-	label := RSLabel new text: 'Method'.
-	composite
-		add: label;
-		adjustToChildren.
-	composite padding: 5.
-	widthInfo := self methodWidthInfo.
-	heightInfo := self methodHeightInfo.
-	firstLayer := RSComposite new
-		              addAll: { 
-				              composite.
-				              widthInfo };
-		              yourself.
-	firstLayer adjustToChildren.
-	secondLayer := RSComposite new
-		               addAll: { 
-				               firstLayer.
-				               heightInfo };
-		               yourself.
-	secondLayer adjustToChildren.
-	RSVerticalGridLayout new
-		gapSize: 15;
-		on: firstLayer nodes.
-	RSHorizontalLineLayout new
-		gapSize: 15;
-		on: secondLayer nodes.
-	^ secondLayer
-]
-
-{ #category : #'as yet unclassified' }
-MBLegend >> methodBoxDescription2 [
-
 	| widthLabel heightLabel methodBox |
 	widthLabel := RSLabel new text: 'Number of invocations'.
 	heightLabel := RSLabel new text: 'Number of lines of code'.
@@ -122,12 +112,13 @@ MBLegend >> methodBoxDescription2 [
 	^ { 
 		  methodBox.
 		  widthLabel.
-		  heightLabel } asGroup asShape padding: (Margin
-			   left: 0
-			   top: 10
-			   right: 0
-			   bottom: 0);
-			yourself
+		  heightLabel } asGroup asShape
+		  padding: (Margin
+				   left: 0
+				   top: 10
+				   right: 0
+				   bottom: 0);
+		  yourself
 ]
 
 { #category : #'as yet unclassified' }
@@ -219,6 +210,11 @@ MBLegend >> methodWidthInfo [
 		on: widthInfo nodes.
 	widthInfo adjustToChildren.
 	^ widthInfo
+]
+
+{ #category : #interactions }
+MBLegend >> onClick [ 
+	self class legendState: self class legendState not
 ]
 
 { #category : #'as yet unclassified' }

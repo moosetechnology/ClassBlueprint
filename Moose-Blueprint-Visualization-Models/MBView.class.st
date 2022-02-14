@@ -228,8 +228,8 @@ MBView >> edgeBuilder [
 
 	^ MBEdgeBuilder line
 		  shapes: (self canvas nodes flatCollect: #children);
-		  withHorizontalAttachPoint;
-		  yourself 
+		  attachPoint: RSBorderAttachPoint new;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -313,9 +313,28 @@ MBView >> hibernerAttributesLayer [
 { #category : #composite }
 MBView >> hibernerMethodsComposite [
 
-	 | shape |
+	| shape highlightable |
 	shape := self canvas shapeFromModel: hibernersLayer.
-	RSHorizontalLineLayout new on: shape nodes.
+	"shapes := shape nodes copy.
+	layout := RSForceBasedLayout new.
+	layout charge: -50.
+	layout
+		doNotUseProgressBar;
+		on: shapes."
+	highlightable := RSHighlightable new.
+	shape nodes @ (highlightable
+		 when: RSHighlightEvent do: [ :evt | 
+			 evt shape pushFront.
+			 highlightable record: evt shape selector: #color value: Color red ];
+		 when: RSUnHighlightEvent do: [ :evt | 
+			 evt shape pushBack.
+			 highlightable restore: evt shape selector: #color ]; withLines;
+		 yourself).
+
+	RSHorizontalLineLayout new
+		gapSize: 5;
+		alignTop;
+		on: shape nodes.
 	^ shape
 ]
 
