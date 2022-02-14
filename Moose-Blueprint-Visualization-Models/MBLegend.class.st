@@ -36,7 +36,7 @@ MBLegend >> buildFor: aVisualization [
 		legend text: key withBoxColor: value ].
 	(legend shapes difference: { legend shapes first }) do: [ :each | 
 		each padding: 2.5 ].
-	legend shapes add: self methodBoxDescription.
+	legend shapes add: self methodBoxDescription2 .
 	legend legendDo: [ :shape | 
 		shape
 			withBorder;
@@ -103,6 +103,34 @@ MBLegend >> methodBoxDescription [
 ]
 
 { #category : #'as yet unclassified' }
+MBLegend >> methodBoxDescription2 [
+
+	| widthLabel heightLabel methodBox |
+	widthLabel := RSLabel new text: 'Number of invocations'.
+	heightLabel := RSLabel new text: 'Number of lines of code'.
+	methodBox := self methodInfo.
+	RSVerticalLineLayout new
+		gapSize: 5;
+		on: { 
+				methodBox.
+				widthLabel }.
+	RSHorizontalLineLayout new
+		gapSize: 5;
+		on: { 
+				methodBox.
+				heightLabel }.
+	^ { 
+		  methodBox.
+		  widthLabel.
+		  heightLabel } asGroup asShape padding: (Margin
+			   left: 0
+			   top: 10
+			   right: 0
+			   bottom: 0);
+			yourself
+]
+
+{ #category : #'as yet unclassified' }
 MBLegend >> methodHeightInfo [
 
 	| heightLabel heightArrow heightInfo |
@@ -112,7 +140,7 @@ MBLegend >> methodHeightInfo [
 		               yourself.
 	heightArrow := RSLine new
 		               startPoint: -0 @ 0;
-		               endPoint: self boxLabelExtent x @ 0;
+		               endPoint:  0 @ self boxLabelExtent x;
 		               color: Color black;
 		               marker: self marker;
 		               yourself.
@@ -126,6 +154,45 @@ MBLegend >> methodHeightInfo [
 		on: heightInfo nodes.
 
 	^ heightInfo
+]
+
+{ #category : #'as yet unclassified' }
+MBLegend >> methodInfo [
+
+	| methodBox methodLabel composite widthLine heightLine |
+	methodBox := RSBox new.
+	methodLabel := RSLabel new text: 'Method'.
+	methodBox extent: methodLabel extent + 10.
+	methodBox
+		noPaint;
+		withBorder.
+	widthLine := RSLine new
+		             startPoint: 0 @ 0;
+		             endPoint: methodBox width @ 0;
+		             marker: self marker;
+		             yourself.
+	heightLine := RSLine new
+		              startPoint: 0 @ 0;
+		              endPoint: 0 @ methodBox height;
+		              marker: self marker;
+		              yourself.
+	RSVerticalLineLayout new
+		gapSize: 5;
+		on: { 
+				methodBox.
+				widthLine }.
+	RSHorizontalLineLayout new
+		gapSize: 5;
+		on: { 
+				methodBox.
+				heightLine }.
+	methodLabel position: methodBox position.
+	composite := { 
+		             methodBox.
+		             methodLabel.
+		             widthLine.
+		             heightLine } asGroup asShape.
+	^ composite
 ]
 
 { #category : #'as yet unclassified' }
@@ -150,6 +217,7 @@ MBLegend >> methodWidthInfo [
 	RSVerticalLineLayout new
 		gapSize: 5;
 		on: widthInfo nodes.
+	widthInfo adjustToChildren.
 	^ widthInfo
 ]
 
