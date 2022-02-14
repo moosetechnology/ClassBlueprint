@@ -34,11 +34,6 @@ MBLegend class >> legendState: aBoolean [
 	 legendState := aBoolean
 ]
 
-{ #category : #'as yet unclassified' }
-MBLegend >> boxLabelExtent [ 
-	^ 25@15
-]
-
 { #category : #building }
 MBLegend >> buildFor: aVisualization [
 
@@ -122,32 +117,6 @@ MBLegend >> methodBoxDescription [
 ]
 
 { #category : #'as yet unclassified' }
-MBLegend >> methodHeightInfo [
-
-	| heightLabel heightArrow heightInfo |
-	heightLabel := RSLabel new
-		               text: 'Number of lines of code';
-		               color: Color darkGray;
-		               yourself.
-	heightArrow := RSLine new
-		               startPoint: -0 @ 0;
-		               endPoint:  0 @ self boxLabelExtent x;
-		               color: Color black;
-		               marker: self marker;
-		               yourself.
-	heightInfo := RSComposite new
-		              addAll: { 
-				              heightArrow.
-				              heightLabel };
-		              yourself.
-	RSHorizontalFlowLayout new
-		gapSize: 5;
-		on: heightInfo nodes.
-
-	^ heightInfo
-]
-
-{ #category : #'as yet unclassified' }
 MBLegend >> methodInfo [
 
 	| methodBox methodLabel composite widthLine heightLine |
@@ -186,61 +155,7 @@ MBLegend >> methodInfo [
 	^ composite
 ]
 
-{ #category : #'as yet unclassified' }
-MBLegend >> methodWidthInfo [
-
-	| widthLabel widthArrow widthInfo |
-	widthLabel := RSLabel new
-		              text: 'Number of invocations';
-		              color: Color darkGray;
-		              yourself.
-	widthArrow := RSLine new
-		              startPoint: 0 @ 0;
-		              endPoint: self boxLabelExtent x @ 0;
-		              color: Color black;
-		              marker: self marker;
-		              yourself.
-	widthInfo := RSComposite new
-		             addAll: { 
-				             widthArrow.
-				             widthLabel };
-		             yourself.
-	RSVerticalLineLayout new
-		gapSize: 5;
-		on: widthInfo nodes.
-	widthInfo adjustToChildren.
-	^ widthInfo
-]
-
 { #category : #interactions }
 MBLegend >> onClick [ 
 	self class legendState: self class legendState not
-]
-
-{ #category : #'as yet unclassified' }
-MBLegend >> shapeBoxDescription [ 
-
-	| composite marker widthArrow widthLabel |
-	composite := RSComposite new
-		border: (RSBorder new color: Color black; width: 2);
-		extent: self boxLabelExtent;
-		color: Color white;
-		yourself.
-	marker := RSShapeFactory arrow
-		size: 10;
-		color: Color black;
-		yourself.
-	widthArrow := RSLine new
-		startPoint: 0@0;
-		endPoint: self boxLabelExtent x @ 0;
-		color: Color black;
-		marker: marker;
-		yourself.
-	widthLabel := RSLabel new
-		text: 'Number of accesses';
-		color: Color black;
-		yourself. 
-	RSVerticalLineLayout new gapSize: 5; on: { composite. widthArrow }.
-	RSHorizontalLineLayout new gapSize: 5; on: { { composite. widthArrow } asGroup. widthLabel }.
-	^ { composite. widthArrow. widthLabel } asGroup asShape 
 ]
