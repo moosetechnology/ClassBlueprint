@@ -50,7 +50,7 @@ OBAttributeModel >> initializeAttributeAccess [
 { #category : #initialization }
 OBAttributeModel >> initializeDescription [
 
-	description := MBAttributeDescription newFrom: self.
+	description := OBAttributeDescription newFrom: self.
 
 ]
 

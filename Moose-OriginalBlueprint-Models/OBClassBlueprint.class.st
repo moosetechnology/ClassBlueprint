@@ -249,7 +249,7 @@ OBClassBlueprint >> initializeExternals [
 
 	externals := self methods
 		              select: [ :each | each isExternal ] thenCollect: [ :each | 
-		             MBExternalModel newFrom: each ]
+		             OBExternalModel newFrom: each ]
 ]
 
 { #category : #initialization }
@@ -258,7 +258,7 @@ OBClassBlueprint >> initializeInitializers [
 	
 	initializers := self methods select: [ :each | 
 		                 each isInitializer ] thenCollect: [ :each | 
-		                MBInitializationModel newFrom: each ]
+		                OBInitializationModel newFrom: each ]
 ]
 
 { #category : #initialization }
@@ -266,7 +266,7 @@ OBClassBlueprint >> initializeInternals [
 
 	
 	internals := self methods select: [ :each | each isInternal ] thenCollect: [ :each | 
-		             MBInternalModel newFrom: each ]
+		             OBInternalModel newFrom: each ] 
 ]
 
 { #category : #initialization }

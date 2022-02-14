@@ -81,7 +81,7 @@ OBAbstractMethodModel >> create [
 { #category : #initialization }
 OBAbstractMethodModel >> initializeDescription [
 
-	description := MBMethodDescription newFrom: self.
+	description := OBMethodDescription newFrom: self.
 
 ]
 
