@@ -210,8 +210,8 @@ MBClassBlueprint >> connectSource: source withAll: targets [
 MBClassBlueprint >> connectTarget: aTarget withAll: sources [
 
 	| connectionInstance targetModel sourceModels |
-	connectionInstance := aTarget newIncomingConnection.
 	targetModel := self models detect: [ :each | each entity = aTarget ].
+		connectionInstance := targetModel newIncomingConnection.
 	sourceModels := (sources collect: [ :aSource | 
 		                 self models
 			                 detect: [ :model | 

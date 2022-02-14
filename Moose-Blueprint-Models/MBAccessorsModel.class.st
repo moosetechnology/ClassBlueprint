@@ -85,6 +85,14 @@ MBAccessorsModel >> name [
 	^ entity name
 ]
 
+{ #category : #'instance creation' }
+MBAccessorsModel >> newIncomingConnection [ 
+
+	^ MBAccessorInvocationModel new 
+		initializeDescription;
+		yourself
+]
+
 { #category : #printing }
 MBAccessorsModel >> printOn: aStream [ 
 	aStream nextPutAll: '('. 

@@ -66,6 +66,14 @@ MBAttributeModel >> internalAccesses [
 	^ self entity queryIncomingAccesses select: [ :each | each source parentType = entity parentType ].
 ]
 
+{ #category : #'instance creation' }
+MBAttributeModel >> newIncomingConnection [
+
+	^ MBAttributeAccessModel new
+		  initializeDescription;
+		  yourself
+]
+
 { #category : #printing }
 MBAttributeModel >> printOn: aStream [
 
