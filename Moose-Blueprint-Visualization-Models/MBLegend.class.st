@@ -25,7 +25,7 @@ MBLegend class >> buildFor: aVisualization [
 { #category : #accessing }
 MBLegend class >> legendState [
 
-	^ legendState ifNil: [  true ]
+	^ legendState ifNil: [  false ]
 ]
 
 { #category : #accessing }
