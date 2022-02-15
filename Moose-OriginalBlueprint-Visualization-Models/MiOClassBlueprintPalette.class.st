@@ -1,6 +1,13 @@
-Extension { #name : #MiOClassBlueprintPalette }
+"
+I am the palette for the class blueprint visualization. I hold the colors of class types.
+"
+Class {
+	#name : #MiOClassBlueprintPalette,
+	#superclass : #MiVisualizationPalette,
+	#category : #'Moose-OriginalBlueprint-Visualization-Models'
+}
 
-{ #category : #'*Moose-OriginalBlueprint-Visualization-Models' }
+{ #category : #style }
 MiOClassBlueprintPalette >> beDefaultStyle [
 
 	self
