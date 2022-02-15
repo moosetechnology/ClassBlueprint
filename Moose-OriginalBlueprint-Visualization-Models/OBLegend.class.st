@@ -4,6 +4,9 @@ I am a small class representing the legend of the ClassBlueprint visualization
 Class {
 	#name : #OBLegend,
 	#superclass : #Object,
+	#classInstVars : [
+		'legendState'
+	],
 	#category : #'Moose-OriginalBlueprint-Visualization-Models'
 }
 
@@ -17,6 +20,18 @@ OBLegend class >> build [
 OBLegend class >> buildFor: aVisualization [ 
 	^ self new 
 		buildFor: aVisualization 
+]
+
+{ #category : #accessing }
+OBLegend class >> legendState [
+
+	^ legendState ifNil: [  false ] 
+]
+
+{ #category : #accessing }
+OBLegend class >> legendState: aBoolean [
+
+	 legendState := aBoolean
 ]
 
 { #category : #building }
@@ -110,7 +125,14 @@ OBLegend >> buildFor: aVisualization [
 		outer;
 		right;
 		offset: 70 @ -200.
-	legend build.
+	legend
+		beFixedWithTitle: 'Legend';
+		build.
+	aVisualization canvas fixedShapes
+		select: [ :each | each isComposite ]
+		thenDo: [ :each | 
+			self class legendState ifFalse: [ each click ].
+			each when: RSMouseClick send: #onClick to: self ].
 	^ legend
 ]
 
@@ -201,4 +223,9 @@ OBLegend >> methodInfo [
 		             widthLine.
 		             heightLine } asGroup asShape.
 	^ composite
+]
+
+{ #category : #building }
+OBLegend >> onClick [ 
+	self class legendState: self class legendState not
 ]
