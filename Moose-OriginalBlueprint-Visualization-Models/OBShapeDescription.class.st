@@ -13,7 +13,7 @@ Class {
 { #category : #accessing }
 OBShapeDescription >> color [
 
-	^ MiClassBlueprintPalette new colorAt: entityModel  type
+	^ MiOClassBlueprintPalette new colorAt: entityModel  type
 ]
 
 { #category : #accessing }

@@ -47,7 +47,7 @@ OBAccessorsModel >> attributeAccess [
 
 { #category : #accessing }
 OBAccessorsModel >> color [ 
-	^ MiClassBlueprintPalette new colorAt: self type
+	^ MiOClassBlueprintPalette new colorAt: self type
 ]
 
 { #category : #accessing }
@@ -88,7 +88,7 @@ OBAccessorsModel >> newIncomingConnection [
  
 	^ OBAccessorInvocationModel new 
 		initializeDescription;
-		yourself
+		yourself 
 ]
 
 { #category : #printing }

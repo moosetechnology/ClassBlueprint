@@ -50,11 +50,11 @@ OBMethodDescription >> height [
 OBMethodDescription >> initializeSize [
 
 	height := entityModel entity numberOfLinesOfCode
-	          + MBView defaultBoxesHeight.
+	          + OBView defaultBoxesHeight.
 	width := entityModel invocations outgoing isEmpty
-		         ifTrue: [ MBView defaultBoxesWidth ]
+		         ifTrue: [ OBView defaultBoxesWidth ]
 		         ifFalse: [ 
-			         entityModel invocations outgoing size * 2+ MBView defaultBoxesWidth 
+			         entityModel invocations outgoing size * 2+ OBView defaultBoxesWidth 
 				         ]
 ]
 

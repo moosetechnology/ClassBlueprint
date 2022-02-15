@@ -153,7 +153,7 @@ OBView >> buildLayers [
 { #category : #building }
 OBView >> buildLegend [
 
-	MBLegend buildFor: self 
+	OBLegend buildFor: self 
 ]
 
 { #category : #accessing }
@@ -169,7 +169,7 @@ OBView >> classModel: aClassModel [
 { #category : #shapes }
 OBView >> edgeBuilder [
 
-	^ MBEdgeBuilder line
+	^ OBEdgeBuilder line
 		  shapes: (self canvas nodes flatCollect: #children);
 		  withHorizontalAttachPoint;
 		  yourself 
@@ -194,11 +194,11 @@ OBView >> externalsLayer [
 OBView >> initialize [
 
 	super initialize.
-	initializersLayer := MBInitializersLayerModel new.
-	externalsLayer := MBExternalsLayerModel new.
-	internalsLayer := MBInternalsLayerModel new.
-	accessorsLayer := MBAccessorsLayerModel new.
-	attributesLayer := MBAttributesLayerModel new.
+	initializersLayer := OBInitializersLayerModel new.
+	externalsLayer := OBExternalsLayerModel new.
+	internalsLayer := OBInternalsLayerModel new.
+	accessorsLayer := OBAccessorsLayerModel new.
+	attributesLayer := OBAttributesLayerModel new.
 	border := RSBorder new
 		          color: Color black muchDarker;
 		          width: 1.5;

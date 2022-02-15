@@ -64,7 +64,7 @@ OBAttributeModel >> newIncomingConnection [
 
 	 ^ OBAttributeAccessModel new
 		  initializeDescription;
-		  yourself
+		  yourself 
 ]
 
 { #category : #printing }

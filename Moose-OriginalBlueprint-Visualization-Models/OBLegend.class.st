@@ -123,7 +123,7 @@ OBLegend >> gapSize [
 { #category : #building }
 OBLegend >> legendInfo [
 
-	^ MiClassBlueprintPalette new colorsDictionary
+	^ MiOClassBlueprintPalette new colorsDictionary
 ]
 
 { #category : #'as yet unclassified' }

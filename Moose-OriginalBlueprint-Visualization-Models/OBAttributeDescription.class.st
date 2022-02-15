@@ -32,10 +32,10 @@ OBAttributeDescription >> initializeSize [
 
 	height := (entityModel entity incomingAccesses select: [ :each | 
 		           each source parentType ~= entityModel entity parentType ])
-		          size + MBView defaultBoxesHeight.
+		          size + OBView defaultBoxesHeight.
 	width := (entityModel entity incomingAccesses select: [ :each | 
 		          each source parentType == entityModel entity parentType ])
-		         size + MBView defaultBoxesWidth
+		         size + OBView defaultBoxesWidth
 ]
 
 { #category : #accessing }
