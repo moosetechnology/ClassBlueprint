@@ -440,12 +440,12 @@ MBView >> nestLayers [
 		        (self firstLayer -> self fourthLayer).
 		        (self secondLayer -> self fifthLayer).
 		        (self thirdLayer -> self sixthLayer) } asOrderedDictionary.
-	self setSize: dict.	
+	self setSize: dict.
 	left := dict keys asGroup asShapeFor: dict keys.
 	right := dict values asGroup asShapeFor: dict values.
 	{ 
 		left.
-		right } asOrderedCollection .
+		right } asOrderedCollection.
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: { 
@@ -456,11 +456,14 @@ MBView >> nestLayers [
 		          right } asGroup asShapeFor: { 
 			          left.
 			          right }.
-	self canvas add: (layers border: border;yourself).
-	self canvas @ RSDraggable.
-	self canvas @ RSZoomableCanvasInteraction.
+	self canvas 
+		add: (layers
+			 border: border;
+			 yourself);
+		addInteraction: RSZoomableCanvasInteraction;
+		addInteraction: RSDraggableCanvasInteraction.
+	self canvas inspectorContext interactionsToBeRegistered removeAll.
 	self canvas edges do: [ :each | each update ].
-	self canvas @ RSDraggableCanvasInteraction.
 ]
 
 { #category : #'as yet unclassified' }
