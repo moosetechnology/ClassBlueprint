@@ -1,11 +1,11 @@
 Class {
-	#name : #BaselineOfClassBlueprint,
+	#name : #BaselineOfOriginalClassBlueprint,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfClassBlueprint
+	#category : #BaselineOfOriginalClassBlueprint
 }
 
 { #category : #baselines }
-BaselineOfClassBlueprint >> baseline: spec [
+BaselineOfOriginalClassBlueprint >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ "External dependencies""Packages"
