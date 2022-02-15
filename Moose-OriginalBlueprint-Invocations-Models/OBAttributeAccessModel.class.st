@@ -2,13 +2,13 @@
 Access to an attribute
 "
 Class {
-	#name : #MOAttributeAccessModel,
-	#superclass : #MOAbstractAccessingModel,
+	#name : #OBAttributeAccessModel,
+	#superclass : #OBAbstractAccessingModel,
 	#category : #'Moose-OriginalBlueprint-Invocations-Models'
 }
 
 { #category : #adding }
-MOAttributeAccessModel >> addIncomingConnections [
+OBAttributeAccessModel >> addIncomingConnections [
 
 	| invocationsModels |
 	invocationsModels := sources collect: [ :each | 
@@ -25,7 +25,7 @@ MOAttributeAccessModel >> addIncomingConnections [
 ]
 
 { #category : #accessing }
-MOAttributeAccessModel >> type [
+OBAttributeAccessModel >> type [
 
 	^ #attributeAccess
 ]

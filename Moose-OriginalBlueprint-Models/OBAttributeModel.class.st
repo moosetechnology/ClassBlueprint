@@ -62,7 +62,7 @@ OBAttributeModel >> internalAccesses [
 { #category : #'instance creation' }
 OBAttributeModel >> newIncomingConnection [
 
-	 ^ MOAttributeAccessModel new
+	 ^ OBAttributeAccessModel new
 		  initializeDescription;
 		  yourself
 ]

@@ -2,7 +2,7 @@
 I represent the invocation relation
 "
 Class {
-	#name : #MOAbstractAccessingModel,
+	#name : #OBAbstractAccessingModel,
 	#superclass : #OBAbstractModel,
 	#instVars : [
 		'sources',
@@ -12,19 +12,19 @@ Class {
 }
 
 { #category : #adding }
-MOAbstractAccessingModel >> addIncomingConnections [
+OBAbstractAccessingModel >> addIncomingConnections [
 
 	self subclassResponsibility 
 ]
 
 { #category : #initialization }
-MOAbstractAccessingModel >> initializeDescription [
+OBAbstractAccessingModel >> initializeDescription [
 
 	description := OBInvocationDescription newFrom: self
 ]
 
 { #category : #printing }
-MOAbstractAccessingModel >> printOn: aStream [
+OBAbstractAccessingModel >> printOn: aStream [
 
 	aStream nextPutAll: '('.
 	self target name asString printOn: aStream.
@@ -39,27 +39,27 @@ MOAbstractAccessingModel >> printOn: aStream [
 ]
 
 { #category : #accessing }
-MOAbstractAccessingModel >> sources [ 
+OBAbstractAccessingModel >> sources [ 
 	^ sources
 ]
 
 { #category : #accessing }
-MOAbstractAccessingModel >> sources: aCollection [
+OBAbstractAccessingModel >> sources: aCollection [
 	sources := aCollection 
 ]
 
 { #category : #accessing }
-MOAbstractAccessingModel >> target [
+OBAbstractAccessingModel >> target [
 	^ target
 ]
 
 { #category : #accessing }
-MOAbstractAccessingModel >> target: aTarget [ 
+OBAbstractAccessingModel >> target: aTarget [ 
 	target := aTarget 
 ]
 
 { #category : #'as yet unclassified' }
-MOAbstractAccessingModel >> target: aTarget sources: collection [ 
+OBAbstractAccessingModel >> target: aTarget sources: collection [ 
 	
 	^self  
 		target: aTarget;
@@ -69,6 +69,6 @@ MOAbstractAccessingModel >> target: aTarget sources: collection [
 ]
 
 { #category : #accessing }
-MOAbstractAccessingModel >> type [ 
+OBAbstractAccessingModel >> type [ 
 	self subclassResponsibility 
 ]

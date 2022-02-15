@@ -3,7 +3,7 @@ I represent the invocation relation of a method
 "
 Class {
 	#name : #OBIncomingInvocationsCollector,
-	#superclass : #MOAbstractInvocationsCollector,
+	#superclass : #OBAbstractInvocationsCollector,
 	#instVars : [
 		'target',
 		'sources'

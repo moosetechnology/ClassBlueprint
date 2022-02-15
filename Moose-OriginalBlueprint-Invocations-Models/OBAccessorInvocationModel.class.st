@@ -2,13 +2,13 @@
 I represent the invocation relation of an accessor: direct access
 "
 Class {
-	#name : #MOAccessorInvocationModel,
-	#superclass : #MOAbstractAccessingModel,
+	#name : #OBAccessorInvocationModel,
+	#superclass : #OBAbstractAccessingModel,
 	#category : #'Moose-OriginalBlueprint-Invocations-Models'
 }
 
 { #category : #adding }
-MOAccessorInvocationModel >> addIncomingConnections [
+OBAccessorInvocationModel >> addIncomingConnections [
 
 	| invocationsModels |
 	invocationsModels := sources collect: [ :each |  OBInvocationModel new
@@ -21,11 +21,11 @@ MOAccessorInvocationModel >> addIncomingConnections [
 ]
 
 { #category : #accessing }
-MOAccessorInvocationModel >> signature [ 
+OBAccessorInvocationModel >> signature [ 
 	^ entity signature
 ]
 
 { #category : #accessing }
-MOAccessorInvocationModel >> type [ 
+OBAccessorInvocationModel >> type [ 
 	^ #accessorInvocation
 ]

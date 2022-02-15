@@ -3,7 +3,7 @@ I collect the source and targets of an invocation then for each one I create a n
 "
 Class {
 	#name : #OBOutgoingInvocationsCollector,
-	#superclass : #MOAbstractInvocationsCollector,
+	#superclass : #OBAbstractInvocationsCollector,
 	#instVars : [
 		'source',
 		'targets'
