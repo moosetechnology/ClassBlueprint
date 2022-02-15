@@ -95,7 +95,7 @@ MBView >> attributes [
 
 	^ { 
 		  hibernerAttributesLayer.
-		  "superAttributesLayer."
+		  superAttributesLayer.
 		  attributesLayer.
 		  classVarsLayer } collect: [ :each | 
 		  self canvas shapeFromModel: each ]
@@ -197,15 +197,18 @@ MBView >> classSide [
 MBView >> classSideMethods [
 
 	| shape |
-	shape := 	self canvas shapeFromModel: classMethodsLayer.
+	shape := self canvas shapeFromModel: classMethodsLayer.
+	self highlight: shape.
 	RSHorizontalLineLayout new on: shape nodes.
 	^ shape
 ]
 
 { #category : #accessing }
 MBView >> classSideVars [
+
 	| shape |
 	shape := self canvas shapeFromModel: classVarsLayer.
+	self highlight: shape.
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
 ]
@@ -270,7 +273,7 @@ MBView >> fifthLayer [
 		            fifthLayer.
 		            self sixthLayer } max: [ :each | each width ].
 	fifthLayer width: maxWidth.
-	middleAttributeSide do: [ :each | each width: maxWidth  ].
+	middleAttributeSide do: [ :each | each width: maxWidth. self highlight: each ].
 	RSVerticalLineLayout new
 		gapSize: 0;
 		on: (middleAttributeSide as: RSGroup).
@@ -300,6 +303,7 @@ MBView >> hibernerAttributesComposite [
 
 	| shape |
 	shape := self canvas shapeFromModel: hibernerAttributesLayer.
+	self highlight: shape.
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
 ]
@@ -313,7 +317,7 @@ MBView >> hibernerAttributesLayer [
 { #category : #composite }
 MBView >> hibernerMethodsComposite [
 
-	| shape highlightable |
+	| shape |
 	shape := self canvas shapeFromModel: hibernersLayer.
 	"shapes := shape nodes copy.
 	layout := RSForceBasedLayout new.
@@ -321,16 +325,7 @@ MBView >> hibernerMethodsComposite [
 	layout
 		doNotUseProgressBar;
 		on: shapes."
-	highlightable := RSHighlightable new.
-	shape nodes @ (highlightable
-		 when: RSHighlightEvent do: [ :evt | 
-			 evt shape pushFront.
-			 highlightable record: evt shape selector: #color value: Color red ];
-		 when: RSUnHighlightEvent do: [ :evt | 
-			 evt shape pushBack.
-			 highlightable restore: evt shape selector: #color ]; withLines;
-		 yourself).
-
+	self highlight: shape.
 	RSHorizontalLineLayout new
 		gapSize: 5;
 		alignTop;
@@ -349,6 +344,21 @@ MBView >> hibernersLayers [
 	^ { 
 		  hibernerAttributesLayer.
 		  hibernersLayer } asOrderedCollection 
+]
+
+{ #category : #public }
+MBView >> highlight: aShape [ 
+	| highlightable |
+	highlightable := RSHighlightable new.
+	aShape nodes @ (highlightable
+		 when: RSHighlightEvent do: [ :evt | 
+			 evt shape pushFront.
+			 highlightable record: evt shape selector: #color value: Color red ];
+		 when: RSUnHighlightEvent do: [ :evt | 
+			 evt shape pushBack.
+			 highlightable restore: evt shape selector: #color ];
+		 withLines;
+		 yourself).
 ]
 
 { #category : #initialization }
@@ -466,7 +476,7 @@ MBView >> secondLayer [
 		            secondLayer.
 		            self thirdLayer } max: [ :each | each width ].
 	secondLayer width: maxWidth.
-	
+
 	secondLayer width = (instanceSide sum: [ :each | each width ]) 
 		ifFalse: [ 
 			instanceSide do: [ :each | 
@@ -477,7 +487,7 @@ MBView >> secondLayer [
 		             secondLayer.
 		             self fifthLayer } max: [ :each | each height ].
 	secondLayer height: maxHeight.
-	instanceSide do: [ :each | each height: maxHeight ].
+	instanceSide do: [ :each | each height: maxHeight. self highlight: each ].
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: secondLayer nodes.
@@ -522,6 +532,7 @@ MBView >> setSize: dict [
 
 { #category : #'as yet unclassified' }
 MBView >> sixthLayer [
+
 	| shape |
 	shape := self canvas shapeFromModel: classVarsLayer.
 	RSVerticalLineLayout new on: shape nodes.

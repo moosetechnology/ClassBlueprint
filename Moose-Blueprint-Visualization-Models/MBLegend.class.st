@@ -34,6 +34,74 @@ MBLegend class >> legendState: aBoolean [
 	 legendState := aBoolean
 ]
 
+{ #category : #'as yet unclassified' }
+MBLegend >> attributeInfo [
+
+	| attributeBox attributeLabel composite widthLine heightLine |
+	attributeBox := RSBox new.
+	attributeLabel := RSLabel new text: 'Attribute'.
+	attributeBox extent: attributeLabel extent + 10.
+	attributeBox
+		noPaint;
+		withBorder.
+	widthLine := RSLine new
+		             startPoint: 0 @ 0;
+		             endPoint: attributeBox width @ 0;
+		             marker: self marker;
+		             yourself.
+	heightLine := RSLine new
+		              startPoint: 0 @ 0;
+		              endPoint: 0 @ attributeBox height;
+		              marker: self marker;
+		              yourself.
+	RSVerticalLineLayout new
+		gapSize: 5;
+		on: { 
+				attributeBox.
+				widthLine }.
+	RSHorizontalLineLayout new
+		gapSize: 5;
+		on: { 
+				attributeBox.
+				heightLine }.
+	attributeLabel position: attributeBox position.
+	composite := { 
+		             attributeBox.
+		             attributeLabel.
+		             widthLine.
+		             heightLine } asGroup asShape.
+	^ composite
+]
+
+{ #category : #'as yet unclassified' }
+MBLegend >> attributeboxDescription [
+
+	| widthLabel heightLabel attributeBox |
+	widthLabel := RSLabel new text: 'Number of external accesses'.
+	heightLabel := RSLabel new text: 'Number of internal accesses'.
+	attributeBox := self attributeInfo.
+	RSVerticalLineLayout new
+		gapSize: 5;
+		on: { 
+				attributeBox.
+				widthLabel }.
+	RSHorizontalLineLayout new
+		gapSize: 5;
+		on: { 
+				attributeBox.
+				heightLabel }.
+	^ { 
+		  attributeBox.
+		  widthLabel.
+		  heightLabel } asGroup asShape
+		  padding: (Margin
+				   left: 0
+				   top: 10
+				   right: 0
+				   bottom: 0);
+		  yourself
+]
+
 { #category : #building }
 MBLegend >> buildFor: aVisualization [
 
@@ -45,7 +113,9 @@ MBLegend >> buildFor: aVisualization [
 	self legendInfo keysAndValuesDo: [ :key :value | 
 		legend text: key withBoxColor: value ].
 	legend layout layout gapSize: self gapSize.
-	legend shapes add: self methodBoxDescription.
+	legend shapes
+		add: self methodBoxDescription;
+		add: self attributeboxDescription.
 	legend legendDo: [ :shape | 
 		shape
 			withBorder;
@@ -58,12 +128,11 @@ MBLegend >> buildFor: aVisualization [
 	legend
 		beFixedWithTitle: 'Legend';
 		build.
-		aVisualization canvas fixedShapes
-			select: [ :each | each class = RSComposite ]
-			thenDo: [ :each | 
-			
-					self class legendState ifFalse: [ each click ].
-					each when: RSMouseClick send: #onClick to: self ].
+	aVisualization canvas fixedShapes
+		select: [ :each | each class = RSComposite ]
+		thenDo: [ :each | 
+			self class legendState ifFalse: [ each click ].
+			each when: RSMouseClick send: #onClick to: self ].
 	^ legend
 ]
 
