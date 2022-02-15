@@ -15,7 +15,6 @@ BaselineOfOriginalClassBlueprint >> baseline: spec [
 			with: [ spec requires: #( 'Moose-OriginalBlueprint-Models' ) ];
 			package: 'Moose-OriginalBlueprint-Visualization-Models'
 			with: [ spec requires: #( 'Moose-OriginalBlueprint-Invocations-Models' ) ];
-			package: 'Moose-OriginalBlueprint-Models-Tests' with: [ 
-				spec requires: #( 'Moose-OriginalBlueprint-Visualization-Models'
-						   'Moose-OriginalBlueprint-Models' 'Moose-OriginalBlueprint-Invocations-Models') ] ]
+			package: 'Moose-OriginalBlueprint-Models-Tests'
+			with: [ spec requires: #( 'Moose-OriginalBlueprint-Visualization-Models' ) ] ]
 ]
