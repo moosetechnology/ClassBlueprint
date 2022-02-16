@@ -2,8 +2,8 @@
 I collect the source and targets of an invocation then for each one I create a new invocation with the source and target and add it to the method model
 "
 Class {
-	#name : #MBOutgoingInvocationsCollector,
-	#superclass : #MBAbstractInvocationsCollector,
+	#name : #CBOutgoingInvocationsCollector,
+	#superclass : #CBAbstractInvocationsCollector,
 	#instVars : [
 		'source',
 		'targets'
@@ -12,10 +12,10 @@ Class {
 }
 
 { #category : #adding }
-MBOutgoingInvocationsCollector >> addOutgoingConnection [
+CBOutgoingInvocationsCollector >> addOutgoingConnection [
 	| invocationsModels |
 	
-	invocationsModels := targets collect: [ :each |  MBInvocationModel new
+	invocationsModels := targets collect: [ :each |  CBInvocationModel new
 				                     source: source;
 				                     target: each;
 				yourself ].
@@ -27,7 +27,7 @@ MBOutgoingInvocationsCollector >> addOutgoingConnection [
 ]
 
 { #category : #printing }
-MBOutgoingInvocationsCollector >> printOn: aStream [
+CBOutgoingInvocationsCollector >> printOn: aStream [
 
 	aStream nextPutAll: '('.
 	self source name asString printOn: aStream.
@@ -40,17 +40,17 @@ MBOutgoingInvocationsCollector >> printOn: aStream [
 ]
 
 { #category : #accessing }
-MBOutgoingInvocationsCollector >> source [ 
+CBOutgoingInvocationsCollector >> source [ 
 	^ source
 ]
 
 { #category : #accessing }
-MBOutgoingInvocationsCollector >> source: aSource [
+CBOutgoingInvocationsCollector >> source: aSource [
 	source := aSource
 ]
 
 { #category : #'as yet unclassified' }
-MBOutgoingInvocationsCollector >> source: aSource targets: candidates [
+CBOutgoingInvocationsCollector >> source: aSource targets: candidates [
 
 	"Deleting the source from the candidates is risky in case of a recursive function"
 	^ self
@@ -61,11 +61,11 @@ MBOutgoingInvocationsCollector >> source: aSource targets: candidates [
 ]
 
 { #category : #accessing }
-MBOutgoingInvocationsCollector >> targets [
+CBOutgoingInvocationsCollector >> targets [
 	^ targets
 ]
 
 { #category : #accessing }
-MBOutgoingInvocationsCollector >> targets: collection [
+CBOutgoingInvocationsCollector >> targets: collection [
 	targets := collection
 ]

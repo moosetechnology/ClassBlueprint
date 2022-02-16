@@ -140,12 +140,12 @@ FamixStMethod >> isOnlyCalledInternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> newIncomingConnection [
 	^ (self isAccessor 
-		ifTrue: [ MBAccessorInvocationModel new initializeDescription;yourself] 
-		ifFalse: [ MBIncomingInvocationsCollector new ]) 
+		ifTrue: [ CBAccessorInvocationModel new initializeDescription;yourself] 
+		ifFalse: [ CBIncomingInvocationsCollector new ]) 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> newOutgoingConnection [
 
-	^ MBOutgoingInvocationsCollector new 
+	^ CBOutgoingInvocationsCollector new 
 ]

@@ -161,12 +161,12 @@ FamixJavaMethod >> isOnlyCalledInternally [
 FamixJavaMethod >> newIncomingConnection [
 
 	^ (self isAccessor
-		   ifTrue: [ MBAccessorInvocationModel new initializeDescription;yourself]
-		   ifFalse: [ MBIncomingInvocationsCollector new ]) 
+		   ifTrue: [ CBAccessorInvocationModel new initializeDescription;yourself]
+		   ifFalse: [ CBIncomingInvocationsCollector new ]) 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> newOutgoingConnection [
 
-	^ MBOutgoingInvocationsCollector new
+	^ CBOutgoingInvocationsCollector new
 ]

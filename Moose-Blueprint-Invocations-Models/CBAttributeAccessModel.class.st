@@ -2,17 +2,17 @@
 Access to an attribute
 "
 Class {
-	#name : #MBAttributeAccessModel,
-	#superclass : #MBAbstractAccessingModel,
+	#name : #CBAttributeAccessModel,
+	#superclass : #CBAbstractAccessingModel,
 	#category : #'Moose-Blueprint-Invocations-Models'
 }
 
 { #category : #adding }
-MBAttributeAccessModel >> addIncomingConnections [
+CBAttributeAccessModel >> addIncomingConnections [
 
 	| invocationsModels |
 	invocationsModels := sources collect: [ :each | 
-		                     MBInvocationModel new
+		                     CBInvocationModel new
 			                     source: each;
 			                     target: target;
 			                     yourself ].
@@ -25,7 +25,7 @@ MBAttributeAccessModel >> addIncomingConnections [
 ]
 
 { #category : #accessing }
-MBAttributeAccessModel >> type [
+CBAttributeAccessModel >> type [
 
 	^ #attributeAccess
 ]

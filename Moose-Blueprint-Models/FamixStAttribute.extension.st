@@ -9,7 +9,7 @@ FamixStAttribute >> isCalledIn: aFamixClass [
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStAttribute >> newIncomingConnection [ 
-	^ MBAttributeAccessModel new 
+	^ CBAttributeAccessModel new 
 		initializeDescription; 
 		yourself
 ]

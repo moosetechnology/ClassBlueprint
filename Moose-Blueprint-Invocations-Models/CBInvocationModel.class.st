@@ -2,7 +2,7 @@
 I represent the method invocation model
 "
 Class {
-	#name : #MBInvocationModel,
+	#name : #CBInvocationModel,
 	#superclass : #Object,
 	#instVars : [
 		'source',
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #printing }
-MBInvocationModel >> printOn: aStream [ 
+CBInvocationModel >> printOn: aStream [ 
 	aStream 
 		nextPutAll: '(Source: ';
 		nextPutAll: source name;
@@ -23,21 +23,21 @@ MBInvocationModel >> printOn: aStream [
 ]
 
 { #category : #accessing }
-MBInvocationModel >> source [ 
+CBInvocationModel >> source [ 
 	^ source
 ]
 
 { #category : #accessing }
-MBInvocationModel >> source: aSource [
+CBInvocationModel >> source: aSource [
 	 source := aSource
 ]
 
 { #category : #accessing }
-MBInvocationModel >> target [ 
+CBInvocationModel >> target [ 
 	^ target
 ]
 
 { #category : #accessing }
-MBInvocationModel >> target: aTarget [
+CBInvocationModel >> target: aTarget [
 	 target := aTarget
 ]

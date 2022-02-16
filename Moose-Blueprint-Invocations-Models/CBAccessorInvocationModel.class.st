@@ -2,16 +2,16 @@
 I represent the invocation relation of an accessor: direct access
 "
 Class {
-	#name : #MBAccessorInvocationModel,
-	#superclass : #MBAbstractAccessingModel,
+	#name : #CBAccessorInvocationModel,
+	#superclass : #CBAbstractAccessingModel,
 	#category : #'Moose-Blueprint-Invocations-Models'
 }
 
 { #category : #adding }
-MBAccessorInvocationModel >> addIncomingConnections [
+CBAccessorInvocationModel >> addIncomingConnections [
 
 	| invocationsModels |
-	invocationsModels := sources collect: [ :each |  MBInvocationModel new
+	invocationsModels := sources collect: [ :each |  CBInvocationModel new
 				                     source: each;
 				                     target: target;
 				yourself ].
@@ -21,11 +21,11 @@ MBAccessorInvocationModel >> addIncomingConnections [
 ]
 
 { #category : #accessing }
-MBAccessorInvocationModel >> signature [ 
+CBAccessorInvocationModel >> signature [ 
 	^ entity signature
 ]
 
 { #category : #accessing }
-MBAccessorInvocationModel >> type [ 
+CBAccessorInvocationModel >> type [ 
 	^ #accessorInvocation
 ]

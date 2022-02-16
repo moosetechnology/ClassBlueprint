@@ -2,8 +2,8 @@
 I represent the invocation relation
 "
 Class {
-	#name : #MBAbstractAccessingModel,
-	#superclass : #MBAbstractModel,
+	#name : #CBAbstractAccessingModel,
+	#superclass : #CBAbstractModel,
 	#instVars : [
 		'sources',
 		'target'
@@ -12,19 +12,19 @@ Class {
 }
 
 { #category : #adding }
-MBAbstractAccessingModel >> addIncomingConnections [
+CBAbstractAccessingModel >> addIncomingConnections [
 
 	self subclassResponsibility 
 ]
 
 { #category : #initialization }
-MBAbstractAccessingModel >> initializeDescription [
+CBAbstractAccessingModel >> initializeDescription [
 
 	description := MBInvocationDescription newFrom: self
 ]
 
 { #category : #printing }
-MBAbstractAccessingModel >> printOn: aStream [
+CBAbstractAccessingModel >> printOn: aStream [
 
 	aStream nextPutAll: '('.
 	self target name asString printOn: aStream.
@@ -39,27 +39,27 @@ MBAbstractAccessingModel >> printOn: aStream [
 ]
 
 { #category : #accessing }
-MBAbstractAccessingModel >> sources [ 
+CBAbstractAccessingModel >> sources [ 
 	^ sources
 ]
 
 { #category : #accessing }
-MBAbstractAccessingModel >> sources: aCollection [
+CBAbstractAccessingModel >> sources: aCollection [
 	sources := aCollection 
 ]
 
 { #category : #accessing }
-MBAbstractAccessingModel >> target [
+CBAbstractAccessingModel >> target [
 	^ target
 ]
 
 { #category : #accessing }
-MBAbstractAccessingModel >> target: aTarget [ 
+CBAbstractAccessingModel >> target: aTarget [ 
 	target := aTarget 
 ]
 
 { #category : #'as yet unclassified' }
-MBAbstractAccessingModel >> target: aTarget sources: collection [ 
+CBAbstractAccessingModel >> target: aTarget sources: collection [ 
 	
 	^self  
 		target: aTarget;
@@ -69,6 +69,6 @@ MBAbstractAccessingModel >> target: aTarget sources: collection [
 ]
 
 { #category : #accessing }
-MBAbstractAccessingModel >> type [ 
+CBAbstractAccessingModel >> type [ 
 	self subclassResponsibility 
 ]

@@ -88,7 +88,7 @@ MBAccessorsModel >> name [
 { #category : #'instance creation' }
 MBAccessorsModel >> newIncomingConnection [ 
 
-	^ MBAccessorInvocationModel new 
+	^ CBAccessorInvocationModel new 
 		initializeDescription;
 		yourself
 ]

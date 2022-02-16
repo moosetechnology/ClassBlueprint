@@ -3,7 +3,7 @@ I represent a method of Class Blueprint.
 "
 Class {
 	#name : #MBAbstractMethodModel,
-	#superclass : #MBAbstractModel,
+	#superclass : #CBAbstractModel,
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
@@ -93,7 +93,7 @@ MBAbstractMethodModel >> create [
 
 	accessorInvocations := OrderedCollection new.
 	attributeAccess := OrderedCollection new.
-	invocations := MBInvocations new.
+	invocations := CBInvocations new.
 	complexity := entity computeCyclomaticComplexity.
 	"self initializeDescription"
 ]
@@ -197,7 +197,7 @@ MBAbstractMethodModel >> modelType: aSymbol [
 { #category : #'instance creation' }
 MBAbstractMethodModel >> newIncomingConnection [ 
 
-	^ MBIncomingInvocationsCollector new 
+	^ CBIncomingInvocationsCollector new 
 ]
 
 { #category : #'as yet unclassified' }
