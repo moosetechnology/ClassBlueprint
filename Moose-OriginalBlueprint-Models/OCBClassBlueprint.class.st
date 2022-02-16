@@ -249,7 +249,7 @@ OCBClassBlueprint >> initializeExternals [
 
 	externals := self methods
 		              select: [ :each | each isExternal ] thenCollect: [ :each | 
-		             CBExternalModel newFrom: each ]
+		             OCBExternalModel newFrom: each ]
 ]
 
 { #category : #initialization }
@@ -258,7 +258,7 @@ OCBClassBlueprint >> initializeInitializers [
 	
 	initializers := self methods select: [ :each | 
 		                 each isInitializer ] thenCollect: [ :each | 
-		                CBInitializationModel newFrom: each ]
+		                OCBInitializationModel newFrom: each ]
 ]
 
 { #category : #initialization }
@@ -266,7 +266,7 @@ OCBClassBlueprint >> initializeInternals [
 
 	
 	internals := self methods select: [ :each | each isInternal ] thenCollect: [ :each | 
-		             CBInternalModel newFrom: each ] 
+		             OCBInternalModel newFrom: each ] 
 ]
 
 { #category : #initialization }

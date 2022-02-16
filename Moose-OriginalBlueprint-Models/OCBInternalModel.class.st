@@ -1,5 +1,5 @@
 Class {
-	#name : #CBInternalModel,
+	#name : #OCBInternalModel,
 	#superclass : #OCBAbstractMethodModel,
 	#category : #'Moose-OriginalBlueprint-Models'
 }
