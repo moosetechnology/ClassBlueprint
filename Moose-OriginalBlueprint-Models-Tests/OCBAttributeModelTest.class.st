@@ -2,7 +2,7 @@
 A MBAttributeModelTest is a test class for testing the behavior of MBAttributeModel
 "
 Class {
-	#name : #OBAttributeModelTest,
+	#name : #OCBAttributeModelTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'model',
@@ -22,7 +22,7 @@ Class {
 }
 
 { #category : #initialization }
-OBAttributeModelTest >> setUp [
+OCBAttributeModelTest >> setUp [
 
 	model := FamixJavaModel new.
 	externalModel := FamixJavaModel new.
@@ -46,5 +46,5 @@ OBAttributeModelTest >> setUp [
 		                     accessor: externalGetMethod;
 		                     variable: attribute;
 		                     mooseModel: externalModel.
-	classBlueprint := OBClassBlueprint newFrom: model
+	classBlueprint := OCBClassBlueprint newFrom: model
 ]

@@ -2,7 +2,7 @@
 I represent a model for a FAMIXClass
 "
 Class {
-	#name : #OBClassBlueprint,
+	#name : #OCBClassBlueprint,
 	#superclass : #Object,
 	#instVars : [
 		'attributes',
@@ -16,7 +16,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-OBClassBlueprint class >> newFrom: aFamixClassEntity [
+OCBClassBlueprint class >> newFrom: aFamixClassEntity [
 
 	^ self new 
 		entity: aFamixClassEntity;
@@ -24,48 +24,48 @@ OBClassBlueprint class >> newFrom: aFamixClassEntity [
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> accessorInvocations [
+OCBClassBlueprint >> accessorInvocations [
 
 	^  self accessors flatCollect: #accessorInvocations.
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> accessorInvocationsFrom: aSource [
+OCBClassBlueprint >> accessorInvocationsFrom: aSource [
 
 	^ (self accessorInvocations asSet flattened select: [ :each | 
 		   each source = aSource ]) collect: [ :each | each target ]
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> accessors [ 
+OCBClassBlueprint >> accessors [ 
 	^ accessors
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> accessors: accessorMethods [
+OCBClassBlueprint >> accessors: accessorMethods [
 	accessors :=accessorMethods 
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> allAttributeAccesses [
+OCBClassBlueprint >> allAttributeAccesses [
 
 	^ self models collect: [ :each | each attributeAccess ]
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> allAttributes [
+OCBClassBlueprint >> allAttributes [
 
 	^ attributes
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> attributeAccess [
+OCBClassBlueprint >> attributeAccess [
 
 	^ self attributes collect: #attributeAccess
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> attributeAccessesFrom: aSource [
+OCBClassBlueprint >> attributeAccessesFrom: aSource [
 
 	^ (self attributeAccess asSet flattened select: [ :each | 
 		           each source = aSource ]) collect: [ :each | each target ].
@@ -73,24 +73,24 @@ OBClassBlueprint >> attributeAccessesFrom: aSource [
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> attributes [ 
+OCBClassBlueprint >> attributes [ 
 	^ attributes
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> attributes: attributeModels [
+OCBClassBlueprint >> attributes: attributeModels [
 	attributes := attributeModels
 ]
 
 { #category : #'as yet unclassified' }
-OBClassBlueprint >> connectAccessors [
+OCBClassBlueprint >> connectAccessors [
 
 	self connectOutgoingAccesses.
 	self connectIncomingAccesses.
 ]
 
 { #category : #building }
-OBClassBlueprint >> connectAttributes [
+OCBClassBlueprint >> connectAttributes [
 
 	"the receiver is the variable"
 
@@ -101,7 +101,7 @@ OBClassBlueprint >> connectAttributes [
 ]
 
 { #category : #'as yet unclassified' }
-OBClassBlueprint >> connectIncomingAccesses [
+OCBClassBlueprint >> connectIncomingAccesses [
 	
 	 accessors do: [ :each | 
 		| sources |
@@ -110,7 +110,7 @@ OBClassBlueprint >> connectIncomingAccesses [
 ]
 
 { #category : #building }
-OBClassBlueprint >> connectIncomingInvocations [ 
+OCBClassBlueprint >> connectIncomingInvocations [ 
 
 	self models do: [ :each | 
 		| sources |
@@ -120,14 +120,14 @@ OBClassBlueprint >> connectIncomingInvocations [
 ]
 
 { #category : #building }
-OBClassBlueprint >> connectInvocations [
+OCBClassBlueprint >> connectInvocations [
 
 	self connectOutgoingInvocations.
 	self connectIncomingInvocations
 ]
 
 { #category : #'as yet unclassified' }
-OBClassBlueprint >> connectOutgoingAccesses [
+OCBClassBlueprint >> connectOutgoingAccesses [
 	
 	 accessors do: [ :accessor | 
 		| att |
@@ -137,7 +137,7 @@ OBClassBlueprint >> connectOutgoingAccesses [
 ]
 
 { #category : #building }
-OBClassBlueprint >> connectOutgoingInvocations [
+OCBClassBlueprint >> connectOutgoingInvocations [
 
 	self methodModels do: [ :each | 
 		| candidateTargets |
@@ -148,7 +148,7 @@ OBClassBlueprint >> connectOutgoingInvocations [
 ]
 
 { #category : #building }
-OBClassBlueprint >> connectSource: source withAll: targets [
+OCBClassBlueprint >> connectSource: source withAll: targets [
 
 	| connectionInstance sourceModel targetModels |
 	connectionInstance := source newOutgoingConnection.
@@ -165,7 +165,7 @@ OBClassBlueprint >> connectSource: source withAll: targets [
 ]
 
 { #category : #building }
-OBClassBlueprint >> connectTarget: aTarget withAll: sources [
+OCBClassBlueprint >> connectTarget: aTarget withAll: sources [
 
 	| connectionInstance targetModel sourceModels |
 	targetModel := self models detect: [ :each | each entity = aTarget ].
@@ -182,7 +182,7 @@ OBClassBlueprint >> connectTarget: aTarget withAll: sources [
 ]
 
 { #category : #building }
-OBClassBlueprint >> create [
+OCBClassBlueprint >> create [
 
 	"the order is important in the sens that: internals are defined as invoked by methods in the same class, and hiberners are methods that are also invoked internally/externally and can belong to a dead branche"
 
@@ -197,28 +197,28 @@ OBClassBlueprint >> create [
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> entity [ 
+OCBClassBlueprint >> entity [ 
 	^ entity
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> entity: aClass [
+OCBClassBlueprint >> entity: aClass [
 
 	 entity := aClass
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> externals [ 
+OCBClassBlueprint >> externals [ 
 	^ externals
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> externals: externalMethods [
+OCBClassBlueprint >> externals: externalMethods [
 	externals := externalMethods
 ]
 
 { #category : #initialization }
-OBClassBlueprint >> initialize [
+OCBClassBlueprint >> initialize [
 
 	accessors := OrderedCollection new.
 	attributes := OrderedCollection new.
@@ -228,74 +228,74 @@ OBClassBlueprint >> initialize [
 ]
 
 { #category : #initialization }
-OBClassBlueprint >> initializeAcessors [
+OCBClassBlueprint >> initializeAcessors [
 
 	accessors := self methods 
 		              select: [ :each | each isAccessor ] thenCollect: [ :each | 
-		             OBAccessorsModel newFrom: each ]
+		             CBAccessorsModel newFrom: each ]
 ]
 
 { #category : #initialization }
-OBClassBlueprint >> initializeAttributes [
+OCBClassBlueprint >> initializeAttributes [
 
 	attributes := (entity attributes select: [ :each | 
 		               each incomingAccesses isNotEmpty and: [ 
 			               each isClassSide not ] ]) collect: [ :anAttribute | 
-		              OBAttributeModel newFrom: anAttribute ]
+		              CBAttributeModel newFrom: anAttribute ]
 ]
 
 { #category : #initialization }
-OBClassBlueprint >> initializeExternals [
+OCBClassBlueprint >> initializeExternals [
 
 	externals := self methods
 		              select: [ :each | each isExternal ] thenCollect: [ :each | 
-		             OBExternalModel newFrom: each ]
+		             CBExternalModel newFrom: each ]
 ]
 
 { #category : #initialization }
-OBClassBlueprint >> initializeInitializers [
+OCBClassBlueprint >> initializeInitializers [
 
 	
 	initializers := self methods select: [ :each | 
 		                 each isInitializer ] thenCollect: [ :each | 
-		                OBInitializationModel newFrom: each ]
+		                CBInitializationModel newFrom: each ]
 ]
 
 { #category : #initialization }
-OBClassBlueprint >> initializeInternals [
+OCBClassBlueprint >> initializeInternals [
 
 	
 	internals := self methods select: [ :each | each isInternal ] thenCollect: [ :each | 
-		             OBInternalModel newFrom: each ] 
+		             CBInternalModel newFrom: each ] 
 ]
 
 { #category : #initialization }
-OBClassBlueprint >> initializeModelDescriptions [ 
+OCBClassBlueprint >> initializeModelDescriptions [ 
 	self pureMethodModels do: [ :each | each initializeDescription  ]
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> initializers [
+OCBClassBlueprint >> initializers [
 	^ initializers
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> initializers: initializerMethods [
+OCBClassBlueprint >> initializers: initializerMethods [
 	initializers := initializerMethods
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> internals [
+OCBClassBlueprint >> internals [
 	^ internals
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> internals: internalMethods [
+OCBClassBlueprint >> internals: internalMethods [
 	internals := internalMethods
 ]
 
 { #category : #building }
-OBClassBlueprint >> makeConnections [
+OCBClassBlueprint >> makeConnections [
 
 	self connectAttributes.
 	self connectAccessors.
@@ -304,7 +304,7 @@ OBClassBlueprint >> makeConnections [
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> methodInvocations [
+OCBClassBlueprint >> methodInvocations [
 	| result |
 	result :=  (self methodModels difference: accessors) collect: [ :each | each invocations ].
 
@@ -312,34 +312,34 @@ OBClassBlueprint >> methodInvocations [
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> methodInvocationsFrom: aSource [
+OCBClassBlueprint >> methodInvocationsFrom: aSource [
 
 	^ ((self methodInvocations flatCollect: #outgoing) select: [ :each | 
 		   each source = aSource ]) collect: [ :each | each target ]
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> methodModels [
+OCBClassBlueprint >> methodModels [
 
 	^ initializers , externals , internals , accessors 
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> methods [ 
+OCBClassBlueprint >> methods [ 
 	^ entity methods reject: [ :each | 
 		                  (self methodModels collect: [ :aMethod | aMethod entity ]) includes:
 			                  each ]
 ]
 
 { #category : #accessing }
-OBClassBlueprint >> models [
+OCBClassBlueprint >> models [
 
 	^ self methodModels , self accessors
 	  , self attributes 
 ]
 
 { #category : #'as yet unclassified' }
-OBClassBlueprint >> pureMethodModels [
+OCBClassBlueprint >> pureMethodModels [
 
 	^ initializers , externals , internals
 ]

@@ -20,7 +20,7 @@ CBAbstractAccessingModel >> addIncomingConnections [
 { #category : #initialization }
 CBAbstractAccessingModel >> initializeDescription [
 
-	description := OBInvocationDescription newFrom: self
+	description := CBInvocationDescription newFrom: self
 ]
 
 { #category : #printing }

@@ -1,5 +1,5 @@
 Class {
-	#name : #OBMooseBlueprintTest,
+	#name : #OCBMooseBlueprintTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'model',
@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-OBMooseBlueprintTest >> importProject: aPath [ 
+OCBMooseBlueprintTest >> importProject: aPath [ 
  
 	| m |
 	aPath asFileReference 
@@ -25,23 +25,23 @@ OBMooseBlueprintTest >> importProject: aPath [
 ]
 
 { #category : #accessing }
-OBMooseBlueprintTest >> mbClassModel [
+OCBMooseBlueprintTest >> mbClassModel [
 	^ mbClassModel
 ]
 
 { #category : #accessing }
-OBMooseBlueprintTest >> model [
+OCBMooseBlueprintTest >> model [
 
 	^ model
 ]
 
 { #category : #accessing }
-OBMooseBlueprintTest >> myClass [ 
+OCBMooseBlueprintTest >> myClass [ 
 	^ myClass 
 ]
 
 { #category : #initialization }
-OBMooseBlueprintTest >> setUp [
+OCBMooseBlueprintTest >> setUp [
 
 	super setUp.
 
@@ -57,7 +57,7 @@ OBMooseBlueprintTest >> setUp [
 	myClass := model allModelClasses 
 		           detect: [ :each | each name = 'ByteLayout' ].
 	
-	mbClassModel := OBClassBlueprint newFrom: myClass.
+	mbClassModel := OCBClassBlueprint newFrom: myClass.
 	
 	javaModel := self importProject: 'pharo-local/iceberg/NourDjihan/ClassBlueprint/VerveineJMSE/VerveineJ.mse'.
 	

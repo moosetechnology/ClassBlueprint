@@ -5,8 +5,8 @@ Where each type has a specific color defined in MiClassBlueprintPalette
 
 "
 Class {
-	#name : #OBMethodDescription,
-	#superclass : #OBShapeDescription,
+	#name : #OCBMethodDescription,
+	#superclass : #CBShapeDescription,
 	#instVars : [
 		'type',
 		'height',
@@ -17,49 +17,49 @@ Class {
 }
 
 { #category : #'instance creation' }
-OBMethodDescription class >> newFrom: aMethodModel [ 
+OCBMethodDescription class >> newFrom: aMethodModel [ 
 	^ self new 
 		entity: aMethodModel;
 		create
 ]
 
 { #category : #accessing }
-OBMethodDescription >> border [ 
+OCBMethodDescription >> border [ 
 	^ RSBorder new color: Color black
 ]
 
 { #category : #accessing }
-OBMethodDescription >> border: aBorder [ 
+OCBMethodDescription >> border: aBorder [ 
 	border := aBorder 
 ]
 
 { #category : #'instance creation' }
-OBMethodDescription >> create [
+OCBMethodDescription >> create [
 
 	self initializeType.
 	self initializeSize.
 ]
 
 { #category : #accessing }
-OBMethodDescription >> height [
+OCBMethodDescription >> height [
 
 	^ height
 ]
 
 { #category : #initialization }
-OBMethodDescription >> initializeSize [
+OCBMethodDescription >> initializeSize [
 
 	height := entityModel entity numberOfLinesOfCode
-	          + OBView defaultBoxesHeight.
+	          + OCBView defaultBoxesHeight.
 	width := entityModel invocations outgoing isEmpty
-		         ifTrue: [ OBView defaultBoxesWidth ]
+		         ifTrue: [ OCBView defaultBoxesWidth ]
 		         ifFalse: [ 
-			         entityModel invocations outgoing size * 2+ OBView defaultBoxesWidth 
+			         entityModel invocations outgoing size * 2+ OCBView defaultBoxesWidth 
 				         ]
 ]
 
 { #category : #initialization }
-OBMethodDescription >> initializeType [
+OCBMethodDescription >> initializeType [
 
 	type := entityModel isAbstract ifNil: [ 
 		        entityModel isExtending ifNil: [ 
@@ -73,6 +73,6 @@ OBMethodDescription >> initializeType [
 ]
 
 { #category : #accessing }
-OBMethodDescription >> width [
+OCBMethodDescription >> width [
 	^ width
 ]

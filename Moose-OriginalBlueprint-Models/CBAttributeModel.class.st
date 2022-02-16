@@ -2,7 +2,7 @@
 I represent a model for class attributes
 "
 Class {
-	#name : #OBAttributeModel,
+	#name : #CBAttributeModel,
 	#superclass : #CBAbstractModel,
 	#instVars : [
 		'attributeAccess'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-OBAttributeModel class >> newFrom: anEntity [
+CBAttributeModel class >> newFrom: anEntity [
 
 	^ self new
 		  entity: anEntity;
@@ -19,48 +19,48 @@ OBAttributeModel class >> newFrom: anEntity [
 ]
 
 { #category : #initialization }
-OBAttributeModel >> addIncoming: anAttributeAccessModel [
+CBAttributeModel >> addIncoming: anAttributeAccessModel [
 
 	attributeAccess add: anAttributeAccessModel
 ]
 
 { #category : #accessing }
-OBAttributeModel >> attributeAccess [
+CBAttributeModel >> attributeAccess [
 	^ attributeAccess
 ]
 
 { #category : #operations }
-OBAttributeModel >> create [
+CBAttributeModel >> create [
 
 	self initializeAttributeAccess.
 	self initializeDescription
 ]
 
 { #category : #accessing }
-OBAttributeModel >> externalAccesses [
+CBAttributeModel >> externalAccesses [
 	^entity incomingAccesses select: [ :each | 
 		  each source parentType ~= entity parentType ].
 ]
 
 { #category : #initialization }
-OBAttributeModel >> initializeAttributeAccess [
+CBAttributeModel >> initializeAttributeAccess [
 	attributeAccess := OrderedCollection new
 ]
 
 { #category : #initialization }
-OBAttributeModel >> initializeDescription [
+CBAttributeModel >> initializeDescription [
 
-	description := OBAttributeDescription newFrom: self.
+	description := OCBAttributeDescription newFrom: self.
 
 ]
 
 { #category : #accessing }
-OBAttributeModel >> internalAccesses [ 
+CBAttributeModel >> internalAccesses [ 
 	^ self entity incomingAccesses select: [ :each | each source parentType = entity parentType ].
 ]
 
 { #category : #'instance creation' }
-OBAttributeModel >> newIncomingConnection [
+CBAttributeModel >> newIncomingConnection [
 
 	 ^ CBAttributeAccessModel new
 		  initializeDescription;
@@ -68,14 +68,14 @@ OBAttributeModel >> newIncomingConnection [
 ]
 
 { #category : #printing }
-OBAttributeModel >> printOn: aStream [.
+CBAttributeModel >> printOn: aStream [.
 	aStream nextPutAll: '('. 
 	self name asString printOn: aStream.
 	aStream nextPutAll: ')'.
 ]
 
 { #category : #accessing }
-OBAttributeModel >> shape [
+CBAttributeModel >> shape [
 
 	| shape |
 	shape := RSBox new
@@ -94,6 +94,6 @@ OBAttributeModel >> shape [
 ]
 
 { #category : #accessing }
-OBAttributeModel >> type [ 
+CBAttributeModel >> type [ 
 	^ #attribute
 ]

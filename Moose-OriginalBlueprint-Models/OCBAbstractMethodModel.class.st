@@ -2,7 +2,7 @@
 I represent a method of Class Blueprint.
 "
 Class {
-	#name : #OBAbstractMethodModel,
+	#name : #OCBAbstractMethodModel,
 	#superclass : #CBAbstractModel,
 	#instVars : [
 		'accessorInvocations',
@@ -14,30 +14,30 @@ Class {
 }
 
 { #category : #'instance creation' }
-OBAbstractMethodModel class >> newFrom: aMethod [
+OCBAbstractMethodModel class >> newFrom: aMethod [
 	^ self new 
 		entity: aMethod;
 		create 
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> accessorInvocations [
+OCBAbstractMethodModel >> accessorInvocations [
 	^ accessorInvocations
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> accessorInvocations: anObject [
+OCBAbstractMethodModel >> accessorInvocations: anObject [
 
 	accessorInvocations := anObject
 ]
 
 { #category : #adding }
-OBAbstractMethodModel >> addAccessorInvocation: aConnection [ 
+OCBAbstractMethodModel >> addAccessorInvocation: aConnection [ 
 	accessorInvocations add: aConnection 
 ]
 
 { #category : #adding }
-OBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
+OCBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
 
 	((self invocations incoming collect: #source) includes:
 		 aMethodInvocationModel source) ifFalse: [ 
@@ -45,32 +45,32 @@ OBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
 ]
 
 { #category : #adding }
-OBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
+OCBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 
 	((self invocations outgoing collect:#target) includes: aMethodInvocationModel target) ifFalse: 
 	 [ invocations outgoing add: aMethodInvocationModel ]
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> allInvocations [
+OCBAbstractMethodModel >> allInvocations [
 
 	^ self invocations incoming , self invocations  outgoing
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> attributeAccess [
+OCBAbstractMethodModel >> attributeAccess [
 
 	^ attributeAccess
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> attributeAccess: anObject [
+OCBAbstractMethodModel >> attributeAccess: anObject [
 
 	attributeAccess := anObject
 ]
 
 { #category : #'as yet unclassified' }
-OBAbstractMethodModel >> create [
+OCBAbstractMethodModel >> create [
 
 	accessorInvocations := OrderedCollection new.
 	attributeAccess := OrderedCollection new.
@@ -79,50 +79,50 @@ OBAbstractMethodModel >> create [
 ]
 
 { #category : #initialization }
-OBAbstractMethodModel >> initializeDescription [
+OCBAbstractMethodModel >> initializeDescription [
 
-	description := OBMethodDescription newFrom: self.
+	description := OCBMethodDescription newFrom: self.
 
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> invocations [
+OCBAbstractMethodModel >> invocations [
 
 	^ invocations
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> invocations: anObject [
+OCBAbstractMethodModel >> invocations: anObject [
 
 	invocations := anObject
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isAbstract [ 
+OCBAbstractMethodModel >> isAbstract [ 
 	entity isAbstract ifTrue: [ ^ #isAbstract ].
 	^ nil
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isAccessor [
+OCBAbstractMethodModel >> isAccessor [
 	 (entity isGetter or: [ entity isSetter ]) ifTrue: [ ^ #accessor ].
 	^ nil
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isAccessorModel [
+OCBAbstractMethodModel >> isAccessorModel [
 	^ false
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isConstant [ 
+OCBAbstractMethodModel >> isConstant [ 
 	"A method that returns a constant value"
 	entity isConstant ifTrue: [ ^ #isConstant ].
 	^ nil
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isDelegating [
+OCBAbstractMethodModel >> isDelegating [
 
 	"Checks if the method delegates an invocation i.e, forwars the method call to another object"
 
@@ -133,7 +133,7 @@ OBAbstractMethodModel >> isDelegating [
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isExtending [
+OCBAbstractMethodModel >> isExtending [
 	"Check if a method extends another by super"
 	
 	 entity isExtending ifTrue: [ ^ #isExtending ].
@@ -141,23 +141,23 @@ OBAbstractMethodModel >> isExtending [
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isInternal [ 
+OCBAbstractMethodModel >> isInternal [ 
 	^ entity isInternal
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isInternalImplementation [ 	
+OCBAbstractMethodModel >> isInternalImplementation [ 	
 	 entity isInternalImplementation ifTrue: [ ^ #isInternalImplementation ].
 	^ nil
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isMethodModel [
+OCBAbstractMethodModel >> isMethodModel [
 	^ true
 ]
 
 { #category : #testing }
-OBAbstractMethodModel >> isOverriding [
+OCBAbstractMethodModel >> isOverriding [
 
 	entity isOverriding ifTrue: [ ^ #isOverriding ].
 
@@ -165,20 +165,20 @@ OBAbstractMethodModel >> isOverriding [
 ]
 
 { #category : #'instance creation' }
-OBAbstractMethodModel >> newIncomingConnection [ 
+OCBAbstractMethodModel >> newIncomingConnection [ 
 
 	^ CBIncomingInvocationsCollector new 
 ]
 
 { #category : #printing }
-OBAbstractMethodModel >> printOn: aStream [.
+OCBAbstractMethodModel >> printOn: aStream [.
 	aStream nextPutAll: '('. 
 	self name asString printOn: aStream.
 	aStream nextPutAll: ')'.
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> shape [
+OCBAbstractMethodModel >> shape [
 
 	| shape |
 	shape := RSBox new
@@ -198,11 +198,11 @@ OBAbstractMethodModel >> shape [
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> type [
+OCBAbstractMethodModel >> type [
 	^ type
 ]
 
 { #category : #accessing }
-OBAbstractMethodModel >> type: aType [ 
+OCBAbstractMethodModel >> type: aType [ 
 	type := aType 
 ]

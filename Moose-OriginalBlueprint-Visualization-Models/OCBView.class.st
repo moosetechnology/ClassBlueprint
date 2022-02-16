@@ -6,7 +6,7 @@ I am the model class of the Class Blueprint visualization. I have the classModel
 - Accessors: Getters and Setters
 "
 Class {
-	#name : #OBView,
+	#name : #OCBView,
 	#superclass : #MooseAbstractVisualization,
 	#instVars : [
 		'classModel',
@@ -23,74 +23,74 @@ Class {
 }
 
 { #category : #initialization }
-OBView class >> defaultBorderColor [ 
+OCBView class >> defaultBorderColor [ 
 	^ Color black
 ]
 
 { #category : #initialization }
-OBView class >> defaultBorderWidth [
+OCBView class >> defaultBorderWidth [
 	^ 1
 ]
 
 { #category : #'as yet unclassified' }
-OBView class >> defaultBoxesHeight [
+OCBView class >> defaultBoxesHeight [
 	^ 10
 ]
 
 { #category : #'as yet unclassified' }
-OBView class >> defaultBoxesWidth [
+OCBView class >> defaultBoxesWidth [
 
 	^ 10
 ]
 
 { #category : #accessing }
-OBView class >> defaultTitle [
+OCBView class >> defaultTitle [
 	^ 'Blueprint'
 ]
 
 { #category : #accessing }
-OBView class >> forType: aFamixType [
+OCBView class >> forType: aFamixType [
 	^ self new
 		entity: aFamixType;
 		yourself
 ]
 
 { #category : #accessing }
-OBView class >> icon [
+OCBView class >> icon [
 	^ MooseIcons mooseBlueprint
 ]
 
 { #category : #'as yet unclassified' }
-OBView class >> maxHeight [
+OCBView class >> maxHeight [
 
 	^ 30
 ]
 
 { #category : #'as yet unclassified' }
-OBView class >> maxWidth [
+OCBView class >> maxWidth [
 
 	^ 30
 ]
 
 { #category : #layers }
-OBView >> accessorsLayer [ 
+OCBView >> accessorsLayer [ 
 	^ accessorsLayer
 ]
 
 { #category : #accessing }
-OBView >> attributes [
+OCBView >> attributes [
 
 	^ attributesLayer collect: [ :each | 
 		  self canvas shapeFromModel: each ]
 ]
 
 { #category : #layers }
-OBView >> attributesLayer [ 
+OCBView >> attributesLayer [ 
 	^ attributesLayer
 ]
 
 { #category : #shapes }
-OBView >> build [
+OCBView >> build [
 
 	self buildLayers.
 		self buildEdges.
@@ -99,7 +99,7 @@ OBView >> build [
 ]
 
 { #category : #shapes }
-OBView >> buildEdges [
+OCBView >> buildEdges [
 
 	| builder edges |
 	"method Invocations"
@@ -131,7 +131,7 @@ OBView >> buildEdges [
 ]
 
 { #category : #shapes }
-OBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
+OCBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 
 	| layer |
 	layer := RSComposite new
@@ -144,61 +144,61 @@ OBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 ]
 
 { #category : #shapes }
-OBView >> buildLayers [
+OCBView >> buildLayers [
 
 	self layersEntities do: [ :aLayerModel | 
 		self buildLayerNamed: aLayerModel withEntities: aLayerModel entities ]
 ]
 
 { #category : #building }
-OBView >> buildLegend [
+OCBView >> buildLegend [
 
-	OBLegend buildFor: self 
+	OCBLegend buildFor: self 
 ]
 
 { #category : #accessing }
-OBView >> classModel [
+OCBView >> classModel [
 	^ classModel
 ]
 
 { #category : #accessing }
-OBView >> classModel: aClassModel [ 
+OCBView >> classModel: aClassModel [ 
 	classModel := aClassModel
 ]
 
 { #category : #shapes }
-OBView >> edgeBuilder [
+OCBView >> edgeBuilder [
 
-	^ OBEdgeBuilder line
+	^ OCBEdgeBuilder line
 		  shapes: (self canvas nodes flatCollect: #children);
 		  withHorizontalAttachPoint;
 		  yourself 
 ]
 
 { #category : #accessing }
-OBView >> entities [ 
+OCBView >> entities [ 
 	^ classModel models
 ]
 
 { #category : #accessing }
-OBView >> entity: anEntity [ 
-	classModel := OBClassBlueprint newFrom: anEntity
+OCBView >> entity: anEntity [ 
+	classModel := OCBClassBlueprint newFrom: anEntity
 ]
 
 { #category : #layers }
-OBView >> externalsLayer [ 
+OCBView >> externalsLayer [ 
 	^ externalsLayer
 ]
 
 { #category : #initialization }
-OBView >> initialize [
+OCBView >> initialize [
 
 	super initialize.
-	initializersLayer := OBInitializersLayerModel new.
-	externalsLayer := OBExternalsLayerModel new.
-	internalsLayer := OBInternalsLayerModel new.
-	accessorsLayer := OBAccessorsLayerModel new.
-	attributesLayer := OBAttributesLayerModel new.
+	initializersLayer := CBInitializersLayerModel new.
+	externalsLayer := CBExternalsLayerModel new.
+	internalsLayer := CBInternalsLayerModel new.
+	accessorsLayer := CBAccessorsLayerModel new.
+	attributesLayer := CBAttributesLayerModel new.
 	border := RSBorder new
 		          color: Color black muchDarker;
 		          width: 1.5;
@@ -206,17 +206,17 @@ OBView >> initialize [
 ]
 
 { #category : #layers }
-OBView >> initializersLayer [ 
+OCBView >> initializersLayer [ 
 	^ initializersLayer
 ]
 
 { #category : #layers }
-OBView >> internalsLayer [ 
+OCBView >> internalsLayer [ 
 	^ internalsLayer
 ]
 
 { #category : #initialization }
-OBView >> layersEntities [
+OCBView >> layersEntities [
 
 	| layers |
 	layers := { 
@@ -230,7 +230,7 @@ OBView >> layersEntities [
 ]
 
 { #category : #building }
-OBView >> nestLayers [
+OCBView >> nestLayers [
 
 	| layers maxHeight |
 	layers := self canvas nodes.
@@ -246,6 +246,6 @@ OBView >> nestLayers [
 ]
 
 { #category : #initialization }
-OBView >> windowTitle [
+OCBView >> windowTitle [
 	^ classModel name , ' blueprint'
 ]

@@ -2,7 +2,7 @@
 I am a small class representing the legend of the ClassBlueprint visualization
 "
 Class {
-	#name : #OBLegend,
+	#name : #OCBLegend,
 	#superclass : #Object,
 	#classInstVars : [
 		'legendState'
@@ -11,31 +11,31 @@ Class {
 }
 
 { #category : #building }
-OBLegend class >> build [ 
+OCBLegend class >> build [ 
 	^ self new 
 			build
 ]
 
 { #category : #building }
-OBLegend class >> buildFor: aVisualization [ 
+OCBLegend class >> buildFor: aVisualization [ 
 	^ self new 
 		buildFor: aVisualization 
 ]
 
 { #category : #accessing }
-OBLegend class >> legendState [
+OCBLegend class >> legendState [
 
 	^ legendState ifNil: [  false ] 
 ]
 
 { #category : #accessing }
-OBLegend class >> legendState: aBoolean [
+OCBLegend class >> legendState: aBoolean [
 
 	 legendState := aBoolean
 ]
 
 { #category : #building }
-OBLegend >> attributeInfo [
+OCBLegend >> attributeInfo [
 
 	| attributeBox attributeLabel composite widthLine heightLine |
 	attributeBox := RSBox new.
@@ -74,7 +74,7 @@ OBLegend >> attributeInfo [
 ]
 
 { #category : #building }
-OBLegend >> attributeboxDescription [
+OCBLegend >> attributeboxDescription [
 
 	| widthLabel heightLabel attributeBox |
 	widthLabel := RSLabel new text: 'Number of external accesses'.
@@ -103,7 +103,7 @@ OBLegend >> attributeboxDescription [
 ]
 
 { #category : #building }
-OBLegend >> buildFor: aVisualization [
+OCBLegend >> buildFor: aVisualization [
 
 	| legend |
 	legend := RSLegend new.
@@ -137,19 +137,19 @@ OBLegend >> buildFor: aVisualization [
 ]
 
 { #category : #accessing }
-OBLegend >> gapSize [
+OCBLegend >> gapSize [
 
 	^ 3
 ]
 
 { #category : #building }
-OBLegend >> legendInfo [
+OCBLegend >> legendInfo [
 
 	^ MiOClassBlueprintPalette new colorsDictionary
 ]
 
 { #category : #'as yet unclassified' }
-OBLegend >> marker [
+OCBLegend >> marker [
 
 	^ RSShapeFactory arrow
 		  size: 10;
@@ -158,7 +158,7 @@ OBLegend >> marker [
 ]
 
 { #category : #'as yet unclassified' }
-OBLegend >> methodBoxDescription [
+OCBLegend >> methodBoxDescription [
 
 	| widthLabel heightLabel methodBox |
 	widthLabel := RSLabel new text: 'Number of invocations'.
@@ -187,7 +187,7 @@ OBLegend >> methodBoxDescription [
 ]
 
 { #category : #'as yet unclassified' }
-OBLegend >> methodInfo [
+OCBLegend >> methodInfo [
 
 	| methodBox methodLabel composite widthLine heightLine |
 	methodBox := RSBox new.
@@ -226,6 +226,6 @@ OBLegend >> methodInfo [
 ]
 
 { #category : #building }
-OBLegend >> onClick [ 
+OCBLegend >> onClick [ 
 	self class legendState: self class legendState not
 ]

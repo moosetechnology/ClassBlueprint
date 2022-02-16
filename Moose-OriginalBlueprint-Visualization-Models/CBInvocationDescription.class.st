@@ -1,16 +1,16 @@
 Class {
-	#name : #OBInvocationDescription,
-	#superclass : #OBShapeDescription,
+	#name : #CBInvocationDescription,
+	#superclass : #CBShapeDescription,
 	#category : #'Moose-OriginalBlueprint-Visualization-Models'
 }
 
 { #category : #'as yet unclassified' }
-OBInvocationDescription >> invocation [
+CBInvocationDescription >> invocation [
 	^ entityModel 
 ]
 
 { #category : #'as yet unclassified' }
-OBInvocationDescription >> invocation: anInvocationModel [
+CBInvocationDescription >> invocation: anInvocationModel [
 
 	entityModel := anInvocationModel
 ]

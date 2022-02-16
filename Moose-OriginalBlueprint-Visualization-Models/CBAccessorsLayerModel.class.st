@@ -3,12 +3,12 @@ I represent the getters/setters layer
 
 "
 Class {
-	#name : #OBAccessorsLayerModel,
-	#superclass : #OBAbstractLayerModel,
+	#name : #CBAccessorsLayerModel,
+	#superclass : #CBAbstractLayerModel,
 	#category : #'Moose-OriginalBlueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-OBAccessorsLayerModel >> name [ 
+CBAccessorsLayerModel >> name [ 
 	^ #Accessors
 ]

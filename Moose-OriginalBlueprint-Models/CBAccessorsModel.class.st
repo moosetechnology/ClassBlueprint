@@ -2,7 +2,7 @@
 I represent a model for getters and setters
 "
 Class {
-	#name : #OBAccessorsModel,
+	#name : #CBAccessorsModel,
 	#superclass : #Object,
 	#instVars : [
 		'accessorInvocations',
@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-OBAccessorsModel class >> newFrom: aMethod [
+CBAccessorsModel class >> newFrom: aMethod [
 
 	^ self new
 		  entity: aMethod;
@@ -23,45 +23,45 @@ OBAccessorsModel class >> newFrom: aMethod [
 ]
 
 { #category : #accessing }
-OBAccessorsModel >> accessorInvocations [
+CBAccessorsModel >> accessorInvocations [
 	^ accessorInvocations
 ]
 
 { #category : #adding }
-OBAccessorsModel >> addIncoming: anInvocation [ 
+CBAccessorsModel >> addIncoming: anInvocation [ 
 	((accessorInvocations collect: #target) includes: anInvocation target) ifFalse: [  
 	accessorInvocations add: anInvocation ]
 ]
 
 { #category : #adding }
-OBAccessorsModel >> addOutgoing: anAttributeAccess [
+CBAccessorsModel >> addOutgoing: anAttributeAccess [
 
 	((attributeAccess collect: #source) includes: anAttributeAccess source) ifFalse: [  
 	attributeAccess add: anAttributeAccess ]
 ]
 
 { #category : #accessing }
-OBAccessorsModel >> attributeAccess [ 
+CBAccessorsModel >> attributeAccess [ 
 	^ attributeAccess
 ]
 
 { #category : #accessing }
-OBAccessorsModel >> color [ 
+CBAccessorsModel >> color [ 
 	^ MiOClassBlueprintPalette new colorAt: self type
 ]
 
 { #category : #accessing }
-OBAccessorsModel >> entity [ 
+CBAccessorsModel >> entity [ 
 	^ entity
 ]
 
 { #category : #accessing }
-OBAccessorsModel >> entity: anEntity [ 
+CBAccessorsModel >> entity: anEntity [ 
 	entity := anEntity 
 ]
 
 { #category : #initialization }
-OBAccessorsModel >> initialize [
+CBAccessorsModel >> initialize [
 
 	super initialize.
 	accessorInvocations := OrderedCollection new.
@@ -69,22 +69,22 @@ OBAccessorsModel >> initialize [
 ]
 
 { #category : #testing }
-OBAccessorsModel >> isAccessorModel [
+CBAccessorsModel >> isAccessorModel [
 	^ true
 ]
 
 { #category : #testing }
-OBAccessorsModel >> isMethodModel [
+CBAccessorsModel >> isMethodModel [
 	^ false
 ]
 
 { #category : #accessing }
-OBAccessorsModel >> name [ 
+CBAccessorsModel >> name [ 
 	^ entity name
 ]
 
 { #category : #'instance creation' }
-OBAccessorsModel >> newIncomingConnection [ 
+CBAccessorsModel >> newIncomingConnection [ 
  
 	^ CBAccessorInvocationModel new 
 		initializeDescription;
@@ -92,14 +92,14 @@ OBAccessorsModel >> newIncomingConnection [
 ]
 
 { #category : #printing }
-OBAccessorsModel >> printOn: aStream [ 
+CBAccessorsModel >> printOn: aStream [ 
 	aStream nextPutAll: '('. 
 	self name asString printOn: aStream.
 	aStream nextPutAll: ')'.
 ]
 
 { #category : #accessing }
-OBAccessorsModel >> shape [
+CBAccessorsModel >> shape [
 
 	| shape |
 	shape := RSBox new
@@ -114,6 +114,6 @@ OBAccessorsModel >> shape [
 ]
 
 { #category : #accessing }
-OBAccessorsModel >> type [
+CBAccessorsModel >> type [
 	^ self entity isGetter ifTrue: [ #isGetter ] ifFalse: [ #isSetter ]
 ]

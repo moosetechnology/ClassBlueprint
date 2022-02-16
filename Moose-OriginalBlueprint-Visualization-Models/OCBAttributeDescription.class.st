@@ -2,8 +2,8 @@
 i am the description object of the attribute model. I contain the visualization informations
 "
 Class {
-	#name : #OBAttributeDescription,
-	#superclass : #OBShapeDescription,
+	#name : #OCBAttributeDescription,
+	#superclass : #CBShapeDescription,
 	#instVars : [
 		'height',
 		'width'
@@ -12,33 +12,33 @@ Class {
 }
 
 { #category : #'instance creation' }
-OBAttributeDescription class >> newFrom: anAttributeModel [
+OCBAttributeDescription class >> newFrom: anAttributeModel [
 
 	^ self new entity: anAttributeModel;create
 ]
 
 { #category : #operations }
-OBAttributeDescription >> create [ 
+OCBAttributeDescription >> create [ 
 	self initializeSize.
 ]
 
 { #category : #accessing }
-OBAttributeDescription >> height [ 
+OCBAttributeDescription >> height [ 
 	^ height 
 ]
 
 { #category : #operations }
-OBAttributeDescription >> initializeSize [
+OCBAttributeDescription >> initializeSize [
 
 	height := (entityModel entity incomingAccesses select: [ :each | 
 		           each source parentType ~= entityModel entity parentType ])
-		          size + OBView defaultBoxesHeight.
+		          size + OCBView defaultBoxesHeight.
 	width := (entityModel entity incomingAccesses select: [ :each | 
 		          each source parentType == entityModel entity parentType ])
-		         size + OBView defaultBoxesWidth
+		         size + OCBView defaultBoxesWidth
 ]
 
 { #category : #accessing }
-OBAttributeDescription >> width [
+OCBAttributeDescription >> width [
 	^ width
 ]

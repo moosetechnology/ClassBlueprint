@@ -2,13 +2,13 @@
 A MBClassModelTest is a test class for testing the behavior of MBClassModel
 "
 Class {
-	#name : #OBClassModelTest,
-	#superclass : #OBMooseBlueprintTest,
+	#name : #OCBClassModelTest,
+	#superclass : #OCBMooseBlueprintTest,
 	#category : #'Moose-OriginalBlueprint-Models-Tests'
 }
 
 { #category : #tests }
-OBClassModelTest >> testEntity [
+OCBClassModelTest >> testEntity [
 
 	"Test if the selected entity is indeed in the class model's entity"
 
@@ -16,7 +16,7 @@ OBClassModelTest >> testEntity [
 ]
 
 { #category : #test }
-OBClassModelTest >> testInitializeAcessors [
+OCBClassModelTest >> testInitializeAcessors [
 
 	self
 		assert: (mbClassModel accessors collect: #entity) size
@@ -25,7 +25,7 @@ OBClassModelTest >> testInitializeAcessors [
 ]
 
 { #category : #tests }
-OBClassModelTest >> testInitializeAttributes [
+OCBClassModelTest >> testInitializeAttributes [
 
 	"Test if the attribute models of the entity are created"
 
@@ -35,13 +35,13 @@ OBClassModelTest >> testInitializeAttributes [
 ]
 
 { #category : #test }
-OBClassModelTest >> testInitializeExternals [
+OCBClassModelTest >> testInitializeExternals [
 
 	self assert: (mbClassModel externals collect: #entity) equals:  (self myClass methods select: #isExternal) 
 ]
 
 { #category : #test }
-OBClassModelTest >> testInitializeInternals [
+OCBClassModelTest >> testInitializeInternals [
 
 	self
 		assert: (mbClassModel internals collect: #entity)
@@ -49,7 +49,7 @@ OBClassModelTest >> testInitializeInternals [
 ]
 
 { #category : #test }
-OBClassModelTest >> testMethodModels [
+OCBClassModelTest >> testMethodModels [
 
 	self
 		assert: (mbClassModel methodModels collect: #entity) size
@@ -57,7 +57,7 @@ OBClassModelTest >> testMethodModels [
 ]
 
 { #category : #test }
-OBClassModelTest >> testSelectedClassInternals [
+OCBClassModelTest >> testSelectedClassInternals [
 
 	self
 		assert: ((self mbClassModel methodModels select: #isInternal) collect: #entity)

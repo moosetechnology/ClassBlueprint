@@ -1,5 +1,5 @@
 Class {
-	#name : #OBMyClassJavaTest,
+	#name : #OCBMyClassJavaTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'method',
@@ -18,7 +18,7 @@ Class {
 }
 
 { #category : #tests }
-OBMyClassJavaTest >> setUp [
+OCBMyClassJavaTest >> setUp [
 
 	model := FamixJavaModel new.
 	externalClassModel := FamixJavaModel new.
@@ -49,13 +49,13 @@ OBMyClassJavaTest >> setUp [
 ]
 
 { #category : #tests }
-OBMyClassJavaTest >> testIsGetter [
+OCBMyClassJavaTest >> testIsGetter [
 
 	self assert: getMethod isGetter equals: true
 ]
 
 { #category : #tests }
-OBMyClassJavaTest >> testIsSetter [
+OCBMyClassJavaTest >> testIsSetter [
 
 	self assert: setMethod isSetter equals: true
 ]
