@@ -2,7 +2,7 @@
 I am the superclass of the class blueprint layers
 "
 Class {
-	#name : #MBAbstractLayerModel,
+	#name : #CBAbstractLayerModel,
 	#superclass : #Object,
 	#instVars : [
 		'entities'
@@ -11,16 +11,16 @@ Class {
 }
 
 { #category : #accessing }
-MBAbstractLayerModel >> entities [ 
+CBAbstractLayerModel >> entities [ 
 	^ entities
 ]
 
 { #category : #accessing }
-MBAbstractLayerModel >> entities: aCollection [
+CBAbstractLayerModel >> entities: aCollection [
 	 entities := aCollection 
 ]
 
 { #category : #accessing }
-MBAbstractLayerModel >> name [ 
+CBAbstractLayerModel >> name [ 
 	self subclassResponsibility 
 ]

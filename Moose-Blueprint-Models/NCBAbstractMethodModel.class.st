@@ -2,7 +2,7 @@
 I represent a method of Class Blueprint.
 "
 Class {
-	#name : #MBAbstractMethodModel,
+	#name : #NCBAbstractMethodModel,
 	#superclass : #CBAbstractModel,
 	#instVars : [
 		'accessorInvocations',
@@ -16,36 +16,36 @@ Class {
 }
 
 { #category : #'instance creation' }
-MBAbstractMethodModel class >> newFrom: aMethod [
+NCBAbstractMethodModel class >> newFrom: aMethod [
 	^ self new 
 		entity: aMethod;
 		create 
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> accessorInvocations [
+NCBAbstractMethodModel >> accessorInvocations [
 	^ accessorInvocations
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> accessorInvocations: anObject [
+NCBAbstractMethodModel >> accessorInvocations: anObject [
 
 	accessorInvocations := anObject
 ]
 
 { #category : #'as yet unclassified' }
-MBAbstractMethodModel >> activateRedBorder [ 
+NCBAbstractMethodModel >> activateRedBorder [ 
 	self description complex: true
 
 ]
 
 { #category : #adding }
-MBAbstractMethodModel >> addAccessorInvocation: aConnection [ 
+NCBAbstractMethodModel >> addAccessorInvocation: aConnection [ 
 	accessorInvocations add: aConnection 
 ]
 
 { #category : #adding }
-MBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
+NCBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
 
 	((self invocations incoming collect: #source) includes:
 		 aMethodInvocationModel source) ifFalse: [ 
@@ -53,7 +53,7 @@ MBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
 ]
 
 { #category : #adding }
-MBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
+NCBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 
 	((self invocations outgoing collect: #target) includes:
 		 aMethodInvocationModel target) ifFalse: [ 
@@ -61,35 +61,35 @@ MBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> allInvocations [
+NCBAbstractMethodModel >> allInvocations [
 
 	^ self invocations incoming , self invocations  outgoing
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> attributeAccess [
+NCBAbstractMethodModel >> attributeAccess [
 
 	^ attributeAccess
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> attributeAccess: anObject [
+NCBAbstractMethodModel >> attributeAccess: anObject [
 
 	attributeAccess := anObject
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> complexity [
+NCBAbstractMethodModel >> complexity [
 	^ complexity
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> complexity: aNumber [
+NCBAbstractMethodModel >> complexity: aNumber [
 	complexity := aNumber
 ]
 
 { #category : #'as yet unclassified' }
-MBAbstractMethodModel >> create [
+NCBAbstractMethodModel >> create [
 
 	accessorInvocations := OrderedCollection new.
 	attributeAccess := OrderedCollection new.
@@ -99,53 +99,53 @@ MBAbstractMethodModel >> create [
 ]
 
 { #category : #initialization }
-MBAbstractMethodModel >> initializeDescription [
+NCBAbstractMethodModel >> initializeDescription [
 
-	description := MBMethodDescription newFrom: self.
+	description := NCBMethodDescription newFrom: self.
 
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> invocations [
+NCBAbstractMethodModel >> invocations [
 
 	^ invocations
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> invocations: anObject [
+NCBAbstractMethodModel >> invocations: anObject [
 
 	invocations := anObject
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isAbstract [ 
+NCBAbstractMethodModel >> isAbstract [ 
 
 	entity isAbstract ifTrue: [ ^ #isAbstract ].
 	^ nil
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isAccessor [
+NCBAbstractMethodModel >> isAccessor [
 	 (entity isGetter or: [ entity isSetter ]) ifTrue: [ ^ #accessor ].
 	^ nil
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isConstant [ 
+NCBAbstractMethodModel >> isConstant [ 
 	"A method that returns a constant value"
 	entity isConstant ifTrue: [ ^ #isConstant ].
 	^ nil
 ]
 
 { #category : #'as yet unclassified' }
-MBAbstractMethodModel >> isDeadMethod [
+NCBAbstractMethodModel >> isDeadMethod [
 
 	self entity isDeadMethod ifTrue: [ ^ #isDeadMethod ].
 	^ nil
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isDelegating [
+NCBAbstractMethodModel >> isDelegating [
 
 	"Checks if the method delegates an invocation i.e, forwars the method call to another object"
 
@@ -156,7 +156,7 @@ MBAbstractMethodModel >> isDelegating [
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isExtending [
+NCBAbstractMethodModel >> isExtending [
 	"Check if a method extends another by super"
 	
 	 entity isExtending ifTrue: [ ^ #isExtending ].
@@ -164,12 +164,12 @@ MBAbstractMethodModel >> isExtending [
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isInternal [ 
+NCBAbstractMethodModel >> isInternal [ 
 	^ entity isInternal
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isInternalImplementation [
+NCBAbstractMethodModel >> isInternalImplementation [
 
 	entity isInternal ifTrue: [ 
 		^ #isInternalImplementation ].
@@ -177,7 +177,7 @@ MBAbstractMethodModel >> isInternalImplementation [
 ]
 
 { #category : #testing }
-MBAbstractMethodModel >> isOverriding [
+NCBAbstractMethodModel >> isOverriding [
 
 	entity isOverriding ifTrue: [ ^ #isOverriding ].
 
@@ -185,23 +185,23 @@ MBAbstractMethodModel >> isOverriding [
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> modelType [ 
+NCBAbstractMethodModel >> modelType [ 
 	^ modelType
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> modelType: aSymbol [
+NCBAbstractMethodModel >> modelType: aSymbol [
 	modelType := aSymbol 
 ]
 
 { #category : #'instance creation' }
-MBAbstractMethodModel >> newIncomingConnection [ 
+NCBAbstractMethodModel >> newIncomingConnection [ 
 
 	^ CBIncomingInvocationsCollector new 
 ]
 
 { #category : #'as yet unclassified' }
-MBAbstractMethodModel >> openInBrowser [
+NCBAbstractMethodModel >> openInBrowser [
 
 	| class |
 	class := Smalltalk environment classNamed:
@@ -211,14 +211,14 @@ MBAbstractMethodModel >> openInBrowser [
 ]
 
 { #category : #printing }
-MBAbstractMethodModel >> printOn: aStream [.
+NCBAbstractMethodModel >> printOn: aStream [.
 	aStream nextPutAll: '('. 
 	self name asString printOn: aStream.
 	aStream nextPutAll: ')'.
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> shape [
+NCBAbstractMethodModel >> shape [
 
 	| shape |
 	shape := RSBox new
@@ -234,16 +234,16 @@ MBAbstractMethodModel >> shape [
 	shape
 		when: RSMouseLeave
 		do: [ :evt | shape popupText: self name asString ].
-	shape addInteraction: MBDraggable new.
+	shape addInteraction: NCBDraggable new.
 	^ shape
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> type [
+NCBAbstractMethodModel >> type [
 	^ type
 ]
 
 { #category : #accessing }
-MBAbstractMethodModel >> type: aType [ 
+NCBAbstractMethodModel >> type: aType [ 
 	type := aType 
 ]

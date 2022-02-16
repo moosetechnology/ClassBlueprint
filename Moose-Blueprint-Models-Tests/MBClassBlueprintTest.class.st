@@ -91,7 +91,7 @@ MBClassBlueprintTest >> externals [
 { #category : #accessing }
 MBClassBlueprintTest >> initializeClassBluePrint [
 
-	classBlueprint := MBClassBlueprint newFrom:
+	classBlueprint := NClassBlueprint newFrom:
 		                  (model allModelClasses detect: [ :c | 
 			                   c name = 'class' ])
 ]

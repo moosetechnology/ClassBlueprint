@@ -5,8 +5,8 @@ Where each type has a specific color defined in MiClassBlueprintPalette
 
 "
 Class {
-	#name : #MBMethodDescription,
-	#superclass : #MBShapeDescription,
+	#name : #NCBMethodDescription,
+	#superclass : #CBShapeDescription,
 	#instVars : [
 		'type',
 		'height',
@@ -18,14 +18,14 @@ Class {
 }
 
 { #category : #'instance creation' }
-MBMethodDescription class >> newFrom: aMethodModel [ 
+NCBMethodDescription class >> newFrom: aMethodModel [ 
 	^ self new 
 		entity: aMethodModel;
 		create
 ]
 
 { #category : #accessing }
-MBMethodDescription >> border [
+NCBMethodDescription >> border [
 	| myBorder |
 	myBorder := 
 	entityModel modelType = #polymorphic ifTrue: [ 
@@ -39,27 +39,27 @@ MBMethodDescription >> border [
 ]
 
 { #category : #accessing }
-MBMethodDescription >> border: aBorder [ 
+NCBMethodDescription >> border: aBorder [ 
 	border := aBorder 
 ]
 
 { #category : #accessing }
-MBMethodDescription >> complex [ 
+NCBMethodDescription >> complex [ 
 	^ complex
 ]
 
 { #category : #accessing }
-MBMethodDescription >> complex: aBoolean [
+NCBMethodDescription >> complex: aBoolean [
 	 complex := aBoolean
 ]
 
 { #category : #initialization }
-MBMethodDescription >> complexBorderColor [ 
+NCBMethodDescription >> complexBorderColor [ 
 	^ Color red
 ]
 
 { #category : #'instance creation' }
-MBMethodDescription >> create [
+NCBMethodDescription >> create [
 
 	self initializeType.
 	self initializeSize.
@@ -67,7 +67,7 @@ MBMethodDescription >> create [
 ]
 
 { #category : #defaults }
-MBMethodDescription >> defaultBorder [ 
+NCBMethodDescription >> defaultBorder [ 
 	^ RSBorder new
 		  width: 1;
 		color: Color black;
@@ -75,48 +75,48 @@ MBMethodDescription >> defaultBorder [
 ]
 
 { #category : #initialization }
-MBMethodDescription >> defaultBorderColor [ 
+NCBMethodDescription >> defaultBorderColor [ 
 	^ Color black
 ]
 
 { #category : #accessing }
-MBMethodDescription >> height [
+NCBMethodDescription >> height [
 
 	^ height
 ]
 
 { #category : #'as yet unclassified' }
-MBMethodDescription >> highComplexityBorder [
+NCBMethodDescription >> highComplexityBorder [
 
 	^ Color red
 ]
 
 { #category : #initialization }
-MBMethodDescription >> initializeBorder [
+NCBMethodDescription >> initializeBorder [
 	" the borderDict keys: booleans values: aColor"
 	| borderDict borderColor |
 	border := RSBorder new.
 	borderDict := self borderDictionary.
 	borderColor := (borderDict keys
 			 detect: [ :condition | condition ]
-			 ifNone: [ MBView defaultBorderColor ]).
+			 ifNone: [ NCBView defaultBorderColor ]).
 	border color: Color black
 ]
 
 { #category : #initialization }
-MBMethodDescription >> initializeSize [
+NCBMethodDescription >> initializeSize [
 
 	height := entityModel entity numberOfLinesOfCode
-	          + MBView defaultBoxesHeight.
+	          + NCBView defaultBoxesHeight.
 	width := entityModel invocations outgoing isEmpty
-		         ifTrue: [ MBView defaultBoxesWidth ]
+		         ifTrue: [ NCBView defaultBoxesWidth ]
 		         ifFalse: [ 
-			         entityModel invocations outgoing size * 2+ MBView defaultBoxesWidth 
+			         entityModel invocations outgoing size * 2+ NCBView defaultBoxesWidth 
 				         ]
 ]
 
 { #category : #initialization }
-MBMethodDescription >> initializeType [
+NCBMethodDescription >> initializeType [
 
 	type := entityModel isAbstract ifNil: [ 
 		        entityModel isExtending ifNil: [ 
@@ -131,7 +131,7 @@ MBMethodDescription >> initializeType [
 ]
 
 { #category : #'as yet unclassified' }
-MBMethodDescription >> megamorphicBorder [
+NCBMethodDescription >> megamorphicBorder [
 
 	^ RSBorder new
 		  width: 8;
@@ -140,7 +140,7 @@ MBMethodDescription >> megamorphicBorder [
 ]
 
 { #category : #'as yet unclassified' }
-MBMethodDescription >> polymorphicBorder [
+NCBMethodDescription >> polymorphicBorder [
 
 	^ RSBorder new
 		  width: 2;
@@ -150,6 +150,6 @@ MBMethodDescription >> polymorphicBorder [
 ]
 
 { #category : #accessing }
-MBMethodDescription >> width [
+NCBMethodDescription >> width [
 	^ width
 ]

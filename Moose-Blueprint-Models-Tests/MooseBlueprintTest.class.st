@@ -57,7 +57,7 @@ MooseBlueprintTest >> setUp [
 	myClass := model allModelClasses 
 		           detect: [ :each | each name = 'ByteLayout' ].
 	
-	mbClassModel := MBClassBlueprint newFrom: myClass.
+	mbClassModel := NClassBlueprint newFrom: myClass.
 	
 	javaModel := self importProject: 'pharo-local/iceberg/NourDjihan/ClassBlueprint/VerveineJMSE/VerveineJ.mse'.
 	

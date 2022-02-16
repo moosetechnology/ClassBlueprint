@@ -1,11 +1,11 @@
 Class {
-	#name : #MBDraggable,
+	#name : #NCBDraggable,
 	#superclass : #RSDraggable,
 	#category : #'Moose-Blueprint-Models'
 }
 
 { #category : #'event processing' }
-MBDraggable >> processDrag: evt [
+NCBDraggable >> processDrag: evt [
 
 	| d parent shape childRectangle parentRectangle padding |
 	shape := evt shape.

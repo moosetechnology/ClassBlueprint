@@ -2,7 +2,7 @@
 I represent a model for a FAMIXClass
 "
 Class {
-	#name : #MBClassBlueprint,
+	#name : #NClassBlueprint,
 	#superclass : #Object,
 	#instVars : [
 		'attributes',
@@ -21,7 +21,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-MBClassBlueprint class >> newFrom: aFamixClassEntity [
+NClassBlueprint class >> newFrom: aFamixClassEntity [
 
 	^ self new 
 		entity: aFamixClassEntity;
@@ -29,7 +29,7 @@ MBClassBlueprint class >> newFrom: aFamixClassEntity [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> accessorInvocations [
+NClassBlueprint >> accessorInvocations [
 	| accessorInvocations |
 	accessorInvocations := self accessors flatCollect: #accessorInvocations.
 
@@ -37,36 +37,36 @@ MBClassBlueprint >> accessorInvocations [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> accessorInvocationsFrom: aSource [
+NClassBlueprint >> accessorInvocationsFrom: aSource [
 
 	^ (self accessorInvocations asSet flattened select: [ :each | 
 		   each source = aSource ]) collect: [ :each | each target ]
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> accessors [ 
+NClassBlueprint >> accessors [ 
 	^ accessors
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> accessors: accessorMethods [
+NClassBlueprint >> accessors: accessorMethods [
 	accessors :=accessorMethods 
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> allAttributeAccesses [
+NClassBlueprint >> allAttributeAccesses [
 
 	^ self models collect: [ :each | each attributeAccess ]
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> allAttributes [
+NClassBlueprint >> allAttributes [
 
 	^ deadAttributes, superAttributes , attributes  , classVars
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> attributeAccess [
+NClassBlueprint >> attributeAccess [
 
 	| attributeAccess |
 	attributeAccess := self allAttributes flatCollect: #attributeAccess.
@@ -75,7 +75,7 @@ MBClassBlueprint >> attributeAccess [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> attributeAccessesFrom: aSource [
+NClassBlueprint >> attributeAccessesFrom: aSource [
 	| result |
 	result := (self attributeAccess asSet flattened select: [ :each | 
 		   each source = aSource ]) collect: [ :each | each target ].
@@ -84,7 +84,7 @@ MBClassBlueprint >> attributeAccessesFrom: aSource [
 ]
 
 { #category : #'as yet unclassified' }
-MBClassBlueprint >> attributeMethodTypes [
+NClassBlueprint >> attributeMethodTypes [
 
 	| methodsBag |
 	methodsBag := (self methodModels , accessors collect: [ :each | 
@@ -96,39 +96,39 @@ MBClassBlueprint >> attributeMethodTypes [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> attributes [ 
+NClassBlueprint >> attributes [ 
 	^ attributes
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> attributes: attributeModels [
+NClassBlueprint >> attributes: attributeModels [
 	attributes := attributeModels
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> classMethods [ 
+NClassBlueprint >> classMethods [ 
 	^ classMethods
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> classVars [ 
+NClassBlueprint >> classVars [ 
 	^ classVars
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> classVars: aCollection [ 
+NClassBlueprint >> classVars: aCollection [ 
 	classVars := aCollection 
 ]
 
 { #category : #'as yet unclassified' }
-MBClassBlueprint >> connectAccessors [
+NClassBlueprint >> connectAccessors [
 
 	self connectOutgoingAccesses.
 	self connectIncomingAccesses.
 ]
 
 { #category : #building }
-MBClassBlueprint >> connectAttributes [
+NClassBlueprint >> connectAttributes [
 
 	"the receiver is the variable"
 
@@ -142,7 +142,7 @@ MBClassBlueprint >> connectAttributes [
 ]
 
 { #category : #'as yet unclassified' }
-MBClassBlueprint >> connectIncomingAccesses [
+NClassBlueprint >> connectIncomingAccesses [
 	
 	 accessors do: [ :each | 
 		| sources |
@@ -151,7 +151,7 @@ MBClassBlueprint >> connectIncomingAccesses [
 ]
 
 { #category : #building }
-MBClassBlueprint >> connectIncomingInvocations [ 
+NClassBlueprint >> connectIncomingInvocations [ 
 
 	self models do: [ :each | 
 		| sources |
@@ -162,14 +162,14 @@ MBClassBlueprint >> connectIncomingInvocations [
 ]
 
 { #category : #building }
-MBClassBlueprint >> connectInvocations [
+NClassBlueprint >> connectInvocations [
 
 	self connectOutgoingInvocations.
 	self connectIncomingInvocations
 ]
 
 { #category : #'as yet unclassified' }
-MBClassBlueprint >> connectOutgoingAccesses [
+NClassBlueprint >> connectOutgoingAccesses [
 	
 	 accessors do: [ :accessor | 
 		| att |
@@ -179,7 +179,7 @@ MBClassBlueprint >> connectOutgoingAccesses [
 ]
 
 { #category : #building }
-MBClassBlueprint >> connectOutgoingInvocations [
+NClassBlueprint >> connectOutgoingInvocations [
 
 	self methodModels do: [ :each | 
 		| candidateTargets |
@@ -190,7 +190,7 @@ MBClassBlueprint >> connectOutgoingInvocations [
 ]
 
 { #category : #building }
-MBClassBlueprint >> connectSource: source withAll: targets [
+NClassBlueprint >> connectSource: source withAll: targets [
 
 	| connectionInstance sourceModel targetModels |
 	connectionInstance := source newOutgoingConnection.
@@ -207,7 +207,7 @@ MBClassBlueprint >> connectSource: source withAll: targets [
 ]
 
 { #category : #building }
-MBClassBlueprint >> connectTarget: aTarget withAll: sources [
+NClassBlueprint >> connectTarget: aTarget withAll: sources [
 
 	| connectionInstance targetModel sourceModels |
 	targetModel := self models detect: [ :each | each entity = aTarget ].
@@ -224,7 +224,7 @@ MBClassBlueprint >> connectTarget: aTarget withAll: sources [
 ]
 
 { #category : #building }
-MBClassBlueprint >> create [
+NClassBlueprint >> create [
 
 	"the order is important"
 
@@ -247,24 +247,24 @@ MBClassBlueprint >> create [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> deadAttributes [
+NClassBlueprint >> deadAttributes [
 
 	^ deadAttributes
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> deadAttributes: aCollection [ 
+NClassBlueprint >> deadAttributes: aCollection [ 
 	deadAttributes := aCollection
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> deadMethods [
+NClassBlueprint >> deadMethods [
 
 	^ deadMethods 
 ]
 
 { #category : #'as yet unclassified' }
-MBClassBlueprint >> detectComplexityBetween: beginning and: end [
+NClassBlueprint >> detectComplexityBetween: beginning and: end [
 
 	| methods |
 	methods := self methodModels select: [ :each | each complexity between: beginning  and: end  ].
@@ -273,28 +273,28 @@ MBClassBlueprint >> detectComplexityBetween: beginning and: end [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> entity [ 
+NClassBlueprint >> entity [ 
 	^ entity
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> entity: aClass [
+NClassBlueprint >> entity: aClass [
 
 	 entity := aClass
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> externals [ 
+NClassBlueprint >> externals [ 
 	^ externals
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> externals: externalMethods [
+NClassBlueprint >> externals: externalMethods [
 	externals := externalMethods
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initialize [
+NClassBlueprint >> initialize [
 
 	accessors := OrderedCollection new.
 	attributes := OrderedCollection new.
@@ -309,128 +309,128 @@ MBClassBlueprint >> initialize [
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeAcessors [
+NClassBlueprint >> initializeAcessors [
 
 	accessors := self entity methods
 		              select: [ :each | each isAccessor ] thenCollect: [ :each | 
-		             MBAccessorsModel newFrom: each ]
+		             CBAccessorsModel newFrom: each ]
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeAttributes [
+NClassBlueprint >> initializeAttributes [
 
 	attributes := (entity attributes select: [ :each | 
 		               each incomingAccesses isNotEmpty and: [ 
 			               each isClassSide not ] ]) collect: [ :anAttribute | 
-		              MBAttributeModel newFrom: anAttribute ].
+		              NCBAttributeModel newFrom: anAttribute ].
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeClassMethods [
+NClassBlueprint >> initializeClassMethods [
 	classMethods := self methods
 		                select: [ :each | each isClassSide ].
 	classMethods ifEmpty: [ ^{} ].
 	classMethods := classMethods collect: [ :each | 
-		                MBClassSideMethod newFrom: each ]
+		                NCBClassSideMethod newFrom: each ]
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> initializeClassVars [
+NClassBlueprint >> initializeClassVars [
 
 	classVars := (entity attributes select: [ :each | 
 		              each isClassSide ]) collect: [ :each | 
-		             MBAttributeModel newFrom: each ]
+		             NCBAttributeModel newFrom: each ]
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeExternals [
+NClassBlueprint >> initializeExternals [
 
 	externals := self methods
 		              select: [ :each | each isExternal ] thenCollect: [ :each | 
-		             MBExternalModel newFrom: each ]
+		             NCBExternalModel newFrom: each ]
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeHibernerAttributes [
+NClassBlueprint >> initializeHibernerAttributes [
 
 	deadAttributes := (entity attributes select: [ :each | 
 		                       each incomingAccesses isEmpty and: [ each isClassSide not ] ]) collect: [ 
 		                      :anAttribute | 
-		                      MBAttributeModel newFrom: anAttribute ]
+		                      NCBAttributeModel newFrom: anAttribute ]
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeHibernerMethods [
+NClassBlueprint >> initializeHibernerMethods [
 
 	deadMethods := self methods
 		               select: [ :each | 
 		               each isDeadMethod or: [ each belongsToDeadBranch ] ]
 		               thenCollect: [ :each | 
-		               MBHibernationModel newFrom: each ]
+		               NCBDeadModel newFrom: each ]
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeHiberners [
+NClassBlueprint >> initializeHiberners [
 
 	self initializeHibernerMethods.
 	self initializeHibernerAttributes
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeInitializers [
+NClassBlueprint >> initializeInitializers [
 
 	initializers := self methods
 		                select: [ :each | each isInitializer ]
 		                thenCollect: [ :each | 
-		                MBInitializationModel newFrom: each ]
+		                NCBInitializationModel newFrom: each ]
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeInternals [
+NClassBlueprint >> initializeInternals [
 
 	
 	internals := self methods select: [ :each | each isInternal ] thenCollect: [ :each | 
-		             MBInternalModel newFrom: each ]
+		             NCBInternalModel newFrom: each ]
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeModelDescriptions [
+NClassBlueprint >> initializeModelDescriptions [
 
 	self methodModels do: [ :each | each initializeDescription ]
 ]
 
 { #category : #initialization }
-MBClassBlueprint >> initializeSuperAttributes [
+NClassBlueprint >> initializeSuperAttributes [
 
 	superAttributes := (((self entity superclassHierarchy flatCollect: [ 
 		                      :each | each attributes ]) reject: [ :each | 
 		                     each isClassSide ]) select: [ :each | 
 		                    each isCalledIn: self entity ]) collect: [ :each | 
-		                   MBAttributeModel newFrom: each ] 
+		                   NCBAttributeModel newFrom: each ] 
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> initializers [
+NClassBlueprint >> initializers [
 	^ initializers
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> initializers: initializerMethods [
+NClassBlueprint >> initializers: initializerMethods [
 	initializers := initializerMethods
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> internals [
+NClassBlueprint >> internals [
 	^ internals
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> internals: internalMethods [
+NClassBlueprint >> internals: internalMethods [
 	internals := internalMethods
 ]
 
 { #category : #building }
-MBClassBlueprint >> makeConnections [
+NClassBlueprint >> makeConnections [
 
 	self connectAttributes.
 	self connectAccessors.
@@ -439,7 +439,7 @@ MBClassBlueprint >> makeConnections [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> methodInvocations [
+NClassBlueprint >> methodInvocations [
 	| result |
 	result :=  self methodModels collect: [ :each | each invocations ].
 
@@ -447,20 +447,20 @@ MBClassBlueprint >> methodInvocations [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> methodInvocationsFrom: aSource [
+NClassBlueprint >> methodInvocationsFrom: aSource [
 
 	^ ((self methodInvocations flatCollect: #outgoing) select: [ :each | 
 		   each source = aSource ]) collect: [ :each | each target ]
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> methodModels [
+NClassBlueprint >> methodModels [
 
 	^ initializers , externals , internals , deadMethods, classMethods 
 ]
 
 { #category : #'as yet unclassified' }
-MBClassBlueprint >> methodOccurrences: aNumber [
+NClassBlueprint >> methodOccurrences: aNumber [
 
 	aNumber = 1 ifTrue: [ ^ #monomorphic ].
 	(aNumber between: 2 and: 8) ifTrue: [ ^ #polymorphic ].
@@ -468,25 +468,25 @@ MBClassBlueprint >> methodOccurrences: aNumber [
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> methods [ 
+NClassBlueprint >> methods [ 
 	^ (entity methods reject: [ :each | 
 		                  (self methodModels collect: [ :aMethod | aMethod entity ]) includes:
 			                  each ]) reject: #isAccessor
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> models [
+NClassBlueprint >> models [
 
 	^ self methodModels , self accessors , self attributes
 	  , self deadAttributes , self classVars, self superAttributes 
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> superAttributes [
+NClassBlueprint >> superAttributes [
 	^ superAttributes
 ]
 
 { #category : #accessing }
-MBClassBlueprint >> superAttributes: aCollection [ 
+NClassBlueprint >> superAttributes: aCollection [ 
 	superAttributes := aCollection 
 ]

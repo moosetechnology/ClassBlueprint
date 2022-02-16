@@ -2,8 +2,8 @@
 i am the description object of the attribute model. I contain the visualization informations
 "
 Class {
-	#name : #MBAttributeDescription,
-	#superclass : #MBShapeDescription,
+	#name : #NCBAttributeDescription,
+	#superclass : #CBShapeDescription,
 	#instVars : [
 		'height',
 		'width'
@@ -12,13 +12,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-MBAttributeDescription class >> newFrom: anAttributeModel [
+NCBAttributeDescription class >> newFrom: anAttributeModel [
 
 	^ self new entity: anAttributeModel;create
 ]
 
 { #category : #accessing }
-MBAttributeDescription >> border [
+NCBAttributeDescription >> border [
 
 	^ RSBorder new
 		  width: 1;
@@ -27,27 +27,27 @@ MBAttributeDescription >> border [
 ]
 
 { #category : #operations }
-MBAttributeDescription >> create [ 
+NCBAttributeDescription >> create [ 
 	self initializeSize.
 ]
 
 { #category : #accessing }
-MBAttributeDescription >> height [ 
+NCBAttributeDescription >> height [ 
 	^ height 
 ]
 
 { #category : #operations }
-MBAttributeDescription >> initializeSize [
+NCBAttributeDescription >> initializeSize [
 
 	height := (entityModel entity incomingAccesses select: [ :each | 
 		           each source parentType ~= entityModel entity parentType ])
-		          size + MBView defaultBoxesHeight.
+		          size + NCBView defaultBoxesHeight.
 	width := (entityModel entity incomingAccesses select: [ :each | 
 		          each source parentType == entityModel entity parentType ])
-		         size + MBView defaultBoxesWidth
+		         size + NCBView defaultBoxesWidth
 ]
 
 { #category : #accessing }
-MBAttributeDescription >> width [
+NCBAttributeDescription >> width [
 	^ width
 ]

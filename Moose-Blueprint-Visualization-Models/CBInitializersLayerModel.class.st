@@ -3,12 +3,12 @@ I represent the Initializers methods layer
 
 "
 Class {
-	#name : #MBInitializersLayerModel,
-	#superclass : #MBAbstractLayerModel,
+	#name : #CBInitializersLayerModel,
+	#superclass : #CBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBInitializersLayerModel >> name [ 
+CBInitializersLayerModel >> name [ 
 	^ #Initializers
 ]

@@ -2,12 +2,12 @@
 I represent the Internal methods layer
 "
 Class {
-	#name : #MBInternalsLayerModel,
-	#superclass : #MBAbstractLayerModel,
+	#name : #CBInternalsLayerModel,
+	#superclass : #CBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBInternalsLayerModel >> name [ 
+CBInternalsLayerModel >> name [ 
 	^ #Internals
 ]

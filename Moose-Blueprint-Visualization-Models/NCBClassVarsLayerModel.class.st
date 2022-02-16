@@ -1,10 +1,10 @@
 Class {
-	#name : #MBClassVarsLayerModel,
-	#superclass : #MBAbstractLayerModel,
+	#name : #NCBClassVarsLayerModel,
+	#superclass : #CBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBClassVarsLayerModel >> name [ 
+NCBClassVarsLayerModel >> name [ 
 	^ #ClassVariables
 ]

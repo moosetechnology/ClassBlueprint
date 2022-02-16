@@ -2,13 +2,13 @@
 I am the edge builder for the class blueprint
 "
 Class {
-	#name : #MBEdgeBuilder,
+	#name : #NCBEdgeBuilder,
 	#superclass : #RSEdgeBuilder,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #'public - line' }
-MBEdgeBuilder >> connectFrom: aFromBlock toAll: aBlockOrASymbol [
+NCBEdgeBuilder >> connectFrom: aFromBlock toAll: aBlockOrASymbol [
 
 	"Define edges from a particular shape to another set of shapes. For example:
 

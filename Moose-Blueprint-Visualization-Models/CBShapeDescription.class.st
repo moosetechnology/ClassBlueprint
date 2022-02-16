@@ -2,7 +2,7 @@
 I represent the informations about the shape of the models
 "
 Class {
-	#name : #MBShapeDescription,
+	#name : #CBShapeDescription,
 	#superclass : #Object,
 	#instVars : [
 		'entityModel'
@@ -11,19 +11,19 @@ Class {
 }
 
 { #category : #accessing }
-MBShapeDescription >> color [
+CBShapeDescription >> color [
 
-	^ MiClassBlueprintPalette new colorAt: entityModel  type
+	^ MiNClassBlueprintPalette new colorAt: entityModel  type
 ]
 
 { #category : #accessing }
-MBShapeDescription >> entity [
+CBShapeDescription >> entity [
 
 	^ entityModel
 ]
 
 { #category : #accessing }
-MBShapeDescription >> entity: anEntityModel [
+CBShapeDescription >> entity: anEntityModel [
 
 	entityModel := anEntityModel
 ]

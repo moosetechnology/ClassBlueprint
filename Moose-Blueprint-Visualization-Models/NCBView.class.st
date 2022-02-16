@@ -6,7 +6,7 @@ I am the model class of the Class Blueprint visualization. I have the classModel
 - Accessors: Getters and Setters
 "
 Class {
-	#name : #MBView,
+	#name : #NCBView,
 	#superclass : #MooseAbstractVisualization,
 	#instVars : [
 		'classModel',
@@ -28,62 +28,62 @@ Class {
 }
 
 { #category : #initialization }
-MBView class >> defaultBorderColor [ 
+NCBView class >> defaultBorderColor [ 
 	^ Color black
 ]
 
 { #category : #initialization }
-MBView class >> defaultBorderWidth [
+NCBView class >> defaultBorderWidth [
 	^ 1
 ]
 
 { #category : #'as yet unclassified' }
-MBView class >> defaultBoxesHeight [
+NCBView class >> defaultBoxesHeight [
 	^ 10
 ]
 
 { #category : #'as yet unclassified' }
-MBView class >> defaultBoxesWidth [
+NCBView class >> defaultBoxesWidth [
 
 	^ 10
 ]
 
 { #category : #accessing }
-MBView class >> defaultTitle [
+NCBView class >> defaultTitle [
 	^ 'Blueprint'
 ]
 
 { #category : #accessing }
-MBView class >> forType: aFamixType [
+NCBView class >> forType: aFamixType [
 	^ self new
 		entity: aFamixType;
 		yourself
 ]
 
 { #category : #accessing }
-MBView class >> icon [
+NCBView class >> icon [
 	^ MooseIcons mooseBlueprint
 ]
 
 { #category : #'as yet unclassified' }
-MBView class >> maxHeight [
+NCBView class >> maxHeight [
 
 	^ 30
 ]
 
 { #category : #'as yet unclassified' }
-MBView class >> maxWidth [
+NCBView class >> maxWidth [
 
 	^ 30
 ]
 
 { #category : #layers }
-MBView >> accessorsLayer [ 
+NCBView >> accessorsLayer [ 
 	^ accessorsLayer
 ]
 
 { #category : #'as yet unclassified' }
-MBView >> attSide [
+NCBView >> attSide [
 
 	^ { 
 		  superAttributesLayer.
@@ -91,7 +91,7 @@ MBView >> attSide [
 ]
 
 { #category : #accessing }
-MBView >> attributes [
+NCBView >> attributes [
 
 	^ { 
 		  hibernerAttributesLayer.
@@ -102,12 +102,12 @@ MBView >> attributes [
 ]
 
 { #category : #layers }
-MBView >> attributesLayer [ 
+NCBView >> attributesLayer [ 
 	^ attributesLayer
 ]
 
 { #category : #shapes }
-MBView >> build [
+NCBView >> build [
 
 	self buildLayers.
 	self buildEdges.
@@ -116,7 +116,7 @@ MBView >> build [
 ]
 
 { #category : #shapes }
-MBView >> buildEdges [
+NCBView >> buildEdges [
 
 	| builder edges |
 	"method Invocations"
@@ -145,7 +145,7 @@ MBView >> buildEdges [
 ]
 
 { #category : #shapes }
-MBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
+NCBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 
 	| layer |
 	layer := RSComposite new
@@ -158,35 +158,35 @@ MBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 ]
 
 { #category : #shapes }
-MBView >> buildLayers [
+NCBView >> buildLayers [
 
 	self layersEntities do: [ :aLayerModel | 
 		self buildLayerNamed: aLayerModel withEntities: aLayerModel entities ]
 ]
 
 { #category : #building }
-MBView >> buildLegend [
+NCBView >> buildLegend [
 
-	MBLegend buildFor: self
+	CBLegend buildFor: self
 ]
 
 { #category : #layers }
-MBView >> classMethodsLayer [ 
+NCBView >> classMethodsLayer [ 
 	^ classMethodsLayer 
 ]
 
 { #category : #accessing }
-MBView >> classModel [
+NCBView >> classModel [
 	^ classModel
 ]
 
 { #category : #accessing }
-MBView >> classModel: aClassModel [ 
+NCBView >> classModel: aClassModel [ 
 	classModel := aClassModel
 ]
 
 { #category : #'accessing - parallel hierarchy' }
-MBView >> classSide [
+NCBView >> classSide [
 
 	^ { 
 		  self classSideMethods".
@@ -194,7 +194,7 @@ MBView >> classSide [
 ]
 
 { #category : #accessing }
-MBView >> classSideMethods [
+NCBView >> classSideMethods [
 
 	| shape |
 	shape := self canvas shapeFromModel: classMethodsLayer.
@@ -204,7 +204,7 @@ MBView >> classSideMethods [
 ]
 
 { #category : #accessing }
-MBView >> classSideVars [
+NCBView >> classSideVars [
 
 	| shape |
 	shape := self canvas shapeFromModel: classVarsLayer.
@@ -214,12 +214,12 @@ MBView >> classSideVars [
 ]
 
 { #category : #layers }
-MBView >> classVarsLayer [ 
+NCBView >> classVarsLayer [ 
 	^ classVarsLayer
 ]
 
 { #category : #'as yet unclassified' }
-MBView >> deads [
+NCBView >> deads [
 
 	^ { 
 		  self hibernerMethodsComposite".
@@ -227,31 +227,31 @@ MBView >> deads [
 ]
 
 { #category : #shapes }
-MBView >> edgeBuilder [
+NCBView >> edgeBuilder [
 
-	^ MBEdgeBuilder line
+	^ NCBEdgeBuilder line
 		  shapes: (self canvas nodes flatCollect: #children);
 		  attachPoint: RSBorderAttachPoint new;
 		  yourself
 ]
 
 { #category : #accessing }
-MBView >> entities [ 
+NCBView >> entities [ 
 	^ classModel models
 ]
 
 { #category : #accessing }
-MBView >> entity: anEntity [ 
-	classModel := MBClassBlueprint newFrom: anEntity
+NCBView >> entity: anEntity [ 
+	classModel := NClassBlueprint newFrom: anEntity
 ]
 
 { #category : #layers }
-MBView >> externalsLayer [ 
+NCBView >> externalsLayer [ 
 	^ externalsLayer
 ]
 
 { #category : #'as yet unclassified' }
-MBView >> fifthLayer [
+NCBView >> fifthLayer [
 
 	| middleAttributeSide fifthLayer maxWidth maxHeight |
 	middleAttributeSide := self middleAttributeSide.
@@ -283,13 +283,13 @@ MBView >> fifthLayer [
 ]
 
 { #category : #composite }
-MBView >> firstLayer [
+NCBView >> firstLayer [
 
 	^ self hibernerMethodsComposite padding: 10.
 ]
 
 { #category : #'as yet unclassified' }
-MBView >> fourthLayer [
+NCBView >> fourthLayer [
 
 	| shape |
 	shape := self canvas shapeFromModel: hibernerAttributesLayer.
@@ -299,7 +299,7 @@ MBView >> fourthLayer [
 ]
 
 { #category : #'attributes composites' }
-MBView >> hibernerAttributesComposite [
+NCBView >> hibernerAttributesComposite [
 
 	| shape |
 	shape := self canvas shapeFromModel: hibernerAttributesLayer.
@@ -309,13 +309,13 @@ MBView >> hibernerAttributesComposite [
 ]
 
 { #category : #layers }
-MBView >> hibernerAttributesLayer [
+NCBView >> hibernerAttributesLayer [
 
 	^ hibernerAttributesLayer
 ]
 
 { #category : #composite }
-MBView >> hibernerMethodsComposite [
+NCBView >> hibernerMethodsComposite [
 
 	| shape |
 	shape := self canvas shapeFromModel: hibernersLayer.
@@ -334,12 +334,12 @@ MBView >> hibernerMethodsComposite [
 ]
 
 { #category : #layers }
-MBView >> hibernersLayer [
+NCBView >> hibernersLayer [
 	^ hibernersLayer 
 ]
 
 { #category : #accessing }
-MBView >> hibernersLayers [
+NCBView >> hibernersLayers [
 
 	^ { 
 		  hibernerAttributesLayer.
@@ -347,7 +347,7 @@ MBView >> hibernersLayers [
 ]
 
 { #category : #public }
-MBView >> highlight: aShape [ 
+NCBView >> highlight: aShape [ 
 	| highlightable |
 	highlightable := RSHighlightable new.
 	aShape nodes @ (highlightable
@@ -362,19 +362,19 @@ MBView >> highlight: aShape [
 ]
 
 { #category : #initialization }
-MBView >> initialize [
+NCBView >> initialize [
 
 	super initialize.
-	initializersLayer := MBInitializersLayerModel new.
-	externalsLayer := MBExternalsLayerModel new.
-	internalsLayer := MBInternalsLayerModel new.
-	accessorsLayer := MBAccessorsLayerModel new.
-	attributesLayer := MBAttributesLayerModel new.
-	superAttributesLayer := MBSuperAttributesLayer new.
-	hibernersLayer := MBHibernerMethodsLayerModel new.
-	hibernerAttributesLayer := MBHibernerAttributesLayerModel new.
-	classVarsLayer := MBClassVarsLayerModel new.
-	classMethodsLayer := MBClassMethodsLayerModel new.
+	initializersLayer := CBInitializersLayerModel new.
+	externalsLayer := CBExternalsLayerModel new.
+	internalsLayer := CBInternalsLayerModel new.
+	accessorsLayer := CBAccessorsLayerModel new.
+	attributesLayer := CBAttributesLayerModel new.
+	superAttributesLayer := NCBSuperAttributesLayer new.
+	hibernersLayer := NCBDeadMethodsLayerModel new.
+	hibernerAttributesLayer := NCBDeadAttributesLayerModel new.
+	classVarsLayer := NCBClassVarsLayerModel new.
+	classMethodsLayer := NCBClassMethodsLayerModel new.
 	border := RSBorder new
 		          color: Color black muchDarker;
 		          width: 1;
@@ -382,12 +382,12 @@ MBView >> initialize [
 ]
 
 { #category : #layers }
-MBView >> initializersLayer [ 
+NCBView >> initializersLayer [ 
 	^ initializersLayer
 ]
 
 { #category : #accessing }
-MBView >> instSide [
+NCBView >> instSide [
 
 	^ { 
 		  initializersLayer.
@@ -398,17 +398,17 @@ MBView >> instSide [
 ]
 
 { #category : #'accessing - parallel hierarchy' }
-MBView >> instanceSide [ 
+NCBView >> instanceSide [ 
 	^ self instSide collect: [ :each | self canvas shapeFromModel: each ]
 ]
 
 { #category : #layers }
-MBView >> internalsLayer [ 
+NCBView >> internalsLayer [ 
 	^ internalsLayer
 ]
 
 { #category : #initialization }
-MBView >> layersEntities [
+NCBView >> layersEntities [
 
 	| layers |
 	layers := { 
@@ -428,12 +428,12 @@ MBView >> layersEntities [
 ]
 
 { #category : #accessing }
-MBView >> middleAttributeSide [ 
+NCBView >> middleAttributeSide [ 
 	^ self attSide collect: [ :each | self canvas shapeFromModel: each ]
 ]
 
 { #category : #shapes }
-MBView >> nestLayers [
+NCBView >> nestLayers [
 
 	| right left dict layers |
 	dict := { 
@@ -467,7 +467,7 @@ MBView >> nestLayers [
 ]
 
 { #category : #'as yet unclassified' }
-MBView >> secondLayer [
+NCBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth |
 	instanceSide := self instanceSide.
@@ -500,7 +500,7 @@ MBView >> secondLayer [
 ]
 
 { #category : #initialization }
-MBView >> setNodesOf: object withLayout: aLayout [
+NCBView >> setNodesOf: object withLayout: aLayout [
 
 	aLayout new on: (object flatCollect: #nodes).
 	object do: [ :layer | layer padding: 10 ].
@@ -508,7 +508,7 @@ MBView >> setNodesOf: object withLayout: aLayout [
 ]
 
 { #category : #initialization }
-MBView >> setSize: dict [ 
+NCBView >> setSize: dict [ 
 		| maxWidth |
 	maxWidth := dict values max: [ :each | each width ].
 	dict valuesDo: [ :layer | layer width: maxWidth ].
@@ -534,7 +534,7 @@ MBView >> setSize: dict [
 ]
 
 { #category : #'as yet unclassified' }
-MBView >> sixthLayer [
+NCBView >> sixthLayer [
 
 	| shape |
 	shape := self canvas shapeFromModel: classVarsLayer.
@@ -544,17 +544,17 @@ MBView >> sixthLayer [
 ]
 
 { #category : #accessing }
-MBView >> superAttributesLayer [ 
+NCBView >> superAttributesLayer [ 
 	^ superAttributesLayer 
 ]
 
 { #category : #'as yet unclassified' }
-MBView >> thirdLayer [
+NCBView >> thirdLayer [
 
 	^ self classSideMethods padding: 10
 ]
 
 { #category : #initialization }
-MBView >> windowTitle [
+NCBView >> windowTitle [
 	^ classModel name , ' blueprint'
 ]

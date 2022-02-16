@@ -3,13 +3,13 @@ I represent the Hiberners methods layer
 
 "
 Class {
-	#name : #MBHibernerMethodsLayerModel,
-	#superclass : #MBAbstractLayerModel,
+	#name : #NCBDeadMethodsLayerModel,
+	#superclass : #CBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBHibernerMethodsLayerModel >> name [
+NCBDeadMethodsLayerModel >> name [
 
 	^ #HibernerMethods
 ]

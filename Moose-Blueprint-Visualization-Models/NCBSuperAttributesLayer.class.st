@@ -1,10 +1,10 @@
 Class {
-	#name : #MBSuperAttributesLayer,
-	#superclass : #MBAbstractLayerModel,
+	#name : #NCBSuperAttributesLayer,
+	#superclass : #CBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBSuperAttributesLayer >> name [ 
+NCBSuperAttributesLayer >> name [ 
 	^ #superAttributesLayer
 ]

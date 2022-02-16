@@ -3,12 +3,12 @@ I represent the External methods layer
 
 "
 Class {
-	#name : #MBExternalsLayerModel,
-	#superclass : #MBAbstractLayerModel,
+	#name : #CBExternalsLayerModel,
+	#superclass : #CBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #accessing }
-MBExternalsLayerModel >> name [ 
+CBExternalsLayerModel >> name [ 
 	^ #Externals
 ]

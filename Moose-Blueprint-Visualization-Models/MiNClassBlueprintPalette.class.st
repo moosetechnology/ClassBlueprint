@@ -2,13 +2,13 @@
 I am the palette for the class blueprint visualization. I hold the colors of class types.
 "
 Class {
-	#name : #MiClassBlueprintPalette,
+	#name : #MiNClassBlueprintPalette,
 	#superclass : #MiVisualizationPalette,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
 { #category : #visualization }
-MiClassBlueprintPalette >> beDefaultStyle [
+MiNClassBlueprintPalette >> beDefaultStyle [
 
 	self
 		addName: #isAbstract

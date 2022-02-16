@@ -2,7 +2,7 @@
 I am a small class representing the legend of the ClassBlueprint visualization
 "
 Class {
-	#name : #MBLegend,
+	#name : #CBLegend,
 	#superclass : #Object,
 	#classInstVars : [
 		'legendState'
@@ -11,31 +11,31 @@ Class {
 }
 
 { #category : #building }
-MBLegend class >> build [ 
+CBLegend class >> build [ 
 	^ self new 
 			build
 ]
 
 { #category : #building }
-MBLegend class >> buildFor: aVisualization [ 
+CBLegend class >> buildFor: aVisualization [ 
 	^ self new 
 		buildFor: aVisualization 
 ]
 
 { #category : #accessing }
-MBLegend class >> legendState [
+CBLegend class >> legendState [
 
 	^ legendState ifNil: [  false ]
 ]
 
 { #category : #accessing }
-MBLegend class >> legendState: aBoolean [
+CBLegend class >> legendState: aBoolean [
 
 	 legendState := aBoolean
 ]
 
 { #category : #'as yet unclassified' }
-MBLegend >> attributeInfo [
+CBLegend >> attributeInfo [
 
 	| attributeBox attributeLabel composite widthLine heightLine |
 	attributeBox := RSBox new.
@@ -74,7 +74,7 @@ MBLegend >> attributeInfo [
 ]
 
 { #category : #'as yet unclassified' }
-MBLegend >> attributeboxDescription [
+CBLegend >> attributeboxDescription [
 
 	| widthLabel heightLabel attributeBox |
 	widthLabel := RSLabel new text: 'Number of external accesses'.
@@ -103,7 +103,7 @@ MBLegend >> attributeboxDescription [
 ]
 
 { #category : #building }
-MBLegend >> buildFor: aVisualization [
+CBLegend >> buildFor: aVisualization [
 
 	| legend |
 	legend := RSLegend new.
@@ -137,19 +137,19 @@ MBLegend >> buildFor: aVisualization [
 ]
 
 { #category : #accessing }
-MBLegend >> gapSize [
+CBLegend >> gapSize [
 
 	^ 3
 ]
 
 { #category : #building }
-MBLegend >> legendInfo [
+CBLegend >> legendInfo [
 
-	^ MiClassBlueprintPalette new colorsDictionary
+	^ MiNClassBlueprintPalette new colorsDictionary
 ]
 
 { #category : #constants }
-MBLegend >> marker [ 
+CBLegend >> marker [ 
 	^ 	RSShapeFactory arrow
 		          size: 10;
 		          color: Color black;
@@ -157,7 +157,7 @@ MBLegend >> marker [
 ]
 
 { #category : #'as yet unclassified' }
-MBLegend >> methodBoxDescription [
+CBLegend >> methodBoxDescription [
 
 	| widthLabel heightLabel methodBox |
 	widthLabel := RSLabel new text: 'Number of invocations'.
@@ -186,7 +186,7 @@ MBLegend >> methodBoxDescription [
 ]
 
 { #category : #'as yet unclassified' }
-MBLegend >> methodInfo [
+CBLegend >> methodInfo [
 
 	| methodBox methodLabel composite widthLine heightLine |
 	methodBox := RSBox new.
@@ -225,6 +225,6 @@ MBLegend >> methodInfo [
 ]
 
 { #category : #interactions }
-MBLegend >> onClick [ 
+CBLegend >> onClick [ 
 	self class legendState: self class legendState not
 ]

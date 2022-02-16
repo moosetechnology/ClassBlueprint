@@ -2,7 +2,7 @@
 I represent a model for class attributes
 "
 Class {
-	#name : #MBAttributeModel,
+	#name : #NCBAttributeModel,
 	#superclass : #CBAbstractModel,
 	#instVars : [
 		'attributeAccess'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-MBAttributeModel class >> newFrom: anEntity [
+NCBAttributeModel class >> newFrom: anEntity [
 
 	^ self new
 		  entity: anEntity;
@@ -19,55 +19,48 @@ MBAttributeModel class >> newFrom: anEntity [
 ]
 
 { #category : #initialization }
-MBAttributeModel >> addIncoming: anAttributeAccessModel [
+NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 
 	attributeAccess add: anAttributeAccessModel
 ]
 
 { #category : #accessing }
-MBAttributeModel >> alreadyWentTo: targetModels [
-	self flag: #TODO. "Is it only method invocations???"
-	
-	^ ((attributeAccess collect: #targets) includes: targetModels) not
-]
-
-{ #category : #accessing }
-MBAttributeModel >> attributeAccess [
+NCBAttributeModel >> attributeAccess [
 	^ attributeAccess
 ]
 
 { #category : #operations }
-MBAttributeModel >> create [
+NCBAttributeModel >> create [
 
 	self initializeAttributeAccess.
 	self initializeDescription
 ]
 
 { #category : #accessing }
-MBAttributeModel >> externalAccesses [
+NCBAttributeModel >> externalAccesses [
 	^entity incomingAccesses select: [ :each | 
 		  each source parentType ~= entity parentType ].
 ]
 
 { #category : #initialization }
-MBAttributeModel >> initializeAttributeAccess [
+NCBAttributeModel >> initializeAttributeAccess [
 	attributeAccess := OrderedCollection new
 ]
 
 { #category : #initialization }
-MBAttributeModel >> initializeDescription [
+NCBAttributeModel >> initializeDescription [
 
-	description := MBAttributeDescription newFrom: self.
+	description := NCBAttributeDescription newFrom: self.
 
 ]
 
 { #category : #accessing }
-MBAttributeModel >> internalAccesses [ 
+NCBAttributeModel >> internalAccesses [ 
 	^ self entity queryIncomingAccesses select: [ :each | each source parentType = entity parentType ].
 ]
 
 { #category : #'instance creation' }
-MBAttributeModel >> newIncomingConnection [
+NCBAttributeModel >> newIncomingConnection [
 
 	^ CBAttributeAccessModel new
 		  initializeDescription;
@@ -75,7 +68,7 @@ MBAttributeModel >> newIncomingConnection [
 ]
 
 { #category : #printing }
-MBAttributeModel >> printOn: aStream [
+NCBAttributeModel >> printOn: aStream [
 
 	aStream nextPutAll: '('.
 	self name asString printOn: aStream.
@@ -83,7 +76,7 @@ MBAttributeModel >> printOn: aStream [
 ]
 
 { #category : #accessing }
-MBAttributeModel >> shape [
+NCBAttributeModel >> shape [
 
 	| shape |
 	shape := RSBox new
@@ -102,7 +95,7 @@ MBAttributeModel >> shape [
 ]
 
 { #category : #accessing }
-MBAttributeModel >> type [
+NCBAttributeModel >> type [
 
 	| subclasses |
 	subclasses := entity parentType subclassHierarchy.

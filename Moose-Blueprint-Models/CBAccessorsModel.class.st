@@ -2,7 +2,7 @@
 I represent a model for getters and setters
 "
 Class {
-	#name : #MBAccessorsModel,
+	#name : #CBAccessorsModel,
 	#superclass : #Object,
 	#instVars : [
 		'accessorInvocations',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-MBAccessorsModel class >> newFrom: aMethod [
+CBAccessorsModel class >> newFrom: aMethod [
 
 	^ self new
 		  entity: aMethod;
@@ -22,48 +22,48 @@ MBAccessorsModel class >> newFrom: aMethod [
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> accessorInvocations [
+CBAccessorsModel >> accessorInvocations [
 	^ accessorInvocations
 ]
 
 { #category : #adding }
-MBAccessorsModel >> addIncoming: anInvocation [ 
+CBAccessorsModel >> addIncoming: anInvocation [ 
 	((accessorInvocations collect: #target) includes: anInvocation target) ifFalse: [  
 	accessorInvocations add: anInvocation ]
 ]
 
 { #category : #adding }
-MBAccessorsModel >> addOutgoing: anAttributeAccess [
+CBAccessorsModel >> addOutgoing: anAttributeAccess [
 
 	((attributeAccess collect: #source) includes: anAttributeAccess source) ifFalse: [  
 	attributeAccess add: anAttributeAccess ]
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> attributeAccess [ 
+CBAccessorsModel >> attributeAccess [ 
 	^ attributeAccess
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> color [
+CBAccessorsModel >> color [
 
 	^ self entity isDeadMethod
-		  ifTrue: [ MiClassBlueprintPalette new colorAt: #isDeadMethod ]
-		  ifFalse: [ MiClassBlueprintPalette new colorAt: self type ]
+		  ifTrue: [ MiNClassBlueprintPalette new colorAt: #isDeadMethod ]
+		  ifFalse: [ MiNClassBlueprintPalette new colorAt: self type ]
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> entity [ 
+CBAccessorsModel >> entity [ 
 	^ entity
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> entity: anEntity [ 
+CBAccessorsModel >> entity: anEntity [ 
 	entity := anEntity 
 ]
 
 { #category : #initialization }
-MBAccessorsModel >> initialize [
+CBAccessorsModel >> initialize [
 
 	super initialize.
 	accessorInvocations := OrderedCollection new.
@@ -71,22 +71,22 @@ MBAccessorsModel >> initialize [
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> modelType [
+CBAccessorsModel >> modelType [
 	^ modelType
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> modelType: aSymbol [
+CBAccessorsModel >> modelType: aSymbol [
 	modelType := aSymbol 
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> name [ 
+CBAccessorsModel >> name [ 
 	^ entity name
 ]
 
 { #category : #'instance creation' }
-MBAccessorsModel >> newIncomingConnection [ 
+CBAccessorsModel >> newIncomingConnection [ 
 
 	^ CBAccessorInvocationModel new 
 		initializeDescription;
@@ -94,14 +94,14 @@ MBAccessorsModel >> newIncomingConnection [
 ]
 
 { #category : #printing }
-MBAccessorsModel >> printOn: aStream [ 
+CBAccessorsModel >> printOn: aStream [ 
 	aStream nextPutAll: '('. 
 	self name asString printOn: aStream.
 	aStream nextPutAll: ')'.
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> shape [
+CBAccessorsModel >> shape [
 
 	| shape border |
 	border := RSBorder new
@@ -120,6 +120,6 @@ MBAccessorsModel >> shape [
 ]
 
 { #category : #accessing }
-MBAccessorsModel >> type [
+CBAccessorsModel >> type [
 	^ self entity isGetter ifTrue: [ #isGetter ] ifFalse: [ #isSetter ]
 ]
