@@ -6,6 +6,13 @@ FamixTType >> blueprint [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixTType >> inspectorShowOriginalBlueprint [
+
+	<inspectorPresentationOrder: 10 title: 'OBlueprint'>
+	^ self originalBlueprint asInspectorPresenter
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixTType >> originalBlueprint [
 	^ OCBView forType: self 
 ]
