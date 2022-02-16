@@ -1,24 +1,10 @@
-"
-I am the model class of the Class Blueprint visualization. I have the classModel which holds attribute models and different method models according to their types.
-- Initializers: methods responsible for initialization (initialize, new, constructors)
-- Externals: Methods invoked by initializers
-- Internals: Methods called by non initializers
-- Accessors: Getters and Setters
-"
 Class {
 	#name : #NCBView,
-	#superclass : #MooseAbstractVisualization,
+	#superclass : #CBView,
 	#instVars : [
-		'classModel',
-		'initializersLayer',
-		'externalsLayer',
-		'internalsLayer',
-		'accessorsLayer',
-		'attributesLayer',
 		'hibernersLayer',
 		'hibernerAttributesLayer',
 		'classVarsLayer',
-		'border',
 		'classMethodsLayer',
 		'shapes',
 		'secondLayer',
@@ -27,59 +13,9 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #initialization }
-NCBView class >> defaultBorderColor [ 
-	^ Color black
-]
-
-{ #category : #initialization }
-NCBView class >> defaultBorderWidth [
-	^ 1
-]
-
 { #category : #'as yet unclassified' }
-NCBView class >> defaultBoxesHeight [
-	^ 10
-]
-
-{ #category : #'as yet unclassified' }
-NCBView class >> defaultBoxesWidth [
-
-	^ 10
-]
-
-{ #category : #accessing }
-NCBView class >> defaultTitle [
-	^ 'Blueprint'
-]
-
-{ #category : #accessing }
-NCBView class >> forType: aFamixType [
-	^ self new
-		entity: aFamixType;
-		yourself
-]
-
-{ #category : #accessing }
-NCBView class >> icon [
-	^ MooseIcons mooseBlueprint
-]
-
-{ #category : #'as yet unclassified' }
-NCBView class >> maxHeight [
-
-	^ 30
-]
-
-{ #category : #'as yet unclassified' }
-NCBView class >> maxWidth [
-
-	^ 30
-]
-
-{ #category : #layers }
-NCBView >> accessorsLayer [ 
-	^ accessorsLayer
+NCBView class >> blueprint [ 
+	^ NClassBlueprint 
 ]
 
 { #category : #'as yet unclassified' }
@@ -102,87 +38,8 @@ NCBView >> attributes [
 ]
 
 { #category : #layers }
-NCBView >> attributesLayer [ 
-	^ attributesLayer
-]
-
-{ #category : #shapes }
-NCBView >> build [
-
-	self buildLayers.
-	self buildEdges.
-	self nestLayers.
-	super build
-]
-
-{ #category : #shapes }
-NCBView >> buildEdges [
-
-	| builder edges |
-	"method Invocations"
-	builder := self edgeBuilder.
-	edges := (classModel methodInvocations flatCollect: #outgoing) 
-		         collect: [ :each | 
-		         builder connectFrom: each source toAll: { each target } ].
-
-	edges do: #pushBack.
-	"Access Invocations"
-	edges := classModel accessorInvocations flattened collect: [ :each | 
-	
-		         builder
-			         connectFrom: each source
-			         toAll: (classModel accessorInvocationsFrom: each source) ].
-
-	edges do: #pushBack.
-	"Attribute Access"
-
-	edges := classModel attributeAccess flattened collect: [ :each | 
-		         builder
-			         connectFrom: each source
-			         toAll: (classModel attributeAccessesFrom: each source) ].
-
-	edges do: #pushBack
-]
-
-{ #category : #shapes }
-NCBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
-
-	| layer |
-	layer := RSComposite new
-		         model: aLayerModel;
-		         border: border.
-	layer addAll: (aGroup collect: [ :aModel | aModel shape.  ]).
-	layer popupText: aLayerModel name asString.
-	layer adjustToChildren.
-	self canvas add: layer
-]
-
-{ #category : #shapes }
-NCBView >> buildLayers [
-
-	self layersEntities do: [ :aLayerModel | 
-		self buildLayerNamed: aLayerModel withEntities: aLayerModel entities ]
-]
-
-{ #category : #building }
-NCBView >> buildLegend [
-
-	CBLegend buildFor: self
-]
-
-{ #category : #layers }
 NCBView >> classMethodsLayer [ 
 	^ classMethodsLayer 
-]
-
-{ #category : #accessing }
-NCBView >> classModel [
-	^ classModel
-]
-
-{ #category : #accessing }
-NCBView >> classModel: aClassModel [ 
-	classModel := aClassModel
 ]
 
 { #category : #'accessing - parallel hierarchy' }
@@ -218,12 +75,60 @@ NCBView >> classVarsLayer [
 	^ classVarsLayer
 ]
 
+{ #category : #'attributes composites' }
+NCBView >> deadAttributesComposite [
+
+	| shape |
+	shape := self canvas shapeFromModel: hibernerAttributesLayer.
+	self highlight: shape.
+	RSVerticalLineLayout new on: shape nodes.
+	^ shape
+]
+
+{ #category : #layers }
+NCBView >> deadAttributesLayer [
+
+	^ hibernerAttributesLayer
+]
+
+{ #category : #composite }
+NCBView >> deadMethodsComposite [
+
+	| shape |
+	shape := self canvas shapeFromModel: hibernersLayer.
+	"shapes := shape nodes copy.
+	layout := RSForceBasedLayout new.
+	layout charge: -50.
+	layout
+		doNotUseProgressBar;
+		on: shapes."
+	self highlight: shape.
+	RSHorizontalLineLayout new
+		gapSize: 5;
+		alignTop;
+		on: shape nodes.
+	^ shape
+]
+
 { #category : #'as yet unclassified' }
 NCBView >> deads [
 
 	^ { 
-		  self hibernerMethodsComposite".
+		  self deadMethodsComposite".
 		  self hibernerAttributesComposite" }
+]
+
+{ #category : #layers }
+NCBView >> deadsLayer [
+	^ hibernersLayer 
+]
+
+{ #category : #accessing }
+NCBView >> deadsLayers [
+
+	^ { 
+		  hibernerAttributesLayer.
+		  hibernersLayer } asOrderedCollection 
 ]
 
 { #category : #shapes }
@@ -233,21 +138,6 @@ NCBView >> edgeBuilder [
 		  shapes: (self canvas nodes flatCollect: #children);
 		  attachPoint: RSBorderAttachPoint new;
 		  yourself
-]
-
-{ #category : #accessing }
-NCBView >> entities [ 
-	^ classModel models
-]
-
-{ #category : #accessing }
-NCBView >> entity: anEntity [ 
-	classModel := NClassBlueprint newFrom: anEntity
-]
-
-{ #category : #layers }
-NCBView >> externalsLayer [ 
-	^ externalsLayer
 ]
 
 { #category : #'as yet unclassified' }
@@ -285,7 +175,7 @@ NCBView >> fifthLayer [
 { #category : #composite }
 NCBView >> firstLayer [
 
-	^ self hibernerMethodsComposite padding: 10.
+	^ self deadMethodsComposite padding: 10.
 ]
 
 { #category : #'as yet unclassified' }
@@ -296,54 +186,6 @@ NCBView >> fourthLayer [
 	RSVerticalLineLayout new on: shape nodes.
 	shape padding: 10.
 	^ shape
-]
-
-{ #category : #'attributes composites' }
-NCBView >> hibernerAttributesComposite [
-
-	| shape |
-	shape := self canvas shapeFromModel: hibernerAttributesLayer.
-	self highlight: shape.
-	RSVerticalLineLayout new on: shape nodes.
-	^ shape
-]
-
-{ #category : #layers }
-NCBView >> hibernerAttributesLayer [
-
-	^ hibernerAttributesLayer
-]
-
-{ #category : #composite }
-NCBView >> hibernerMethodsComposite [
-
-	| shape |
-	shape := self canvas shapeFromModel: hibernersLayer.
-	"shapes := shape nodes copy.
-	layout := RSForceBasedLayout new.
-	layout charge: -50.
-	layout
-		doNotUseProgressBar;
-		on: shapes."
-	self highlight: shape.
-	RSHorizontalLineLayout new
-		gapSize: 5;
-		alignTop;
-		on: shape nodes.
-	^ shape
-]
-
-{ #category : #layers }
-NCBView >> hibernersLayer [
-	^ hibernersLayer 
-]
-
-{ #category : #accessing }
-NCBView >> hibernersLayers [
-
-	^ { 
-		  hibernerAttributesLayer.
-		  hibernersLayer } asOrderedCollection 
 ]
 
 { #category : #public }
@@ -381,11 +223,6 @@ NCBView >> initialize [
 		          yourself
 ]
 
-{ #category : #layers }
-NCBView >> initializersLayer [ 
-	^ initializersLayer
-]
-
 { #category : #accessing }
 NCBView >> instSide [
 
@@ -400,11 +237,6 @@ NCBView >> instSide [
 { #category : #'accessing - parallel hierarchy' }
 NCBView >> instanceSide [ 
 	^ self instSide collect: [ :each | self canvas shapeFromModel: each ]
-]
-
-{ #category : #layers }
-NCBView >> internalsLayer [ 
-	^ internalsLayer
 ]
 
 { #category : #initialization }
@@ -552,9 +384,4 @@ NCBView >> superAttributesLayer [
 NCBView >> thirdLayer [
 
 	^ self classSideMethods padding: 10
-]
-
-{ #category : #initialization }
-NCBView >> windowTitle [
-	^ classModel name , ' blueprint'
 ]

@@ -70,6 +70,11 @@ CBAccessorsModel >> initialize [
 	attributeAccess := OrderedCollection new
 ]
 
+{ #category : #testing }
+CBAccessorsModel >> isMethodModel [
+	^ false
+]
+
 { #category : #accessing }
 CBAccessorsModel >> modelType [
 	^ modelType

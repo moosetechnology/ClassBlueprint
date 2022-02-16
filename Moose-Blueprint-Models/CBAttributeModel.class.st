@@ -2,7 +2,7 @@
 I represent a model for class attributes
 "
 Class {
-	#name : #NCBAttributeModel,
+	#name : #CBAttributeModel,
 	#superclass : #CBAbstractModel,
 	#instVars : [
 		'attributeAccess'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-NCBAttributeModel class >> newFrom: anEntity [
+CBAttributeModel class >> newFrom: anEntity [
 
 	^ self new
 		  entity: anEntity;
@@ -19,48 +19,48 @@ NCBAttributeModel class >> newFrom: anEntity [
 ]
 
 { #category : #initialization }
-NCBAttributeModel >> addIncoming: anAttributeAccessModel [
+CBAttributeModel >> addIncoming: anAttributeAccessModel [
 
 	attributeAccess add: anAttributeAccessModel
 ]
 
 { #category : #accessing }
-NCBAttributeModel >> attributeAccess [
+CBAttributeModel >> attributeAccess [
 	^ attributeAccess
 ]
 
 { #category : #operations }
-NCBAttributeModel >> create [
+CBAttributeModel >> create [
 
 	self initializeAttributeAccess.
 	self initializeDescription
 ]
 
 { #category : #accessing }
-NCBAttributeModel >> externalAccesses [
+CBAttributeModel >> externalAccesses [
 	^entity incomingAccesses select: [ :each | 
 		  each source parentType ~= entity parentType ].
 ]
 
 { #category : #initialization }
-NCBAttributeModel >> initializeAttributeAccess [
+CBAttributeModel >> initializeAttributeAccess [
 	attributeAccess := OrderedCollection new
 ]
 
 { #category : #initialization }
-NCBAttributeModel >> initializeDescription [
+CBAttributeModel >> initializeDescription [
 
 	description := NCBAttributeDescription newFrom: self.
 
 ]
 
 { #category : #accessing }
-NCBAttributeModel >> internalAccesses [ 
+CBAttributeModel >> internalAccesses [ 
 	^ self entity queryIncomingAccesses select: [ :each | each source parentType = entity parentType ].
 ]
 
 { #category : #'instance creation' }
-NCBAttributeModel >> newIncomingConnection [
+CBAttributeModel >> newIncomingConnection [
 
 	^ CBAttributeAccessModel new
 		  initializeDescription;
@@ -68,7 +68,7 @@ NCBAttributeModel >> newIncomingConnection [
 ]
 
 { #category : #printing }
-NCBAttributeModel >> printOn: aStream [
+CBAttributeModel >> printOn: aStream [
 
 	aStream nextPutAll: '('.
 	self name asString printOn: aStream.
@@ -76,7 +76,7 @@ NCBAttributeModel >> printOn: aStream [
 ]
 
 { #category : #accessing }
-NCBAttributeModel >> shape [
+CBAttributeModel >> shape [
 
 	| shape |
 	shape := RSBox new
@@ -95,7 +95,7 @@ NCBAttributeModel >> shape [
 ]
 
 { #category : #accessing }
-NCBAttributeModel >> type [
+CBAttributeModel >> type [
 
 	| subclasses |
 	subclasses := entity parentType subclassHierarchy.

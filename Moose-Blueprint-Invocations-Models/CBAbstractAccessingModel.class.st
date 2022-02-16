@@ -58,7 +58,7 @@ CBAbstractAccessingModel >> target: aTarget [
 	target := aTarget 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #creation }
 CBAbstractAccessingModel >> target: aTarget sources: collection [ 
 	
 	^self  

@@ -1,28 +1,8 @@
-"
-I represent the type of the method: an abstract method, extending method, overriding, delegating, constant, interface and implementation, a getter or a setter. 
-
-Where each type has a specific color defined in MiClassBlueprintPalette
-
-"
 Class {
 	#name : #NCBMethodDescription,
-	#superclass : #CBShapeDescription,
-	#instVars : [
-		'type',
-		'height',
-		'width',
-		'border',
-		'complex'
-	],
+	#superclass : #CBMethodDescription,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
-
-{ #category : #'instance creation' }
-NCBMethodDescription class >> newFrom: aMethodModel [ 
-	^ self new 
-		entity: aMethodModel;
-		create
-]
 
 { #category : #accessing }
 NCBMethodDescription >> border [
@@ -36,11 +16,6 @@ NCBMethodDescription >> border [
 	complex ifTrue: [ myBorder color: Color red ].
 	^ myBorder 
 
-]
-
-{ #category : #accessing }
-NCBMethodDescription >> border: aBorder [ 
-	border := aBorder 
 ]
 
 { #category : #accessing }
@@ -79,40 +54,10 @@ NCBMethodDescription >> defaultBorderColor [
 	^ Color black
 ]
 
-{ #category : #accessing }
-NCBMethodDescription >> height [
-
-	^ height
-]
-
 { #category : #'as yet unclassified' }
 NCBMethodDescription >> highComplexityBorder [
 
 	^ Color red
-]
-
-{ #category : #initialization }
-NCBMethodDescription >> initializeBorder [
-	" the borderDict keys: booleans values: aColor"
-	| borderDict borderColor |
-	border := RSBorder new.
-	borderDict := self borderDictionary.
-	borderColor := (borderDict keys
-			 detect: [ :condition | condition ]
-			 ifNone: [ NCBView defaultBorderColor ]).
-	border color: Color black
-]
-
-{ #category : #initialization }
-NCBMethodDescription >> initializeSize [
-
-	height := entityModel entity numberOfLinesOfCode
-	          + NCBView defaultBoxesHeight.
-	width := entityModel invocations outgoing isEmpty
-		         ifTrue: [ NCBView defaultBoxesWidth ]
-		         ifFalse: [ 
-			         entityModel invocations outgoing size * 2+ NCBView defaultBoxesWidth 
-				         ]
 ]
 
 { #category : #initialization }
@@ -147,9 +92,4 @@ NCBMethodDescription >> polymorphicBorder [
 		color: Color black;
 		  yourself
 	
-]
-
-{ #category : #accessing }
-NCBMethodDescription >> width [
-	^ width
 ]

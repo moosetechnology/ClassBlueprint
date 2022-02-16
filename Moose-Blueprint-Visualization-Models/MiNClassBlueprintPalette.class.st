@@ -3,7 +3,7 @@ I am the palette for the class blueprint visualization. I hold the colors of cla
 "
 Class {
 	#name : #MiNClassBlueprintPalette,
-	#superclass : #MiVisualizationPalette,
+	#superclass : #MiClassBlueprintPalette,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
