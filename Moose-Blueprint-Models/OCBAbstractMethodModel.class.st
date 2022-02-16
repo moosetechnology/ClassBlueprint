@@ -12,6 +12,12 @@ OCBAbstractMethodModel >> initializeDescription [
 ]
 
 { #category : #testing }
+OCBAbstractMethodModel >> isInternal [ 
+	self entity isInternalImplementation ifTrue: [ ^ #isInternalImplementation ].
+	^ nil
+]
+
+{ #category : #testing }
 OCBAbstractMethodModel >> isInternalImplementation [ 	
 	 entity isInternalImplementation ifTrue: [ ^ #isInternalImplementation ].
 	^ nil

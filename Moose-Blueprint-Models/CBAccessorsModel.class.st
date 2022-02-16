@@ -120,7 +120,7 @@ CBAccessorsModel >> shape [
 		         " height: self description height;
 		         width: self description width;"
 		         popupText: self name asString.
-	shape @ RSDraggable.
+	shape addInteraction: NCBDraggable new.
 	^ shape
 ]
 

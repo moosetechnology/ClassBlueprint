@@ -192,7 +192,7 @@ NClassBlueprint >> initializeInitializers [
 NClassBlueprint >> initializeInternals [
 
 	
-	internals := self methods select: [ :each | each isInternal ] thenCollect: [ :each | 
+	internals := self methods select: [ :each | self isInternal: each ] thenCollect: [ :each | 
 		             NCBInternalModel newFrom: each ]
 ]
 
@@ -204,6 +204,16 @@ NClassBlueprint >> initializeSuperAttributes [
 		                     each isClassSide ]) select: [ :each | 
 		                    each isCalledIn: self entity ]) collect: [ :each | 
 		                   CBAttributeModel newFrom: each ] 
+]
+
+{ #category : #testing }
+NClassBlueprint >> isInternal: anEntity [ 
+
+	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
+
+	^ anEntity isOnlyCalledInternally and: [ 
+		anEntity belongsToDeadBranch not and: [  
+			  anEntity isCalledByInitializers not ] ]
 ]
 
 { #category : #accessing }

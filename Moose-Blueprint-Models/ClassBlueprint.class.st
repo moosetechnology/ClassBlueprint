@@ -250,6 +250,11 @@ ClassBlueprint >> internals: internalMethods [
 	internals := internalMethods
 ]
 
+{ #category : #testing }
+ClassBlueprint >> isInternal: anEntity [
+	self subclassResponsibility 
+]
+
 { #category : #building }
 ClassBlueprint >> makeConnections [
 

@@ -65,8 +65,14 @@ OClassBlueprint >> initializeInitializers [
 OClassBlueprint >> initializeInternals [
 
 	
-	internals := self methods select: [ :each | each isInternal ] thenCollect: [ :each | 
-		             OCBInternalModel newFrom: each ]
+	internals := self methods select: [ :each | self isInternal: each  ] thenCollect: [ :each | 
+		             OCBInternalModel newFrom: each ] 
+]
+
+{ #category : #testing }
+OClassBlueprint >> isInternal: anEntity [ 
+	^ anEntity isOnlyCalledInternally and: [ 
+			  anEntity isCalledByInitializers not ] 
 ]
 
 { #category : #initialization }

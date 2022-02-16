@@ -36,11 +36,6 @@ FamixJavaMethod >> canBePureInitializer [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> complexity [ 
-	^ MBCyclomaticComplexity newFrom: self 
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> computeIsGetter [
 
 	^ (self name beginsWith: 'get') and: [ 
@@ -128,17 +123,6 @@ FamixJavaMethod >> isExternal [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isInitializer [
   ^ self isConstructor
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isInternal [
-
-	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
-
-	^ self isOnlyCalledInternally and: [ 
-
-		  self belongsToDeadBranch not and: [ 
-			  self isCalledByInitializers not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

@@ -148,7 +148,7 @@ CBAbstractMethodModel >> isExtending [
 
 { #category : #testing }
 CBAbstractMethodModel >> isInternal [ 
-	^ entity isInternal
+	self subclassResponsibility 
 ]
 
 { #category : #testing }

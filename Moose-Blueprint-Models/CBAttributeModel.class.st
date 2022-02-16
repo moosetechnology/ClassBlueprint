@@ -90,7 +90,7 @@ CBAttributeModel >> shape [
 		when: RSMouseEnter do: [ :evt | 
 			shape color: Color red.
 			evt signalUpdate ]"
-	shape @ RSDraggable.
+	shape addInteraction: NCBDraggable new.
 	^ shape
 ]
 
