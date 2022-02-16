@@ -2,7 +2,7 @@
 I am an object holding the incoming/outgoing invocations of methods
 "
 Class {
-	#name : #OBInvocations,
+	#name : #CBInvocations,
 	#superclass : #Object,
 	#instVars : [
 		'incoming',
@@ -12,34 +12,34 @@ Class {
 }
 
 { #category : #accessing }
-OBInvocations >> incoming [ 
+CBInvocations >> incoming [ 
 	^ incoming
 ]
 
 { #category : #accessing }
-OBInvocations >> incoming: collection [ 
+CBInvocations >> incoming: collection [ 
 	incoming := collection
 ]
 
 { #category : #initialization }
-OBInvocations >> initialize [ 
+CBInvocations >> initialize [ 
 	super initialize.
 	incoming := OrderedCollection new.
 	outgoing := OrderedCollection new
 ]
 
 { #category : #accessing }
-OBInvocations >> outgoing [ 
+CBInvocations >> outgoing [ 
 	^ outgoing
 ]
 
 { #category : #accessing }
-OBInvocations >> outgoing: collection [ 
+CBInvocations >> outgoing: collection [ 
 	outgoing := collection
 ]
 
 { #category : #printing }
-OBInvocations >> printOn: aStream [
+CBInvocations >> printOn: aStream [
 
 	aStream
 		nextPutAll: 'Incoming: ';

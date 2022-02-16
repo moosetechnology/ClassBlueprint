@@ -1,10 +1,10 @@
 Class {
-	#name : #OBAbstractInvocationsCollector,
+	#name : #CBAbstractInvocationsCollector,
 	#superclass : #Object,
 	#category : #'Moose-OriginalBlueprint-Invocations-Models'
 }
 
 { #category : #accessing }
-OBAbstractInvocationsCollector >> type [ 
+CBAbstractInvocationsCollector >> type [ 
 	^ #methodInvocation
 ]

@@ -3,7 +3,7 @@ I represent a model for class attributes
 "
 Class {
 	#name : #OBAttributeModel,
-	#superclass : #OBAbstractModel,
+	#superclass : #CBAbstractModel,
 	#instVars : [
 		'attributeAccess'
 	],
@@ -62,7 +62,7 @@ OBAttributeModel >> internalAccesses [
 { #category : #'instance creation' }
 OBAttributeModel >> newIncomingConnection [
 
-	 ^ OBAttributeAccessModel new
+	 ^ CBAttributeAccessModel new
 		  initializeDescription;
 		  yourself 
 ]

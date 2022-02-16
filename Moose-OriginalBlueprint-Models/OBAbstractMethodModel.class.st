@@ -3,7 +3,7 @@ I represent a method of Class Blueprint.
 "
 Class {
 	#name : #OBAbstractMethodModel,
-	#superclass : #OBAbstractModel,
+	#superclass : #CBAbstractModel,
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
@@ -74,7 +74,7 @@ OBAbstractMethodModel >> create [
 
 	accessorInvocations := OrderedCollection new.
 	attributeAccess := OrderedCollection new.
-	invocations := OBInvocations new.
+	invocations := CBInvocations new.
 	"self initializeDescription"
 ]
 
@@ -167,7 +167,7 @@ OBAbstractMethodModel >> isOverriding [
 { #category : #'instance creation' }
 OBAbstractMethodModel >> newIncomingConnection [ 
 
-	^ OBIncomingInvocationsCollector new 
+	^ CBIncomingInvocationsCollector new 
 ]
 
 { #category : #printing }

@@ -2,8 +2,8 @@
 I represent the invocation relation of a method
 "
 Class {
-	#name : #OBIncomingInvocationsCollector,
-	#superclass : #OBAbstractInvocationsCollector,
+	#name : #CBIncomingInvocationsCollector,
+	#superclass : #CBAbstractInvocationsCollector,
 	#instVars : [
 		'target',
 		'sources'
@@ -12,10 +12,10 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-OBIncomingInvocationsCollector >> addIncomingConnections [
+CBIncomingInvocationsCollector >> addIncomingConnections [
 
 	| invocationsModels |
-	invocationsModels := sources collect: [ :each |  OBInvocationModel new
+	invocationsModels := sources collect: [ :each |  CBInvocationModel new
 				                     source: each;
 				                     target: target;
 				yourself ].
@@ -25,7 +25,7 @@ OBIncomingInvocationsCollector >> addIncomingConnections [
 ]
 
 { #category : #printing }
-OBIncomingInvocationsCollector >> printOn: aStream [
+CBIncomingInvocationsCollector >> printOn: aStream [
 
 	aStream nextPutAll: '(Source:'.
 	self target name asString printOn: aStream.
@@ -39,27 +39,27 @@ OBIncomingInvocationsCollector >> printOn: aStream [
 ]
 
 { #category : #accessing }
-OBIncomingInvocationsCollector >> sources [ 
+CBIncomingInvocationsCollector >> sources [ 
 	^ sources
 ]
 
 { #category : #accessing }
-OBIncomingInvocationsCollector >> sources: aCollection [
+CBIncomingInvocationsCollector >> sources: aCollection [
 	sources := aCollection
 ]
 
 { #category : #accessing }
-OBIncomingInvocationsCollector >> target [
+CBIncomingInvocationsCollector >> target [
 	^ target
 ]
 
 { #category : #accessing }
-OBIncomingInvocationsCollector >> target: aTarget [
+CBIncomingInvocationsCollector >> target: aTarget [
 	target := aTarget
 ]
 
 { #category : #'as yet unclassified' }
-OBIncomingInvocationsCollector >> target: aTarget sources: collection [
+CBIncomingInvocationsCollector >> target: aTarget sources: collection [
 
 	^ self
 		  target: aTarget;
@@ -69,6 +69,6 @@ OBIncomingInvocationsCollector >> target: aTarget sources: collection [
 ]
 
 { #category : #accessing }
-OBIncomingInvocationsCollector >> type [ 
+CBIncomingInvocationsCollector >> type [ 
 	^ #methodInvocation
 ]

@@ -126,5 +126,5 @@ FamixJavaMethod >> isOnlyCalledInternally [
 { #category : #'*Moose-OriginalBlueprint-Models' }
 FamixJavaMethod >> newOutgoingConnection [
 
-	^ OBOutgoingInvocationsCollector new
+	^ CBOutgoingInvocationsCollector new
 ]

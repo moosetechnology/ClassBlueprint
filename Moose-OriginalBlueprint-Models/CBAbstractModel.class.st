@@ -2,7 +2,7 @@
 Main abstract class of the Class Blueprint models
 "
 Class {
-	#name : #OBAbstractModel,
+	#name : #CBAbstractModel,
 	#superclass : #Object,
 	#instVars : [
 		'entity',
@@ -12,31 +12,31 @@ Class {
 }
 
 { #category : #'instance creation' }
-OBAbstractModel class >> newFrom: anEntity [ 
+CBAbstractModel class >> newFrom: anEntity [ 
 	self subclassResponsibility 
 ]
 
 { #category : #accessing }
-OBAbstractModel >> description [
+CBAbstractModel >> description [
 	^ description
 ]
 
 { #category : #accessing }
-OBAbstractModel >> entity [ 
+CBAbstractModel >> entity [ 
 	^ entity
 ]
 
 { #category : #accessing }
-OBAbstractModel >> entity: anEntity [
+CBAbstractModel >> entity: anEntity [
 	entity := anEntity 
 ]
 
 { #category : #initialization }
-OBAbstractModel >> initializeDescription [
+CBAbstractModel >> initializeDescription [
 	self subclassResponsibility 
 ]
 
 { #category : #accessing }
-OBAbstractModel >> name [ 
+CBAbstractModel >> name [ 
 	^ entity name
 ]

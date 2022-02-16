@@ -86,7 +86,7 @@ OBAccessorsModel >> name [
 { #category : #'instance creation' }
 OBAccessorsModel >> newIncomingConnection [ 
  
-	^ OBAccessorInvocationModel new 
+	^ CBAccessorInvocationModel new 
 		initializeDescription;
 		yourself 
 ]

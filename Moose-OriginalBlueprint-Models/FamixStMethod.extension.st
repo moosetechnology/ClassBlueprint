@@ -102,5 +102,5 @@ FamixStMethod >> isOnlyCalledInternally [
 { #category : #'*Moose-OriginalBlueprint-Models' }
 FamixStMethod >> newOutgoingConnection [
 
-	^ OBOutgoingInvocationsCollector new 
+	^ CBOutgoingInvocationsCollector new 
 ]

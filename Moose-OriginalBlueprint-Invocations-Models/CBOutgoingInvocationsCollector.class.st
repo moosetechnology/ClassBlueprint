@@ -2,8 +2,8 @@
 I collect the source and targets of an invocation then for each one I create a new invocation with the source and target and add it to the method model
 "
 Class {
-	#name : #OBOutgoingInvocationsCollector,
-	#superclass : #OBAbstractInvocationsCollector,
+	#name : #CBOutgoingInvocationsCollector,
+	#superclass : #CBAbstractInvocationsCollector,
 	#instVars : [
 		'source',
 		'targets'
@@ -12,10 +12,10 @@ Class {
 }
 
 { #category : #adding }
-OBOutgoingInvocationsCollector >> addOutgoingConnection [
+CBOutgoingInvocationsCollector >> addOutgoingConnection [
 
 	| invocationsModels |
-	invocationsModels := targets collect: [ :each |  OBInvocationModel new
+	invocationsModels := targets collect: [ :each |  CBInvocationModel new
 				                     source: source;
 				                     target: each;yourself ].
 	invocationsModels ifNotEmpty: [  
@@ -25,7 +25,7 @@ OBOutgoingInvocationsCollector >> addOutgoingConnection [
 ]
 
 { #category : #printing }
-OBOutgoingInvocationsCollector >> printOn: aStream [
+CBOutgoingInvocationsCollector >> printOn: aStream [
 
 	aStream nextPutAll: '('.
 	self source name asString printOn: aStream.
@@ -38,17 +38,17 @@ OBOutgoingInvocationsCollector >> printOn: aStream [
 ]
 
 { #category : #accessing }
-OBOutgoingInvocationsCollector >> source [ 
+CBOutgoingInvocationsCollector >> source [ 
 	^ source
 ]
 
 { #category : #accessing }
-OBOutgoingInvocationsCollector >> source: aSource [
+CBOutgoingInvocationsCollector >> source: aSource [
 	source := aSource
 ]
 
 { #category : #'as yet unclassified' }
-OBOutgoingInvocationsCollector >> source: aSource targets: candidates [
+CBOutgoingInvocationsCollector >> source: aSource targets: candidates [
 
 	^ self
 		  source: aSource;
@@ -58,11 +58,11 @@ OBOutgoingInvocationsCollector >> source: aSource targets: candidates [
 ]
 
 { #category : #accessing }
-OBOutgoingInvocationsCollector >> targets [
+CBOutgoingInvocationsCollector >> targets [
 	^ targets
 ]
 
 { #category : #accessing }
-OBOutgoingInvocationsCollector >> targets: collection [
+CBOutgoingInvocationsCollector >> targets: collection [
 	targets := collection
 ]
