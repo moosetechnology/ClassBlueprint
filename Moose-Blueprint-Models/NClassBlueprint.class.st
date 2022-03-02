@@ -87,9 +87,8 @@ NClassBlueprint >> create [
 
 
 	self makeConnections.
-	self attributeMethodTypes
-	"self detectComplexityBetween: 5 and: 50."
-	"self detectComplexitySuperiorTo: 50."
+	self attributeMethodTypes.
+	self detectComplexitySuperiorTo: 50
 ]
 
 { #category : #accessing }
@@ -116,6 +115,15 @@ NClassBlueprint >> detectComplexityBetween: beginning and: end [
 	methods := self methodModels select: [ :each | each complexity between: beginning  and: end  ].
 	methods do: [ :each | each activateRedBorder ]. 
 	
+]
+
+{ #category : #'as yet unclassified' }
+NClassBlueprint >> detectComplexitySuperiorTo: aValue [
+
+	| methods |
+	methods := self methodModels select: [ :each | 
+		           each complexity > aValue ].
+	methods do: [ :each | each activateRedBorder ]
 ]
 
 { #category : #initialization }
