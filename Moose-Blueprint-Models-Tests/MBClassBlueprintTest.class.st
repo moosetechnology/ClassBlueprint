@@ -114,11 +114,11 @@ MBClassBlueprintTest >> setUp [
 	self classVars.
 	self attributes.
 	self initializers.
-	self deads.
 	self internals.
 	self classMethods.
 	self accesses.
 	self externals.
+	self deads.
 	self defineClass.
 	self initializeClassBluePrint
 ]

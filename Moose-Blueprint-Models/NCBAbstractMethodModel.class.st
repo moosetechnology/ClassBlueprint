@@ -34,8 +34,8 @@ NCBAbstractMethodModel >> isInternal [
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
 
 	^ self entity isOnlyCalledInternally and: [ 
-		self entity belongsToDeadBranch not and: [  
-			  self entity isCalledByInitializers not ] ]
+		"self entity belongsToDeadBranch not and: [ " 
+			  self entity isCalledByInitializers not ] "]"
 ]
 
 { #category : #testing }

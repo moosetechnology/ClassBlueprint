@@ -2,13 +2,8 @@ Extension { #name : #FamixJavaMethod }
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> belongsToDeadBranch [
-
-	"self isHiberner ifFalse: [ ^ true ]."
-
-	^ self calledBy allSatisfy: [ :each | 
-		  each isDeadMethod
-			  ifTrue: [ ^ true ]
-			  ifFalse: [ each belongsToDeadBranch ] ]
+	
+	^ NCBDeadAttributesLayerModel new check: self
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

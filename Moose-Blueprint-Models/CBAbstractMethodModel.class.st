@@ -84,7 +84,7 @@ CBAbstractMethodModel >> create [
 	accessorInvocations := OrderedCollection new.
 	attributeAccess := OrderedCollection new.
 	invocations := CBInvocations new.
-	complexity := entity computeCyclomaticComplexity.
+	"complexity := entity computeCyclomaticComplexity."
 	"self initializeDescription"
 ]
 

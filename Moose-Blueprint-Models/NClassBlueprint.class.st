@@ -79,17 +79,17 @@ NClassBlueprint >> create [
 	self initializeClassVars.
 	self initializeAttributes.
 	self initializeSuperAttributes.
+	self initializeDeads.
 	self initializeClassMethods.
 	self initializeInitializers.
 	self initializeExternals.
 	self initializeInternals.
-	"self initializeDeads."
+
 
 	self makeConnections.
-	self attributeMethodTypes.
-	self detectComplexityBetween: 5 and: 50.
+	self attributeMethodTypes
+	"self detectComplexityBetween: 5 and: 50."
 	"self detectComplexitySuperiorTo: 50."
-
 ]
 
 { #category : #accessing }
