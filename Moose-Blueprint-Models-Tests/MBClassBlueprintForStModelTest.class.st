@@ -3,7 +3,13 @@ Class {
 	#superclass : #MBClassBlueprintTest,
 	#instVars : [
 		'externalLocalVar',
-		'accessClassVar'
+		'accessClassVar',
+		'deadBranchMethod',
+		'deadInvocation1',
+		'stubMethod',
+		'stubInvocation',
+		'deadInvocations2',
+		'externalPackage'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
@@ -83,6 +89,33 @@ MBClassBlueprintForStModelTest >> deads [
 	hibernerMethod1 := FamixStMethod new
 		                   name: 'hibernerMethod1()';
 		                   mooseModel: model.
+	deadBranchMethod := FamixStMethod new
+		                    name: 'deadBranchMethod1()';
+		                    mooseModel: model.
+	deadInvocation1 := FamixStInvocation new
+		                   sender: hibernerMethod1;
+		                   addCandidate: deadBranchMethod;
+		                   receiver: deadBranchMethod;
+		                   mooseModel: model;
+		                   yourself.
+	stubMethod := FamixStMethod new
+		              name: 'stubMethod()';
+		              isStub: true;
+		              yourself.
+	externalClass addMethod: stubMethod.
+	stubInvocation := FamixStInvocation new
+		                  sender: stubMethod;
+		                  addCandidate: deadBranchMethod;
+		                  receiver: deadBranchMethod;
+		                  mooseModel: model;
+		                  yourself.
+	deadInvocations2 := FamixStInvocation new
+		                    sender: deadBranchMethod;
+		                    addCandidate: hibernerMethod1;
+		                    receiver: hibernerMethod1;
+		                    mooseModel: model;
+		                    yourself.
+
 	hibernerAttribute := FamixStAttribute new
 		                     name: 'hibernerAttribute';
 		                     mooseModel: model
@@ -119,6 +152,10 @@ MBClassBlueprintForStModelTest >> externalClassConf [
 		                 name: 'externalClass';
 		                 addMethod: externalMethod;
 		                 mooseModel: model.
+	externalPackage := FamixStPackage new
+		                   name: 'externalPackage';
+		                   mooseModel: model.
+	externalClass parentPackage: externalPackage.
 	externalInvocation1 := FamixStInvocation new
 		                       sender: externalMethod;
 		                       addCandidate: external1;
@@ -199,6 +236,12 @@ MBClassBlueprintForStModelTest >> testAttributes [
 				hibernerAttribute.
 				classVar1.
 				classVar2 } size
+]
+
+{ #category : #accessing }
+MBClassBlueprintForStModelTest >> testCheckDead [
+
+	self assert: deadBranchMethod belongsToDeadBranch equals: false
 ]
 
 { #category : #tests }

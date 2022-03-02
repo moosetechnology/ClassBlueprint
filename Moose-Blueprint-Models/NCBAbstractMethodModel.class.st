@@ -80,7 +80,7 @@ NCBAbstractMethodModel >> attributeAccess: anObject [
 
 { #category : #accessing }
 NCBAbstractMethodModel >> complexity [
-	^ complexity
+	^ entity computeCyclomaticComplexity 
 ]
 
 { #category : #accessing }

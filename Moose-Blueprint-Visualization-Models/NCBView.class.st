@@ -189,8 +189,8 @@ NCBView >> classModel: aClassModel [
 NCBView >> classSide [
 
 	^ { 
-		  self classSideMethods".
-		  self classSideVars" }
+		  self classSideMethods.
+		  self classSideVars }
 ]
 
 { #category : #accessing }
@@ -222,8 +222,8 @@ NCBView >> classVarsLayer [
 NCBView >> deads [
 
 	^ { 
-		  self hibernerMethodsComposite".
-		  self hibernerAttributesComposite" }
+		  self hibernerMethodsComposite.
+		  self hibernerAttributesComposite }
 ]
 
 { #category : #shapes }

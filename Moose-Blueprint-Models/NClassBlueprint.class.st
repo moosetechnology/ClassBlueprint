@@ -272,6 +272,15 @@ NClassBlueprint >> detectComplexityBetween: beginning and: end [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+NClassBlueprint >> detectComplexitySuperiorTo: aValue [
+
+	| methods |
+	methods := self methodModels select: [ :each | each complexity >= aValue  ].
+	methods do: [ :each | each activateRedBorder ]. 
+	
+]
+
 { #category : #accessing }
 NClassBlueprint >> entity [ 
 	^ entity
