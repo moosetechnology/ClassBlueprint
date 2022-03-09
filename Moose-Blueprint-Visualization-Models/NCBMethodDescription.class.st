@@ -24,6 +24,21 @@ NCBMethodDescription class >> newFrom: aMethodModel [
 		create
 ]
 
+{ #category : #initialization }
+NCBMethodDescription >> MinitializeType [
+
+	type := entityModel isDeadMethod ifNil: [ 
+		        entityModel isExtending ifNil: [ 
+			        entityModel isOverriding ifNil: [ 
+				        entityModel isDelegating ifNil: [ 
+					        entityModel isConstant ifNil: [ 
+						        entityModel isAccessor ifNil: [ 
+							        entityModel isInternalImplementation ifNil: [ 
+								        entityModel isAbstract ifNil: [ 
+									        entityModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
+	entityModel type: type
+]
+
 { #category : #accessing }
 NCBMethodDescription >> border [
 	| myBorder |
@@ -118,7 +133,7 @@ NCBMethodDescription >> initializeSize [
 { #category : #initialization }
 NCBMethodDescription >> initializeType [
 
-	type := entityModel isAbstract ifNil: [ 
+	type := entityModel isDeadMethod ifNil: [ 
 		        entityModel isExtending ifNil: [ 
 			        entityModel isOverriding ifNil: [ 
 				        entityModel isDelegating ifNil: [ 
@@ -126,7 +141,7 @@ NCBMethodDescription >> initializeType [
 						        entityModel isAccessor ifNil: [ 
 							        entityModel isInternalImplementation ifNil: [ 
 								        entityModel isAbstract ifNil: [ 
-									        entityModel isDeadMethod ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
+									        entityModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
 	entityModel type: type
 ]
 

@@ -3,7 +3,9 @@ Extension { #name : #FamixStMethod }
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> belongsToDeadBranch [
 
-	^ NCBDeadBranchChecker new check: self
+	^ NCBDeadBranchChecker new
+		  checkByMarkAndSweep: self
+		  with: self parentType
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -69,7 +71,8 @@ FamixStMethod >> isCalledExternally [
 	| result |
 	result := self incomingInvocations isNotEmpty and: [ 
 		          self incomingInvocations anySatisfy: [ :each | 
-			          (each source inSameClassAs: self) not ] ].
+			          (each source inSameClassAs: self) not and: [ 
+				          (each source isSuperOf: self) not ] ] ].
 
 	^ result
 ]

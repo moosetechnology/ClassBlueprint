@@ -15,8 +15,8 @@ Class {
 		'internalsLayer',
 		'accessorsLayer',
 		'attributesLayer',
-		'hibernersLayer',
-		'hibernerAttributesLayer',
+		'deadsLayer',
+		'deadAttributesLayer',
 		'classVarsLayer',
 		'border',
 		'classMethodsLayer',
@@ -77,6 +77,25 @@ NCBView class >> maxWidth [
 	^ 30
 ]
 
+{ #category : #composite }
+NCBView >> DeadMethodsComposite [
+
+	| shape |
+	shape := self canvas shapeFromModel: deadsLayer.
+	"shapes := shape nodes copy.
+	layout := RSForceBasedLayout new.
+	layout charge: -50.
+	layout
+		doNotUseProgressBar;
+		on: shapes."
+	self highlight: shape.
+	RSHorizontalLineLayout new
+		gapSize: 5;
+		alignTop;
+		on: shape nodes.
+	^ shape
+]
+
 { #category : #layers }
 NCBView >> accessorsLayer [ 
 	^ accessorsLayer
@@ -94,7 +113,7 @@ NCBView >> attSide [
 NCBView >> attributes [
 
 	^ { 
-		  hibernerAttributesLayer.
+		  deadAttributesLayer.
 		  superAttributesLayer.
 		  attributesLayer.
 		  classVarsLayer } collect: [ :each | 
@@ -218,12 +237,41 @@ NCBView >> classVarsLayer [
 	^ classVarsLayer
 ]
 
+{ #category : #'attributes composites' }
+NCBView >> deadAttributesComposite [
+
+	| shape |
+	shape := self canvas shapeFromModel: deadAttributesLayer.
+	self highlight: shape.
+	RSVerticalLineLayout new on: shape nodes.
+	^ shape
+]
+
+{ #category : #layers }
+NCBView >> deadAttributesLayer [
+
+	^ deadAttributesLayer
+]
+
+{ #category : #accessing }
+NCBView >> deadLayers [
+
+	^ { 
+		  deadAttributesLayer.
+		  deadsLayer } asOrderedCollection 
+]
+
 { #category : #'as yet unclassified' }
 NCBView >> deads [
 
 	^ { 
-		  self hibernerMethodsComposite.
-		  self hibernerAttributesComposite }
+		  self DeadMethodsComposite.
+		  self deadAttributesComposite }
+]
+
+{ #category : #layers }
+NCBView >> deadsLayer [
+	^ deadsLayer 
 ]
 
 { #category : #shapes }
@@ -285,65 +333,17 @@ NCBView >> fifthLayer [
 { #category : #composite }
 NCBView >> firstLayer [
 
-	^ self hibernerMethodsComposite padding: 10.
+	^ self DeadMethodsComposite padding: 10.
 ]
 
 { #category : #'as yet unclassified' }
 NCBView >> fourthLayer [
 
 	| shape |
-	shape := self canvas shapeFromModel: hibernerAttributesLayer.
+	shape := self canvas shapeFromModel: deadAttributesLayer.
 	RSVerticalLineLayout new on: shape nodes.
 	shape padding: 10.
 	^ shape
-]
-
-{ #category : #'attributes composites' }
-NCBView >> hibernerAttributesComposite [
-
-	| shape |
-	shape := self canvas shapeFromModel: hibernerAttributesLayer.
-	self highlight: shape.
-	RSVerticalLineLayout new on: shape nodes.
-	^ shape
-]
-
-{ #category : #layers }
-NCBView >> hibernerAttributesLayer [
-
-	^ hibernerAttributesLayer
-]
-
-{ #category : #composite }
-NCBView >> hibernerMethodsComposite [
-
-	| shape |
-	shape := self canvas shapeFromModel: hibernersLayer.
-	"shapes := shape nodes copy.
-	layout := RSForceBasedLayout new.
-	layout charge: -50.
-	layout
-		doNotUseProgressBar;
-		on: shapes."
-	self highlight: shape.
-	RSHorizontalLineLayout new
-		gapSize: 5;
-		alignTop;
-		on: shape nodes.
-	^ shape
-]
-
-{ #category : #layers }
-NCBView >> hibernersLayer [
-	^ hibernersLayer 
-]
-
-{ #category : #accessing }
-NCBView >> hibernersLayers [
-
-	^ { 
-		  hibernerAttributesLayer.
-		  hibernersLayer } asOrderedCollection 
 ]
 
 { #category : #public }
@@ -371,8 +371,8 @@ NCBView >> initialize [
 	accessorsLayer := CBAccessorsLayerModel new.
 	attributesLayer := CBAttributesLayerModel new.
 	superAttributesLayer := NCBSuperAttributesLayer new.
-	hibernersLayer := NCBDeadMethodsLayerModel new.
-	hibernerAttributesLayer := NCBDeadAttributesLayerModel new.
+	deadsLayer := NCBDeadMethodsLayerModel new.
+	deadAttributesLayer := NCBDeadAttributesLayerModel new.
 	classVarsLayer := NCBClassVarsLayerModel new.
 	classMethodsLayer := NCBClassMethodsLayerModel new.
 	border := RSBorder new
@@ -415,10 +415,10 @@ NCBView >> layersEntities [
 		          (initializersLayer entities: classModel initializers).
 		          (externalsLayer entities: classModel externals).
 		          (internalsLayer entities: classModel internals).
-		          (hibernersLayer entities: classModel deadMethods).
+		          (deadsLayer entities: classModel deadMethods).
 		          (accessorsLayer entities: classModel accessors).
 		          (attributesLayer entities: classModel attributes).
-		          (hibernerAttributesLayer entities:
+		          (deadAttributesLayer entities:
 			           classModel deadAttributes).
 		          (classVarsLayer entities: classModel classVars).
 		          (classMethodsLayer entities: classModel classMethods) .

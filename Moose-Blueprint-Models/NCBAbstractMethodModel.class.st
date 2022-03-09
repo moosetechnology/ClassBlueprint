@@ -137,10 +137,11 @@ NCBAbstractMethodModel >> isConstant [
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 NCBAbstractMethodModel >> isDeadMethod [
 
-	self entity isDeadMethod ifTrue: [ ^ #isDeadMethod ].
+	(self entity isDead or: self entity belongsToDeadBranch) ifTrue: [ 
+		^ #isDeadMethod ].
 	^ nil
 ]
 

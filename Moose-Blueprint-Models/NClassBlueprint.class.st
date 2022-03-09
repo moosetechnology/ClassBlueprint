@@ -233,11 +233,11 @@ NClassBlueprint >> create [
 	self initializeClassVars.
 	self initializeAttributes.
 	self initializeSuperAttributes.
+	self initializeDeads.
 	self initializeClassMethods.
 	self initializeInitializers.
 	self initializeExternals.
 	self initializeInternals.
-	self initializeHiberners.
 
 	self makeConnections.
 	self attributeMethodTypes.
@@ -352,15 +352,7 @@ NClassBlueprint >> initializeClassVars [
 ]
 
 { #category : #initialization }
-NClassBlueprint >> initializeExternals [
-
-	externals := self methods
-		              select: [ :each | each isExternal ] thenCollect: [ :each | 
-		             NCBExternalModel newFrom: each ]
-]
-
-{ #category : #initialization }
-NClassBlueprint >> initializeHibernerAttributes [
+NClassBlueprint >> initializeDeadAttributes [
 
 	deadAttributes := (entity attributes select: [ :each | 
 		                       each incomingAccesses isEmpty and: [ each isClassSide not ] ]) collect: [ 
@@ -369,7 +361,7 @@ NClassBlueprint >> initializeHibernerAttributes [
 ]
 
 { #category : #initialization }
-NClassBlueprint >> initializeHibernerMethods [
+NClassBlueprint >> initializeDeadMethods [
 
 	deadMethods := self methods
 		               select: [ :each | 
@@ -379,10 +371,18 @@ NClassBlueprint >> initializeHibernerMethods [
 ]
 
 { #category : #initialization }
-NClassBlueprint >> initializeHiberners [
+NClassBlueprint >> initializeDeads [
 
-	self initializeHibernerMethods.
-	self initializeHibernerAttributes
+	self initializeDeadMethods.
+	self initializeDeadAttributes
+]
+
+{ #category : #initialization }
+NClassBlueprint >> initializeExternals [
+
+	externals := self methods
+		              select: [ :each | each isExternal ] thenCollect: [ :each | 
+		             NCBExternalModel newFrom: each ]
 ]
 
 { #category : #initialization }
