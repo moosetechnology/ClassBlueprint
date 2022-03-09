@@ -6,16 +6,15 @@ Class {
 
 { #category : #accessing }
 NCBMethodDescription >> border [
-	| myBorder |
-	myBorder := 
-	entityModel modelType = #polymorphic ifTrue: [ 
-		^ self polymorphicBorder ].
-	entityModel modelType = #megamorphic ifTrue: [ 
-		^ self megamorphicBorder ]. 
-	myBorder ifNil: [ myBorder := self defaultBorder ].
-	complex ifTrue: [ myBorder color: Color red ].
-	^ myBorder 
 
+	| myBorder |
+	myBorder := entityModel modelType = #monoMorphic ifTrue: [ 
+		            ^ self monoMorphicBorder ].
+	myBorder := entityModel modelType = #polymorphic ifTrue: [ 
+		            ^ self polymorphicBorder ].
+	entityModel modelType = #megamorphic ifTrue: [ 
+		^ self megamorphicBorder ].
+	^ myBorder
 ]
 
 { #category : #accessing }
@@ -39,14 +38,6 @@ NCBMethodDescription >> create [
 	self initializeType.
 	self initializeSize.
 	complex := false.
-]
-
-{ #category : #defaults }
-NCBMethodDescription >> defaultBorder [ 
-	^ RSBorder new
-		  width: 1;
-		color: Color black;
-		  yourself
 ]
 
 { #category : #initialization }
@@ -79,8 +70,17 @@ NCBMethodDescription >> initializeType [
 NCBMethodDescription >> megamorphicBorder [
 
 	^ RSBorder new
-		  width: 8;
-			color: Color black;
+		  width: 3;
+		  color: Color black;
+		  yourself
+]
+
+{ #category : #defaults }
+NCBMethodDescription >> monoMorphicBorder [
+
+	^ RSBorder new
+		  width: 1;
+		  color: Color black;
 		  yourself
 ]
 

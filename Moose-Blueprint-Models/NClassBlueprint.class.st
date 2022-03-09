@@ -31,13 +31,17 @@ NClassBlueprint >> allAttributes [
 { #category : #'as yet unclassified' }
 NClassBlueprint >> attributeMethodTypes [
 
-	| methodsBag |
-	methodsBag := (self methodModels , accessors collect: [ :each | 
-		               each name ]) asOrderedCollection.
-	methodsBag do: [ :each | 
-		(self methodModels , accessors detect: [ :aMethod | 
-			 aMethod name = each ]) modelType:
-			(self methodOccurrences: (methodsBag occurrencesOf: each)) ]
+	| mooseModel modelMethods myMethods |
+	mooseModel := entity parentPackage mooseModel.
+	modelMethods := mooseModel allModelClasses flatCollect: [ :each | 
+		                each methods ].
+	myMethods := (self methodModels , accessors collect: [ :each | each ])
+		             asOrderedCollection.
+	myMethods do: [ :each | 
+		| occurrences |
+		occurrences := (modelMethods collect: [ :famixM | famixM name ]) 
+			               occurrencesOf: each name.
+		each modelType: (self methodOccurrences: occurrences) ]
 ]
 
 { #category : #accessing }
