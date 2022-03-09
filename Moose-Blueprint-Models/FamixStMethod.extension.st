@@ -136,6 +136,13 @@ FamixStMethod >> isOnlyCalledInternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isSuperOf: aFamixMethod [
+
+	^ self parentType superclassHierarchy includes:
+		  aFamixMethod parentType
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> newIncomingConnection [
 	^ (self isAccessor 
 		ifTrue: [ CBAccessorInvocationModel new initializeDescription;yourself] 

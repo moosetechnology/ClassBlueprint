@@ -41,16 +41,15 @@ NCBMethodDescription >> MinitializeType [
 
 { #category : #accessing }
 NCBMethodDescription >> border [
-	| myBorder |
-	myBorder := 
-	entityModel modelType = #polymorphic ifTrue: [ 
-		^ self polymorphicBorder ].
-	entityModel modelType = #megamorphic ifTrue: [ 
-		^ self megamorphicBorder ]. 
-	myBorder ifNil: [ myBorder := self defaultBorder ].
-	complex ifTrue: [ myBorder color: Color red ].
-	^ myBorder 
 
+	| myBorder |
+	myBorder := entityModel modelType = #monomorphic ifTrue: [ 
+		            ^ self monoMorphicBorder ].
+	myBorder := entityModel modelType = #polymorphic ifTrue: [ 
+		            ^ self polymorphicBorder ].
+	entityModel modelType = #megamorphic ifTrue: [ 
+		^ self megamorphicBorder ].
+	^ myBorder
 ]
 
 { #category : #accessing }
@@ -149,8 +148,17 @@ NCBMethodDescription >> initializeType [
 NCBMethodDescription >> megamorphicBorder [
 
 	^ RSBorder new
-		  width: 8;
+		  width: 3;
 			color: Color black;
+		  yourself
+]
+
+{ #category : #accessing }
+NCBMethodDescription >> monoMorphicBorder [
+
+	^ RSBorder new
+		  width: 1;
+		  color: Color black;
 		  yourself
 ]
 
