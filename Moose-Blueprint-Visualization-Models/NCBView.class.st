@@ -37,6 +37,11 @@ NCBView >> attributes [
 		  self canvas shapeFromModel: each ]
 ]
 
+{ #category : #building }
+NCBView >> buildLegend [ 
+	NCBLegend buildFor: self
+]
+
 { #category : #layers }
 NCBView >> classMethodsLayer [ 
 	^ classMethodsLayer 

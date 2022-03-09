@@ -4,9 +4,6 @@ I am a small class representing the legend of the ClassBlueprint visualization
 Class {
 	#name : #CBLegend,
 	#superclass : #Object,
-	#classInstVars : [
-		'legendState'
-	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
@@ -143,9 +140,8 @@ CBLegend >> gapSize [
 ]
 
 { #category : #building }
-CBLegend >> legendInfo [
-
-	^ MiNClassBlueprintPalette new colorsDictionary
+CBLegend >> legendInfo [ 
+	self subclassResponsibility 
 ]
 
 { #category : #constants }

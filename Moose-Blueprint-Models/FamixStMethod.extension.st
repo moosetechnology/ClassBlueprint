@@ -5,7 +5,9 @@ FamixStMethod >> belongsToDeadBranch [
 
 	"^ NCBDeadBranchChecker new check: self"
 
-	^ NCBDeadBranchChecker new check: self
+	^ NCBDeadBranchChecker new
+		  checkByMarkAndSweep: self
+		  with: self parentType 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -71,7 +73,8 @@ FamixStMethod >> isCalledExternally [
 	| result |
 	result := self incomingInvocations isNotEmpty and: [ 
 		          self incomingInvocations anySatisfy: [ :each | 
-			          (each source inSameClassAs: self) not ] ].
+			          (each source inSameClassAs: self) not and: [ 
+				          (each source isSuperOf: self) not ] ] ]. 
 
 	^ result
 ]
@@ -79,7 +82,7 @@ FamixStMethod >> isCalledExternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadMethod [
 
-	^ self incomingInvocations isEmpty and: [ self isInitializer not ]
+	^ self isDead
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -118,10 +121,28 @@ FamixStMethod >> isInvokedExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isOnlyCalledBy: aCollectionOfDeadMethods [
+
+	^ self calledBy allSatisfy: [ :each | 
+		(aCollectionOfDeadMethods includes: each) ifFalse: [ 
+			each isOnlyCalledBy: aCollectionOfDeadMethods ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isOnlyCalledInternally [
 
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self incomingInvocations allSatisfy: [ :each | each source inSameClassAs: self ] ]
+	| result |
+	result := self incomingInvocations isNotEmpty and: [ 
+		          self incomingInvocations allSatisfy: [ :each | 
+			          each source inSameClassAs: self ] ].
+	^ result
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isSuperOf: aFamixMethod [
+
+	^ (self parentType superclassHierarchy includes:
+		   aFamixMethod parentType)
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

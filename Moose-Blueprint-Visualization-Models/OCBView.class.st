@@ -16,6 +16,11 @@ OCBView >> attributes [
 		  self canvas shapeFromModel: each ]
 ]
 
+{ #category : #building }
+OCBView >> buildLegend [ 
+	OCBLegend buildFor: self
+]
+
 { #category : #shapes }
 OCBView >> edgeBuilder [
 

@@ -2,8 +2,10 @@ Extension { #name : #FamixJavaMethod }
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> belongsToDeadBranch [
-	
-	^ NCBDeadAttributesLayerModel new check: self
+
+	^ NCBDeadBranchChecker new
+		  checkByMarkAndSweep: self
+		  with: self parentType
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -77,7 +79,8 @@ FamixJavaMethod >> isCalledExternally [
 	| result |
 	result := self incomingInvocations isNotEmpty and: [ 
 		          self incomingInvocations anySatisfy: [ :each | 
-			          (each source inSameClassAs: self) not ] ].
+			          (each source inSameClassAs: self) not and: [ 
+				          (each source isSuperOf: self) not ] ] ].
 
 	^ result
 ]
@@ -85,7 +88,7 @@ FamixJavaMethod >> isCalledExternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isDeadMethod [
 
-	^ self incomingInvocations isEmpty and: [ self isInitializer not ]
+	^ self isDead
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -132,8 +135,9 @@ FamixJavaMethod >> isInvokedExternally [
 FamixJavaMethod >> isOnlyCalledInternally [
 
 	^ self incomingInvocations isNotEmpty and: [ 
-		  self incomingInvocations allSatisfy: [ :each | 
-			  each source inSameClassAs: self ] ]
+		          self incomingInvocations allSatisfy: [ :each | 
+			          each source inSameClassAs: self ] ].
+
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

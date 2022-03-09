@@ -25,7 +25,7 @@ NCBAbstractMethodModel >> initializeDescription [
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> isDeadMethod [
 
-	self entity isDeadMethod ifTrue: [ ^ #isDeadMethod ].
+	(self entity isDead or: self entity belongsToDeadBranch) ifTrue: [ ^ #isDeadMethod ].
 	^ nil
 ]
 
@@ -33,20 +33,16 @@ NCBAbstractMethodModel >> isDeadMethod [
 NCBAbstractMethodModel >> isInternal [
 
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
-
 	^ self entity isOnlyCalledInternally and: [ 
-		"self entity belongsToDeadBranch not and: [ " 
-			  self entity isCalledByInitializers not ] "]"
+		  self entity belongsToDeadBranch not and: [ 
+			  self entity isCalledByInitializers not ] ]
 ]
 
 { #category : #testing }
 NCBAbstractMethodModel >> isInternalImplementation [
 
-	 (self entity isOnlyCalledInternally and: [ 
-
-		  self entity belongsToDeadBranch not and: [ 
-			  self entity isCalledByInitializers not ] ]) ifTrue: [ 
-		 ^ #isInternalImplementation ].
+	self isInternal ifTrue: [  
+		^ #isInternalImplementation ].
 	^ nil
 ]
 

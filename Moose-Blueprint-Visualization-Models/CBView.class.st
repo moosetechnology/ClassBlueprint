@@ -147,7 +147,7 @@ CBView >> buildLayers [
 { #category : #building }
 CBView >> buildLegend [
 
-	CBLegend buildFor: self
+	self subclassResponsibility 
 ]
 
 { #category : #accessing }

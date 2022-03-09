@@ -33,11 +33,11 @@ NClassBlueprint >> attributeMethodTypes [
 
 	| methodsBag |
 	methodsBag := (self methodModels , accessors collect: [ :each | 
-		               each name ]) asBag.
+		               each name ]) asOrderedCollection.
 	methodsBag do: [ :each | 
-		(self methodModels , accessors detect: [ :aMethod | aMethod name = each ]) modelType:
-			(self methodOccurrences: (methodsBag occurrencesOf: each)) ].
-		
+		(self methodModels , accessors detect: [ :aMethod | 
+			 aMethod name = each ]) modelType:
+			(self methodOccurrences: (methodsBag occurrencesOf: each)) ]
 ]
 
 { #category : #accessing }
@@ -167,9 +167,9 @@ NClassBlueprint >> initializeDeadMethods [
 
 	deadMethods := self methods
 		               select: [ :each | 
-		               each isDeadMethod or: [ each belongsToDeadBranch ] ]
-		               thenCollect: [ :each | 
-		               NCBDeadModel newFrom: each ]
+			               each isDeadMethod or: [  
+				               each belongsToDeadBranch ] ]
+		               thenCollect: [ :each | NCBDeadModel newFrom: each ]
 ]
 
 { #category : #initialization }
