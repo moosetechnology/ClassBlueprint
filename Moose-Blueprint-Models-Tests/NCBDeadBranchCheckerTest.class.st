@@ -113,7 +113,7 @@ NCBDeadBranchCheckerTest >> defineClasses [
 { #category : #running }
 NCBDeadBranchCheckerTest >> setUp [
 	super setUp.
-	model := MooseModel new.
+	model := FamixStModel new.
 	self deadRoot.
 	self twoNodesCallGraph.
 	self threeNodesCallGraph.
