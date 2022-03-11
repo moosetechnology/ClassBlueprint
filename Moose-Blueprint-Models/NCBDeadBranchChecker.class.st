@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-NCBDeadBranchChecker >> checkByMarkAndSweep: aMethod with: aClass [
+NCBDeadBranchChecker >> IsDeadBranch: aMethod of: aClass [
 
 	aMethod isStub ifTrue: [ ^ false ].
 	(aMethod isDeadMethod or: [ visitedItems includes: aMethod ]) 
@@ -17,7 +17,7 @@ NCBDeadBranchChecker >> checkByMarkAndSweep: aMethod with: aClass [
 	visitedItems add: aMethod.
 	^ aMethod calledBy allSatisfy: [ :each | 
 		  each parentType ~= aClass ifTrue: [ ^ false ].
-		  self checkByMarkAndSweep: aMethod with: aClass ]
+		  self IsDeadBranch: aMethod of: aClass ]
 ]
 
 { #category : #validation }
@@ -25,6 +25,17 @@ NCBDeadBranchChecker >> initialize [
 
 	super initialize.
 	visitedItems := Set new
+]
+
+{ #category : #'as yet unclassified' }
+NCBDeadBranchChecker >> isInDeadBranch: aMethod ofClass: aClass [
+
+	aMethod isDeadMethod ifTrue: [ ^ true ].
+	(visitedItems includes: aMethod) ifTrue: [ ^ true ].
+	visitedItems add: aMethod.
+	^ aMethod calledBy allSatisfy: [ :each | 
+		  each parentType ~= aClass ifTrue: [ ^ false ].
+		  self isInDeadBranch: each ofClass: aClass ] 
 ]
 
 { #category : #validation }
