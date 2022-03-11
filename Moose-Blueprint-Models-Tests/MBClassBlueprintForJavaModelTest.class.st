@@ -2,34 +2,38 @@ Class {
 	#name : #MBClassBlueprintForJavaModelTest,
 	#superclass : #MBClassBlueprintTest,
 	#instVars : [
-		'accessClassVar'
+		'accessClassVar',
+		'sourceAnchor'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
 
 { #category : #accessing }
-MBClassBlueprintForJavaModelTest >> accesses [ 
+MBClassBlueprintForJavaModelTest >> accesses [
 
 	access1 := FamixJavaAccess new
-		                     accessor: accessor1 ;
-		                     variable: attribute1;
-		                     mooseModel: model.
+		           accessor: accessor1;
+		           variable: attribute1;
+		           mooseModel: model.
 	accessClassVar := FamixJavaAccess new
-		           source: classMethod1 ;
-		           variable: classVar1 ;
-		           mooseModel: model. 
+		                  source: classMethod1;
+		                  variable: classVar1;
+		                  mooseModel: model
 ]
 
 { #category : #accessing }
-MBClassBlueprintForJavaModelTest >> accessors [ 
+MBClassBlueprintForJavaModelTest >> accessors [
 
-	accessor1 := FamixJavaMethod new 
-		name: 'accessors1()';
-		kind: #isAccessor;
-		mooseModel: model.
-	accessor2 := FamixJavaMethod new 
-		name: 'accessor2()';
-		mooseModel: model. 
+	accessor1 := FamixJavaMethod new
+		             name: 'accessors1()';
+		             sourceAnchor: (self sourceAnchor: 'accessor1');
+		             kind: #isAccessor;
+		             mooseModel: model.
+	accessor2 := FamixJavaMethod new
+		             name: 'accessor2()';
+		
+		           sourceAnchor: (self sourceAnchor: 'accessor2');
+		             mooseModel: model
 ]
 
 { #category : #accessing }
@@ -46,12 +50,13 @@ MBClassBlueprintForJavaModelTest >> attributes [
 ]
 
 { #category : #accessing }
-MBClassBlueprintForJavaModelTest >> classMethods [ 
+MBClassBlueprintForJavaModelTest >> classMethods [
 
-	classMethod1 := FamixJavaMethod new 
-		name: 'classMethod1()';
-		isClassSide: true;
-		mooseModel: model.
+	classMethod1 := FamixJavaMethod new
+		                name: 'classMethod1()';
+		                sourceAnchor: (self sourceAnchor: 'classMethod1');
+		                isClassSide: true;
+		                mooseModel: model
 ]
 
 { #category : #accessing }
@@ -74,14 +79,15 @@ MBClassBlueprintForJavaModelTest >> createModel [
 ]
 
 { #category : #accessing }
-MBClassBlueprintForJavaModelTest >> deads [ 
+MBClassBlueprintForJavaModelTest >> deads [
 
-	hibernerMethod1 := FamixJavaMethod new 
-		name: 'hibernerMethod1()';
-		mooseModel: model.
-	hibernerAttribute := FamixJavaAttribute new 
-		name: 'hibernerAttribute';
-		mooseModel: model. 
+	hibernerMethod1 := FamixJavaMethod new
+		                   name: 'hibernerMethod1()';
+		                   sourceAnchor: (self sourceAnchor: 'hibernerMethod1');
+		                   mooseModel: model.
+	hibernerAttribute := FamixJavaAttribute new
+		                     name: 'hibernerAttribute';
+		                     mooseModel: model
 ]
 
 { #category : #accessing }
@@ -94,14 +100,15 @@ MBClassBlueprintForJavaModelTest >> defineClass [
 		         addMethod: initializer2;
 		         addMethod: accessor1;
 		         addMethod: accessor2;
-					addMethod: external1;
-					addMethod: classMethod1;
-					addMethod: internal1;
-					addAttribute: hibernerAttribute;
+		         addMethod: external1;
+		         addMethod: classMethod1;
+		         addMethod: internal1;
+		         addAttribute: hibernerAttribute;
 		         addAttribute: attribute1;
-					addAttribute: classVar1;
-					addAttribute: classVar2 ;
+		         addAttribute: classVar1;
+		         addAttribute: classVar2;
 		         mooseModel: model.
+		class parentType: (FamixJavaClass new name: 'superclass').
 ]
 
 { #category : #accessing }
@@ -109,6 +116,8 @@ MBClassBlueprintForJavaModelTest >> externalClassConf [
 
 	externalMethod := FamixJavaMethod new
 		                  name: 'externalMethod()';
+		                  sourceAnchor:
+			                   (self sourceAnchor: 'externalMethod');
 		                  parentType: externalClass;
 		                  mooseModel: model.
 	externalClass := FamixJavaClass new
@@ -117,11 +126,10 @@ MBClassBlueprintForJavaModelTest >> externalClassConf [
 		                 mooseModel: model.
 	externalInvocation1 := FamixJavaInvocation new
 		                       sender: externalMethod;
-		addCandidate: external1;
+		                       addCandidate: external1;
 		                       receiver: external1;
 		                       mooseModel: model;
-		                       yourself.
-
+		                       yourself
 ]
 
 { #category : #accessing }
@@ -129,6 +137,8 @@ MBClassBlueprintForJavaModelTest >> externals [
 
 	external1 := FamixJavaMethod new
 		             name: 'external1()';
+		sourceAnchor:
+			                  (self sourceAnchor: 'external1');
 		             parentType: class;
 		             mooseModel: model.
 	self externalClassConf
@@ -139,20 +149,29 @@ MBClassBlueprintForJavaModelTest >> initializers [
 
 	initializer1 := FamixJavaMethod new
 		                name: 'initializer1()';
+		                sourceAnchor: (self sourceAnchor: 'initializer1');
 		                isConstructor: true;
 		                mooseModel: model.
 	initializer2 := FamixJavaMethod new
 		                name: 'initializer2()';
-							isConstructor: true;
-		                mooseModel: model.
+		sourceAnchor: (self sourceAnchor: 'initializer2');
+		                isConstructor: true;
+		                mooseModel: model
 ]
 
 { #category : #accessing }
-MBClassBlueprintForJavaModelTest >> internals [ 
+MBClassBlueprintForJavaModelTest >> internals [
 
 	internal1 := FamixJavaMethod new
-		name: 'internal1()';
-		mooseModel: model.
+		             name: 'internal1()';
+		sourceAnchor: (self sourceAnchor: 'internal1');
+		             mooseModel: model
+]
+
+{ #category : #accessing }
+MBClassBlueprintForJavaModelTest >> sourceAnchor: methodName [
+
+	^ FamixStSourceTextAnchor newFrom: methodName , '<n><t>^ something' expandMacros
 ]
 
 { #category : #accessing }

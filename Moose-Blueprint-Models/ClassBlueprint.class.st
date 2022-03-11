@@ -261,7 +261,8 @@ ClassBlueprint >> makeConnections [
 	self connectAttributes.
 	self connectAccessors.
 	self connectInvocations.
-	self initializeModelDescriptions
+	self initializeModelDescriptions.
+
 ]
 
 { #category : #accessing }

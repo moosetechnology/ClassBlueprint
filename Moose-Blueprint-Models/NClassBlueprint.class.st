@@ -9,7 +9,8 @@ Class {
 		'deadMethods',
 		'classVars',
 		'classMethods',
-		'superAttributes'
+		'superAttributes',
+		'complexity'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -83,16 +84,15 @@ NClassBlueprint >> create [
 	self initializeClassVars.
 	self initializeAttributes.
 	self initializeSuperAttributes.
-	self initializeDeads.
 	self initializeClassMethods.
+	self initializeDeads.
 	self initializeInitializers.
 	self initializeExternals.
 	self initializeInternals.
 
-
 	self makeConnections.
 	self attributeMethodTypes.
-	self detectComplexitySuperiorTo: 50
+	self detectComplexitySuperiorTo: complexity
 ]
 
 { #category : #accessing }
@@ -117,7 +117,7 @@ NClassBlueprint >> detectComplexityBetween: beginning and: end [
 
 	| methods |
 	methods := self methodModels select: [ :each | each complexity between: beginning  and: end  ].
-	methods do: [ :each | each activateRedBorder ]. 
+	methods do: [ :each | each isComplex ]. 
 	
 ]
 
@@ -127,24 +127,25 @@ NClassBlueprint >> detectComplexitySuperiorTo: aValue [
 	| methods |
 	methods := self methodModels select: [ :each | 
 		           each complexity > aValue ].
-	methods do: [ :each | each activateRedBorder ]
+	methods do: [ :each | each isComplex ]
 ]
 
 { #category : #initialization }
 NClassBlueprint >> initialize [
+
 	super initialize.
 	superAttributes := OrderedCollection new.
 	deadMethods := OrderedCollection new.
 	deadAttributes := OrderedCollection new.
 	classVars := OrderedCollection new.
-	classMethods := OrderedCollection new
+	classMethods := OrderedCollection new.
+	complexity := 5
 ]
 
 { #category : #initialization }
 NClassBlueprint >> initializeClassMethods [
-	classMethods := self methods
-		                select: [ :each | each isClassSide ].
-	classMethods ifEmpty: [ ^{} ].
+
+	classMethods := (self methods select: [ :each | each isClassSide ] )ifEmpty: [ ^ {} ].
 	classMethods := classMethods collect: [ :each | 
 		                NCBClassSideMethod newFrom: each ]
 ]

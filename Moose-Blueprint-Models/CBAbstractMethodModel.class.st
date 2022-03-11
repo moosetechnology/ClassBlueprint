@@ -33,12 +33,6 @@ CBAbstractMethodModel >> accessorInvocations: anObject [
 	accessorInvocations := anObject
 ]
 
-{ #category : #'as yet unclassified' }
-CBAbstractMethodModel >> activateRedBorder [ 
-	self description complex: true
-
-]
-
 { #category : #adding }
 CBAbstractMethodModel >> addAccessorInvocation: aConnection [ 
 	accessorInvocations add: aConnection 
@@ -118,6 +112,13 @@ CBAbstractMethodModel >> isAbstract [
 CBAbstractMethodModel >> isAccessor [
 	 (entity isGetter or: [ entity isSetter ]) ifTrue: [ ^ #accessor ].
 	^ nil
+]
+
+{ #category : #'as yet unclassified' }
+CBAbstractMethodModel >> isComplex [ 
+
+	self description complex: true
+
 ]
 
 { #category : #testing }
