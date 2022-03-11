@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-NCBDeadBranchChecker >> IsDeadBranch: aMethod of: aClass [
+NCBDeadBranchChecker >> IsInDeadBranch: aMethod ofClass: aClass [
 
 	aMethod isStub ifTrue: [ ^ false ].
 	(aMethod isDeadMethod or: [ visitedItems includes: aMethod ]) 
@@ -17,7 +17,7 @@ NCBDeadBranchChecker >> IsDeadBranch: aMethod of: aClass [
 	visitedItems add: aMethod.
 	^ aMethod calledBy allSatisfy: [ :each | 
 		  each parentType ~= aClass ifTrue: [ ^ false ].
-		  self IsDeadBranch: aMethod of: aClass ]
+		  self IsInDeadBranch: aMethod ofClass: aClass ]
 ]
 
 { #category : #validation }

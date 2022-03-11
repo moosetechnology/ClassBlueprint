@@ -2,9 +2,10 @@ Extension { #name : #FamixJavaMethod }
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> belongsToDeadBranch [
+
 	^ NCBDeadBranchChecker new
-		  IsDeadBranch: self
-		  of: self parentType 
+		  IsInDeadBranch: self
+		  ofClass: self parentType
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -12,28 +13,7 @@ FamixJavaMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
 		  reject: [ :each | 
-		  each == self or: [ each parentType superclass isTestCase ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> canBeInitializer [
-
-	self isPureAccessor ifTrue: [ ^ false ].
-	self isExternal ifTrue: [ ^ false ].
-
-	^ true
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> canBePureInitializer [
-
-	^ self isPureAccessor not or: [ 
-		  self isConstructor or: [ self isCalledExternally not ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> complexity [ 
-	^ MBCyclomaticComplexity newFrom: self 
+			  each == self  ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -56,8 +36,8 @@ FamixJavaMethod >> computeIsSetter [
 FamixJavaMethod >> inSameClassAs: aMethod [
 
 	^ aMethod parentType == self parentType and: [ 
-		  aMethod parentType mooseName , '_class'
-		  == (self parentType mooseName , '_class') ]
+		  aMethod parentType 
+		  == self parentType  ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -69,24 +49,20 @@ FamixJavaMethod >> isAccessor [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledByInitializers [
 
-	| initializers result |
+	| initializers |
 	initializers := self parentType methods select: #isInitializer.
 
-	result := initializers includesAny:
-		          (self incomingInvocations collect: #source).
-	^ result
+	^ initializers includesAny:
+		  (self incomingInvocations collect: [ :each | each source ])
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledExternally [
 
-	| result |
-	result := self incomingInvocations isNotEmpty and: [ 
-		          self incomingInvocations anySatisfy: [ :each | 
-			          (each source inSameClassAs: self) not and: [ 
-				          (each isSuperOf: self) not ] ] ].
-
-	^ result
+	^ self incomingInvocations isNotEmpty and: [ 
+		  self incomingInvocations anySatisfy: [ :each | 
+			  (each source inSameClassAs: self) not and: [ 
+				  (each source isSuperOf: self) not ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -106,8 +82,6 @@ FamixJavaMethod >> isDelegating [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isExtending [
 
-	"	^ self outgoingInvocations anySatisfy: [ :each | self parentType superclassHierarchy includes: each receiver parentType ]"
-
 	^ (self outgoingInvocations reject: [ :each | each receiver isNil ]) 
 		  anySatisfy: [ :each | 
 			  each receiver name = 'super' and: [ 
@@ -119,7 +93,8 @@ FamixJavaMethod >> isExternal [
 
 	"Is external if it  is called at least by one external method, none of the same class and invoked by initializers"
 
-	^  self isCalledExternally and: [ self isConstructor not ] 
+	^ self incomingInvocations isNotEmpty and: [ 
+		  self isCalledExternally and: [ self isConstructor not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -133,13 +108,12 @@ FamixJavaMethod >> isInternal [
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
 
 	^ self isOnlyCalledInternally and: [ 
-
 		  self belongsToDeadBranch not and: [ 
 			  self isCalledByInitializers not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isInvokedExternally [
+FamixJavaMethod >> isInvokedByExternalMethod [
 
 	^ (self incomingInvocations reject: [ :each | 
 		   each sender isInitializer ]) noneSatisfy: [ :each | 
@@ -164,9 +138,12 @@ FamixJavaMethod >> isSuperOf: aFamixMethod [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> newIncomingConnection [
 
-	^ (self isAccessor
-		   ifTrue: [ CBAccessorInvocationModel new initializeDescription;yourself]
-		   ifFalse: [ CBIncomingInvocationsCollector new ]) 
+	^ self isAccessor
+		  ifTrue: [ 
+			  CBAccessorInvocationModel new
+				  initializeDescription;
+				  yourself ]
+		  ifFalse: [ CBIncomingInvocationsCollector new ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

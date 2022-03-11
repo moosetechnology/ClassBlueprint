@@ -4,8 +4,8 @@ Extension { #name : #FamixStMethod }
 FamixStMethod >> belongsToDeadBranch [
 
 	^ NCBDeadBranchChecker new
-		  IsDeadBranch: self
-		  of: self parentType
+		  IsInDeadBranch: self
+		  ofClass: self parentType
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -13,39 +13,14 @@ FamixStMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
 		  reject: [ :each | 
-			  each == self "or: [ 
-				  each parentType superclass isTestCase ]" ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> canBeInitializer [
-
-	self isPureAccessor ifTrue: [ ^ false ].
-	self isExternal ifTrue: [ ^ false ].
-
-	^ true
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> canBePureInitializer [
-
-	^ self isPureAccessor not or: [ 
-		  self isConstructor or: [ self isCalledExternally not ] ]
+			  each == self  ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> inSameClassAs: aMethod [
 
 	^ aMethod parentType == self parentType and: [ 
-		  aMethod parentType mooseName , '_class'
-		  == (self parentType mooseName , '_class') ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> invokedByInitializerMethods [
-
-	^ self incomingInvocations anySatisfy: [ :each | 
-		  each sender isInitializer ]
+		  aMethod parentType == self parentType ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -56,25 +31,21 @@ FamixStMethod >> isAccessor [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledByInitializers [
 
-	| initializers result |
+	| initializers |
 	initializers := self parentType methods select: #isInitializer.
 
-	result := initializers includesAny:
-		          (self incomingInvocations collect: #source).
-
-	^ result
+	^ initializers includesAny:
+		  (self incomingInvocations collect: [ :each | each source ])
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledExternally [
 
-	| result |
-	result := self incomingInvocations isNotEmpty and: [ 
+	^ self incomingInvocations isNotEmpty and: [ 
 		          self incomingInvocations anySatisfy: [ :each | 
 			          (each source inSameClassAs: self) not and: [ 
 				          (each source isSuperOf: self) not ] ] ].
 
-	^ result
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -95,10 +66,10 @@ FamixStMethod >> isDelegating [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isExtending [
 
-	"	^ self outgoingInvocations anySatisfy: [ :each | self parentType superclassHierarchy includes: each receiver parentType ]"
-
 	^ (self outgoingInvocations reject: [ :each | each receiver isNil ]) 
-		  anySatisfy: [ :each | each receiver name = 'super' and: [ (each candidates collect: #signature) includes: self signature  ] ]
+		  anySatisfy: [ :each | 
+			  each receiver name = 'super' and: [ 
+				  (each candidates collect: #signature) includes: self signature ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -108,6 +79,13 @@ FamixStMethod >> isExternal [
 
 	^ self incomingInvocations isNotEmpty and: [ 
 		  self isCalledExternally and: [ self isConstructor not ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isInitializer [
+
+	^ (('*initialize*' match: self protocol) or: [ 
+		   '*initialize*' match: self name ]) 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -121,7 +99,7 @@ FamixStMethod >> isInternal [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isInvokedExternally [
+FamixStMethod >> isInvokedByExternalMethod [
 
 	^ (self incomingInvocations reject: [ :each | 
 		   each sender isInitializer ]) noneSatisfy: [ :each | 
