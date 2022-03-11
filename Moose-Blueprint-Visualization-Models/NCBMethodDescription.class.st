@@ -24,32 +24,24 @@ NCBMethodDescription class >> newFrom: aMethodModel [
 		create
 ]
 
-{ #category : #initialization }
-NCBMethodDescription >> MinitializeType [
-
-	type := entityModel isDeadMethod ifNil: [ 
-		        entityModel isExtending ifNil: [ 
-			        entityModel isOverriding ifNil: [ 
-				        entityModel isDelegating ifNil: [ 
-					        entityModel isConstant ifNil: [ 
-						        entityModel isAccessor ifNil: [ 
-							        entityModel isInternalImplementation ifNil: [ 
-								        entityModel isAbstract ifNil: [ 
-									        entityModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
-	entityModel type: type
+{ #category : #'as yet unclassified' }
+NCBMethodDescription >> activateRedBorder [
+	border color: Color red
 ]
 
 { #category : #accessing }
 NCBMethodDescription >> border [
 
-	| myBorder |
-	myBorder := entityModel modelType = #monomorphic ifTrue: [ 
-		            ^ self monoMorphicBorder ].
-	myBorder := entityModel modelType = #polymorphic ifTrue: [ 
-		            ^ self polymorphicBorder ].
-	entityModel modelType = #megamorphic ifTrue: [ 
-		^ self megamorphicBorder ].
-	^ myBorder
+	border := entityModel modelType = #monomorphic
+		          ifTrue: [ self monomorphicBorder ]
+		          ifFalse: [ 
+			          entityModel modelType = #polymorphic
+				          ifTrue: [ self polymorphicBorder ]
+				          ifFalse: [ 
+					          entityModel modelType = #megamorphic ifTrue: [ 
+						          self megamorphicBorder ] ] ].
+	complex ifTrue: [ self activateRedBorder ].
+	^ border
 ]
 
 { #category : #accessing }
@@ -65,11 +57,6 @@ NCBMethodDescription >> complex [
 { #category : #accessing }
 NCBMethodDescription >> complex: aBoolean [
 	 complex := aBoolean
-]
-
-{ #category : #initialization }
-NCBMethodDescription >> complexBorderColor [ 
-	^ Color red
 ]
 
 { #category : #'instance creation' }
@@ -154,7 +141,7 @@ NCBMethodDescription >> megamorphicBorder [
 ]
 
 { #category : #accessing }
-NCBMethodDescription >> monoMorphicBorder [
+NCBMethodDescription >> monomorphicBorder [
 
 	^ RSBorder new
 		  width: 1;

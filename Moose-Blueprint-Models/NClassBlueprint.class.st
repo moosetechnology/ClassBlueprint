@@ -15,7 +15,8 @@ Class {
 		'classVars',
 		'classMethods',
 		'entity',
-		'superAttributes'
+		'superAttributes',
+		'complexity'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -237,16 +238,15 @@ NClassBlueprint >> create [
 	self initializeClassVars.
 	self initializeAttributes.
 	self initializeSuperAttributes.
-	self initializeDeads.
 	self initializeClassMethods.
+	self initializeDeads.
 	self initializeInitializers.
 	self initializeExternals.
 	self initializeInternals.
 
 	self makeConnections.
 	self attributeMethodTypes.
-	self detectComplexityBetween: 5 and: 50.
-	"self detectComplexitySuperiorTo: 50."
+	self detectComplexitySuperiorTo: complexity.
 
 ]
 
@@ -318,7 +318,8 @@ NClassBlueprint >> initialize [
 	deadMethods := OrderedCollection new.
 	deadAttributes := OrderedCollection new.
 	classVars := OrderedCollection new.
-	classMethods := OrderedCollection new
+	classMethods := OrderedCollection new.
+	complexity := 5.
 ]
 
 { #category : #initialization }
