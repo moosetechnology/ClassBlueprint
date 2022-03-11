@@ -103,12 +103,15 @@ MBClassBlueprintForJavaModelTest >> defineClass [
 		         addMethod: external1;
 		         addMethod: classMethod1;
 		         addMethod: internal1;
+		addMethod: tMethod1;
+		addMethod: tMethod2;
+		addMethod:tMethod3;
 		         addAttribute: hibernerAttribute;
 		         addAttribute: attribute1;
 		         addAttribute: classVar1;
 		         addAttribute: classVar2;
 		         mooseModel: model.
-		class parentType: (FamixJavaClass new name: 'superclass').
+	class parentType: (FamixJavaClass new name: 'superclass')
 ]
 
 { #category : #accessing }

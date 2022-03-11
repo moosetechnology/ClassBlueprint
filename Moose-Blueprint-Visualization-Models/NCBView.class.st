@@ -108,9 +108,9 @@ NCBView >> deadMethodsComposite [
 		doNotUseProgressBar;
 		on: shapes."
 	self highlight: shape.
-	RSHorizontalLineLayout new
-		gapSize: 5;
-		alignTop;
+	RSForceBasedLayout new
+		"gapSize: 5;
+		alignTop;"
 		on: shape nodes.
 	^ shape
 ]

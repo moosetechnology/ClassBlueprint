@@ -27,7 +27,13 @@ Class {
 		'externalInvocation1',
 		'externalClass',
 		'externalModel',
-		'externalMethod'
+		'externalMethod',
+		'tMethod1',
+		'tMethod2',
+		'tMethod3',
+		'invocation12',
+		'invocation23',
+		'invocation31'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
@@ -119,6 +125,13 @@ MBClassBlueprintTest >> setUp [
 	self accesses.
 	self externals.
 	self deads.
-	self defineClass.
-	self initializeClassBluePrint
+	self trippleCallDead.
+	self defineClass
+	"self initializeClassBluePrint"
+]
+
+{ #category : #accessing }
+MBClassBlueprintTest >> trippleCallDead [
+
+	self subclassResponsibility 
 ]

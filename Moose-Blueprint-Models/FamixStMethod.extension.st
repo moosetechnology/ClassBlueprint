@@ -6,8 +6,8 @@ FamixStMethod >> belongsToDeadBranch [
 	"^ NCBDeadBranchChecker new check: self"
 
 	^ NCBDeadBranchChecker new
-		  checkByMarkAndSweep: self
-		  with: self parentType 
+		  isInDeadBranch: self
+		  ofClass: self parentType 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -110,6 +110,13 @@ FamixStMethod >> isExternal [
 
 	^ self incomingInvocations isNotEmpty and: [ 
 		  self isCalledExternally and: [ self isConstructor not ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isInitializer [
+
+	^ (('*initialize*' match: self protocol) or: [ 
+		   '*initialize*' match: self name ]) "or: [ self isConstructor ]"
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

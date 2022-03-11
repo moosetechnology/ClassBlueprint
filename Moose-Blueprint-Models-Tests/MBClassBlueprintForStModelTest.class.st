@@ -11,7 +11,11 @@ Class {
 		'stubInvocation',
 		'stubMethod',
 		'package',
-		'externalPackage'
+		'externalPackage',
+		'externalBelongsToDeadBranchMethod',
+		'isStubToDead',
+		'thirdDeadMethod',
+		'thirdDeadMethodInvocation'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
@@ -103,8 +107,30 @@ MBClassBlueprintForStModelTest >> deads [
 	stubMethod := FamixStMethod new
 		              name: 'stubMethod()';
 		              isStub: true;
+		mooseModel: model;
 		              yourself.
 	externalClass addMethod: stubMethod.
+	externalBelongsToDeadBranchMethod := FamixStMethod new
+		                                     name: 'externalBTDB()';
+		                                     yourself.
+	isStubToDead := FamixStInvocation new
+		                sender: stubMethod;
+		                addCandidate: externalBelongsToDeadBranchMethod;
+		                receiver: externalBelongsToDeadBranchMethod;
+		                mooseModel: model;
+		                yourself.
+	externalClass addMethod: externalBelongsToDeadBranchMethod.
+	thirdDeadMethod := FamixStMethod new
+		                   name: 'thirdDeadMethod()';
+		                   yourself.
+	thirdDeadMethodInvocation := FamixStInvocation new
+		                             sender:
+			                             externalBelongsToDeadBranchMethod;
+		                             addCandidate: thirdDeadMethod;
+		                             receiver: thirdDeadMethod;
+		                             mooseModel: model;
+		                             yourself.
+	externalClass addMethod: thirdDeadMethod.
 	stubInvocation := FamixStInvocation new
 		                  sender: stubMethod;
 		                  addCandidate: deadBranchMethod;
@@ -129,7 +155,7 @@ MBClassBlueprintForStModelTest >> defineClass [
 	class := FamixStClass new
 		         name: 'class';
 		         addMethod: hibernerMethod1;
-					addMethod: deadBranchMethod ;
+		         addMethod: deadBranchMethod;
 		         addMethod: initializer1;
 		         addMethod: initializer2;
 		         addMethod: accessor1;
@@ -137,6 +163,9 @@ MBClassBlueprintForStModelTest >> defineClass [
 		         addMethod: external1;
 		         addMethod: classMethod1;
 		         addMethod: internal1;
+		addMethod: tMethod1;
+		         addMethod: tMethod2;
+		         addMethod: tMethod3;
 		         addAttribute: hibernerAttribute;
 		         addAttribute: attribute1;
 		         addAttribute: classVar1;
@@ -246,7 +275,7 @@ MBClassBlueprintForStModelTest >> testAttributes [
 ]
 
 { #category : #tests }
-MBClassBlueprintForStModelTest >> testCheckDead [
+MBClassBlueprintForStModelTest >> testCheckNotDeadCalledExternally [
 
 	self assert: deadBranchMethod belongsToDeadBranch equals: false
 ]
@@ -328,4 +357,62 @@ MBClassBlueprintForStModelTest >> testModels [
 				classMethod1.
 				external1.
 				internal1 } size
+]
+
+{ #category : #tests }
+MBClassBlueprintForStModelTest >> testOneClassDead [ 
+	self assert: externalBelongsToDeadBranchMethod belongsToDeadBranch equals: true
+]
+
+{ #category : #tests }
+MBClassBlueprintForStModelTest >> testOnlyCallerDeadMethod [
+
+	self assert: stubMethod isDead equals: true.
+	self assert: stubMethod incomingInvocations isEmpty equals: true
+]
+
+{ #category : #accessing }
+MBClassBlueprintForStModelTest >> testThirdDeadMethod [ 
+	self assert: thirdDeadMethod belongsToDeadBranch equals: true
+]
+
+{ #category : #tests }
+MBClassBlueprintForStModelTest >> testTrippleCall [
+
+	self assert: tMethod1 belongsToDeadBranch equals: true.
+	self assert: tMethod2 belongsToDeadBranch equals: true.
+	self assert: tMethod3 belongsToDeadBranch equals: true.
+
+	self assert: tMethod1 isDead equals: false
+]
+
+{ #category : #accessing }
+MBClassBlueprintForStModelTest >> trippleCallDead [
+
+	tMethod1 := FamixStMethod new
+		            name: 'tMethod1()';
+		            mooseModel: model;
+		            yourself.
+	tMethod2 := FamixStMethod new
+		            name: 'tMethod2()';
+		            mooseModel: model;
+		            yourself.
+	tMethod3 := FamixStMethod new
+		            name: 'tMethod3()';mooseModel: model;
+		            yourself.
+	invocation12 := FamixStInvocation new
+		                sender: tMethod1;
+		                addCandidate: tMethod2;
+		                receiver: tMethod2;mooseModel: model;
+		                yourself.
+	invocation23 := FamixStInvocation new
+		                sender: tMethod2;
+		                addCandidate: tMethod3;
+		                receiver: tMethod3;mooseModel: model;
+		                yourself.
+	invocation31 := FamixStInvocation new
+		                sender: tMethod3;
+		                addCandidate: tMethod1;
+		                receiver: tMethod1;mooseModel: model;
+		                yourself
 ]

@@ -8,23 +8,21 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
-{ #category : #validation }
-NCBDeadBranchChecker >> checkByMarkAndSweep: aMethod with: aClass [
-
-	aMethod isStub ifTrue: [ ^ false ].
-	(aMethod isDeadMethod or: [ visitedItems includes: aMethod ]) 
-		ifTrue: [ ^ true ].
-	visitedItems add: aMethod.
-	^ aMethod calledBy allSatisfy: [ :each | 
-		  each parentType ~= aClass 
-			  ifTrue: [ ^ false ].
-		  self checkByMarkAndSweep: aMethod with: aClass ]
-]
-
 { #category : #accessing }
 NCBDeadBranchChecker >> initialize [ 
 	super initialize.
 	visitedItems := Set new
+]
+
+{ #category : #validation }
+NCBDeadBranchChecker >> isInDeadBranch: aMethod ofClass: aClass [
+
+	aMethod isDeadMethod ifTrue: [ ^ true ].
+	(visitedItems includes: aMethod) ifTrue: [ ^ true ].
+	visitedItems add: aMethod.
+	^ aMethod calledBy allSatisfy: [ :each | 
+		  each parentType ~= aClass ifTrue: [ ^ false ].
+		  self isInDeadBranch: each ofClass: aClass ]
 ]
 
 { #category : #accessing }

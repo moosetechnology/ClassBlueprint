@@ -4,8 +4,8 @@ Extension { #name : #FamixJavaMethod }
 FamixJavaMethod >> belongsToDeadBranch [
 
 	^ NCBDeadBranchChecker new
-		  checkByMarkAndSweep: self
-		  with: self parentType
+		  isInDeadBranch: self
+		  ofClass: self parentType
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
