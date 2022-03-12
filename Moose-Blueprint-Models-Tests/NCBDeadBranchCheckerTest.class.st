@@ -127,6 +127,7 @@ NCBDeadBranchCheckerTest >> setUp [
 
 { #category : #'as yet unclassified' }
 NCBDeadBranchCheckerTest >> testDeadRoot [ 
+
 	self assert: root0 isDead equals: true.
 ]
 

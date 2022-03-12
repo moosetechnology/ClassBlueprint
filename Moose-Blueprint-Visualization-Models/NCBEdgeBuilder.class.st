@@ -21,10 +21,10 @@ NCBEdgeBuilder >> connectFrom: aFromBlock toAll: aBlockOrASymbol [
 
 		tes ifNotNil: [ 
 			tes do: [ :toE | 
-				self color: (fromElement color = Color white
+				"self color: (fromElement color = Color white
 						 ifTrue: [ Color gray ]
-						 ifFalse: [ fromElement color ]).
-
+						 ifFalse: [ fromElement color ])."
+	self color: Color black.
 				self createEdgeIfNecessaryFrom: fromElement to: toE ] ] ].
 	self moveBehindIfNecessary: createdEdges.
 
