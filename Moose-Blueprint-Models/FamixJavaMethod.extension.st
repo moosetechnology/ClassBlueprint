@@ -4,7 +4,7 @@ Extension { #name : #FamixJavaMethod }
 FamixJavaMethod >> belongsToDeadBranch [
 
 	^ NCBDeadBranchChecker new
-		  IsInDeadBranch: self
+		  isInDeadBranch: self
 		  ofClass: self parentType
 ]
 
@@ -68,7 +68,7 @@ FamixJavaMethod >> isCalledExternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isDeadMethod [
 
-	^ self incomingInvocations isEmpty and: [ self isInitializer not ]
+	^ self isDead or: [ self belongsToDeadBranch ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

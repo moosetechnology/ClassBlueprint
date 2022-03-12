@@ -4,7 +4,7 @@ Extension { #name : #FamixStMethod }
 FamixStMethod >> belongsToDeadBranch [
 
 	^ NCBDeadBranchChecker new
-		  IsInDeadBranch: self
+		  isInDeadBranch: self
 		  ofClass: self parentType
 ]
 
@@ -51,7 +51,7 @@ FamixStMethod >> isCalledExternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadMethod [
 
-	^ self incomingInvocations isEmpty and: [ self isInitializer not ]
+	^ self isDead or: [ self belongsToDeadBranch ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -111,6 +111,17 @@ FamixStMethod >> isOnlyCalledInternally [
 
 	^ self incomingInvocations isNotEmpty and: [ 
 		  self incomingInvocations allSatisfy: [ :each | each source inSameClassAs: self ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isReimplemented [
+
+	| subclasses subMethodNames |
+	subclasses := self parentType subclassHierarchy.
+	subMethodNames := (subclasses flatCollect: [ :each | each methods ]) 
+		                  collect: [ :m | m name ].
+
+	^ subMethodNames anySatisfy: [ :n | n = self name ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

@@ -477,6 +477,7 @@ NClassBlueprint >> methodModels [
 NClassBlueprint >> methodOccurrences: aNumber [
 
 	aNumber = 1 ifTrue: [ ^ #monomorphic ].
+
 	(aNumber between: 2 and: 8) ifTrue: [ ^ #polymorphic ].
 	aNumber >= 8 ifTrue: [ ^ #megamorphic ]
 ]

@@ -6,7 +6,7 @@ Where each type has a specific color defined in MiClassBlueprintPalette
 "
 Class {
 	#name : #NCBMethodDescription,
-	#superclass : #CBShapeDescription,
+	#superclass : #CBAbstractShapeDescription,
 	#instVars : [
 		'type',
 		'height',

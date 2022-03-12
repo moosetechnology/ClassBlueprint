@@ -22,6 +22,20 @@ NCBAbstractMethodModel class >> newFrom: aMethod [
 		create 
 ]
 
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel >> abstractBox [
+
+	^ RSBox new
+		  border: (RSBorder new
+				   width: 0.5;
+					color: Color black;
+				   yourself);
+		  height: 2.5;
+		  width: 2.5;
+		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
+		  yourself
+]
+
 { #category : #accessing }
 NCBAbstractMethodModel >> accessorInvocations [
 	^ accessorInvocations
@@ -124,6 +138,26 @@ NCBAbstractMethodModel >> isAbstract [
 	^ nil
 ]
 
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel >> isAbstractAndUsedInSubclasses [
+
+	^ self entity isReimplemented
+]
+
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel >> isAbstractBox [
+
+	^ RSBox new
+		  border: (RSBorder new
+				   width: 0.5;
+				   color: Color black;
+				   yourself);
+		  height: 2.5;
+		  width: 2.5;
+		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
+		  yourself
+]
+
 { #category : #testing }
 NCBAbstractMethodModel >> isAccessor [
 	 (entity isGetter or: [ entity isSetter ]) ifTrue: [ ^ #accessor ].
@@ -140,7 +174,7 @@ NCBAbstractMethodModel >> isConstant [
 { #category : #testing }
 NCBAbstractMethodModel >> isDeadMethod [
 
-	(self entity isDead or: self entity belongsToDeadBranch) ifTrue: [ 
+	(self entity isDeadMethod) ifTrue: [ 
 		^ #isDeadMethod ].
 	^ nil
 ]
@@ -221,8 +255,15 @@ NCBAbstractMethodModel >> printOn: aStream [.
 { #category : #accessing }
 NCBAbstractMethodModel >> shape [
 
-	| shape |
-	shape := RSBox new
+	| shape box |
+	box := self isAbstractAndUsedInSubclasses
+		       ifTrue: [ 
+			       RSComposite new
+				       add: self abstractBox;
+				       yourself ]
+		       ifFalse: [ RSBox new ].
+
+	shape := box
 		         model: self;
 		         color: self description color;
 		         border: self description border;

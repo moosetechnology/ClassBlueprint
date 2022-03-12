@@ -3,7 +3,7 @@ i am the description object of the attribute model. I contain the visualization 
 "
 Class {
 	#name : #NCBAttributeDescription,
-	#superclass : #CBShapeDescription,
+	#superclass : #CBAbstractShapeDescription,
 	#instVars : [
 		'height',
 		'width'

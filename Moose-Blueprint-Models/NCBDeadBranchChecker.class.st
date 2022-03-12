@@ -8,18 +8,6 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
-{ #category : #'as yet unclassified' }
-NCBDeadBranchChecker >> IsInDeadBranch: aMethod ofClass: aClass [
-
-	aMethod isStub ifTrue: [ ^ false ].
-	(aMethod isDeadMethod or: [ visitedItems includes: aMethod ]) 
-		ifTrue: [ ^ true ].
-	visitedItems add: aMethod.
-	^ aMethod calledBy allSatisfy: [ :each | 
-		  each parentType ~= aClass ifTrue: [ ^ false ].
-		  self IsInDeadBranch: aMethod ofClass: aClass ]
-]
-
 { #category : #validation }
 NCBDeadBranchChecker >> initialize [
 
@@ -30,7 +18,8 @@ NCBDeadBranchChecker >> initialize [
 { #category : #'as yet unclassified' }
 NCBDeadBranchChecker >> isInDeadBranch: aMethod ofClass: aClass [
 
-	aMethod isDeadMethod ifTrue: [ ^ true ].
+	aMethod isDead ifTrue: [ ^ true ].
+
 	(visitedItems includes: aMethod) ifTrue: [ ^ true ].
 	visitedItems add: aMethod.
 	^ aMethod calledBy allSatisfy: [ :each | 

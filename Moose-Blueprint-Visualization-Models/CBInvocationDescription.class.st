@@ -1,6 +1,6 @@
 Class {
 	#name : #CBInvocationDescription,
-	#superclass : #CBShapeDescription,
+	#superclass : #CBAbstractShapeDescription,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
