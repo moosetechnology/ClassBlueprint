@@ -139,9 +139,9 @@ NCBAbstractMethodModel >> isAbstract [
 ]
 
 { #category : #'as yet unclassified' }
-NCBAbstractMethodModel >> isAbstractAndUsedInSubclasses [
+NCBAbstractMethodModel >> isAbstractAndReimplemented [
 
-	^ self entity isReimplemented
+	^ self entity isAbstract and: [ self entity isReimplemented ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -256,7 +256,7 @@ NCBAbstractMethodModel >> printOn: aStream [.
 NCBAbstractMethodModel >> shape [
 
 	| shape box |
-	box := self isAbstractAndUsedInSubclasses
+	box := self isAbstractAndReimplemented
 		       ifTrue: [ 
 			       RSComposite new
 				       add: self abstractBox;
