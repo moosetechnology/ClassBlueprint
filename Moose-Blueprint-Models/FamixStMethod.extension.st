@@ -117,10 +117,10 @@ FamixStMethod >> isOnlyCalledInternally [
 FamixStMethod >> isReimplemented [
 
 	| subclasses subMethodNames |
+
 	subclasses := self parentType subclassHierarchy.
 	subMethodNames := (subclasses flatCollect: [ :each | each methods ]) 
 		                  collect: [ :m | m name ].
-
 	^ subMethodNames anySatisfy: [ :n | n = self name ]
 ]
 

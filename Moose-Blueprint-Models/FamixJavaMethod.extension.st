@@ -129,6 +129,17 @@ FamixJavaMethod >> isOnlyCalledInternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isReimplemented [
+
+	| subclasses subMethodNames |
+	subclasses := self parentType subclassHierarchy.
+	subMethodNames := (subclasses flatCollect: [ :each | each methods ]) 
+		                  collect: [ :m | m name ].
+
+	^ subMethodNames anySatisfy: [ :n | n = self name ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isSuperOf: aFamixMethod [
 
 	^ self parentType superclassHierarchy includes:
