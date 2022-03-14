@@ -40,10 +40,10 @@ NCBAttributeDescription >> height [
 NCBAttributeDescription >> initializeSize [
 
 	height := (entityModel entity incomingAccesses select: [ :each | 
-		           each source parentType ~= entityModel entity parentType ])
+		           each source parentType == entityModel entity parentType ])
 		          size + NCBView defaultBoxesHeight.
 	width := (entityModel entity incomingAccesses select: [ :each | 
-		          each source parentType == entityModel entity parentType ])
+		          each source parentType ~= entityModel entity parentType ])
 		         size + NCBView defaultBoxesWidth
 ]
 

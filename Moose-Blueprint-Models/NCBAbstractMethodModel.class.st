@@ -141,7 +141,9 @@ NCBAbstractMethodModel >> isAbstract [
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> isAbstractAndReimplemented [
 
-	^ self entity isAbstract and: [ self entity isReimplemented ]
+	^ self entity isAbstract
+		  and: [ self entity isReimplemented  and: [ self entity isUsed ] ]
+		 
 ]
 
 { #category : #'as yet unclassified' }
