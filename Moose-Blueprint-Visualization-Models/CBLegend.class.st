@@ -35,6 +35,31 @@ CBLegend class >> legendState: aBoolean [
 ]
 
 { #category : #'as yet unclassified' }
+CBLegend >> abstractMethodUsedInSubclassDescription [
+
+	| composite label |
+	composite := RSComposite new
+		             withBorder;
+		             size: 15;
+		             add: (RSBox new
+				              withBorder;
+				              color:
+					              (MiNClassBlueprintPalette new colorAt: #isAbstract);
+				              size: 5;
+				              yourself);
+		             yourself.
+	label := RSLabel new text: 'isAbstract and used in subclass'.
+	RSHorizontalLineLayout new
+		gapSize: 5;
+		on: { 
+				composite.
+				label }.
+	^ { 
+		  composite.
+		  label } asGroup asShape
+]
+
+{ #category : #'as yet unclassified' }
 CBLegend >> attributeInfo [
 
 	| attributeBox attributeLabel composite widthLine heightLine |
@@ -113,6 +138,7 @@ CBLegend >> buildFor: aVisualization [
 	self legendInfo keysAndValuesDo: [ :key :value | 
 		legend text: key withBoxColor: value ].
 	legend layout layout gapSize: self gapSize.
+	legend shapes add: self abstractMethodUsedInSubclassDescription.
 	legend shapes
 		add: self methodBoxDescription;
 		add: self attributeboxDescription.

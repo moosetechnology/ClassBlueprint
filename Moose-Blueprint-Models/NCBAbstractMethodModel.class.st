@@ -15,6 +15,20 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel class >> abstractBox [
+
+	^ RSBox new
+		  border: (RSBorder new
+				   width: 0.5;
+				   color: Color black;
+				   yourself);
+		  height: 2.5;
+		  width: 2.5;
+		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
+		  yourself
+]
+
 { #category : #'instance creation' }
 NCBAbstractMethodModel class >> newFrom: aMethod [
 	^ self new 
@@ -139,7 +153,7 @@ NCBAbstractMethodModel >> isAbstract [
 ]
 
 { #category : #'as yet unclassified' }
-NCBAbstractMethodModel >> isAbstractAndReimplemented [
+NCBAbstractMethodModel >> isAbstractAndReimplementedAndUsed [
 
 	^ self entity isAbstract
 		  and: [ self entity isReimplemented  and: [ self entity isUsed ] ]
@@ -258,7 +272,7 @@ NCBAbstractMethodModel >> printOn: aStream [.
 NCBAbstractMethodModel >> shape [
 
 	| shape box |
-	box := self isAbstractAndReimplemented
+	box := self isAbstractAndReimplementedAndUsed
 		       ifTrue: [ 
 			       RSComposite new
 				       add: self abstractBox;

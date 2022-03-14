@@ -117,10 +117,10 @@ FamixStMethod >> isOnlyCalledInternally [
 FamixStMethod >> isReimplemented [
 
 	| subclasses subMethodNames |
-
 	subclasses := self parentType subclassHierarchy.
 	subMethodNames := (subclasses flatCollect: [ :each | each methods ]) 
 		                  collect: [ :m | m name ].
+
 	^ subMethodNames anySatisfy: [ :n | n = self name ]
 ]
 
@@ -129,6 +129,17 @@ FamixStMethod >> isSuperOf: aFamixMethod [
 
 	^ self parentType superclassHierarchy includes:
 		  aFamixMethod parentType
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isUsed [
+
+	| subclasses subMethodsSig |
+	subclasses := self parentType subclassHierarchy.
+	subMethodsSig := (subclasses flatCollect: [ :each | each methods ]) 
+		                  collect: [ :m | m signature ].
+
+	^ subMethodsSig anySatisfy: [ :n | n = self signature ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

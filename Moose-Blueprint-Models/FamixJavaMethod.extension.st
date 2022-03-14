@@ -147,6 +147,17 @@ FamixJavaMethod >> isSuperOf: aFamixMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isUsed [
+
+	| subclasses subMethods |
+	subclasses := self parentType subclassHierarchy.
+	subMethods := (subclasses flatCollect: [ :each | each methods ]) 
+		                  collect: [ :m | m signature = self signature ].
+
+	^ subMethods anySatisfy: [ :m | m isDead not or: [ m belongsToDeadBranch not ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> newIncomingConnection [
 
 	^ self isAccessor
