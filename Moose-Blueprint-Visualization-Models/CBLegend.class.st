@@ -139,6 +139,9 @@ CBLegend >> buildFor: aVisualization [
 		legend text: key withBoxColor: value ].
 	legend layout layout gapSize: self gapSize.
 	legend shapes add: self abstractMethodUsedInSubclassDescription.
+	legend shapes add: self monomorphicBox.
+	legend shapes add: self polymorphicBox.
+	legend shapes add: self megamorphicBox.
 	legend shapes
 		add: self methodBoxDescription;
 		add: self attributeboxDescription.
@@ -180,6 +183,26 @@ CBLegend >> marker [
 		          size: 10;
 		          color: Color black;
 		          yourself.
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend >> megamorphicBox [
+
+	| box label |
+	box := RSBox new
+		       border: NCBMethodDescription polymorphicBorder;
+		       size: 15;
+		       color: Color white;
+		       yourself.
+	label := RSLabel new text: 'megamorphic border'.
+	RSHorizontalLineLayout new
+		on: { 
+				box.
+				label };
+		gapSize: 5.
+	^ { 
+		  box.
+		  label } asGroup asShape
 ]
 
 { #category : #'as yet unclassified' }
@@ -250,7 +273,47 @@ CBLegend >> methodInfo [
 	^ composite
 ]
 
+{ #category : #'as yet unclassified' }
+CBLegend >> monomorphicBox [
+
+	| box label |
+	box := RSBox new
+		       border: NCBMethodDescription monomorphicBorder;
+		       size: 15;
+		       color: Color white;
+		       yourself.
+	label := RSLabel new text: 'monomorphic border'.
+	RSHorizontalLineLayout new
+		on: { 
+				box.
+				label };
+		gapSize: 5.
+	^ { 
+		  box.
+		  label } asGroup asShape
+]
+
 { #category : #interactions }
 CBLegend >> onClick [ 
 	self class legendState: self class legendState not
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend >> polymorphicBox [
+
+	| box label |
+	box := RSBox new
+		       border: NCBMethodDescription polymorphicBorder;
+		       size: 15;
+		       color: Color white;
+		       yourself.
+	label := RSLabel new text: 'polymorphic border'.
+	RSHorizontalLineLayout new
+		on: { 
+				box.
+				label };
+		gapSize: 5.
+	^ { 
+		  box.
+		  label } asGroup asShape
 ]

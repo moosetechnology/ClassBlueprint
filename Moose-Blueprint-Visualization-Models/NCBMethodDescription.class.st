@@ -17,11 +17,38 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
+{ #category : #'as yet unclassified' }
+NCBMethodDescription class >> megamorphicBorder [
+
+	^ RSBorder new
+		  width: 3;
+		  color: Color black;
+		  yourself
+]
+
+{ #category : #accessing }
+NCBMethodDescription class >> monomorphicBorder [
+
+	^ RSBorder new
+		  width: 1;
+		  color: Color black;
+		  yourself
+]
+
 { #category : #'instance creation' }
 NCBMethodDescription class >> newFrom: aMethodModel [ 
 	^ self new 
 		entity: aMethodModel;
 		create
+]
+
+{ #category : #'as yet unclassified' }
+NCBMethodDescription class >> polymorphicBorder [
+
+	^ RSBorder new
+		  width: 2;
+		  color: Color black;
+		  yourself
 ]
 
 { #category : #'as yet unclassified' }
