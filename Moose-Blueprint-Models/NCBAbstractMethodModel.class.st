@@ -10,7 +10,8 @@ Class {
 		'type',
 		'invocations',
 		'modelType',
-		'complexity'
+		'complexity',
+		'occurrences'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -249,6 +250,17 @@ NCBAbstractMethodModel >> modelType: aSymbol [
 NCBAbstractMethodModel >> newIncomingConnection [ 
 
 	^ CBIncomingInvocationsCollector new 
+]
+
+{ #category : #accessing }
+NCBAbstractMethodModel >> occurrences [ 
+	^ occurrences
+]
+
+{ #category : #accessing }
+NCBAbstractMethodModel >> occurrences: aNumber [
+
+	occurrences := aNumber 
 ]
 
 { #category : #'as yet unclassified' }

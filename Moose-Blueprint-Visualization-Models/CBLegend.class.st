@@ -139,6 +139,7 @@ CBLegend >> buildFor: aVisualization [
 		legend text: key withBoxColor: value ].
 	legend layout layout gapSize: self gapSize.
 	legend shapes add: self abstractMethodUsedInSubclassDescription.
+		legend shapes add: self cyclomaticComplexityBox.
 	legend shapes add: self monomorphicBox.
 	legend shapes add: self polymorphicBox.
 	legend shapes add: self megamorphicBox.
@@ -163,6 +164,26 @@ CBLegend >> buildFor: aVisualization [
 			self class legendState ifFalse: [ each click ].
 			each when: RSMouseClick send: #onClick to: self ].
 	^ legend
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend >> cyclomaticComplexityBox [
+
+	| box label |
+	box := RSBox new
+		       border: (RSBorder new color: Color red);
+		       size: 15;
+		       color: Color white;
+		       yourself.
+	label := RSLabel new text: 'cyclomatic complexity'.
+	RSHorizontalLineLayout new
+		on: { 
+				box.
+				label };
+		gapSize: 5.
+	^ { 
+		  box.
+		  label } asGroup asShape
 ]
 
 { #category : #accessing }
@@ -190,7 +211,7 @@ CBLegend >> megamorphicBox [
 
 	| box label |
 	box := RSBox new
-		       border: NCBMethodDescription polymorphicBorder;
+		       border: NCBMethodDescription megamorphicBorder;
 		       size: 15;
 		       color: Color white;
 		       yourself.
@@ -209,7 +230,7 @@ CBLegend >> megamorphicBox [
 CBLegend >> methodBoxDescription [
 
 	| widthLabel heightLabel methodBox |
-	widthLabel := RSLabel new text: 'Number of invocations'.
+	widthLabel := RSLabel new text: 'Number of outgoing invocations'.
 	heightLabel := RSLabel new text: 'Number of lines of code'.
 	methodBox := self methodInfo.
 	RSVerticalLineLayout new

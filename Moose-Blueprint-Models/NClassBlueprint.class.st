@@ -87,6 +87,8 @@ NClassBlueprint >> attributeAccessesFrom: aSource [
 { #category : #'as yet unclassified' }
 NClassBlueprint >> attributeMethodTypes [
 
+	" This method needs to be changes/decomposed"
+
 	| mooseModel modelMethods myMethods |
 	mooseModel := entity parentPackage mooseModel.
 	modelMethods := mooseModel allModelClasses flatCollect: [ :each | 
@@ -97,6 +99,8 @@ NClassBlueprint >> attributeMethodTypes [
 		| occurrences |
 		occurrences := (modelMethods collect: [ :famixM | famixM name ]) 
 			               occurrencesOf: each name.
+			
+		each occurrences: occurrences.
 		each modelType: (self methodOccurrences: occurrences) ]
 ]
 

@@ -21,7 +21,7 @@ Class {
 NCBMethodDescription class >> megamorphicBorder [
 
 	^ RSBorder new
-		  width: 3;
+		  width: 4;
 		  color: Color black;
 		  yourself
 ]
@@ -46,7 +46,7 @@ NCBMethodDescription class >> newFrom: aMethodModel [
 NCBMethodDescription class >> polymorphicBorder [
 
 	^ RSBorder new
-		  width: 2;
+		  width: 2.5;
 		  color: Color black;
 		  yourself
 ]
@@ -139,8 +139,8 @@ NCBMethodDescription >> initializeSize [
 	width := entityModel invocations outgoing isEmpty
 		         ifTrue: [ NCBView defaultBoxesWidth ]
 		         ifFalse: [ 
-			         entityModel invocations outgoing size * 2+ NCBView defaultBoxesWidth 
-				         ]
+			         entityModel invocations outgoing size * 2
+			         + NCBView defaultBoxesWidth ]
 ]
 
 { #category : #initialization }
@@ -162,8 +162,8 @@ NCBMethodDescription >> initializeType [
 NCBMethodDescription >> megamorphicBorder [
 
 	^ RSBorder new
-		  width: 3;
-			color: Color black;
+		  width: 4;
+		  color: Color black;
 		  yourself
 ]
 
@@ -180,10 +180,9 @@ NCBMethodDescription >> monomorphicBorder [
 NCBMethodDescription >> polymorphicBorder [
 
 	^ RSBorder new
-		  width: 2;
-		color: Color black;
+		  width: 2.5;
+		  color: Color black;
 		  yourself
-	
 ]
 
 { #category : #accessing }
