@@ -2,8 +2,8 @@ Class {
 	#name : #NCBView,
 	#superclass : #CBView,
 	#instVars : [
-		'hibernersLayer',
-		'hibernerAttributesLayer',
+		'deadsLayer',
+		'deadAttributesLayer',
 		'classVarsLayer',
 		'classMethodsLayer',
 		'shapes',
@@ -103,7 +103,7 @@ NCBView >> classVarsLayer [
 NCBView >> deadAttributesComposite [
 
 	| shape |
-	shape := self canvas shapeFromModel: hibernerAttributesLayer.
+	shape := self canvas shapeFromModel: deadAttributesLayer.
 	self highlight: shape.
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
@@ -112,7 +112,7 @@ NCBView >> deadAttributesComposite [
 { #category : #layers }
 NCBView >> deadAttributesLayer [
 
-	^ hibernerAttributesLayer
+	^ deadAttributesLayer 
 ]
 
 { #category : #accessing }
@@ -127,7 +127,7 @@ NCBView >> deadLayers [
 NCBView >> deadMethodsComposite [
 
 	| shape |
-	shape := self canvas shapeFromModel: hibernersLayer.
+	shape := self canvas shapeFromModel: deadsLayer.
 	"shapes := shape nodes copy.
 	layout := RSForceBasedLayout new.
 	layout charge: -50.
@@ -152,15 +152,16 @@ NCBView >> deads [
 
 { #category : #layers }
 NCBView >> deadsLayer [
-	^ hibernersLayer 
+
+	^ deadsLayer 
 ]
 
 { #category : #accessing }
 NCBView >> deadsLayers [
 
 	^ { 
-		  hibernerAttributesLayer.
-		  hibernersLayer } asOrderedCollection 
+		  deadAttributesLayer.
+		  deadsLayer } asOrderedCollection
 ]
 
 { #category : #shapes }

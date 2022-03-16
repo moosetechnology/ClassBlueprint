@@ -5,6 +5,7 @@ Class {
 }
 
 { #category : #accessing }
-NCBDeadAttributesLayerModel >> name [ 
-	^ #HibernerAttributes
+NCBDeadAttributesLayerModel >> name [
+
+	^ #DeadAttributes
 ]
