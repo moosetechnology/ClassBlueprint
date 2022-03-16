@@ -274,6 +274,12 @@ MBClassBlueprintForStModelTest >> testAttributes [
 				classVar2 } size
 ]
 
+{ #category : #accessing }
+MBClassBlueprintForStModelTest >> testCheckDead [
+
+	self assert: deadBranchMethod belongsToDeadBranch equals: false
+]
+
 { #category : #tests }
 MBClassBlueprintForStModelTest >> testCheckNotDeadCalledExternally [
 

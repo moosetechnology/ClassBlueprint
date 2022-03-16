@@ -4,6 +4,34 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel class >> abstractBox [
+
+	^ RSBox new
+		  border: (RSBorder new
+				   width: 0.5;
+				   color: Color black;
+				   yourself);
+		  height: 2.5;
+		  width: 2.5;
+		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
+		  yourself
+]
+
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel >> abstractBox [
+
+	^ RSBox new
+		  border: (RSBorder new
+				   width: 0.5;
+					color: Color black;
+				   yourself);
+		  height: 2.5;
+		  width: 2.5;
+		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
+		  yourself
+]
+
 { #category : #accessing }
 NCBAbstractMethodModel >> complexity [
 
@@ -20,6 +48,28 @@ NCBAbstractMethodModel >> initializeDescription [
 
 	description := NCBMethodDescription newFrom: self.
 
+]
+
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel >> isAbstractAndReimplementedAndUsed [
+
+	^ self entity isAbstract
+		  and: [ self entity isReimplemented  and: [ self entity isUsed ] ]
+		 
+]
+
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel >> isAbstractBox [
+
+	^ RSBox new
+		  border: (RSBorder new
+				   width: 0.5;
+				   color: Color black;
+				   yourself);
+		  height: 2.5;
+		  width: 2.5;
+		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
+		  yourself
 ]
 
 { #category : #'as yet unclassified' }
@@ -56,6 +106,17 @@ NCBAbstractMethodModel >> modelType: aSymbol [
 	modelType := aSymbol 
 ]
 
+{ #category : #accessing }
+NCBAbstractMethodModel >> occurrences [ 
+	^ occurrences
+]
+
+{ #category : #accessing }
+NCBAbstractMethodModel >> occurrences: aNumber [
+
+	occurrences := aNumber 
+]
+
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> openInBrowser [
 
@@ -69,8 +130,15 @@ NCBAbstractMethodModel >> openInBrowser [
 { #category : #accessing }
 NCBAbstractMethodModel >> shape [
 
-	| shape |
-	shape := RSBox new
+	| shape box |
+	box := self isAbstractAndReimplementedAndUsed
+		       ifTrue: [ 
+			       RSComposite new
+				       add: self abstractBox;
+				       yourself ]
+		       ifFalse: [ RSBox new ].
+
+	shape := box
 		         model: self;
 		         color: self description color;
 		         border: self description border;

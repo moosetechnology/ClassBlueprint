@@ -10,34 +10,6 @@ Class {
 { #category : #'public - line' }
 NCBEdgeBuilder >> connectFrom: aFromBlock toAll: aBlockOrASymbol [
 
-	"Define edges from a particular shape to another set of shapes. For example:
-
-```
-c := RSCanvas new.
-
-shapes := (30 to: 50) collect: [ :nb |
-	RSEllipse new size: nb; model: nb; yourself.
-	 ] as: RSGroup.
-
-c addAll: shapes.
-
-RSEdgeBuilder line
-	canvas: c;
-	withBorderAttachPoint;
-	connectFrom: 30 toAll: (31 to: 50).
-
-
-RSGridLayout on: shapes. 
-RSLocation new
-	above;
-	move: shapes first on: shapes allButFirst.
-shapes @ RSDraggable.
-
-c @ RSCanvasController.
-c open
-```
-	"
-
 	| fromElement tes |
 	self resetCreatedEdges.
 
@@ -49,10 +21,10 @@ c open
 
 		tes ifNotNil: [ 
 			tes do: [ :toE | 
-				self color: (fromElement color = Color white
+				"self color: (fromElement color = Color white
 						 ifTrue: [ Color gray ]
-						 ifFalse: [ fromElement color ]).
-
+						 ifFalse: [ fromElement color ])."
+	self color: Color black.
 				self createEdgeIfNecessaryFrom: fromElement to: toE ] ] ].
 	self moveBehindIfNecessary: createdEdges.
 

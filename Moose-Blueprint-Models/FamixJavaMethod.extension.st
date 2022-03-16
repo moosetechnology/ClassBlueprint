@@ -13,23 +13,7 @@ FamixJavaMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
 		  reject: [ :each | 
-		  each == self or: [ each parentType superclass isTestCase ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> canBeInitializer [
-
-	self isPureAccessor ifTrue: [ ^ false ].
-	self isExternal ifTrue: [ ^ false ].
-
-	^ true
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> canBePureInitializer [
-
-	^ self isPureAccessor not or: [ 
-		  self isConstructor or: [ self isCalledExternally not ] ]
+			  each == self  ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -52,8 +36,8 @@ FamixJavaMethod >> computeIsSetter [
 FamixJavaMethod >> inSameClassAs: aMethod [
 
 	^ aMethod parentType == self parentType and: [ 
-		  aMethod parentType mooseName , '_class'
-		  == (self parentType mooseName , '_class') ]
+		  aMethod parentType 
+		  == self parentType  ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -65,12 +49,11 @@ FamixJavaMethod >> isAccessor [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledByInitializers [
 
-	| initializers result |
+	| initializers |
 	initializers := self parentType methods select: #isInitializer.
 
-	result := initializers includesAny:
-		          (self incomingInvocations collect: #source).
-	^ result
+	^ initializers includesAny:
+		  (self incomingInvocations collect: [ :each | each source ])
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -102,8 +85,6 @@ FamixJavaMethod >> isDelegating [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isExtending [
 
-	"	^ self outgoingInvocations anySatisfy: [ :each | self parentType superclassHierarchy includes: each receiver parentType ]"
-
 	^ (self outgoingInvocations reject: [ :each | each receiver isNil ]) 
 		  anySatisfy: [ :each | 
 			  each receiver name = 'super' and: [ 
@@ -115,7 +96,8 @@ FamixJavaMethod >> isExternal [
 
 	"Is external if it  is called at least by one external method, none of the same class and invoked by initializers"
 
-	^  self isCalledExternally and: [ self isConstructor not ] 
+	^ self incomingInvocations isNotEmpty and: [ 
+		  self isCalledExternally and: [ self isConstructor not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -124,7 +106,7 @@ FamixJavaMethod >> isInitializer [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isInvokedExternally [
+FamixJavaMethod >> isInvokedByExternalMethod [
 
 	^ (self incomingInvocations reject: [ :each | 
 		   each sender isInitializer ]) noneSatisfy: [ :each | 
@@ -141,11 +123,43 @@ FamixJavaMethod >> isOnlyCalledInternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isReimplemented [
+
+	| subclasses subMethodNames |
+	subclasses := self parentType subclassHierarchy.
+	subMethodNames := (subclasses flatCollect: [ :each | each methods ]) 
+		                  collect: [ :m | m name ].
+
+	^ subMethodNames anySatisfy: [ :n | n = self name ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isSuperOf: aFamixMethod [
+
+	^ self parentType superclassHierarchy includes:
+		  aFamixMethod parentType
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isUsed [
+
+	| subclasses subMethods |
+	subclasses := self parentType subclassHierarchy.
+	subMethods := (subclasses flatCollect: [ :each | each methods ]) 
+		                  collect: [ :m | m signature = self signature ].
+
+	^ subMethods anySatisfy: [ :m | m isDead not or: [ m belongsToDeadBranch not ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> newIncomingConnection [
 
-	^ (self isAccessor
-		   ifTrue: [ CBAccessorInvocationModel new initializeDescription;yourself]
-		   ifFalse: [ CBIncomingInvocationsCollector new ]) 
+	^ self isAccessor
+		  ifTrue: [ 
+			  CBAccessorInvocationModel new
+				  initializeDescription;
+				  yourself ]
+		  ifFalse: [ CBIncomingInvocationsCollector new ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

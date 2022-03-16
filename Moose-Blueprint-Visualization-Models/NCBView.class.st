@@ -18,6 +18,25 @@ NCBView class >> blueprint [
 	^ NClassBlueprint 
 ]
 
+{ #category : #composite }
+NCBView >> DeadMethodsComposite [
+
+	| shape |
+	shape := self canvas shapeFromModel: deadsLayer.
+	"shapes := shape nodes copy.
+	layout := RSForceBasedLayout new.
+	layout charge: -50.
+	layout
+		doNotUseProgressBar;
+		on: shapes."
+	self highlight: shape.
+	RSHorizontalLineLayout new
+		gapSize: 5;
+		alignTop;
+		on: shape nodes.
+	^ shape
+]
+
 { #category : #'as yet unclassified' }
 NCBView >> attSide [
 
@@ -30,7 +49,7 @@ NCBView >> attSide [
 NCBView >> attributes [
 
 	^ { 
-		  hibernerAttributesLayer.
+		  deadAttributesLayer.
 		  superAttributesLayer.
 		  attributesLayer.
 		  classVarsLayer } collect: [ :each | 
@@ -51,8 +70,8 @@ NCBView >> classMethodsLayer [
 NCBView >> classSide [
 
 	^ { 
-		  self classSideMethods".
-		  self classSideVars" }
+		  self classSideMethods.
+		  self classSideVars }
 ]
 
 { #category : #accessing }
@@ -94,6 +113,14 @@ NCBView >> deadAttributesComposite [
 NCBView >> deadAttributesLayer [
 
 	^ hibernerAttributesLayer
+]
+
+{ #category : #accessing }
+NCBView >> deadLayers [
+
+	^ { 
+		  deadAttributesLayer.
+		  deadsLayer } asOrderedCollection 
 ]
 
 { #category : #composite }
@@ -187,7 +214,7 @@ NCBView >> firstLayer [
 NCBView >> fourthLayer [
 
 	| shape |
-	shape := self canvas shapeFromModel: hibernerAttributesLayer.
+	shape := self canvas shapeFromModel: deadAttributesLayer.
 	RSVerticalLineLayout new on: shape nodes.
 	shape padding: 10.
 	^ shape
@@ -218,8 +245,8 @@ NCBView >> initialize [
 	accessorsLayer := CBAccessorsLayerModel new.
 	attributesLayer := CBAttributesLayerModel new.
 	superAttributesLayer := NCBSuperAttributesLayer new.
-	hibernersLayer := NCBDeadMethodsLayerModel new.
-	hibernerAttributesLayer := NCBDeadAttributesLayerModel new.
+	deadsLayer := NCBDeadMethodsLayerModel new.
+	deadAttributesLayer := NCBDeadAttributesLayerModel new.
 	classVarsLayer := NCBClassVarsLayerModel new.
 	classMethodsLayer := NCBClassMethodsLayerModel new.
 	border := RSBorder new
@@ -252,10 +279,10 @@ NCBView >> layersEntities [
 		          (initializersLayer entities: classModel initializers).
 		          (externalsLayer entities: classModel externals).
 		          (internalsLayer entities: classModel internals).
-		          (hibernersLayer entities: classModel deadMethods).
+		          (deadsLayer entities: classModel deadMethods).
 		          (accessorsLayer entities: classModel accessors).
 		          (attributesLayer entities: classModel attributes).
-		          (hibernerAttributesLayer entities:
+		          (deadAttributesLayer entities:
 			           classModel deadAttributes).
 		          (classVarsLayer entities: classModel classVars).
 		          (classMethodsLayer entities: classModel classMethods) .

@@ -5,6 +5,33 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+NCBMethodDescription class >> megamorphicBorder [
+
+	^ RSBorder new
+		  width: 4;
+		  color: Color black;
+		  yourself
+]
+
+{ #category : #accessing }
+NCBMethodDescription class >> monomorphicBorder [
+
+	^ RSBorder new
+		  width: 1;
+		  color: Color black;
+		  yourself
+]
+
+{ #category : #'as yet unclassified' }
+NCBMethodDescription class >> polymorphicBorder [
+
+	^ RSBorder new
+		  width: 2.5;
+		  color: Color black;
+		  yourself
+]
+
+{ #category : #'as yet unclassified' }
 NCBMethodDescription >> activateRedBorder [ 
 	border color: Color red
 ]
@@ -74,8 +101,7 @@ NCBMethodDescription >> monomorphicBorder [
 NCBMethodDescription >> polymorphicBorder [
 
 	^ RSBorder new
-		  width: 2;
-		color: Color black;
+		  width: 2.5;
+		  color: Color black;
 		  yourself
-	
 ]

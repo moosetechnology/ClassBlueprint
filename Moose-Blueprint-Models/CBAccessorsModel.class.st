@@ -8,7 +8,8 @@ Class {
 		'accessorInvocations',
 		'attributeAccess',
 		'entity',
-		'modelType'
+		'modelType',
+		'occurrences'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -96,6 +97,16 @@ CBAccessorsModel >> newIncomingConnection [
 	^ CBAccessorInvocationModel new 
 		initializeDescription;
 		yourself
+]
+
+{ #category : #accessing }
+CBAccessorsModel >> occurrences [
+	^ occurrences
+]
+
+{ #category : #accessing }
+CBAccessorsModel >> occurrences: aNumber [
+	occurrences := aNumber
 ]
 
 { #category : #printing }
