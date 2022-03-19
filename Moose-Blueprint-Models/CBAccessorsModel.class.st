@@ -9,7 +9,8 @@ Class {
 		'attributeAccess',
 		'entity',
 		'modelType',
-		'occurrences'
+		'occurrences',
+		'attribute'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -71,6 +72,16 @@ CBAccessorsModel >> initialize [
 	attributeAccess := OrderedCollection new
 ]
 
+{ #category : #testing }
+CBAccessorsModel >> isGetter [ 
+	^ entity isGetter 
+]
+
+{ #category : #testing }
+CBAccessorsModel >> isSetter [ 
+	^ entity isSetter 
+]
+
 { #category : #accessing }
 CBAccessorsModel >> modelType [
 	^ modelType
@@ -111,20 +122,21 @@ CBAccessorsModel >> printOn: aStream [
 	aStream nextPutAll: ')'.
 ]
 
+{ #category : #testing }
+CBAccessorsModel >> protecting: anAttribte [ 
+	attribute := anAttribte 
+]
+
 { #category : #accessing }
 CBAccessorsModel >> shape [
 
-	| shape border |
-	border := RSBorder new
-		          width: 1;
-		          color: Color black;
-		          yourself.
+	| shape |
 	shape := RSBox new
 		         model: self;
-		         border: border;
+		         height: 4;
+		         width: attribute description width;
 		         color: self color;
-		         " height: self description height;
-		         width: self description width;"
+		         withBorder;
 		         popupText: self name asString.
 	shape @ RSDraggable.
 	^ shape

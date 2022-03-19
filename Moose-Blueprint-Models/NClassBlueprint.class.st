@@ -31,10 +31,9 @@ NClassBlueprint class >> newFrom: aFamixClassEntity [
 
 { #category : #accessing }
 NClassBlueprint >> accessorInvocations [
-	| accessorInvocations |
-	accessorInvocations := self accessors flatCollect: #accessorInvocations.
+	^ self accessors flatCollect: [ :each | each accessorInvocations ]
+		                       
 
-	^ accessorInvocations
 ]
 
 { #category : #accessing }
@@ -69,10 +68,7 @@ NClassBlueprint >> allAttributes [
 { #category : #accessing }
 NClassBlueprint >> attributeAccess [
 
-	| attributeAccess |
-	attributeAccess := self allAttributes flatCollect: #attributeAccess.
-
-	^ attributeAccess
+	^  (self allAttributes flatCollect: [:each | each attributeAccess]) reject: [ :each | each source entity isAccessor ].
 ]
 
 { #category : #accessing }

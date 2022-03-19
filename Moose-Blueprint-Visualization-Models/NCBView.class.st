@@ -278,7 +278,7 @@ NCBView >> deadsLayer [
 NCBView >> edgeBuilder [
 
 	^ NCBEdgeBuilder line
-		  shapes: (self canvas nodes flatCollect: #children);
+		  shapes: (self canvas nodes flatCollect: #allChildren);
 		  attachPoint: RSBorderAttachPoint new;
 		  yourself
 ]
@@ -321,7 +321,8 @@ NCBView >> fifthLayer [
 		            fifthLayer.
 		            self sixthLayer } max: [ :each | each width ].
 	fifthLayer width: maxWidth.
-	middleAttributeSide do: [ :each | each width: maxWidth. self highlight: each ].
+	middleAttributeSide do: [ :each | 
+		each width: maxWidth].
 	RSVerticalLineLayout new
 		gapSize: 0;
 		on: (middleAttributeSide as: RSGroup).
@@ -333,7 +334,8 @@ NCBView >> fifthLayer [
 { #category : #composite }
 NCBView >> firstLayer [
 
-	^ self DeadMethodsComposite padding: 10.
+	^ self DeadMethodsComposite
+		  padding: 10.
 ]
 
 { #category : #'as yet unclassified' }
@@ -392,9 +394,8 @@ NCBView >> instSide [
 	^ { 
 		  initializersLayer.
 		  externalsLayer.
-		  internalsLayer.
-		  accessorsLayer.
-		   } asOrderedCollection
+		  internalsLayer".
+		  accessorsLayer" } asOrderedCollection
 ]
 
 { #category : #'accessing - parallel hierarchy' }
@@ -416,7 +417,7 @@ NCBView >> layersEntities [
 		          (externalsLayer entities: classModel externals).
 		          (internalsLayer entities: classModel internals).
 		          (deadsLayer entities: classModel deadMethods).
-		          (accessorsLayer entities: classModel accessors).
+		         " (accessorsLayer entities: classModel accessors)."
 		          (attributesLayer entities: classModel attributes).
 		          (deadAttributesLayer entities:
 			           classModel deadAttributes).
@@ -503,8 +504,7 @@ NCBView >> secondLayer [
 NCBView >> setNodesOf: object withLayout: aLayout [
 
 	aLayout new on: (object flatCollect: #nodes).
-	object do: [ :layer | layer padding: 10 ].
-
+	object do: [ :layer | layer padding: 10 ]
 ]
 
 { #category : #initialization }

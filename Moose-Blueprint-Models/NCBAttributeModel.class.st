@@ -5,7 +5,9 @@ Class {
 	#name : #NCBAttributeModel,
 	#superclass : #CBAbstractModel,
 	#instVars : [
-		'attributeAccess'
+		'attributeAccess',
+		'setter',
+		'getter'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -21,7 +23,14 @@ NCBAttributeModel class >> newFrom: anEntity [
 { #category : #initialization }
 NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 
-	attributeAccess add: anAttributeAccessModel
+	anAttributeAccessModel source isSetter ifTrue: [ 
+		self setter: anAttributeAccessModel source.
+		setter protecting: self ].
+	anAttributeAccessModel source isGetter
+		ifTrue: [ 
+			self getter: anAttributeAccessModel source.
+			getter protecting: self ]
+		ifFalse: [ attributeAccess add: anAttributeAccessModel ]
 ]
 
 { #category : #accessing }
@@ -40,6 +49,30 @@ NCBAttributeModel >> create [
 NCBAttributeModel >> externalAccesses [
 	^entity incomingAccesses select: [ :each | 
 		  each source parentType ~= entity parentType ].
+]
+
+{ #category : #accessing }
+NCBAttributeModel >> getter: aGetter [
+	getter := aGetter 
+]
+
+{ #category : #'as yet unclassified' }
+NCBAttributeModel >> getterShape [
+
+	^ self hasGetter
+		  ifTrue: [ getter shape ]
+		  ifFalse: [ nil ]
+]
+
+{ #category : #testing }
+NCBAttributeModel >> hasGetter [ 
+
+	^ getter isNil not
+]
+
+{ #category : #testing }
+NCBAttributeModel >> hasSetter [ 
+	^ setter isNil not
 ]
 
 { #category : #initialization }
@@ -76,6 +109,16 @@ NCBAttributeModel >> printOn: aStream [
 ]
 
 { #category : #accessing }
+NCBAttributeModel >> setter: aSetter [ 
+	setter := aSetter 
+]
+
+{ #category : #'as yet unclassified' }
+NCBAttributeModel >> setterShape [ 
+	^ self hasSetter ifTrue: [ setter shape ] ifFalse: [ nil ]
+]
+
+{ #category : #accessing }
 NCBAttributeModel >> shape [
 
 	| shape |
@@ -85,13 +128,9 @@ NCBAttributeModel >> shape [
 		         color: self description color;
 		         height: self description height;
 		         width: self description width;
-		         popupText: self name asString. ".
-	shape
-		when: RSMouseEnter do: [ :evt | 
-			shape color: Color red.
-			evt signalUpdate ]"
+		         popupText: self name asString.
 	shape @ RSDraggable.
-	^ shape
+	^ self withProtectorsOf: shape
 ]
 
 { #category : #accessing }
@@ -101,4 +140,25 @@ NCBAttributeModel >> type [
 	subclasses := entity parentType subclassHierarchy.
 	(((entity incomingAccesses collect: #source) collect: [ :each | each parentType ]) anySatisfy: [ :each | subclasses includes: each ]) ifTrue: [ ^ #attributeCalledInSubclass ].
 	^ #attribute
+]
+
+{ #category : #accessing }
+NCBAttributeModel >> withProtectorsOf: aShape [
+
+	| composite shapes |
+	shapes := { 
+		          self setterShape.
+		          aShape.
+		          self getterShape } reject: #isNil.
+	composite := RSComposite new
+		             addAll: shapes;
+		             model: shapes;
+		             yourself.
+	RSVerticalLineLayout new
+		gapSize: 1;
+		on: composite nodes.
+	composite adjustToChildren.
+	NCBView new highlight: composite.
+	composite padding: 1.
+	^ composite
 ]
