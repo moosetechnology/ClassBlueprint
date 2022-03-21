@@ -57,12 +57,19 @@ FamixJavaMethod >> isCalledByInitializers [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isCalledByInternals [
+
+	^ (self incomingInvocations collect: #sender) anySatisfy: [ :each | 
+		  each isInternal ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledExternally [
 
-	^ self incomingInvocations isNotEmpty and: [ 
+	^ 
 		  self incomingInvocations anySatisfy: [ :each | 
 			  (each source inSameClassAs: self) not and: [ 
-				  (each source isSuperOf: self) not ] ] ]
+				  (each source isSuperOf: self) not ] ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -91,10 +98,8 @@ FamixJavaMethod >> isExtending [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isExternal [
 
-	"Is external if it  is called at least by one external method, none of the same class and invoked by initializers"
-
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self isCalledExternally and: [ self isConstructor not ] ]
+	self isPublic ifTrue: [ ^ true ].
+	^ self isProtected
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

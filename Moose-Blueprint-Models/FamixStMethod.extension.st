@@ -39,13 +39,20 @@ FamixStMethod >> isCalledByInitializers [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isCalledByInternals [
+
+
+	^ (self incomingInvocations collect: #sender) anySatisfy: [ :each | 
+		  each isInternal ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledExternally [
 
-	^ self incomingInvocations isNotEmpty and: [ 
-		          self incomingInvocations anySatisfy: [ :each | 
-			          (each source inSameClassAs: self) not and: [ 
-				          (each source isSuperOf: self) not ] ] ].
-
+	^
+		  self incomingInvocations anySatisfy: [ :each | 
+			  (each source inSameClassAs: self) not and: [ 
+				  (each source isSuperOf: self) not ] ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -75,10 +82,19 @@ FamixStMethod >> isExtending [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isExternal [
 
-	"Is external if it  is called at least by one external method, none of the same class and invoked by initializers"
+	| incomingI classInitializers senders |
+	incomingI := self incomingInvocations.
+	incomingI isEmpty ifTrue: [ ^ false ].
 
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self isCalledExternally and: [ self isConstructor not ] ]
+	senders := incomingI collect: #sender.
+	classInitializers := senders select: [ :each | 
+		                     each isInitializer and: [ 
+			                     each parentType = self parentType ] ].
+
+	classInitializers isEmpty ifTrue: [ ^ false ].
+
+	senders removeAll: classInitializers.
+	^ senders allSatisfy: [ :each | each parentType ~= self parentType ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -107,10 +123,20 @@ FamixStMethod >> isInvokedByExternalMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isOnlyCalledInternally [
+FamixStMethod >> isOnlyCalledExternally [
 
 	^ self incomingInvocations isNotEmpty and: [ 
-		  self incomingInvocations allSatisfy: [ :each | each source inSameClassAs: self ] ]
+		  self incomingInvocations allSatisfy: [ :each | 
+			  (each source inSameClassAs: self) not ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isOnlyCalledInternally [
+
+
+	^ self incomingInvocations isNotEmpty and: [ 
+		  self incomingInvocations allSatisfy: [ :each | 
+			  each source inSameClassAs: self ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
