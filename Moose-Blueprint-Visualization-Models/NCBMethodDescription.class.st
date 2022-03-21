@@ -149,11 +149,11 @@ NCBMethodDescription >> initializeType [
 	type := entityModel isDeadMethod ifNil: [ 
 		        entityModel isExtending ifNil: [ 
 			        entityModel isOverriding ifNil: [ 
-				        entityModel isDelegating ifNil: [ 
-					        entityModel isConstant ifNil: [ 
-						        entityModel isAccessor ifNil: [ 
-							        entityModel isInternalImplementation ifNil: [ 
-								        entityModel isAbstract ifNil: [ 
+					        entityModel isDelegating ifNil: [ 
+						entityModel isOverriden ifNil: [ 
+						        entityModel isConstant ifNil: [ 
+							        entityModel isAccessor ifNil: [ 
+								        entityModel isInternalImplementation ifNil: [ 
 									        entityModel isAbstract ifNil: [ #isOther ] ] ] ] ] ] ] ] ].
 	entityModel type: type
 ]
