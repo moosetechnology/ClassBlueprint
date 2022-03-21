@@ -345,11 +345,12 @@ NClassBlueprint >> initializeAttributes [
 
 { #category : #initialization }
 NClassBlueprint >> initializeClassMethods [
-	classMethods := self methods
-		                select: [ :each | each isClassSide ].
-	classMethods ifEmpty: [ ^{} ].
-	classMethods := classMethods collect: [ :each | 
-		                NCBClassSideMethod newFrom: each ]
+
+	classMethods := self methods select: [ :each | each isClassSide ].
+	classMethods ifEmpty: [ ^ {  } ].
+	classMethods := (classMethods collect: [ :each | 
+		                 NCBClassSideMethod newFrom: each ]) sorted: [ :x :y | 
+		                x name < y name ]
 ]
 
 { #category : #accessing }
@@ -372,11 +373,10 @@ NClassBlueprint >> initializeDeadAttributes [
 { #category : #initialization }
 NClassBlueprint >> initializeDeadMethods [
 
-	deadMethods := self methods
+	deadMethods := (self methods
 		               select: [ :each | 
 		               each isDeadMethod or: [ each belongsToDeadBranch ] ]
-		               thenCollect: [ :each | 
-		               NCBDeadModel newFrom: each ]
+		               thenCollect: [ :each | NCBDeadModel newFrom: each ] )sorted: [ :x :y | x name < y name ]
 ]
 
 { #category : #initialization }
