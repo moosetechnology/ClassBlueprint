@@ -25,6 +25,7 @@ NCBAbstractMethodModel class >> abstractBox [
 				   color: Color black;
 				   yourself);
 		  height: 2.5;
+		model: self;
 		  width: 2.5;
 		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
 		  yourself
@@ -43,8 +44,9 @@ NCBAbstractMethodModel >> abstractBox [
 	^ RSBox new
 		  border: (RSBorder new
 				   width: 0.5;
-					color: Color black;
+				   color: Color black;
 				   yourself);
+		model: self;
 		  height: 2.5;
 		  width: 2.5;
 		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
@@ -170,6 +172,7 @@ NCBAbstractMethodModel >> isAbstractBox [
 				   color: Color black;
 				   yourself);
 		  height: 2.5;
+		model: self;
 		  width: 2.5;
 		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
 		  yourself
