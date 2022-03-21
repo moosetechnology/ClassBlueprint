@@ -15,6 +15,7 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		forColor: Color cyan darker darker darker duller;
 		addName: #isOverriding
 		forColor: (Color fromHexString: '#996800') duller;
+		addName: #isOverriden forColor: Color palePeach;
 		addName: #isDelegating
 		forColor: Color yellow darker duller slightlyWhiter;
 		addName: #isExtending forColor: Color orange darker duller;

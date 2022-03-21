@@ -229,6 +229,13 @@ NCBAbstractMethodModel >> isInternalImplementation [
 ]
 
 { #category : #testing }
+NCBAbstractMethodModel >> isOverriden [ 
+	
+	self entity isOverriden ifTrue: [  ^ #isOverriden ].
+	^ nil
+]
+
+{ #category : #testing }
 NCBAbstractMethodModel >> isOverriding [
 
 	entity isOverriding ifTrue: [ ^ #isOverriding ].
