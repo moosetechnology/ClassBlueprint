@@ -11,7 +11,8 @@ Class {
 		'invocations',
 		'modelType',
 		'complexity',
-		'occurrences'
+		'occurrences',
+		'shape'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -91,6 +92,18 @@ NCBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 		invocations outgoing add: aMethodInvocationModel ]
 ]
 
+{ #category : #adding }
+NCBAbstractMethodModel >> addShapeInterractions [ 
+
+	 shape when: RSMouseRightClick do: [ :evt | self openInBrowser ].
+	shape when: RSMouseEnter do: [ :evt | 
+		evt shiftPressed ifTrue: [ shape popupText: self entity sourceText ] ].
+	shape
+		when: RSMouseLeave
+		do: [ :evt | shape popupText: self name asString ].
+	shape addInteraction: NCBDraggable new.
+]
+
 { #category : #accessing }
 NCBAbstractMethodModel >> allInvocations [
 
@@ -107,6 +120,17 @@ NCBAbstractMethodModel >> attributeAccess [
 NCBAbstractMethodModel >> attributeAccess: anObject [
 
 	attributeAccess := anObject
+]
+
+{ #category : #accessing }
+NCBAbstractMethodModel >> boxShape [
+
+	^ self isAbstractAndReimplementedAndUsed
+		  ifTrue: [ 
+			  RSComposite new
+				  add: self abstractBox;
+				  yourself ]
+		  ifFalse: [ RSComposite new ]
 ]
 
 { #category : #accessing }
@@ -127,6 +151,20 @@ NCBAbstractMethodModel >> create [
 	invocations := CBInvocations new.
 	complexity := entity computeCyclomaticComplexity.
 	"self initializeDescription"
+]
+
+{ #category : #initialization }
+NCBAbstractMethodModel >> defaultShape [
+
+	| box |
+	box := self boxShape.
+	shape := box
+		         model: self;
+		         color: self description color;
+		         border: self description border;
+		         width: self description width;
+		         height: self description height.
+		^shape
 ]
 
 { #category : #initialization }
@@ -246,6 +284,13 @@ NCBAbstractMethodModel >> isOverriding [
 	^ nil
 ]
 
+{ #category : #testing }
+NCBAbstractMethodModel >> isTested [
+
+	^ (self entity incomingInvocations collect: #sender) anySatisfy: [ :each | 
+		  each parentType isTestCase ]
+]
+
 { #category : #accessing }
 NCBAbstractMethodModel >> modelType [ 
 	^ modelType
@@ -296,29 +341,39 @@ NCBAbstractMethodModel >> printOn: aStream [.
 { #category : #accessing }
 NCBAbstractMethodModel >> shape [
 
-	| shape box |
-	box := self isAbstractAndReimplementedAndUsed
-		       ifTrue: [ 
-			       RSComposite new
-				       add: self abstractBox;
-				       yourself ]
-		       ifFalse: [ RSBox new ].
+	shape := self isTested ifTrue: [ self testedShape ] ifFalse: [ self defaultShape  ].
+	self addShapeInterractions.
+	^ shape
+]
 
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel >> testedShape [
+
+	| box testingBox |
+	box := self boxShape.
+	testingBox := self testingBox.
 	shape := box
 		         model: self;
 		         color: self description color;
 		         border: self description border;
 		         width: self description width;
 		         height: self description height.
-
-	shape when: RSMouseRightClick do: [ :evt | self openInBrowser ].
-	shape when: RSMouseEnter do: [ :evt | 
-		evt shiftPressed ifTrue: [ shape popupText: self entity sourceText ] ].
-	shape
-		when: RSMouseLeave
-		do: [ :evt | shape popupText: self name asString ].
-	shape addInteraction: NCBDraggable new.
+	shape add: testingBox.
 	^ shape
+]
+
+{ #category : #'as yet unclassified' }
+NCBAbstractMethodModel >> testingBox [
+
+	^ RSBox new
+		  color: Color green;
+		  model: self;
+		  height: self description height / 4;
+		  width: self description width - self description border width;
+		  border: (RSBorder new
+				   width: 0.5;
+				   yourself);
+		  yourself
 ]
 
 { #category : #accessing }
