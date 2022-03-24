@@ -77,25 +77,6 @@ NCBView class >> maxWidth [
 	^ 30
 ]
 
-{ #category : #composite }
-NCBView >> DeadMethodsComposite [
-
-	| shape |
-	shape := self canvas shapeFromModel: deadsLayer.
-	"shapes := shape nodes copy.
-	layout := RSForceBasedLayout new.
-	layout charge: -50.
-	layout
-		doNotUseProgressBar;
-		on: shapes."
-	self highlight: shape.
-	RSHorizontalLineLayout new
-		gapSize: 5;
-		alignTop;
-		on: shape nodes.
-	^ shape
-]
-
 { #category : #layers }
 NCBView >> accessorsLayer [ 
 	^ accessorsLayer
@@ -261,11 +242,30 @@ NCBView >> deadLayers [
 		  deadsLayer } asOrderedCollection 
 ]
 
+{ #category : #composite }
+NCBView >> deadMethodsComposite [
+
+	| shape |
+	shape := self canvas shapeFromModel: deadsLayer.
+	"shapes := shape nodes copy.
+	layout := RSForceBasedLayout new.
+	layout charge: -50.
+	layout
+		doNotUseProgressBar;
+		on: shapes."
+	self highlight: shape.
+	RSTreeLayout 
+		"gapSize: 5;
+		alignTop;"
+		on: shape nodes.
+	^ shape
+]
+
 { #category : #'as yet unclassified' }
 NCBView >> deads [
 
 	^ { 
-		  self DeadMethodsComposite.
+		  self deadMethodsComposite.
 		  self deadAttributesComposite }
 ]
 
@@ -334,7 +334,7 @@ NCBView >> fifthLayer [
 { #category : #composite }
 NCBView >> firstLayer [
 
-	^ self DeadMethodsComposite
+	^ self deadMethodsComposite
 		  padding: 10.
 ]
 
