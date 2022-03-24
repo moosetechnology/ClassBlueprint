@@ -199,7 +199,7 @@ NCBView >> classSideMethods [
 	| shape |
 	shape := self canvas shapeFromModel: classMethodsLayer.
 	self highlight: shape.
-	RSHorizontalLineLayout new on: shape nodes.
+	RSTreeLayout new on: shape nodes.
 	^ shape
 ]
 

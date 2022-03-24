@@ -86,7 +86,7 @@ NClassBlueprint >> attributeMethodTypes [
 	" This method needs to be changes/decomposed"
 
 	| mooseModel modelMethods myMethods |
-	mooseModel := entity parentPackage mooseModel.
+	mooseModel := entity mooseModel.
 	modelMethods := mooseModel allModelClasses flatCollect: [ :each | 
 		                each methods ].
 	myMethods := (self methodModels , accessors collect: [ :each | each ])
@@ -333,46 +333,46 @@ NClassBlueprint >> initializeAcessors [
 { #category : #initialization }
 NClassBlueprint >> initializeAttributes [
 
-	attributes := (entity attributes select: [ :each | 
+	attributes := ((entity attributes select: [ :each | 
 		               each incomingAccesses isNotEmpty and: [ 
 			               each isClassSide not ] ]) collect: [ :anAttribute | 
-		              NCBAttributeModel newFrom: anAttribute ].
+		              NCBAttributeModel newFrom: anAttribute ]) sorted: [ :x :y | x name < y name ].
 ]
 
 { #category : #initialization }
 NClassBlueprint >> initializeClassMethods [
-	classMethods := self methods
-		                select: [ :each | each isClassSide ].
+	classMethods := (self methods
+		                select: [ :each | each isClassSide ]).
 	classMethods ifEmpty: [ ^{} ].
-	classMethods := classMethods collect: [ :each | 
-		                NCBClassSideMethod newFrom: each ]
+	classMethods := (classMethods collect: [ :each | 
+		                NCBClassSideMethod newFrom: each ]) sorted: [ :x :y | x name < y name ]
 ]
 
 { #category : #accessing }
 NClassBlueprint >> initializeClassVars [
 
-	classVars := (entity attributes select: [ :each | 
+	classVars := ((entity attributes select: [ :each | 
 		              each isClassSide ]) collect: [ :each | 
-		             NCBAttributeModel newFrom: each ]
+		             NCBAttributeModel newFrom: each ]) sorted: [ :x :y | x name < y name ]
 ]
 
 { #category : #initialization }
 NClassBlueprint >> initializeDeadAttributes [
 
-	deadAttributes := (entity attributes select: [ :each | 
+	deadAttributes := ((entity attributes select: [ :each | 
 		                       each incomingAccesses isEmpty and: [ each isClassSide not ] ]) collect: [ 
 		                      :anAttribute | 
-		                      NCBAttributeModel newFrom: anAttribute ]
+		                      NCBAttributeModel newFrom: anAttribute ]) sorted: [ :x :y | x name < y name ]
 ]
 
 { #category : #initialization }
 NClassBlueprint >> initializeDeadMethods [
 
-	deadMethods := self methods
+	deadMethods := (self methods
 		               select: [ :each | 
 		               each isDeadMethod or: [ each belongsToDeadBranch ] ]
 		               thenCollect: [ :each | 
-		               NCBDeadModel newFrom: each ]
+		               NCBDeadModel newFrom: each ]) sorted: [ :x :y | x name < y name ]
 ]
 
 { #category : #initialization }
@@ -416,11 +416,11 @@ NClassBlueprint >> initializeModelDescriptions [
 { #category : #initialization }
 NClassBlueprint >> initializeSuperAttributes [
 
-	superAttributes := (((self entity superclassHierarchy flatCollect: [ 
+	superAttributes := ((((self entity superclassHierarchy flatCollect: [ 
 		                      :each | each attributes ]) reject: [ :each | 
 		                     each isClassSide ]) select: [ :each | 
 		                    each isCalledIn: self entity ]) collect: [ :each | 
-		                   NCBAttributeModel newFrom: each ] 
+		                   NCBAttributeModel newFrom: each ] ) sorted: [ :x :y | x name < y name ]
 ]
 
 { #category : #accessing }
