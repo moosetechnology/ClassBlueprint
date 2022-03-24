@@ -125,6 +125,12 @@ NCBDeadBranchCheckerTest >> setUp [
 	
 ]
 
+{ #category : #tests }
+NCBDeadBranchCheckerTest >> testAnnotatedWithAPI [
+
+	self flag: #TODO
+]
+
 { #category : #'as yet unclassified' }
 NCBDeadBranchCheckerTest >> testDeadRoot [ 
 
@@ -140,6 +146,13 @@ NCBDeadBranchCheckerTest >> testMethodBelongsToExternalClass [
 { #category : #'as yet unclassified' }
 NCBDeadBranchCheckerTest >> testNoInvocationsRoot0 [ 
 	self assert: root0 incomingInvocations isEmpty equals: true
+]
+
+{ #category : #tests }
+NCBDeadBranchCheckerTest >> testNotDeadDoNotBelongToDeadBranch [
+
+	self flag: #TODO
+	
 ]
 
 { #category : #tests }

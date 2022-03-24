@@ -58,7 +58,10 @@ FamixStMethod >> isCalledExternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadMethod [
 
-	^ self isDead or: [ self belongsToDeadBranch ]
+	| isDead |
+	isDead := self isDead ifFalse: [ self belongsToDeadBranch ].
+	isDead := isDead ifFalse: [ (self isAnnotatedWith: '<api>') not ].
+	^ isDead
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

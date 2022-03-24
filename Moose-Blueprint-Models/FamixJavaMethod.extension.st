@@ -75,7 +75,10 @@ FamixJavaMethod >> isCalledExternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isDeadMethod [
 
-	^ self isDead or: [ self belongsToDeadBranch ]
+	| isDead r |
+	isDead := self isDead ifFalse: [ self belongsToDeadBranch ].
+	r := isDead ifFalse: [ (self isAnnotatedWith: '<api>') not ].
+	^ r
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
