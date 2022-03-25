@@ -11,5 +11,5 @@ Class {
 { #category : #accessing }
 NCBDeadMethodsLayerModel >> name [
 
-	^ #HibernerMethods
+	^ #DeadMethods
 ]

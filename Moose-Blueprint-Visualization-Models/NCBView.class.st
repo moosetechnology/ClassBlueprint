@@ -22,7 +22,12 @@ Class {
 		'classMethodsLayer',
 		'shapes',
 		'secondLayer',
-		'superAttributesLayer'
+		'superAttributesLayer',
+		'thirdLayer',
+		'firstLayer',
+		'fourthLayer',
+		'fifthLayer',
+		'sixthLayer'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -110,6 +115,7 @@ NCBView >> attributesLayer [
 NCBView >> build [
 
 	self buildLayers.
+	self scaleMethods.
 	self buildEdges.
 	self nestLayers.
 	super build
@@ -254,10 +260,10 @@ NCBView >> deadMethodsComposite [
 		doNotUseProgressBar;
 		on: shapes."
 	self highlight: shape.
-	RSTreeLayout 
-		"gapSize: 5;
+	RSTreeLayout on: shape nodes.
+	"gapSize: 5;
 		alignTop;"
-		on: shape nodes.
+	shape adjustToChildren.
 	^ shape
 ]
 
@@ -265,7 +271,7 @@ NCBView >> deadMethodsComposite [
 NCBView >> deads [
 
 	^ { 
-		  self deadMethodsComposite.
+		  firstLayer .
 		  self deadAttributesComposite }
 ]
 
@@ -301,7 +307,7 @@ NCBView >> externalsLayer [
 { #category : #'as yet unclassified' }
 NCBView >> fifthLayer [
 
-	| middleAttributeSide fifthLayer maxWidth maxHeight |
+	| middleAttributeSide maxWidth maxHeight |
 	middleAttributeSide := self middleAttributeSide.
 	self setNodesOf: middleAttributeSide withLayout: RSVerticalLineLayout.
 	fifthLayer := (middleAttributeSide as: RSGroup) asShapeFor:
@@ -315,37 +321,39 @@ NCBView >> fifthLayer [
 	= (middleAttributeSide sum: [ :each | each height ]) ifFalse: [ 
 		middleAttributeSide do: [ :each | 
 			each height: each height + maxHeight / fifthLayer nodes size ] ].
+
 	"set Width"
 	maxWidth := { 
-		            self fourthLayer.
+		            fourthLayer.
 		            fifthLayer.
 		            self sixthLayer } max: [ :each | each width ].
 	fifthLayer width: maxWidth.
-	middleAttributeSide do: [ :each | 
-		each width: maxWidth].
+	middleAttributeSide do: [ :each | each width: maxWidth ].
+
 	RSVerticalLineLayout new
 		gapSize: 0;
 		on: (middleAttributeSide as: RSGroup).
-	fifthLayer adjustToChildren.
 
+	fifthLayer adjustToChildren.
 	^ fifthLayer
 ]
 
 { #category : #composite }
 NCBView >> firstLayer [
 
-	^ self deadMethodsComposite
-		  padding: 10.
+	firstLayer ifNil: [ 
+		firstLayer := self deadMethodsComposite padding: 10 ].
+
+	^ firstLayer
 ]
 
 { #category : #'as yet unclassified' }
 NCBView >> fourthLayer [
 
-	| shape |
-	shape := self canvas shapeFromModel: deadAttributesLayer.
-	RSVerticalLineLayout new on: shape nodes.
-	shape padding: 10.
-	^ shape
+	fourthLayer ifNil: [ fourthLayer := (self canvas shapeFromModel: deadAttributesLayer ).
+	RSVerticalLineLayout new on: fourthLayer nodes.
+	fourthLayer padding: 10 ].
+	^ fourthLayer
 ]
 
 { #category : #public }
@@ -428,6 +436,13 @@ NCBView >> layersEntities [
 	^ layers
 ]
 
+{ #category : #'as yet unclassified' }
+NCBView >> methodShapes [
+
+	^ (self canvas allChildren select: [ :each | 
+		  each model isMooseEntity and: [ each model entity isMethod ] ]) as: RSGroup 
+]
+
 { #category : #accessing }
 NCBView >> middleAttributeSide [ 
 	^ self attSide collect: [ :each | self canvas shapeFromModel: each ]
@@ -439,14 +454,16 @@ NCBView >> nestLayers [
 	| right left dict layers |
 	dict := { 
 		        (self firstLayer -> self fourthLayer).
-		        (self secondLayer -> self fifthLayer).
-		        (self thirdLayer -> self sixthLayer) } asOrderedDictionary.
+		        (self secondLayer -> fifthLayer).
+		        (thirdLayer -> sixthLayer) } asOrderedDictionary.
 	self setSize: dict.
+	1halt.
 	left := dict keys asGroup asShapeFor: dict keys.
 	right := dict values asGroup asShapeFor: dict values.
 	{ 
 		left.
 		right } asOrderedCollection.
+		1halt.
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: { 
@@ -457,14 +474,20 @@ NCBView >> nestLayers [
 		          right } asGroup asShapeFor: { 
 			          left.
 			          right }.
-	self canvas 
+	self canvas
 		add: (layers
-			 border: border;
-			 yourself);
+				 border: border;
+				 yourself);
 		addInteraction: RSZoomableCanvasInteraction;
 		addInteraction: RSDraggableCanvasInteraction.
 	self canvas inspectorContext interactionsToBeRegistered removeAll.
-	self canvas edges do: [ :each | each update ].
+	self canvas edges do: [ :each | each update ]
+]
+
+{ #category : #'as yet unclassified' }
+NCBView >> scaleMethods [
+
+	self methodShapes addInteraction: CBMethodsScale new 
 ]
 
 { #category : #'as yet unclassified' }
@@ -476,7 +499,7 @@ NCBView >> secondLayer [
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
 	"fix the width of the layers"
 	maxWidth := { 
-		            self firstLayer.
+		            firstLayer.
 		            secondLayer.
 		            self thirdLayer } max: [ :each | each width ].
 	secondLayer width: maxWidth.
@@ -491,7 +514,9 @@ NCBView >> secondLayer [
 		             secondLayer.
 		             self fifthLayer } max: [ :each | each height ].
 	secondLayer height: maxHeight.
-	instanceSide do: [ :each | each height: maxHeight. self highlight: each ].
+	instanceSide do: [ :each | 
+		each height: maxHeight.
+		self highlight: each ].
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: secondLayer nodes.
@@ -508,13 +533,16 @@ NCBView >> setNodesOf: object withLayout: aLayout [
 ]
 
 { #category : #initialization }
-NCBView >> setSize: dict [ 
-		| maxWidth |
+NCBView >> setSize: dict [
+
+	| maxWidth |
 	maxWidth := dict values max: [ :each | each width ].
 	dict valuesDo: [ :layer | layer width: maxWidth ].
-	
+	1 halt.
+	dict keys detectMax: [ :each | each width ].
 	maxWidth := dict keys max: [ :each | each width ].
 	dict keysDo: [ :layer | layer width: maxWidth ].
+	1halt.
 	dict associationsDo: [ :assoc | 
 		| maxHeight |
 		maxHeight := { 
@@ -522,7 +550,8 @@ NCBView >> setSize: dict [
 			             assoc value } max: [ :each | each height ].
 		assoc key height: maxHeight.
 		assoc value height: maxHeight.
-		assoc key = secondLayer ifTrue: [ secondLayer nodes do: [ :each | each height: maxHeight ]  ] ].
+		assoc key = secondLayer ifTrue: [ 
+			secondLayer nodes do: [ :each | each height: maxHeight ] ] ].
 	"Left layer children as well as right one children are vertically aligned"
 	{ 
 		dict keys.
@@ -530,17 +559,17 @@ NCBView >> setSize: dict [
 		RSVerticalLineLayout new
 			gapSize: 0;
 			on: each ].
-		dict
+	dict
 ]
 
 { #category : #'as yet unclassified' }
 NCBView >> sixthLayer [
 
-	| shape |
-	shape := self canvas shapeFromModel: classVarsLayer.
-	RSVerticalLineLayout new on: shape nodes.
-	shape padding: 10.
-	^ shape
+
+	sixthLayer ifNil: [ sixthLayer := self canvas shapeFromModel: classVarsLayer.
+	RSVerticalLineLayout new on: sixthLayer nodes.
+	sixthLayer padding: 10 ].
+	^ sixthLayer
 ]
 
 { #category : #accessing }
@@ -551,7 +580,8 @@ NCBView >> superAttributesLayer [
 { #category : #'as yet unclassified' }
 NCBView >> thirdLayer [
 
-	^ self classSideMethods padding: 10
+	thirdLayer ifNil: [ thirdLayer := self classSideMethods padding: 10 ].
+	^ thirdLayer
 ]
 
 { #category : #initialization }

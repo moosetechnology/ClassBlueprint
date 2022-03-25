@@ -93,9 +93,9 @@ NCBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 ]
 
 { #category : #adding }
-NCBAbstractMethodModel >> addShapeInterractions [ 
+NCBAbstractMethodModel >> addShapeInterractions [
 
-	 shape when: RSMouseRightClick do: [ :evt | self openInBrowser ].
+	shape when: RSMouseRightClick do: [ :evt | self openInBrowser ].
 	shape when: RSMouseEnter do: [ :evt | 
 		evt shiftPressed ifTrue: [ shape popupText: self entity sourceText ] ].
 	shape
