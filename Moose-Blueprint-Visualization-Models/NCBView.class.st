@@ -493,10 +493,11 @@ NCBView >> scaleMethods [
 { #category : #'as yet unclassified' }
 NCBView >> secondLayer [
 
-	| instanceSide maxHeight maxWidth |
+	| instanceSide maxHeight maxWidth instanceSideWidth |
 	instanceSide := self instanceSide.
 	self setNodesOf: instanceSide withLayout: RSHorizontalTreeLayout.
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
+
 	"fix the width of the layers"
 	maxWidth := { 
 		            firstLayer.
@@ -505,10 +506,13 @@ NCBView >> secondLayer [
 	secondLayer width: maxWidth.
 
 	"check if it is the biggest"
+	instanceSideWidth := (instanceSide collect: [ :each | each width ]) sum. 
 	secondLayer width = (instanceSide sum: [ :each | each width ]) 
 		ifFalse: [ 
 			instanceSide do: [ :each | 
-				each width: each width + ((maxWidth / secondLayer nodes size) - each width) ] ].
+				each width:
+					each width
+					+ (maxWidth - instanceSideWidth / secondLayer nodes size) ] ].
 
 	"set height"
 	maxHeight := { 
@@ -521,7 +525,6 @@ NCBView >> secondLayer [
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: secondLayer nodes.
-
 	secondLayer adjustToChildren.
 	^ secondLayer
 ]
