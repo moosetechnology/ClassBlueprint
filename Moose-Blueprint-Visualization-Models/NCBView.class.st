@@ -457,13 +457,13 @@ NCBView >> nestLayers [
 		        (self secondLayer -> fifthLayer).
 		        (thirdLayer -> sixthLayer) } asOrderedDictionary.
 	self setSize: dict.
-	1halt.
+
 	left := dict keys asGroup asShapeFor: dict keys.
 	right := dict values asGroup asShapeFor: dict values.
 	{ 
 		left.
 		right } asOrderedCollection.
-		1halt.
+
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: { 
@@ -504,10 +504,11 @@ NCBView >> secondLayer [
 		            self thirdLayer } max: [ :each | each width ].
 	secondLayer width: maxWidth.
 
+	"check if it is the biggest"
 	secondLayer width = (instanceSide sum: [ :each | each width ]) 
 		ifFalse: [ 
 			instanceSide do: [ :each | 
-				each width: each width + (maxWidth / secondLayer nodes size) ] ].
+				each width: each width + ((maxWidth / secondLayer nodes size) - each width) ] ].
 
 	"set height"
 	maxHeight := { 
@@ -538,11 +539,11 @@ NCBView >> setSize: dict [
 	| maxWidth |
 	maxWidth := dict values max: [ :each | each width ].
 	dict valuesDo: [ :layer | layer width: maxWidth ].
-	1 halt.
+
 	dict keys detectMax: [ :each | each width ].
 	maxWidth := dict keys max: [ :each | each width ].
 	dict keysDo: [ :layer | layer width: maxWidth ].
-	1halt.
+
 	dict associationsDo: [ :assoc | 
 		| maxHeight |
 		maxHeight := { 
@@ -559,7 +560,7 @@ NCBView >> setSize: dict [
 		RSVerticalLineLayout new
 			gapSize: 0;
 			on: each ].
-	dict
+	
 ]
 
 { #category : #'as yet unclassified' }
