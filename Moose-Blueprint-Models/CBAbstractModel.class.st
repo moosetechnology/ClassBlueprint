@@ -36,6 +36,11 @@ CBAbstractModel >> initializeDescription [
 	self subclassResponsibility 
 ]
 
+{ #category : #testing }
+CBAbstractModel >> isHighlightable [ 
+	^ false
+]
+
 { #category : #accessing }
 CBAbstractModel >> name [ 
 	^ entity name

@@ -3,11 +3,10 @@ I represent a model for getters and setters
 "
 Class {
 	#name : #CBAccessorsModel,
-	#superclass : #Object,
+	#superclass : #NCBHighlightableModel,
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
-		'entity',
 		'modelType',
 		'occurrences',
 		'attribute'
@@ -130,7 +129,6 @@ CBAccessorsModel >> protecting: anAttribte [
 { #category : #accessing }
 CBAccessorsModel >> shape [
 
-	| shape |
 	shape := RSBox new
 		         model: self;
 		         height: 4;
@@ -138,6 +136,7 @@ CBAccessorsModel >> shape [
 		         color: self color;
 		         withBorder;
 		         popupText: self name asString.
+	self addHighlightableInteraction.
 	shape @ RSDraggable.
 	^ shape
 ]

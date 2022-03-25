@@ -21,7 +21,7 @@ CBAbstractLayerModel >> entities: aCollection [
 ]
 
 { #category : #testing }
-CBAbstractLayerModel >> isMooseEntity [ 
+CBAbstractLayerModel >> isHighlightable [ 
 	^ false
 ]
 

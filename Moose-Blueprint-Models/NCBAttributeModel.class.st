@@ -3,7 +3,7 @@ I represent a model for class attributes
 "
 Class {
 	#name : #NCBAttributeModel,
-	#superclass : #CBAbstractModel,
+	#superclass : #NCBHighlightableModel,
 	#instVars : [
 		'attributeAccess',
 		'setter',
@@ -121,7 +121,6 @@ NCBAttributeModel >> setterShape [
 { #category : #accessing }
 NCBAttributeModel >> shape [
 
-	| shape |
 	shape := RSBox new
 		         model: self;
 		         border: self description border;
@@ -130,6 +129,7 @@ NCBAttributeModel >> shape [
 		         width: self description width;
 		         popupText: self name asString.
 	shape @ RSDraggable.
+	self addHighlightableInteraction.
 	^ self withProtectorsOf: shape
 ]
 
@@ -158,7 +158,7 @@ NCBAttributeModel >> withProtectorsOf: aShape [
 		gapSize: 1;
 		on: composite nodes.
 	composite adjustToChildren.
-	NCBView new highlight: composite.
+
 	composite padding: 1.
 	^ composite
 ]

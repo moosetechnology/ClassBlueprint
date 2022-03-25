@@ -3,7 +3,7 @@ I represent a method of Class Blueprint.
 "
 Class {
 	#name : #NCBAbstractMethodModel,
-	#superclass : #CBAbstractModel,
+	#superclass : #NCBHighlightableModel,
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
@@ -11,8 +11,7 @@ Class {
 		'invocations',
 		'modelType',
 		'complexity',
-		'occurrences',
-		'shape'
+		'occurrences'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -101,7 +100,8 @@ NCBAbstractMethodModel >> addShapeInterractions [
 	shape
 		when: RSMouseLeave
 		do: [ :evt | shape popupText: self name asString ].
-	shape addInteraction: NCBDraggable new.
+	self addHighlightableInteraction.
+	shape addInteraction: NCBDraggable new
 ]
 
 { #category : #accessing }
@@ -157,6 +157,7 @@ NCBAbstractMethodModel >> create [
 NCBAbstractMethodModel >> defaultShape [
 
 	| box |
+
 	box := self boxShape.
 	shape := box
 		         model: self;
@@ -164,7 +165,8 @@ NCBAbstractMethodModel >> defaultShape [
 		         border: self description border;
 		         width: self description width;
 		         height: self description height.
-		^shape
+	
+	^ shape
 ]
 
 { #category : #initialization }
@@ -270,11 +272,6 @@ NCBAbstractMethodModel >> isInternalImplementation [
 ]
 
 { #category : #testing }
-NCBAbstractMethodModel >> isMooseEntity [ 
-	^ true
-]
-
-{ #category : #testing }
 NCBAbstractMethodModel >> isOverriden [
 
 	self entity isOverriden ifTrue: [ ^ #isOverriden ].
@@ -345,7 +342,9 @@ NCBAbstractMethodModel >> printOn: aStream [.
 { #category : #accessing }
 NCBAbstractMethodModel >> shape [
 
-	shape := self isTested ifTrue: [ self testedShape ] ifFalse: [ self defaultShape  ].
+	shape := self isTested
+		         ifTrue: [ self testedShape ]
+		         ifFalse: [ self defaultShape ].
 	self addShapeInterractions.
 	^ shape
 ]

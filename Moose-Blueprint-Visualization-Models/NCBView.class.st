@@ -88,6 +88,18 @@ NCBView >> accessorsLayer [
 	^ accessorsLayer
 ]
 
+{ #category : #adding }
+NCBView >> addCanvasInteractions [
+
+	| methodShapes |
+	canvas when: RSMouseLeftClick do: [ :evt | 
+		methodShapes := self highlightedShapes. 
+		methodShapes do: [ :each | 
+			each model onClickHighlightableInteraction 
+				unhighlightRecordedShapes: evt ].
+		evt signalUpdate ]
+]
+
 { #category : #'as yet unclassified' }
 NCBView >> attSide [
 
@@ -126,11 +138,13 @@ NCBView >> build [
 	        job currentValue: 70.
 	        self nestLayers.
 	        job currentValue: 90.
-	canvas zoomToFit.
-	canvas signalUpdate.
+	        "(Delay forMilliseconds: 700) wait."
+	        canvas zoomToFit.
+	        canvas signalUpdate.
 	        "self scaleMethods."
 	        super build ] asJob.
-
+	canvas inspectorContext: RSEmptyContextInteraction new.
+	self addCanvasInteractions.
 	[ aJob run ] forkAt: Processor userBackgroundPriority
 ]
 
@@ -217,7 +231,7 @@ NCBView >> classSideMethods [
 
 	| shape |
 	shape := self canvas shapeFromModel: classMethodsLayer.
-	self highlight: shape.
+
 	RSTreeLayout new on: shape nodes.
 	shape padding: 30.
 	^ shape
@@ -228,7 +242,7 @@ NCBView >> classSideVars [
 
 	| shape |
 	shape := self canvas shapeFromModel: classVarsLayer.
-	self highlight: shape.
+
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
 ]
@@ -243,7 +257,7 @@ NCBView >> deadAttributesComposite [
 
 	| shape |
 	shape := self canvas shapeFromModel: deadAttributesLayer.
-	self highlight: shape.
+
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
 ]
@@ -273,7 +287,7 @@ NCBView >> deadMethodsComposite [
 	layout
 		doNotUseProgressBar;
 		on: shapes."
-	self highlight: shape.
+
 	RSTreeLayout on: shape nodes.
 	"gapSize: 5;
 		alignTop;"
@@ -292,6 +306,20 @@ NCBView >> deads [
 { #category : #layers }
 NCBView >> deadsLayer [
 	^ deadsLayer 
+]
+
+{ #category : #highlighting }
+NCBView >> doHighlight: evt [
+
+		evt shape pushFront.
+	evt interaction record: evt shape selector: #color value: Color red
+]
+
+{ #category : #highlighting }
+NCBView >> doUnhighlight: evt [
+
+	 evt shape pushBack.
+			 evt interaction restore: evt shape selector: #color
 ]
 
 { #category : #shapes }
@@ -372,19 +400,25 @@ NCBView >> fourthLayer [
 	^ fourthLayer
 ]
 
-{ #category : #public }
-NCBView >> highlight: aShape [ 
+{ #category : #highlighting }
+NCBView >> highlight: aShape [
+
 	| highlightable |
 	highlightable := RSHighlightable new.
 	aShape nodes @ (highlightable
-		 when: RSHighlightEvent do: [ :evt | 
-			 evt shape pushFront.
-			 highlightable record: evt shape selector: #color value: Color red ];
-		 when: RSUnHighlightEvent do: [ :evt | 
-			 evt shape pushBack.
-			 highlightable restore: evt shape selector: #color ];
+		 when: RSHighlightEvent send: #doHighlight: to: self;
+		 when: RSUnHighlightEvent send: #doUnhighlight: to: self;
 		 withLines;
-		 yourself).
+		 yourself)
+]
+
+{ #category : #'as yet unclassified' }
+NCBView >> highlightedShapes [ 	
+	^ canvas allChildren select: [ :each | 
+			                each model isCollection not and: [ 
+				                each model isAssociation not and: [ 
+					                each model isHighlightable and: [ 
+						                each model isHighlighted ] ] ] ].
 ]
 
 { #category : #initialization }
@@ -458,7 +492,7 @@ NCBView >> methodShapes [
 	| methodShapes |
 	methodShapes := (self canvas allChildren select: [ :each | 
 		                 each model isCollection not and: [ 
-			                 each model isMooseEntity and: [ 
+			                 each model isHighlightable and: [ 
 				                 each model entity isMethod ] ] ]) as: RSGroup.
 
 
@@ -502,7 +536,7 @@ NCBView >> nestLayers [
 				 yourself);
 		addInteraction: RSZoomableCanvasInteraction;
 		addInteraction: RSDraggableCanvasInteraction.
-	self canvas inspectorContext interactionsToBeRegistered removeAll.
+
 	self canvas edges do: [ :each | each update ]
 ]
 
@@ -542,12 +576,12 @@ NCBView >> secondLayer [
 		             secondLayer.
 		             self fifthLayer } max: [ :each | each height ].
 	secondLayer height: maxHeight.
-	instanceSide do: [ :each | 
-		each height: maxHeight.
-		self highlight: each ].
+instanceSide do: [ :each | 
+		each height: maxHeight].
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: secondLayer nodes.
+
 	secondLayer adjustToChildren.
 	^ secondLayer
 ]
