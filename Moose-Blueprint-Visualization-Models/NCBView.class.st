@@ -206,6 +206,7 @@ NCBView >> classSideMethods [
 	shape := self canvas shapeFromModel: classMethodsLayer.
 	self highlight: shape.
 	RSTreeLayout new on: shape nodes.
+	shape padding: 30.
 	^ shape
 ]
 
