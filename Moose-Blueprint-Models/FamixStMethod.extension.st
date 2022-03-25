@@ -60,7 +60,7 @@ FamixStMethod >> isDeadMethod [
 
 	| isDead |
 	isDead := self isDead ifFalse: [ self belongsToDeadBranch ].
-	isDead := isDead ifFalse: [ (self isAnnotatedWith: '<api>') not ].
+	isDead := isDead ifNil: [ (self isAnnotatedWith: '<api>') not ].
 	^ isDead
 ]
 
@@ -158,6 +158,13 @@ FamixStMethod >> isSuperOf: aFamixMethod [
 
 	^ self parentType superclassHierarchy includes:
 		  aFamixMethod parentType
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isTested [
+
+	^ (self incomingInvocations collect: #sender) anySatisfy: [ 
+		  :each | each parentType isTestCase ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

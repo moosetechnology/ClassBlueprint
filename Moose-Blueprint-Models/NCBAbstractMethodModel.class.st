@@ -287,8 +287,7 @@ NCBAbstractMethodModel >> isOverriding [
 { #category : #testing }
 NCBAbstractMethodModel >> isTested [
 
-	^ (self entity incomingInvocations collect: #sender) anySatisfy: [ :each | 
-		  each parentType isTestCase ]
+	^ self entity isTested
 ]
 
 { #category : #accessing }
@@ -359,6 +358,8 @@ NCBAbstractMethodModel >> testedShape [
 		         width: self description width;
 		         height: self description height.
 	shape add: testingBox.
+	testingBox position:
+		0@ (testingBox height - shape height + shape border width)/2.
 	^ shape
 ]
 
