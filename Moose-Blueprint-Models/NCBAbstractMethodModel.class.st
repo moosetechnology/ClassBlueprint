@@ -270,6 +270,11 @@ NCBAbstractMethodModel >> isInternalImplementation [
 ]
 
 { #category : #testing }
+NCBAbstractMethodModel >> isMooseEntity [ 
+	^ true
+]
+
+{ #category : #testing }
 NCBAbstractMethodModel >> isOverriden [
 
 	self entity isOverriden ifTrue: [ ^ #isOverriden ].

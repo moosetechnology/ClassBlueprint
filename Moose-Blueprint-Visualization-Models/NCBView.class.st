@@ -27,7 +27,8 @@ Class {
 		'firstLayer',
 		'fourthLayer',
 		'fifthLayer',
-		'sixthLayer'
+		'sixthLayer',
+		'entity'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -114,11 +115,23 @@ NCBView >> attributesLayer [
 { #category : #shapes }
 NCBView >> build [
 
-	self buildLayers.
-	self scaleMethods.
-	self buildEdges.
-	self nestLayers.
-	super build
+	| aJob |
+	1halt.
+	aJob := [ :job | 
+	        job title: 'Building the visualization'.
+	        job currentValue: 20.
+	        self buildLayers.
+	        job currentValue: 50.
+	        self buildEdges.
+	        job currentValue: 70.
+	        self nestLayers.
+	        job currentValue: 90.
+	        canvas zoomToFit.
+	        canvas signalUpdate.
+	        "self scaleMethods."
+	        super build ] asJob.
+
+	[ aJob run ] forkAt: Processor userBackgroundPriority
 ]
 
 { #category : #shapes }
@@ -296,7 +309,9 @@ NCBView >> entities [
 ]
 
 { #category : #accessing }
-NCBView >> entity: anEntity [ 
+NCBView >> entity: anEntity [
+
+	entity := anEntity.
 	classModel := NClassBlueprint newFrom: anEntity
 ]
 
@@ -440,8 +455,14 @@ NCBView >> layersEntities [
 { #category : #'as yet unclassified' }
 NCBView >> methodShapes [
 
-	^ (self canvas allChildren select: [ :each | 
-		  each model isMooseEntity and: [ each model entity isMethod ] ]) as: RSGroup 
+	| methodShapes |
+	methodShapes := (self canvas allChildren select: [ :each | 
+		                 each model isCollection not and: [ 
+			                 each model isMooseEntity and: [ 
+				                 each model entity isMethod ] ] ]) as: RSGroup.
+
+
+	^ methodShapes
 ]
 
 { #category : #accessing }
@@ -488,7 +509,7 @@ NCBView >> nestLayers [
 { #category : #'as yet unclassified' }
 NCBView >> scaleMethods [
 
-	self methodShapes addInteraction: CBMethodsScale new 
+	firstLayer addInteraction: CBMethodsScale new
 ]
 
 { #category : #'as yet unclassified' }
@@ -507,7 +528,8 @@ NCBView >> secondLayer [
 	secondLayer width: maxWidth.
 
 	"check if it is the biggest"
-	instanceSideWidth := (instanceSide collect: [ :each | each width ]) sum. 
+	instanceSideWidth := (instanceSide collect: [ :each | each width ])
+		                     sum.
 	secondLayer width = (instanceSide sum: [ :each | each width ]) 
 		ifFalse: [ 
 			instanceSide do: [ :each | 

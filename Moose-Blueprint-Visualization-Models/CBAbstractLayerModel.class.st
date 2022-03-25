@@ -20,6 +20,11 @@ CBAbstractLayerModel >> entities: aCollection [
 	 entities := aCollection 
 ]
 
+{ #category : #testing }
+CBAbstractLayerModel >> isMooseEntity [ 
+	^ false
+]
+
 { #category : #accessing }
 CBAbstractLayerModel >> name [ 
 	self subclassResponsibility 
