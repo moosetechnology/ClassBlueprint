@@ -342,7 +342,7 @@ NCBView >> fifthLayer [
 NCBView >> firstLayer [
 
 	firstLayer ifNil: [ 
-		firstLayer := self deadMethodsComposite padding: 10 ].
+		firstLayer := self deadMethodsComposite padding: 30 ].
 
 	^ firstLayer
 ]
