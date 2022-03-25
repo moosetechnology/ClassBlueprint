@@ -116,18 +116,18 @@ NCBView >> attributesLayer [
 NCBView >> build [
 
 	| aJob |
-	1halt.
 	aJob := [ :job | 
 	        job title: 'Building the visualization'.
 	        job currentValue: 20.
+	        classModel := NClassBlueprint newFrom: entity.
 	        self buildLayers.
 	        job currentValue: 50.
 	        self buildEdges.
 	        job currentValue: 70.
 	        self nestLayers.
 	        job currentValue: 90.
-	        canvas zoomToFit.
-	        canvas signalUpdate.
+	canvas zoomToFit.
+	canvas signalUpdate.
 	        "self scaleMethods."
 	        super build ] asJob.
 
@@ -312,7 +312,7 @@ NCBView >> entities [
 NCBView >> entity: anEntity [
 
 	entity := anEntity.
-	classModel := NClassBlueprint newFrom: anEntity
+
 ]
 
 { #category : #layers }
