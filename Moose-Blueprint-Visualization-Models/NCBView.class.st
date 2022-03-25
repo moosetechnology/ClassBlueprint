@@ -533,7 +533,7 @@ NCBView >> secondLayer [
 NCBView >> setNodesOf: object withLayout: aLayout [
 
 	aLayout new on: (object flatCollect: #nodes).
-	object do: [ :layer | layer padding: 10 ]
+	object do: [ :layer | layer padding: 30 ]
 ]
 
 { #category : #initialization }
