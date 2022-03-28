@@ -85,7 +85,7 @@ FamixStMethod >> isExtending [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isExternal [
 
-	| incomingI classInitializers senders |
+	"| incomingI classInitializers senders |
 	incomingI := self incomingInvocations.
 	incomingI isEmpty ifTrue: [ ^ false ].
 
@@ -97,7 +97,9 @@ FamixStMethod >> isExternal [
 	classInitializers isEmpty ifTrue: [ ^ false ].
 
 	senders removeAll: classInitializers.
-	^ senders allSatisfy: [ :each | each parentType ~= self parentType ]
+	^ senders allSatisfy: [ :each | each parentType ~= self parentType ]"
+	^ self incomingInvocations isNotEmpty and: [ 
+		  self isCalledExternally and: [ self isConstructor not ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
