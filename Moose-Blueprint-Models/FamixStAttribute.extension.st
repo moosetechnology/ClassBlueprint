@@ -8,6 +8,11 @@ FamixStAttribute >> isCalledIn: aFamixClass [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStAttribute >> isDead [ 
+	^ self incomingAccesses isEmpty
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStAttribute >> newIncomingConnection [ 
 	^ CBAttributeAccessModel new 
 		initializeDescription; 

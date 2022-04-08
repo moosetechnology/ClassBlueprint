@@ -56,6 +56,11 @@ FamixStMethod >> isCalledExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isDead [ 
+	^ self incomingInvocations isEmpty
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadMethod [
 
 	| isDead |
