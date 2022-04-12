@@ -92,6 +92,7 @@ NCBView >> accessorsLayer [
 NCBView >> addCanvasInteractions [
 
 	| methodShapes |
+
 	canvas when: RSMouseLeftClick do: [ :evt | 
 		methodShapes := self highlightedShapes. 
 		methodShapes do: [ :each | 
@@ -414,11 +415,15 @@ NCBView >> highlight: aShape [
 
 { #category : #'as yet unclassified' }
 NCBView >> highlightedShapes [ 	
-	^ canvas allChildren select: [ :each | 
+	
+	| result |
+	result := canvas allChildren select: [ :each | 
 			                each model isCollection not and: [ 
 				                each model isAssociation not and: [ 
 					                each model isHighlightable and: [ 
 						                each model isHighlighted ] ] ] ].
+
+		^ result
 ]
 
 { #category : #initialization }
@@ -551,8 +556,8 @@ NCBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth instanceSideWidth |
 	instanceSide := self instanceSide.
-	
-	self setNodesOf: instanceSide withLayout: RSHorizontalTreeLayout.
+	self setNodesOf: instanceSide withLayout: RSHorizontalTreeLayout  .
+
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
 instanceSideWidth := (instanceSide collect: [ :each | each width])
 		                     sum.
