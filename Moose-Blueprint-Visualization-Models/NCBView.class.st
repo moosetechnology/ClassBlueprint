@@ -551,19 +551,20 @@ NCBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth instanceSideWidth |
 	instanceSide := self instanceSide.
+	
 	self setNodesOf: instanceSide withLayout: RSHorizontalTreeLayout.
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
-
+instanceSideWidth := (instanceSide collect: [ :each | each width])
+		                     sum.
 	"fix the width of the layers"
 	maxWidth := { 
-		            firstLayer.
-		            secondLayer.
-		            self thirdLayer } max: [ :each | each width ].
+		            firstLayer width.
+		            instanceSideWidth.
+		            self thirdLayer width} max: [ :each | each ].
 	secondLayer width: maxWidth.
 
 	"check if it is the biggest"
-	instanceSideWidth := (instanceSide collect: [ :each | each width ])
-		                     sum.
+
 	secondLayer width = (instanceSide sum: [ :each | each width ]) 
 		ifFalse: [ 
 			instanceSide do: [ :each | 
