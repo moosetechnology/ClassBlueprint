@@ -48,7 +48,7 @@ CBLegend >> abstractMethodUsedInSubclassDescription [
 				              size: 5;
 				              yourself);
 		             yourself.
-	label := RSLabel new text: 'isAbstract and used in subclass'.
+	label := RSLabel new text: 'isAbstract and Reimplemented in Subclasses'.
 	RSHorizontalLineLayout new
 		gapSize: 5;
 		on: { 
@@ -139,7 +139,8 @@ CBLegend >> buildFor: aVisualization [
 		legend text: key withBoxColor: value ].
 	legend layout layout gapSize: self gapSize.
 	legend shapes add: self abstractMethodUsedInSubclassDescription.
-		legend shapes add: self cyclomaticComplexityBox.
+	legend shapes add: self testedShape.
+	legend shapes add: self cyclomaticComplexityBox.
 	legend shapes add: self monomorphicBox.
 	legend shapes add: self polymorphicBox.
 	legend shapes add: self megamorphicBox.
@@ -175,7 +176,7 @@ CBLegend >> cyclomaticComplexityBox [
 		       size: 15;
 		       color: Color white;
 		       yourself.
-	label := RSLabel new text: 'cyclomatic complexity'.
+	label := RSLabel new text: 'Cyclomatic Complexity'.
 	RSHorizontalLineLayout new
 		on: { 
 				box.
@@ -215,7 +216,7 @@ CBLegend >> megamorphicBox [
 		       size: 15;
 		       color: Color white;
 		       yourself.
-	label := RSLabel new text: 'megamorphic border'.
+	label := RSLabel new text: 'Megamorphic Border'.
 	RSHorizontalLineLayout new
 		on: { 
 				box.
@@ -303,7 +304,7 @@ CBLegend >> monomorphicBox [
 		       size: 15;
 		       color: Color white;
 		       yourself.
-	label := RSLabel new text: 'monomorphic border'.
+	label := RSLabel new text: 'Monomorphic Border'.
 	RSHorizontalLineLayout new
 		on: { 
 				box.
@@ -328,7 +329,7 @@ CBLegend >> polymorphicBox [
 		       size: 15;
 		       color: Color white;
 		       yourself.
-	label := RSLabel new text: 'polymorphic border'.
+	label := RSLabel new text: 'Polymorphic Border'.
 	RSHorizontalLineLayout new
 		on: { 
 				box.
@@ -337,4 +338,26 @@ CBLegend >> polymorphicBox [
 	^ { 
 		  box.
 		  label } asGroup asShape
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend >> testedShape [ 
+	| composite box label |
+	composite := RSComposite new size: 15; withBorder;yourself.
+	box := RSBox new
+		  color: Color green;
+		  model: self;
+		  height: composite height / 4;
+		  width: composite width;
+		  border: (RSBorder new
+				   width: 0.5;
+				   yourself);
+		  yourself.
+	composite add: box.
+		box position:
+		0@ (box height - composite height + composite border width)/2.
+		label := RSLabel new text: 'Tested Method'.
+	RSHorizontalLineLayout new 
+		on: { composite . label }.
+	^ { composite . label } asGroup asShape
 ]

@@ -22,11 +22,11 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #isConstant forColor: Color lightGray;
 		addName: #isSetter forColor: Color magenta duller;
 		addName: #isGetter forColor: Color pink;
-		addName: #attribute forColor: Color blue;
+		addName: #Attribute forColor: Color blue;
 		addName: #isInternalImplementation
-		forColor: Color green darker duller;
+		forColor: Color purple;
 		addName: #isDeadMethod forColor: Color veryDarkGray;
 		addName: #isOther forColor: Color white;
-		addName: #attributeCalledInSubclass
+		addName: #'Attribute Called In Subclass'
 		forColor: Color green muchDarker duller
 ]

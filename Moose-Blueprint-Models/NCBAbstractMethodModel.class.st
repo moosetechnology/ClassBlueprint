@@ -371,7 +371,7 @@ NCBAbstractMethodModel >> testedShape [
 NCBAbstractMethodModel >> testingBox [
 
 	^ RSBox new
-		  color: Color purple;
+		  color: Color green;
 		  model: self;
 		  height: self description height / 4;
 		  width: self description width - self description border width;

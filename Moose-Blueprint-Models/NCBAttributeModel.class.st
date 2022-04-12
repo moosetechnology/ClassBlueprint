@@ -138,8 +138,8 @@ NCBAttributeModel >> type [
 
 	| subclasses |
 	subclasses := entity parentType subclassHierarchy.
-	(((entity incomingAccesses collect: #source) collect: [ :each | each parentType ]) anySatisfy: [ :each | subclasses includes: each ]) ifTrue: [ ^ #attributeCalledInSubclass ].
-	^ #attribute
+	(((entity incomingAccesses collect: #source) collect: [ :each | each parentType ]) anySatisfy: [ :each | subclasses includes: each ]) ifTrue: [ ^ #'Attribute Called In Subclass' ].
+	^ #Attribute
 ]
 
 { #category : #accessing }
