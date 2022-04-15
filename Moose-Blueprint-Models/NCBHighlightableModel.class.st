@@ -35,9 +35,9 @@ NCBHighlightableModel >> initialize [
 	onClickHighlightableOutgoingLinesInteraction := RSHighlightable red
 		                                                withOutgoingLines.
 	onClickHighlightableIncomingInteraction := (RSHighlightable color:
-		                                            Color green darker darker
-			                                            duller)
-		                                           withIncomingLines.
+		                                            Color green darker
+			                                            darker duller)
+		                                           withIncomingShapes.
 	onHoverHighlightableInteraction := RSHighlightable red withLines
 ]
 
