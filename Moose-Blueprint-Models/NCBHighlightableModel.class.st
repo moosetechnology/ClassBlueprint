@@ -6,7 +6,8 @@ Class {
 		'isHighlighted',
 		'onHoverHighlightableInteraction',
 		'onClickHighlightableInteraction',
-		'onClickHighlightableOutgoingLinesInteraction'
+		'onClickHighlightableOutgoingLinesInteraction',
+		'onClickHighlightableIncomingInteraction'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -15,8 +16,14 @@ Class {
 NCBHighlightableModel >> addHighlightableInteraction [
 
 	"shape when: RSMouseDoubleClick do: [ self triggerInteraction ]."
-	shape when: RSMouseLeftClick do: [ self triggerOutgoingLinesHighlight ].
-	shape @ onHoverHighlightableInteraction 
+
+	"shape @ onHoverHighlightableInteraction."
+	shape
+		when: RSMouseLeftClick
+		do: [ self triggerOutgoingLinesHighlight ].
+	shape
+		when: RSMouseRightClick
+		do: [ self triggerIncomingLinesHighlight ]
 ]
 
 { #category : #initialization }
@@ -25,8 +32,13 @@ NCBHighlightableModel >> initialize [
 	super initialize.
 	isHighlighted := false.
 	onClickHighlightableInteraction := RSHighlightable red withLines.
-	onClickHighlightableOutgoingLinesInteraction := RSHighlightable red withOutgoingLines. 
-	onHoverHighlightableInteraction:= RSHighlightable red withLines.
+	onClickHighlightableOutgoingLinesInteraction := RSHighlightable red
+		                                                withOutgoingLines.
+	onClickHighlightableIncomingInteraction := (RSHighlightable color:
+		                                            Color green darker darker
+			                                            duller)
+		                                           withIncomingLines.
+	onHoverHighlightableInteraction := RSHighlightable red withLines
 ]
 
 { #category : #testing }
@@ -40,6 +52,12 @@ NCBHighlightableModel >> isHighlighted [
 ]
 
 { #category : #accessing }
+NCBHighlightableModel >> onClickHighlightableIncomingInteraction [
+
+	^ onClickHighlightableIncomingInteraction
+]
+
+{ #category : #accessing }
 NCBHighlightableModel >> onClickHighlightableInteraction [
 
 	^ onClickHighlightableInteraction
@@ -48,6 +66,19 @@ NCBHighlightableModel >> onClickHighlightableInteraction [
 { #category : #accessing }
 NCBHighlightableModel >> onHoverHighlightableInteraction [ 
 	^ onHoverHighlightableInteraction
+]
+
+{ #category : #'as yet unclassified' }
+NCBHighlightableModel >> triggerIncomingLinesHighlight [
+
+	isHighlighted := isHighlighted not.
+
+	isHighlighted
+		ifTrue: [ 
+		onClickHighlightableIncomingInteraction doHighlight: shape ]
+		ifFalse: [ 
+		onClickHighlightableIncomingInteraction doUnhighlight: shape ].
+	shape signalUpdate
 ]
 
 { #category : #accessing }
