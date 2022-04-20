@@ -63,10 +63,7 @@ FamixStMethod >> isDead [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadMethod [
 
-	| isDead |
-	isDead := self isDead ifFalse: [ self belongsToDeadBranch ].
-	isDead := isDead ifNil: [ (self isAnnotatedWith: '<api>') not ].
-	^ isDead
+	^ (self isDead or: [ self belongsToDeadBranch or: [ self isAnnotatedWith: '<api>' not ] ] ) and: [ self isInitializer not ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

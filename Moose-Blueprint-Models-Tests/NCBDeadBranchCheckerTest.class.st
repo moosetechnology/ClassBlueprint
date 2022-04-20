@@ -33,7 +33,8 @@ Class {
 		'tMethod3',
 		'invocation12',
 		'invocation23',
-		'invocation31'
+		'invocation31',
+		'initialize'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
@@ -103,11 +104,20 @@ NCBDeadBranchCheckerTest >> defineClasses [
 	addMethod: tMethod1;
 	addMethod: tMethod2 ;
 	addMethod:  tMethod3 ;
+	addMethod: initialize;
 	mooseModel: model. 
 	externalClass := FamixStClass new
 	name: 'ExternalClass';
 	addMethod: externalM ;
 	mooseModel: model.
+]
+
+{ #category : #tests }
+NCBDeadBranchCheckerTest >> initializerMethod [ 
+	initialize := FamixStMethod new name: 'initialize()';
+	mooseModel: model;
+	protocol: 'initialize'
+	yourself. 
 ]
 
 { #category : #running }
@@ -121,6 +131,7 @@ NCBDeadBranchCheckerTest >> setUp [
 	self twoWaysCallExternally.
 	self twoWaysCallInternal.
 	self trippleCallDead.
+	self initializerMethod.
 	self defineClasses.
 	
 ]
@@ -135,6 +146,11 @@ NCBDeadBranchCheckerTest >> testAnnotatedWithAPI [
 NCBDeadBranchCheckerTest >> testDeadRoot [ 
 
 	self assert: root0 isDead equals: true.
+]
+
+{ #category : #'as yet unclassified' }
+NCBDeadBranchCheckerTest >> testInitializeMethodNotDeadMethod [ 
+	self assert: initialize isDeadMethod equals: false
 ]
 
 { #category : #tests }
