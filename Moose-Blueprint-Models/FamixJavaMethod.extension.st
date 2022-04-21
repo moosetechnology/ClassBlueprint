@@ -80,7 +80,7 @@ FamixJavaMethod >> isDead [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isDeadMethod [
 
-	^ (self isDead or: [ self belongsToDeadBranch or: [ self isAnnotatedWith: '<api>' not ] ] ) and: [ self isInitializer not ]
+	^ (self isDead or: [ self belongsToDeadBranch or: [ (self isAnnotatedWith: '<api>') not ] ] ) and: [ self isInitializer not ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
