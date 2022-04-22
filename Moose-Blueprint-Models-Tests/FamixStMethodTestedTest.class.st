@@ -1,6 +1,6 @@
 Class {
 	#name : #FamixStMethodTestedTest,
-	#superclass : #Object,
+	#superclass : #TestCase,
 	#instVars : [
 		'model',
 		'myClass',

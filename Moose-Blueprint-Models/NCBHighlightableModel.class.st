@@ -20,7 +20,7 @@ NCBHighlightableModel >> addHighlightableInteraction [
 	"shape @ onHoverHighlightableInteraction."
 	shape
 		when: RSMouseLeftClick
-		do: [ self triggerOutgoingLinesHighlight ].
+		do: [ self inspect "triggerOutgoingLinesHighlight" ].
 	shape
 		when: RSMouseRightClick
 		do: [ self triggerIncomingLinesHighlight ]

@@ -140,7 +140,7 @@ NCBView >> build [
 	        self nestLayers.
 	        job currentValue: 90.
 	        "(Delay forMilliseconds: 700) wait."
-	        canvas zoomToFit.
+	        "canvas zoomToFit."
 	        canvas signalUpdate.
 	        "self scaleMethods."
 	        super build ] asJob.

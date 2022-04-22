@@ -40,6 +40,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+NCBDeadBranchCheckerTest >> annotatedWithAPIAndNotCalled [ 
+	fMethod1 := FamixStMethod new 
+		name: 'fMethod1()';
+		isAnnotatedWith: 'api';
+		mooseModel: model;
+		yourself.
+		
+
+]
+
+{ #category : #'as yet unclassified' }
 NCBDeadBranchCheckerTest >> cercleCall [ 
 	cMethod1 := FamixStMethod new 
 		name: 'cMethod1()';
@@ -137,9 +148,8 @@ NCBDeadBranchCheckerTest >> setUp [
 ]
 
 { #category : #tests }
-NCBDeadBranchCheckerTest >> testAnnotatedWithAPI [
-
-	self flag: #TODO
+NCBDeadBranchCheckerTest >> testAnnotatedWithAPI [ 
+	self assert: fMethod1 isApiAnnotated 
 ]
 
 { #category : #'as yet unclassified' }

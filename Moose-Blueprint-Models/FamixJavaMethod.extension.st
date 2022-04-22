@@ -47,6 +47,11 @@ FamixJavaMethod >> isAccessor [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isApiAnnotated [ 
+	^ self isAnnotatedWith: 'api'
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledByInitializers [
 
 	| initializers |
@@ -80,7 +85,15 @@ FamixJavaMethod >> isDead [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isDeadMethod [
 
-	^ (self isDead or: [ self belongsToDeadBranch or: [ (self isAnnotatedWith: '<api>') not ] ] ) and: [ self isInitializer not ]
+	| isDead isDeadBranch isNotAnnotated isNotInitializer |
+	isDead := self isDead.
+	isDeadBranch := self belongsToDeadBranch.
+	isNotAnnotated := (self isAnnotatedWith: '<api>') not.
+	isNotInitializer := self isInitializer not.
+	
+	^ (isDead or: [ isDeadBranch ]) and: [ isNotInitializer and: [ isNotAnnotated ] ] 
+	
+	
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
