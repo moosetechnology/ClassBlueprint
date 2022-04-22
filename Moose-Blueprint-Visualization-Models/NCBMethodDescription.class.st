@@ -22,6 +22,7 @@ NCBMethodDescription class >> megamorphicBorder [
 
 	^ RSBorder new
 		  width: 4;
+			joinMiter;
 		  color: Color black;
 		  yourself
 ]
@@ -31,6 +32,7 @@ NCBMethodDescription class >> monomorphicBorder [
 
 	^ RSBorder new
 		  width: 1;
+			joinMiter;
 		  color: Color black;
 		  yourself
 ]
@@ -47,6 +49,7 @@ NCBMethodDescription class >> polymorphicBorder [
 
 	^ RSBorder new
 		  width: 2.5;
+		joinMiter;
 		  color: Color black;
 		  yourself
 ]

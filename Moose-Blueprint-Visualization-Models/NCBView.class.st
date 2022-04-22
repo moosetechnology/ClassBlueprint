@@ -139,11 +139,10 @@ NCBView >> build [
 	        job currentValue: 70.
 	        self nestLayers.
 	        job currentValue: 90.
-	        "(Delay forMilliseconds: 700) wait."
-	        "canvas zoomToFit."
-	        canvas signalUpdate.
-	        "self scaleMethods."
-	        super build ] asJob.
+	        canvas zoomToFit.
+	        super build.
+	canvas signalUpdate. ] asJob.
+	canvas aaFast.
 	canvas inspectorContext: RSEmptyContextInteraction new.
 	self addCanvasInteractions.
 	[ aJob run ] forkAt: Processor userBackgroundPriority
@@ -233,7 +232,7 @@ NCBView >> classSideMethods [
 	| shape |
 	shape := self canvas shapeFromModel: classMethodsLayer.
 
-	RSTreeLayout new on: shape nodes.
+	RSTreeLayout new horizontalGap: self gapSize; on: shape nodes.
 	shape padding: 30.
 	^ shape
 ]
@@ -289,7 +288,7 @@ NCBView >> deadMethodsComposite [
 		doNotUseProgressBar;
 		on: shapes."
 
-	RSTreeLayout on: shape nodes.
+	RSTreeLayout new horizontalGap: self gapSize; on: shape nodes.
 	"gapSize: 5;
 		alignTop;"
 	shape adjustToChildren.
@@ -399,6 +398,11 @@ NCBView >> fourthLayer [
 	RSVerticalLineLayout new on: fourthLayer nodes.
 	fourthLayer padding: 10 ].
 	^ fourthLayer
+]
+
+{ #category : #accessing }
+NCBView >> gapSize [ 
+	^ 7
 ]
 
 { #category : #highlighting }
@@ -556,7 +560,7 @@ NCBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth instanceSideWidth |
 	instanceSide := self instanceSide.
-	self setNodesOf: instanceSide withLayout: RSHorizontalTreeLayout  .
+	self setNodesOf: instanceSide withLayout: (RSHorizontalTreeLayout new verticalGap: 7).
 
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
 instanceSideWidth := (instanceSide collect: [ :each | each width])
@@ -595,7 +599,7 @@ instanceSide do: [ :each |
 { #category : #initialization }
 NCBView >> setNodesOf: object withLayout: aLayout [
 
-	aLayout new on: (object flatCollect: #nodes).
+	aLayout on: (object flatCollect: #nodes).
 	object do: [ :layer | layer padding: 30 ]
 ]
 

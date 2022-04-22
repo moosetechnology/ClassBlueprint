@@ -5,21 +5,75 @@ Class {
 	#name : #CBLegend,
 	#superclass : #Object,
 	#classInstVars : [
-		'legendState'
+		'legendState',
+		'additionalShapesDict'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
+{ #category : #accessing }
+CBLegend class >> abstractAndReimplementedShapeAssoc [
+
+	^ #'isAbstract and Reimplemented in Subclass'
+	  -> self abstractMethodUsedInSubclassDescription
+]
+
+{ #category : #accessing }
+CBLegend class >> abstractMethodUsedInSubclassDescription [
+
+	| composite |
+	composite := RSComposite new
+		             withBorder;
+		             size: 15;
+		             add: (RSBox new
+				              withBorder;
+				              color:
+					              (MiNClassBlueprintPalette new colorAt: #isAbstract);
+				              size: 5;
+				              yourself);
+		             yourself.
+	^ composite 
+]
+
+{ #category : #accessing }
+CBLegend class >> additionalShapesDict [
+
+	^ Dictionary new
+		  add: self abstractAndReimplementedShapeAssoc;
+		  add: self testedShapeAssoc;
+		  add: self cyclomaticComplexityAssoc;
+		add: self monomorphicShapeAssoc;
+		add: self polymorphicShapeAssoc;
+		add: self megamorphicShapeAssoc;
+		  yourself
+]
+
 { #category : #building }
-CBLegend class >> build [ 
-	^ self new 
-			build
+CBLegend class >> build [
+
+	^ self new build
 ]
 
 { #category : #building }
 CBLegend class >> buildFor: aVisualization [ 
 	^ self new 
 		buildFor: aVisualization 
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend class >> cyclomaticComplexityAssoc [
+
+	^ #'Cyclomatic Complexity'-> self cyclomaticComplexityBox
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend class >> cyclomaticComplexityBox [
+
+	^ RSBox new
+		  border: (RSBorder new color: Color red);
+		  size: 15;
+		  color: Color white;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -35,28 +89,79 @@ CBLegend class >> legendState: aBoolean [
 ]
 
 { #category : #'as yet unclassified' }
-CBLegend >> abstractMethodUsedInSubclassDescription [
+CBLegend class >> megamorphicBox [
+^RSBox new
+		       border: NCBMethodDescription megamorphicBorder;
+		       size: 15;
+		       color: Color white;
+	yourself
+]
 
-	| composite label |
+{ #category : #'as yet unclassified' }
+CBLegend class >> megamorphicShapeAssoc [
+
+	^ #'Megamorphic Border' -> self megamorphicBox 
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend class >> monomorphicBox [
+
+	^ RSBox new
+		       border: NCBMethodDescription monomorphicBorder;
+		       size: 15;
+		       color: Color white;
+		       yourself.
+
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend class >> monomorphicShapeAssoc [
+	^ #'Monomorphic Border' -> self monomorphicBox
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend class >> polymorphicBox [
+
+	^RSBox new
+		       border: NCBMethodDescription polymorphicBorder;
+		       size: 15;
+		       color: Color white;
+		       yourself.
+]
+
+{ #category : #'as yet unclassified' }
+CBLegend class >> polymorphicShapeAssoc [
+
+	^ #'Polymorphic Border' -> self polymorphicBox 
+]
+
+{ #category : #accessing }
+CBLegend class >> testedShape [
+
+	| composite box |
 	composite := RSComposite new
-		             withBorder;
 		             size: 15;
-		             add: (RSBox new
-				              withBorder;
-				              color:
-					              (MiNClassBlueprintPalette new colorAt: #isAbstract);
-				              size: 5;
-				              yourself);
+		             withBorder;
 		             yourself.
-	label := RSLabel new text: 'isAbstract and Reimplemented in Subclasses'.
-	RSHorizontalLineLayout new
-		gapSize: 5;
-		on: { 
-				composite.
-				label }.
-	^ { 
-		  composite.
-		  label } asGroup asShape
+	box := RSBox new
+		       color: Color green;
+		       model: self;
+		       height: composite height / 4;
+		       width: composite width;
+		       border: (RSBorder new
+				        width: 0.5;
+				        yourself);
+		       yourself.
+	composite add: box.
+	box position:
+		0 @ (box height - composite height + composite border width) / 2.
+	^ composite
+]
+
+{ #category : #accessing }
+CBLegend class >> testedShapeAssoc [
+
+	^ #'Tested Method' -> self testedShape
 ]
 
 { #category : #'as yet unclassified' }
@@ -64,7 +169,9 @@ CBLegend >> attributeInfo [
 
 	| attributeBox attributeLabel composite widthLine heightLine |
 	attributeBox := RSBox new.
-	attributeLabel := RSLabel new text: 'Attribute'.
+	attributeLabel := RSLabel new text: 'Attribute';
+		               color: Color black;
+		               yourself.
 	attributeBox extent: attributeLabel extent + 10.
 	attributeBox
 		noPaint;
@@ -102,8 +209,13 @@ CBLegend >> attributeInfo [
 CBLegend >> attributeboxDescription [
 
 	| widthLabel heightLabel attributeBox |
-	widthLabel := RSLabel new text: 'Number of external accesses'.
-	heightLabel := RSLabel new text: 'Number of internal accesses'.
+	widthLabel := RSLabel new
+		              text: 'Number of external accesses';
+		              color: Color black;
+		              yourself.
+	heightLabel := RSLabel new text: 'Number of internal accesses';
+		               color: Color black;
+		               yourself.
 	attributeBox := self attributeInfo.
 	RSVerticalLineLayout new
 		gapSize: 5;
@@ -134,22 +246,18 @@ CBLegend >> buildFor: aVisualization [
 	legend := RSLegend new.
 	legend container: aVisualization canvas.
 	legend defaultBox withBorder.
-
+	legend defaultLabel color: Color black.
+	legend defaultTitle color: Color black.
 	self legendInfo keysAndValuesDo: [ :key :value | 
 		legend text: key withBoxColor: value ].
 	legend layout layout gapSize: self gapSize.
-	legend shapes add: self abstractMethodUsedInSubclassDescription.
-	legend shapes add: self testedShape.
-	legend shapes add: self cyclomaticComplexityBox.
-	legend shapes add: self monomorphicBox.
-	legend shapes add: self polymorphicBox.
-	legend shapes add: self megamorphicBox.
 	legend shapes
 		add: self methodBoxDescription;
 		add: self attributeboxDescription.
 	legend legendDo: [ :shape | 
 		shape
 			withBorder;
+			scaleBy: 0.75;
 			padding: 20;
 			color: (Color white alpha: 0.95) ].
 	legend location
@@ -165,26 +273,6 @@ CBLegend >> buildFor: aVisualization [
 			self class legendState ifFalse: [ each click ].
 			each when: RSMouseClick send: #onClick to: self ].
 	^ legend
-]
-
-{ #category : #'as yet unclassified' }
-CBLegend >> cyclomaticComplexityBox [
-
-	| box label |
-	box := RSBox new
-		       border: (RSBorder new color: Color red);
-		       size: 15;
-		       color: Color white;
-		       yourself.
-	label := RSLabel new text: 'Cyclomatic Complexity'.
-	RSHorizontalLineLayout new
-		on: { 
-				box.
-				label };
-		gapSize: 5.
-	^ { 
-		  box.
-		  label } asGroup asShape
 ]
 
 { #category : #accessing }
@@ -208,31 +296,15 @@ CBLegend >> marker [
 ]
 
 { #category : #'as yet unclassified' }
-CBLegend >> megamorphicBox [
-
-	| box label |
-	box := RSBox new
-		       border: NCBMethodDescription megamorphicBorder;
-		       size: 15;
-		       color: Color white;
-		       yourself.
-	label := RSLabel new text: 'Megamorphic Border'.
-	RSHorizontalLineLayout new
-		on: { 
-				box.
-				label };
-		gapSize: 5.
-	^ { 
-		  box.
-		  label } asGroup asShape
-]
-
-{ #category : #'as yet unclassified' }
 CBLegend >> methodBoxDescription [
 
 	| widthLabel heightLabel methodBox |
-	widthLabel := RSLabel new text: 'Number of outgoing invocations'.
-	heightLabel := RSLabel new text: 'Number of lines of code'.
+	widthLabel := RSLabel new
+		              text: 'Number of outgoing invocations';
+		              color: Color black;
+		              yourself.
+	heightLabel := RSLabel new text: 'Number of lines of code'; color: Color black;
+		              yourself.
 	methodBox := self methodInfo.
 	RSVerticalLineLayout new
 		gapSize: 5;
@@ -261,7 +333,10 @@ CBLegend >> methodInfo [
 
 	| methodBox methodLabel composite widthLine heightLine |
 	methodBox := RSBox new.
-	methodLabel := RSLabel new text: 'Method'.
+	methodLabel := RSLabel new
+		               text: 'Method';
+		               color: Color black;
+		               yourself.
 	methodBox extent: methodLabel extent + 10.
 	methodBox
 		noPaint;
@@ -295,69 +370,7 @@ CBLegend >> methodInfo [
 	^ composite
 ]
 
-{ #category : #'as yet unclassified' }
-CBLegend >> monomorphicBox [
-
-	| box label |
-	box := RSBox new
-		       border: NCBMethodDescription monomorphicBorder;
-		       size: 15;
-		       color: Color white;
-		       yourself.
-	label := RSLabel new text: 'Monomorphic Border'.
-	RSHorizontalLineLayout new
-		on: { 
-				box.
-				label };
-		gapSize: 5.
-	^ { 
-		  box.
-		  label } asGroup asShape
-]
-
 { #category : #interactions }
 CBLegend >> onClick [ 
 	self class legendState: self class legendState not
-]
-
-{ #category : #'as yet unclassified' }
-CBLegend >> polymorphicBox [
-
-	| box label |
-	box := RSBox new
-		       border: NCBMethodDescription polymorphicBorder;
-		       size: 15;
-		       color: Color white;
-		       yourself.
-	label := RSLabel new text: 'Polymorphic Border'.
-	RSHorizontalLineLayout new
-		on: { 
-				box.
-				label };
-		gapSize: 5.
-	^ { 
-		  box.
-		  label } asGroup asShape
-]
-
-{ #category : #'as yet unclassified' }
-CBLegend >> testedShape [ 
-	| composite box label |
-	composite := RSComposite new size: 15; withBorder;yourself.
-	box := RSBox new
-		  color: Color green;
-		  model: self;
-		  height: composite height / 4;
-		  width: composite width;
-		  border: (RSBorder new
-				   width: 0.5;
-				   yourself);
-		  yourself.
-	composite add: box.
-		box position:
-		0@ (box height - composite height + composite border width)/2.
-		label := RSLabel new text: 'Tested Method'.
-	RSHorizontalLineLayout new 
-		on: { composite . label }.
-	^ { composite . label } asGroup asShape
 ]

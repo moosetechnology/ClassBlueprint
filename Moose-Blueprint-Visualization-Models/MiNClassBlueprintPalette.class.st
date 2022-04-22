@@ -23,10 +23,15 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #isSetter forColor: Color magenta duller;
 		addName: #isGetter forColor: Color pink;
 		addName: #Attribute forColor: Color blue;
-		addName: #isInternalImplementation
-		forColor: Color purple;
+		addName: #isInternalImplementation forColor: Color purple;
 		addName: #isDeadMethod forColor: Color veryDarkGray;
 		addName: #isOther forColor: Color white;
 		addName: #'Attribute Called In Subclass'
-		forColor: Color green muchDarker duller
+		forColor: Color green muchDarker duller;
+		addName: #'isAbstract and Reimplemented in Subclass' forColor: nil;
+		addName: #'Tested Method' forColor: nil;
+		addName: #'Cyclomatic Complexity' forColor: nil;
+		addName: #'Monomorphic Border' forColor: nil;
+		addName: #'Polymorphic Border' forColor: nil;
+		addName: #'Megamorphic Border' forColor: nil
 ]
