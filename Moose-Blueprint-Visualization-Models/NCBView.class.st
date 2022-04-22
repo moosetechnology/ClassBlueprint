@@ -45,13 +45,17 @@ NCBView class >> defaultBorderWidth [
 
 { #category : #'as yet unclassified' }
 NCBView class >> defaultBoxesHeight [
-	^ 10
+	| box | 
+	box := RSBox new size: 15.
+	^ box height
 ]
 
 { #category : #'as yet unclassified' }
 NCBView class >> defaultBoxesWidth [
 
-	^ 10
+	| box | 
+	box := RSBox new size: 15.
+	^ box width
 ]
 
 { #category : #accessing }

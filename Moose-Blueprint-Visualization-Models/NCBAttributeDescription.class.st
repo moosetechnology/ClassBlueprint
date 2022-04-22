@@ -39,12 +39,22 @@ NCBAttributeDescription >> height [
 { #category : #operations }
 NCBAttributeDescription >> initializeSize [
 
-	height := (entityModel entity incomingAccesses select: [ :each | 
+	height := self numberOfInternalAccesses + NCBView defaultBoxesHeight.
+	width := self numberOfExternalAccesses + NCBView defaultBoxesWidth 
+]
+
+{ #category : #'as yet unclassified' }
+NCBAttributeDescription >> numberOfExternalAccesses [
+
+	^ entityModel entity incomingAccesses select: [ :each | 
+		  each source parentType ~= entityModel entity parentType ]
+]
+
+{ #category : #'as yet unclassified' }
+NCBAttributeDescription >> numberOfInternalAccesses [ 
+	^ (entityModel entity incomingAccesses select: [ :each | 
 		           each source parentType == entityModel entity parentType ])
-		          size + NCBView defaultBoxesHeight.
-	width := (entityModel entity incomingAccesses select: [ :each | 
-		          each source parentType ~= entityModel entity parentType ])
-		         size + NCBView defaultBoxesWidth
+		          size
 ]
 
 { #category : #accessing }
