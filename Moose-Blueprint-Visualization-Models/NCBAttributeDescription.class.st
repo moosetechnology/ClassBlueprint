@@ -43,11 +43,17 @@ NCBAttributeDescription >> initializeSize [
 	width := self numberOfExternalAccesses + NCBView defaultBoxesWidth 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 NCBAttributeDescription >> numberOfExternalAccesses [
 
-	^ entityModel entity incomingAccesses select: [ :each | 
-		  each source parentType ~= entityModel entity parentType ]
+	| subclasses accessorsInvokedBy |
+	subclasses := entityModel entity parentType subclassHierarchy.
+	accessorsInvokedBy := (entityModel entity accessors flatCollect: [ :each | 
+		    each incomingInvocations ]).
+
+	^ ((entityModel entity incomingAccesses
+	    , accessorsInvokedBy) reject: [ :each | 
+		   subclasses includes: each source parentType ]) size
 ]
 
 { #category : #'as yet unclassified' }

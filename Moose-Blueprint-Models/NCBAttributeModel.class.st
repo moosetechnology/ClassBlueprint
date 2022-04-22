@@ -46,12 +46,6 @@ NCBAttributeModel >> create [
 ]
 
 { #category : #accessing }
-NCBAttributeModel >> externalAccesses [
-	^entity incomingAccesses select: [ :each | 
-		  each source parentType ~= entity parentType ].
-]
-
-{ #category : #accessing }
 NCBAttributeModel >> getter: aGetter [
 	getter := aGetter 
 ]
@@ -130,6 +124,7 @@ NCBAttributeModel >> shape [
 		         popupText: self name asString.
 	shape @ RSDraggable.
 	self addHighlightableInteraction.
+	shape when: RSMouseLeftClick do:[ self inspect ].
 	^ self withProtectorsOf: shape
 ]
 
