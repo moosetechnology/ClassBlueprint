@@ -26,7 +26,7 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #isInternalImplementation forColor: Color purple;
 		addName: #isDeadMethod forColor: Color veryDarkGray;
 		addName: #isOther forColor: Color white;
-		addName: #'Attribute Called In Subclass'
+		addName: #'Attribute Accesses by Subclass(es)'
 		forColor: Color green muchDarker duller;
 		addName: #'isAbstract and Reimplemented in Subclass' forColor: nil;
 		addName: #'Tested Method' forColor: nil;

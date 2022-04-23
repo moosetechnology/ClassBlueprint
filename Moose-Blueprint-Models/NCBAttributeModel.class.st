@@ -86,11 +86,12 @@ NCBAttributeModel >> initializeDescription [
 { #category : #operations }
 NCBAttributeModel >> initializeType [
 
+	
 	| subclasses sources sourcesClasses |
 	subclasses := entity parentType subclassHierarchy.
 	sources := entity incomingAccesses collect: #source.
 	sourcesClasses := sources collect: [ :each | each parentType ].
-
+ 
 	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
 		ifTrue: [ self type: #'Attribute Called In Subclass' ].
 	self type: #Attribute
@@ -121,18 +122,16 @@ NCBAttributeModel >> printOn: aStream [
 NCBAttributeModel >> resetTypeWithClass: aFamixStClass [
 
 	| subclasses sources sourcesClasses |
-	subclasses := entity parentType subclassHierarchy.
+	subclasses := aFamixStClass subclassHierarchy.
 	sources := entity incomingAccesses collect: #source.
-	sourcesClasses := (sources collect: [ :each | each parentType ])
-		                  remove: aFamixStClass
-		                  ifAbsent: [  ]; yourself.
+	sourcesClasses := sources collect: [ :each | each parentType ].
 
 	sourcesClasses ifNil: [ 
 		self type: #Attribute.
 		^ self ].
 
 	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
-		ifTrue: [ self type: #'Attribute Called In Subclass' ]
+		ifTrue: [ self type: #'Attribute Accesses by Subclass(es)' ]
 ]
 
 { #category : #accessing }
