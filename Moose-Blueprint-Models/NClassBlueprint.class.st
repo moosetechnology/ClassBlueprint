@@ -370,7 +370,7 @@ NClassBlueprint >> initializeDeadMethods [
 
 	deadMethods := (self methods
 		               select: [ :each | 
-		               each isDeadMethod or: [ each belongsToDeadBranch ] ]
+		               each isDeadMethod  ]
 		               thenCollect: [ :each | 
 		               NCBDeadModel newFrom: each ]) sorted: [ :x :y | x name < y name ]
 ]
