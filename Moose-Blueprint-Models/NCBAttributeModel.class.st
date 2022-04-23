@@ -91,9 +91,10 @@ NCBAttributeModel >> initializeType [
 	subclasses := entity parentType subclassHierarchy.
 	sources := entity incomingAccesses collect: #source.
 	sourcesClasses := sources collect: [ :each | each parentType ].
- 
+
 	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
-		ifTrue: [ self type: #'Attribute Called In Subclass' ].
+		ifTrue: [ self type: #'Attribute Accesses by Subclass(es)'. ^ self ].
+	
 	self type: #Attribute
 ]
 
