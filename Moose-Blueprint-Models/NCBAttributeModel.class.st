@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'attributeAccess',
 		'setter',
-		'getter'
+		'getter',
+		'type'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -42,7 +43,8 @@ NCBAttributeModel >> attributeAccess [
 NCBAttributeModel >> create [
 
 	self initializeAttributeAccess.
-	self initializeDescription
+	self initializeDescription.
+	self initializeType.
 ]
 
 { #category : #accessing }
@@ -81,6 +83,19 @@ NCBAttributeModel >> initializeDescription [
 
 ]
 
+{ #category : #operations }
+NCBAttributeModel >> initializeType [
+
+	| subclasses sources sourcesClasses |
+	subclasses := entity parentType subclassHierarchy.
+	sources := entity incomingAccesses collect: #source.
+	sourcesClasses := sources collect: [ :each | each parentType ].
+
+	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
+		ifTrue: [ self type: #'Attribute Called In Subclass' ].
+	self type: #Attribute
+]
+
 { #category : #accessing }
 NCBAttributeModel >> internalAccesses [ 
 	^ self entity queryIncomingAccesses select: [ :each | each source parentType = entity parentType ].
@@ -100,6 +115,24 @@ NCBAttributeModel >> printOn: aStream [
 	aStream nextPutAll: '('.
 	self name asString printOn: aStream.
 	aStream nextPutAll: ')'
+]
+
+{ #category : #initialization }
+NCBAttributeModel >> resetTypeWithClass: aFamixStClass [
+
+	| subclasses sources sourcesClasses |
+	subclasses := entity parentType subclassHierarchy.
+	sources := entity incomingAccesses collect: #source.
+	sourcesClasses := (sources collect: [ :each | each parentType ])
+		                  remove: aFamixStClass
+		                  ifAbsent: [  ]; yourself.
+
+	sourcesClasses ifNil: [ 
+		self type: #Attribute.
+		^ self ].
+
+	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
+		ifTrue: [ self type: #'Attribute Called In Subclass' ]
 ]
 
 { #category : #accessing }
@@ -128,13 +161,14 @@ NCBAttributeModel >> shape [
 	^ self withProtectorsOf: shape
 ]
 
-{ #category : #accessing }
-NCBAttributeModel >> type [
+{ #category : #operations }
+NCBAttributeModel >> type [ 
+	^ type
+]
 
-	| subclasses |
-	subclasses := entity parentType subclassHierarchy.
-	(((entity incomingAccesses collect: #source) collect: [ :each | each parentType ]) anySatisfy: [ :each | subclasses includes: each ]) ifTrue: [ ^ #'Attribute Called In Subclass' ].
-	^ #Attribute
+{ #category : #accessing }
+NCBAttributeModel >> type: aSymbol [ 
+	type := aSymbol 
 ]
 
 { #category : #accessing }

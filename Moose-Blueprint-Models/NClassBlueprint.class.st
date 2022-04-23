@@ -417,10 +417,16 @@ NClassBlueprint >> initializeModelDescriptions [
 NClassBlueprint >> initializeSuperAttributes [
 
 	superAttributes := ((((self entity superclassHierarchy flatCollect: [ 
-		                      :each | each attributes ]) reject: [ :each | 
-		                     each isClassSide ]) select: [ :each | 
-		                    each isCalledIn: self entity ]) collect: [ :each | 
-		                   NCBAttributeModel newFrom: each ] ) sorted: [ :x :y | x name < y name ]
+		                       :each | each attributes ]) reject: [ :each | 
+		                      each isClassSide ]) select: [ :each | 
+		                     each isCalledIn: self entity ]) collect: [ 
+		                    :each | | att |
+		att := (NCBAttributeModel newFrom: each).
+					att description resetWithClass: self entity.
+					att resetTypeWithClass: self entity.
+					att]) sorted: [ 
+		                   :x 
+		                   :y | x name < y name ]
 ]
 
 { #category : #accessing }
