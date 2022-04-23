@@ -20,6 +20,5 @@ RSHighlightable >> withIncomingShapes [
 		listIncoming := s incomingLines
 			                collect: [ :aLine | aLine from ]
 			                as: RSGroup.
-		listIncoming , list].
-
+		listIncoming , list ]
 ]

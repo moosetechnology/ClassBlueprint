@@ -238,6 +238,7 @@ NClassBlueprint >> create [
 	self initializeClassVars.
 	self initializeAttributes.
 	self initializeSuperAttributes.
+
 	self initializeClassMethods.
 	self initializeDeads.
 	self initializeInitializers.
@@ -343,6 +344,7 @@ NClassBlueprint >> initializeAttributes [
 NClassBlueprint >> initializeClassMethods [
 	classMethods := (self methods
 		                select: [ :each | each isClassSide ]).
+	
 	classMethods ifEmpty: [ ^{} ].
 	classMethods := (classMethods collect: [ :each | 
 		                NCBClassSideMethod newFrom: each ]) sorted: [ :x :y | x name < y name ]
@@ -490,8 +492,10 @@ NClassBlueprint >> methodOccurrences: aNumber [
 
 { #category : #accessing }
 NClassBlueprint >> methods [ 
+	| alreadyClassified |
+	alreadyClassified := self methodModels collect: [ :aMethod | aMethod entity ].
 	^ (entity methods reject: [ :each | 
-		                  (self methodModels collect: [ :aMethod | aMethod entity ]) includes:
+		                 alreadyClassified  includes:
 			                  each ]) reject: #isAccessor
 ]
 

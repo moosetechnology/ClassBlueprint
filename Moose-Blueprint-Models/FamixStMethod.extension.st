@@ -19,8 +19,7 @@ FamixStMethod >> calledBy [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> inSameClassAs: aMethod [
 
-	^ aMethod parentType == self parentType and: [ 
-		  aMethod parentType == self parentType ]
+	^ aMethod parentType == self parentType 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -84,6 +83,7 @@ FamixStMethod >> isDelegating [
 
 	^ (self outgoingInvocations flatCollect: #target) anySatisfy: [ 
 		  :each | 
+
 		  each signature == self signature and: [ 
 			  (each inSameClassAs: self) not ] ]
 ]

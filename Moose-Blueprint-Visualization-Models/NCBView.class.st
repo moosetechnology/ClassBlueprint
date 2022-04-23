@@ -661,5 +661,5 @@ NCBView >> thirdLayer [
 
 { #category : #initialization }
 NCBView >> windowTitle [
-	^ classModel entity name , ' blueprint'
+	^ classModel entity name , ' blueprint' 
 ]

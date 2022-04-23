@@ -35,9 +35,7 @@ FamixJavaMethod >> computeIsSetter [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> inSameClassAs: aMethod [
 
-	^ aMethod parentType == self parentType and: [ 
-		  aMethod parentType 
-		  == self parentType  ]
+	^ aMethod parentType == self parentType
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

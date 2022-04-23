@@ -18,9 +18,10 @@ NCBHighlightableModel >> addHighlightableInteraction [
 	"shape when: RSMouseDoubleClick do: [ self triggerInteraction ]."
 
 	"shape @ onHoverHighlightableInteraction."
+
 	shape
 		when: RSMouseLeftClick
-		do: [ self inspect "triggerOutgoingLinesHighlight" ].
+		do: [self triggerOutgoingLinesHighlight ].
 	shape
 		when: RSMouseRightClick
 		do: [ self triggerIncomingLinesHighlight ]
@@ -68,7 +69,7 @@ NCBHighlightableModel >> onHoverHighlightableInteraction [
 	^ onHoverHighlightableInteraction
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 NCBHighlightableModel >> triggerIncomingLinesHighlight [
 
 	isHighlighted := isHighlighted not.
@@ -77,7 +78,7 @@ NCBHighlightableModel >> triggerIncomingLinesHighlight [
 		ifTrue: [ 
 		onClickHighlightableIncomingInteraction doHighlight: shape ]
 		ifFalse: [ 
-		onClickHighlightableIncomingInteraction doUnhighlight: shape ].
+			onClickHighlightableIncomingInteraction doUnhighlight: shape. ].
 	shape signalUpdate
 ]
 
@@ -87,7 +88,7 @@ NCBHighlightableModel >> triggerInteraction [
 	isHighlighted := isHighlighted not.
 
 	isHighlighted
-		ifTrue: [ onClickHighlightableInteraction doHighlight: shape ]
+		ifTrue: [ onClickHighlightableInteraction doHighlight: shape.]
 		ifFalse: [ onClickHighlightableInteraction doUnhighlight: shape ].
 	shape signalUpdate
 ]
