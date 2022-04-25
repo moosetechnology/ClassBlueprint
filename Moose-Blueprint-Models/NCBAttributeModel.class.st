@@ -157,7 +157,7 @@ NCBAttributeModel >> shape [
 		         popupText: self name asString.
 	shape @ RSDraggable.
 	self addHighlightableInteraction.
-	shape when: RSMouseLeftClick do:[ self inspect ].
+"	shape when: RSMouseLeftClick do: [ self inspect ]."
 	^ self withProtectorsOf: shape
 ]
 
