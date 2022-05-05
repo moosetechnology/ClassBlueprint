@@ -33,6 +33,16 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
+{ #category : #initialization }
+NCBView class >> defaultBorderColor [ 
+	^ Color black
+]
+
+{ #category : #initialization }
+NCBView class >> defaultBorderWidth [
+	^ 1
+]
+
 { #category : #'as yet unclassified' }
 NCBView class >> defaultBoxesHeight [
 	| box | 
@@ -48,6 +58,40 @@ NCBView class >> defaultBoxesWidth [
 	^ box width
 ]
 
+{ #category : #accessing }
+NCBView class >> defaultTitle [
+	^ 'Blueprint'
+]
+
+{ #category : #accessing }
+NCBView class >> forType: aFamixType [
+	^ self new
+		entity: aFamixType;
+		yourself
+]
+
+{ #category : #accessing }
+NCBView class >> icon [
+	^ MooseIcons mooseBlueprint
+]
+
+{ #category : #'as yet unclassified' }
+NCBView class >> maxHeight [
+
+	^ 30
+]
+
+{ #category : #'as yet unclassified' }
+NCBView class >> maxWidth [
+
+	^ 30
+]
+
+{ #category : #layers }
+NCBView >> accessorsLayer [ 
+	^ accessorsLayer
+]
+
 { #category : #adding }
 NCBView >> addCanvasInteractions [
 
@@ -59,6 +103,30 @@ NCBView >> addCanvasInteractions [
 			each model onClickHighlightableInteraction 
 				unhighlightRecordedShapes: evt ].
 		evt signalUpdate ]
+]
+
+{ #category : #'as yet unclassified' }
+NCBView >> attSide [
+
+	^ { 
+		  superAttributesLayer.
+		  attributesLayer } asOrderedCollection 
+]
+
+{ #category : #accessing }
+NCBView >> attributes [
+
+	^ { 
+		  deadAttributesLayer.
+		  superAttributesLayer.
+		  attributesLayer.
+		  classVarsLayer } collect: [ :each | 
+		  self canvas shapeFromModel: each ]
+]
+
+{ #category : #layers }
+NCBView >> attributesLayer [ 
+	^ attributesLayer
 ]
 
 { #category : #shapes }
@@ -84,6 +152,84 @@ NCBView >> build [
 	[ aJob run ] forkAt: Processor userBackgroundPriority
 ]
 
+{ #category : #shapes }
+NCBView >> buildEdges [
+
+	| builder edges |
+	"method Invocations"
+	builder := self edgeBuilder.
+	edges := (classModel methodInvocations flatCollect: #outgoing) 
+		         collect: [ :each | 
+		         builder connectFrom: each source toAll: { each target } ].
+
+	edges do: #pushBack.
+	"Access Invocations"
+	edges := classModel accessorInvocations flattened collect: [ :each | 
+	
+		         builder
+			         connectFrom: each source
+			         toAll: (classModel accessorInvocationsFrom: each source) ].
+
+	edges do: #pushBack.
+	"Attribute Access"
+
+	edges := classModel attributeAccess flattened collect: [ :each | 
+		         builder
+			         connectFrom: each source
+			         toAll: (classModel attributeAccessesFrom: each source) ].
+
+	edges do: #pushBack
+]
+
+{ #category : #shapes }
+NCBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
+
+	| layer |
+	layer := RSComposite new
+		         model: aLayerModel;
+		         border: border.
+	layer addAll: (aGroup collect: [ :aModel | aModel shape.  ]).
+	layer popupText: aLayerModel name asString.
+	layer adjustToChildren.
+	self canvas add: layer
+]
+
+{ #category : #shapes }
+NCBView >> buildLayers [
+
+	self layersEntities do: [ :aLayerModel | 
+		self buildLayerNamed: aLayerModel withEntities: aLayerModel entities ]
+]
+
+{ #category : #building }
+NCBView >> buildLegend [
+
+	CBLegend buildFor: self
+]
+
+{ #category : #layers }
+NCBView >> classMethodsLayer [ 
+	^ classMethodsLayer 
+]
+
+{ #category : #accessing }
+NCBView >> classModel [
+	^ classModel
+]
+
+{ #category : #accessing }
+NCBView >> classModel: aClassModel [ 
+	classModel := aClassModel
+]
+
+{ #category : #'accessing - parallel hierarchy' }
+NCBView >> classSide [
+
+	^ { 
+		  self classSideMethods.
+		  self classSideVars }
+]
+
 { #category : #accessing }
 NCBView >> classSideMethods [
 
@@ -105,6 +251,11 @@ NCBView >> classSideVars [
 	^ shape
 ]
 
+{ #category : #layers }
+NCBView >> classVarsLayer [ 
+	^ classVarsLayer
+]
+
 { #category : #'attributes composites' }
 NCBView >> deadAttributesComposite [
 
@@ -113,6 +264,20 @@ NCBView >> deadAttributesComposite [
 
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
+]
+
+{ #category : #layers }
+NCBView >> deadAttributesLayer [
+
+	^ deadAttributesLayer
+]
+
+{ #category : #accessing }
+NCBView >> deadLayers [
+
+	^ { 
+		  deadAttributesLayer.
+		  deadsLayer } asOrderedCollection 
 ]
 
 { #category : #composite }
@@ -142,6 +307,11 @@ NCBView >> deads [
 		  self deadAttributesComposite }
 ]
 
+{ #category : #layers }
+NCBView >> deadsLayer [
+	^ deadsLayer 
+]
+
 { #category : #highlighting }
 NCBView >> doHighlight: evt [
 
@@ -166,10 +336,20 @@ NCBView >> edgeBuilder [
 ]
 
 { #category : #accessing }
+NCBView >> entities [ 
+	^ classModel models
+]
+
+{ #category : #accessing }
 NCBView >> entity: anEntity [
 
 	entity := anEntity.
 
+]
+
+{ #category : #layers }
+NCBView >> externalsLayer [ 
+	^ externalsLayer
 ]
 
 { #category : #'as yet unclassified' }
@@ -254,6 +434,31 @@ NCBView >> highlightedShapes [
 		^ result
 ]
 
+{ #category : #initialization }
+NCBView >> initialize [
+
+	super initialize.
+	initializersLayer := CBInitializersLayerModel new.
+	externalsLayer := CBExternalsLayerModel new.
+	internalsLayer := CBInternalsLayerModel new.
+	accessorsLayer := CBAccessorsLayerModel new.
+	attributesLayer := CBAttributesLayerModel new.
+	superAttributesLayer := NCBSuperAttributesLayer new.
+	deadsLayer := NCBDeadMethodsLayerModel new.
+	deadAttributesLayer := NCBDeadAttributesLayerModel new.
+	classVarsLayer := NCBClassVarsLayerModel new.
+	classMethodsLayer := NCBClassMethodsLayerModel new.
+	border := RSBorder new
+		          color: Color black muchDarker;
+		          width: 1;
+		          yourself
+]
+
+{ #category : #layers }
+NCBView >> initializersLayer [ 
+	^ initializersLayer
+]
+
 { #category : #accessing }
 NCBView >> instSide [
 
@@ -262,6 +467,16 @@ NCBView >> instSide [
 		  externalsLayer.
 		  internalsLayer".
 		  accessorsLayer" } asOrderedCollection
+]
+
+{ #category : #'accessing - parallel hierarchy' }
+NCBView >> instanceSide [ 
+	^ self instSide collect: [ :each | self canvas shapeFromModel: each ]
+]
+
+{ #category : #layers }
+NCBView >> internalsLayer [ 
+	^ internalsLayer
 ]
 
 { #category : #initialization }
@@ -295,6 +510,11 @@ NCBView >> methodShapes [
 
 
 	^ methodShapes
+]
+
+{ #category : #accessing }
+NCBView >> middleAttributeSide [ 
+	^ self attSide collect: [ :each | self canvas shapeFromModel: each ]
 ]
 
 { #category : #shapes }
@@ -425,6 +645,11 @@ NCBView >> sixthLayer [
 	RSVerticalLineLayout new on: sixthLayer nodes.
 	sixthLayer padding: 10 ].
 	^ sixthLayer
+]
+
+{ #category : #accessing }
+NCBView >> superAttributesLayer [ 
+	^ superAttributesLayer 
 ]
 
 { #category : #'as yet unclassified' }
