@@ -13,7 +13,7 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
-{ #category : #initialization }
+{ #category : #accessing }
 NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 
 	anAttributeAccessModel source isSetter ifTrue: [ 
@@ -24,6 +24,11 @@ NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 			self getter: anAttributeAccessModel source.
 			getter protecting: self ]
 		ifFalse: [ attributeAccess add: anAttributeAccessModel ]
+]
+
+{ #category : #accessing }
+NCBAttributeModel >> attributeAccess [
+	^ attributeAccess
 ]
 
 { #category : #operations }
@@ -39,7 +44,7 @@ NCBAttributeModel >> getter: aGetter [
 	getter := aGetter 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 NCBAttributeModel >> getterShape [
 
 	^ self hasGetter
@@ -58,7 +63,19 @@ NCBAttributeModel >> hasSetter [
 	^ setter isNil not
 ]
 
-{ #category : #operations }
+{ #category : #accessing }
+NCBAttributeModel >> initializeAttributeAccess [
+	attributeAccess := OrderedCollection new
+]
+
+{ #category : #accessing }
+NCBAttributeModel >> initializeDescription [
+
+	description := NCBAttributeDescription newFrom: self.
+
+]
+
+{ #category : #accessing }
 NCBAttributeModel >> initializeType [
 
 	
@@ -73,7 +90,28 @@ NCBAttributeModel >> initializeType [
 	self type: #Attribute
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
+NCBAttributeModel >> internalAccesses [ 
+	^ self entity queryIncomingAccesses select: [ :each | each source parentType = entity parentType ].
+]
+
+{ #category : #accessing }
+NCBAttributeModel >> newIncomingConnection [
+
+	^ CBAttributeAccessModel new
+		  initializeDescription;
+		  yourself
+]
+
+{ #category : #accessing }
+NCBAttributeModel >> printOn: aStream [
+
+	aStream nextPutAll: '('.
+	self name asString printOn: aStream.
+	aStream nextPutAll: ')'
+]
+
+{ #category : #accessing }
 NCBAttributeModel >> resetTypeWithClass: aFamixStClass [
 
 	| subclasses sources sourcesClasses |
@@ -94,7 +132,7 @@ NCBAttributeModel >> setter: aSetter [
 	setter := aSetter 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 NCBAttributeModel >> setterShape [ 
 	^ self hasSetter ifTrue: [ setter shape ] ifFalse: [ nil ]
 ]
@@ -115,7 +153,7 @@ NCBAttributeModel >> shape [
 	^ self withProtectorsOf: shape
 ]
 
-{ #category : #operations }
+{ #category : #accessing }
 NCBAttributeModel >> type [ 
 	^ type
 ]

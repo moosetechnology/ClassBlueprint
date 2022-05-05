@@ -1,10 +1,20 @@
 Class {
 	#name : #NCBDeadBranchChecker,
 	#superclass : #Object,
+	#instVars : [
+		'visitedItems'
+	],
 	#category : #'Moose-Blueprint-Models'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
+NCBDeadBranchChecker >> initialize [
+
+	super initialize.
+	visitedItems := Set new
+]
+
+{ #category : #initialization }
 NCBDeadBranchChecker >> isInDeadBranch: aMethod ofClass: aClass [
 
 	aMethod isInitializer ifTrue: [ ^false ].
@@ -16,4 +26,10 @@ NCBDeadBranchChecker >> isInDeadBranch: aMethod ofClass: aClass [
 	^ aMethod calledBy allSatisfy: [ :each | 
 		  each parentType ~= aClass ifTrue: [ ^ false ].
 		  self isInDeadBranch: each ofClass: aClass ] 
+]
+
+{ #category : #initialization }
+NCBDeadBranchChecker >> visitedItems [
+
+	^ visitedItems
 ]
