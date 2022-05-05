@@ -12,3 +12,19 @@ FamixJavaClass >> allSuperclassesDo: aBlock [
 FamixJavaClass >> isObjectClass [
 	^ self name = 'Object'
 ]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaClass >> isPojo [
+
+	| implementsSerializable hasConstructor hasAllAccessors |
+	implementsSerializable := false.
+	self allSuperclassesDo: [ :each | 
+		each name = 'Serializable' ifTrue: [ implementsSerializable := true ] ].
+	hasConstructor := self methods anySatisfy: [ :each | 
+		                  each isConstructor ].
+	hasAllAccessors := self attributes allSatisfy: [ :each | 
+		                   each hasAccessors ].
+
+	^ implementsSerializable and: [ 
+		  hasConstructor and: [ hasAllAccessors ] ]
+]

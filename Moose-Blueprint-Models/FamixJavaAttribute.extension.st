@@ -1,6 +1,12 @@
 Extension { #name : #FamixJavaAttribute }
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaAttribute >> hasAccessors [
+
+	^ self accessors isNotEmpty
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaAttribute >> isCalledIn: aFamixClass [
 
 	^ ((self incomingAccesses collect: #source) select: [ :each | 

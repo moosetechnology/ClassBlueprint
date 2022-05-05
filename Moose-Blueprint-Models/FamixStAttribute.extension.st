@@ -1,6 +1,11 @@
 Extension { #name : #FamixStAttribute }
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStAttribute >> hasAccessors [ 
+	^ self accessors isNotEmpty 
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStAttribute >> isCalledIn: aFamixClass [
 
 	^ ((self incomingAccesses collect: #source) select: [ :each | 
