@@ -168,6 +168,13 @@ FamixJavaMethod >> isSuperOf: aFamixMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isTested [
+
+	^ (self incomingInvocations collect: #sender) anySatisfy: [ 
+		  :each | each parentType isTestCase ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isUsed [
 
 	| subclasses subMethods |
