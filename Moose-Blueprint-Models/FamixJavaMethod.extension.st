@@ -120,7 +120,7 @@ FamixJavaMethod >> isExternal [
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isInitializer [
-  ^ self isConstructor
+  ^ self isConstructor or: [ self name = '<Initializer>' ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
