@@ -119,6 +119,23 @@ FamixJavaMethod >> isExternal [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isGetter [
+
+	| kindIsGetter nameBegingsWithSet hasNoOutgoingInvocations hasAttributeAccess |
+	(self accesses size = 1 and: [ self parameters size isZero ]) 
+		ifFalse: [ ^ false ].
+	kindIsGetter := self kind = #getter.
+	nameBegingsWithSet := self name beginsWith: 'get'.
+	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
+	hasAttributeAccess := self accesses allSatisfy: [ :acc | 
+		                      acc variable isAttribute ].
+
+	^ kindIsGetter or: [ 
+		  nameBegingsWithSet and: [ 
+			  hasNoOutgoingInvocations and: [ hasAttributeAccess ] ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isInitializer [
   ^ self isConstructor or: [ self name = '<Initializer>' ]
 ]
@@ -158,6 +175,25 @@ FamixJavaMethod >> isReimplemented [
 		                  collect: [ :m | m name ].
 
 	^ subMethodNames anySatisfy: [ :n | n = self name ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isSetter [
+
+	| kindIsSetter nameBegingsWithSet hasSelfAccess hasNoOutgoingInvocations | 
+	hasSelfAccess := (self accesses anySatisfy: [ :each | each variable isSelf ]).
+	(self accesses size = 2 and: [ hasSelfAccess  and: [ self parameters size = 1 ]]) ifFalse: [  
+		^ false ].
+	kindIsSetter := self kind = #setter. 
+	nameBegingsWithSet := self name beginsWith: 'set'.
+	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
+	hasSelfAccess := self accesses anySatisfy: [ :acc1 | 
+		                 acc1 previous isNotNil and: [ 
+			                 acc1 previous variable isSelf and: [ 
+				                 acc1 variable isAttribute ] ] ].
+	^ kindIsSetter or: [ 
+		  nameBegingsWithSet and: [ 
+			  hasSelfAccess and: [ hasNoOutgoingInvocations ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
