@@ -14,6 +14,13 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
+{ #category : #'instance creation' }
+CBAccessorsModel class >> newFrom: aMethod [ 
+	^ self new
+		  entity: aMethod;
+		yourself
+]
+
 { #category : #accessing }
 CBAccessorsModel >> accessorInvocations [
 	^ accessorInvocations

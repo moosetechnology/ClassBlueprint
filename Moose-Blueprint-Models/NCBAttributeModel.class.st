@@ -13,6 +13,13 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
+{ #category : #'instance creation' }
+NCBAttributeModel class >> newFrom: anEntity [ 
+	^ self new
+		entity: anEntity ;
+		create
+]
+
 { #category : #accessing }
 NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 

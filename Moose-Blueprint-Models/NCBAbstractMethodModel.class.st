@@ -31,6 +31,13 @@ NCBAbstractMethodModel class >> abstractBox [
 		  yourself
 ]
 
+{ #category : #'instance creation' }
+NCBAbstractMethodModel class >> newFrom: anEntity [ 
+	^ self new 
+		entity: anEntity;
+		create
+]
+
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> abstractBox [
 

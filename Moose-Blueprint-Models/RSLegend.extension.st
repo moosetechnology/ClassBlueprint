@@ -10,4 +10,4 @@ RSLegend >> text: aString withBoxColor: color [
 			  self
 				  text: aString
 				  withShape: (self shape: self defaultBox withColor: color) ]
-] 
+]

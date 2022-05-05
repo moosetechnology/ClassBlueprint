@@ -8,6 +8,11 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
+{ #category : #'instance creation' }
+CBAbstractModel class >> newFrom: anEntity [ 
+	self subclassResponsibility 
+]
+
 { #category : #accessing }
 CBAbstractModel >> description [
 	^ description

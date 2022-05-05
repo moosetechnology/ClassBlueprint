@@ -347,7 +347,7 @@ NClassBlueprint >> initializeClassMethods [
 	
 	classMethods ifEmpty: [ ^{} ].
 	classMethods := (classMethods collect: [ :each | 
-		                NCBClassSideMethod newFrom: each ]) sorted: [ :x :y | x name < y name ]
+		                NCBClassSideMethod newFrom: each ]) sorted: [ :x :y | x name < y name ].
 ]
 
 { #category : #accessing }
