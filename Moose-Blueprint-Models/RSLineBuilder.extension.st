@@ -1,3 +1,4 @@
+
 Extension { #name : #RSLineBuilder }
 
 { #category : #'*Moose-Blueprint-Models' }
