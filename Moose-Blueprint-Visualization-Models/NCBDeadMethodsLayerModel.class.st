@@ -3,3 +3,9 @@ Class {
 	#superclass : #CBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
+
+{ #category : #accessing }
+NCBDeadMethodsLayerModel >> name [
+
+	^ #DeadMethods
+]

@@ -2,30 +2,28 @@ Class {
 	#name : #MiClassBlueprintVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
-		'type',
-		'blueprint'
+		'blueprint',
+		'type'
 	],
 	#category : #'MooseIDE-ClassBlueprint'
 }
 
 { #category : #running }
-MiClassBlueprintVisualization >> run [
-
+MiClassBlueprintVisualization >> run [ 
 	super run.
 	self script: [ :canvas | 
-		blueprint := type blueprint.
-		blueprint canvas: canvas.
-		blueprint build.
-		canvas @ RSCanvasController new noLegend ]
+			blueprint := type blueprint.
+			blueprint canvas: canvas.
+			blueprint build.
+			canvas @ RSCanvasController new noLegend ]
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 MiClassBlueprintVisualization >> type [
-
 	^ type
 ]
 
-{ #category : #accessing }
+{ #category : #running }
 MiClassBlueprintVisualization >> type: anObject [
 
 	type := anObject

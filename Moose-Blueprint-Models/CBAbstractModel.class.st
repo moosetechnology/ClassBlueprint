@@ -7,3 +7,8 @@ Class {
 	],
 	#category : #'Moose-Blueprint-Models'
 }
+
+{ #category : #testing }
+CBAbstractModel >> isHighlightable [ 
+	^ false
+]

@@ -8,57 +8,55 @@ Class {
 }
 
 { #category : #'instance creation' }
-MiClassBlueprintBrowser class >> open [
+MiClassBlueprintBrowser class >> followEntity: anEntity [ 
+	self withWindowDo: [ :window | window title: 'Blueprint of' , anEntity name ].
+	
+]
 
+{ #category : #'instance creation' }
+MiClassBlueprintBrowser class >> open [ 
 	<script>
 	super open
 ]
 
-{ #category : #specs }
-MiClassBlueprintBrowser class >> title [
-
-	^ 'Class blueprint'
+{ #category : #'instance creation' }
+MiClassBlueprintBrowser class >> title [ 
+	^ 'Class Blueprint'
 ]
 
 { #category : #testing }
-MiClassBlueprintBrowser >> canFollowEntity: anObject [
-
+MiClassBlueprintBrowser >> canFollowEntity: anObject [ 
 	^ anObject isMooseEntity and: [ anObject isType ]
 ]
 
-{ #category : #actions }
-MiClassBlueprintBrowser >> followEntity: anEntity [
-
-	self withWindowDo: [ :window | 
-		window title: 'Blueprint of ' , anEntity name ].
-
-	blueprint
+{ #category : #testing }
+MiClassBlueprintBrowser >> followEntity: anEntity [ 
+	self withWindowDo: [ :window | window title: 'Blueprint of' , anEntity name ].
+	blueprint 
 		type: anEntity;
 		run
 ]
 
-{ #category : #actions }
-MiClassBlueprintBrowser >> initializeLayout [
-
-	self layout: (SpBoxLayout newTopToBottom
-			 add: blueprint;
-			 yourself)
+{ #category : #testing }
+MiClassBlueprintBrowser >> initializeLayout [ 
+	self layout: (SpBoxLayout newTopToBottom 
+		add: blueprint;
+		yourself)
 ]
 
-{ #category : #initialization }
+{ #category : #testing }
 MiClassBlueprintBrowser >> initializePresenters [
 
 	blueprint := self instantiate: MiClassBlueprintVisualization.
 	self initializeLayout
 ]
 
-{ #category : #accessing }
-MiClassBlueprintBrowser >> miSelectedItem [
-
+{ #category : #testing }
+MiClassBlueprintBrowser >> miSelectedItem [ 
 	^ blueprint type
 ]
 
-{ #category : #actions }
-MiClassBlueprintBrowser >> settings [
-
+{ #category : #testing }
+MiClassBlueprintBrowser >> settings [ 	
+	
 ]

@@ -6,3 +6,8 @@ Class {
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
+
+{ #category : #testing }
+CBAbstractLayerModel >> isHighlightable [ 
+	^ false
+]
