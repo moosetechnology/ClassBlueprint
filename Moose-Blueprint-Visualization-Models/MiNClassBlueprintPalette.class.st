@@ -1,3 +1,6 @@
+"
+I am the palette for the class blueprint visualization. I hold the colors of class types.
+"
 Class {
 	#name : #MiNClassBlueprintPalette,
 	#superclass : #MiVisualizationPalette,
