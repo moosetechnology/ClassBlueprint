@@ -54,6 +54,12 @@ CBLegend class >> build [
 	^ self new build
 ]
 
+{ #category : #building }
+CBLegend class >> buildFor: aVisualization [ 
+	^ self new 
+		buildFor: aVisualization 
+]
+
 { #category : #'as yet unclassified' }
 CBLegend class >> cyclomaticComplexityAssoc [
 
@@ -68,6 +74,18 @@ CBLegend class >> cyclomaticComplexityBox [
 		  size: 15;
 		  color: Color white;
 		  yourself
+]
+
+{ #category : #accessing }
+CBLegend class >> legendState [
+
+	^ legendState ifNil: [  false ]
+]
+
+{ #category : #accessing }
+CBLegend class >> legendState: aBoolean [
+
+	 legendState := aBoolean
 ]
 
 { #category : #'as yet unclassified' }
@@ -259,6 +277,26 @@ CBLegend >> buildFor: aVisualization [
 	^ legend
 ]
 
+{ #category : #accessing }
+CBLegend >> gapSize [
+
+	^ 3
+]
+
+{ #category : #building }
+CBLegend >> legendInfo [
+
+	^ MiNClassBlueprintPalette new colorsDictionary
+]
+
+{ #category : #constants }
+CBLegend >> marker [ 
+	^ 	RSShapeFactory arrow
+		          size: 10;
+		          color: Color black;
+		          yourself.
+]
+
 { #category : #'as yet unclassified' }
 CBLegend >> methodBoxDescription [
 
@@ -332,4 +370,9 @@ CBLegend >> methodInfo [
 		             widthLine.
 		             heightLine } asGroup asShape.
 	^ composite
+]
+
+{ #category : #interactions }
+CBLegend >> onClick [ 
+	self class legendState: self class legendState not
 ]
