@@ -7,5 +7,5 @@ Class {
 { #category : #accessing }
 NCBDeadMethodsLayerModel >> name [
 
-	^ #DeadMethods
+	^ #'Dead Methods'
 ]

@@ -3,3 +3,8 @@ Class {
 	#superclass : #CBAbstractLayerModel,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
+
+{ #category : #accessing }
+NCBClassVarsLayerModel >> name [ 
+	^ #'Class Variables'
+]

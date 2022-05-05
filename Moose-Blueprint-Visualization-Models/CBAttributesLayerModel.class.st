@@ -1,4 +1,3 @@
-
 "
 I represent the attributes layer
 "
@@ -10,5 +9,5 @@ Class {
 
 { #category : #accessing }
 CBAttributesLayerModel >> name [ 
-	^ #Attributes
+	^ #attributes
 ]

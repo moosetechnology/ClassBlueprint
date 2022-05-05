@@ -10,7 +10,7 @@ RSAthensRenderer >> visitBorder: border [
 				          at: border
 				          ifAbsentPut: [ self createStrokePaintFor: border ] ]
 		          ifFalse: [ self createStrokePaintFor: border ]."
-	stroke := self createStrokePaintFor: border.
+	stroke := self createStrokePaintFor: border. 
 	athensCanvas privatePaint: stroke.
 	^ stroke
 ]

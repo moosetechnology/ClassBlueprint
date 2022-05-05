@@ -1,4 +1,3 @@
-
 Class {
 	#name : #CBInvocationDescription,
 	#superclass : #CBAbstractShapeDescription,
