@@ -361,10 +361,10 @@ NClassBlueprint >> initializeClassVars [
 { #category : #initialization }
 NClassBlueprint >> initializeDeadAttributes [
 
-	deadAttributes := ((entity attributes select: [ :each | 
-		                       each incomingAccesses isEmpty and: [ each isClassSide not ] ]) collect: [ 
-		                      :anAttribute | 
-		                      NCBAttributeModel newFrom: anAttribute ]) sorted: [ :x :y | x name < y name ]
+	deadAttributes := (((entity attributes select: [ :each | each isDead ]) 
+		                   collect: [ :anAttribute | 
+		                   NCBAttributeModel newFrom: anAttribute ]) select: #isDead) 
+		                  sorted: [ :x :y | x name < y name ]
 ]
 
 { #category : #initialization }

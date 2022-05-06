@@ -76,7 +76,8 @@ FamixJavaMethod >> isCalledExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isDead [ 
+FamixJavaMethod >> isDead [
+
 	^ self incomingInvocations isEmpty
 ]
 

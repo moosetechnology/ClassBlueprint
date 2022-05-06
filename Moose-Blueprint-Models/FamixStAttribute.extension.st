@@ -13,8 +13,9 @@ FamixStAttribute >> isCalledIn: aFamixClass [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStAttribute >> isDead [ 
-	^ self incomingAccesses isEmpty
+FamixStAttribute >> isDead [
+
+	^ self incomingAccesses isDead
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

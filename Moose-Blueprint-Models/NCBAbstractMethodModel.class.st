@@ -232,6 +232,11 @@ NCBAbstractMethodModel >> isConstant [
 ]
 
 { #category : #'as yet unclassified' }
+NCBAbstractMethodModel >> isDead [ 
+	^ self entity isDead
+]
+
+{ #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> isDeadMethod [
 
 	(self entity isDeadMethod) ifTrue: [ 

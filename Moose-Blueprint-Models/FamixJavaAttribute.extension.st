@@ -14,6 +14,15 @@ FamixJavaAttribute >> isCalledIn: aFamixClass [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaAttribute >> isDead [
+
+	| isNotAccessed |
+	isNotAccessed := self incomingAccesses isEmpty and: [ 
+		                 self isClassSide not ].
+	self parentType isPojo ifFalse: [ ^ isNotAccessed ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaAttribute >> isSelf [ 
 	^ false
 ]

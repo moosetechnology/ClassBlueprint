@@ -47,7 +47,9 @@ CBAccessorsModel >> attributeAccess [
 { #category : #accessing }
 CBAccessorsModel >> color [
 
-	^ self entity isDeadMethod
+	"attribute isDead attribute protectors are dead "
+
+	^ self entity isDeadAccessor
 		  ifTrue: [ MiNClassBlueprintPalette new colorAt: #isDeadMethod ]
 		  ifFalse: [ MiNClassBlueprintPalette new colorAt: self type ]
 ]
@@ -68,6 +70,13 @@ CBAccessorsModel >> initialize [
 	super initialize.
 	accessorInvocations := OrderedCollection new.
 	attributeAccess := OrderedCollection new
+]
+
+{ #category : #testing }
+CBAccessorsModel >> isDeadAccessor [
+
+	self entity parentType isPojo ifFalse: [ ^ self entity isDead ].
+	^ attribute isDead and: [ attribute accessors allSatisfy: #isDead ]
 ]
 
 { #category : #testing }

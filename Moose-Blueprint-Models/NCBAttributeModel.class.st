@@ -21,6 +21,11 @@ NCBAttributeModel class >> newFrom: anEntity [
 ]
 
 { #category : #accessing }
+NCBAttributeModel >> accessors [ 
+	^ getter , setter
+]
+
+{ #category : #accessing }
 NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 
 	anAttributeAccessModel source isSetter ifTrue: [ 
@@ -72,6 +77,7 @@ NCBAttributeModel >> hasSetter [
 
 { #category : #accessing }
 NCBAttributeModel >> initializeAttributeAccess [
+
 	attributeAccess := OrderedCollection new
 ]
 
@@ -100,6 +106,12 @@ NCBAttributeModel >> initializeType [
 { #category : #accessing }
 NCBAttributeModel >> internalAccesses [ 
 	^ self entity queryIncomingAccesses select: [ :each | each source parentType = entity parentType ].
+]
+
+{ #category : #testing }
+NCBAttributeModel >> isDead [
+
+	^ self entity isDead and: [ self accessors allSatisfy: #isDead ]
 ]
 
 { #category : #accessing }
