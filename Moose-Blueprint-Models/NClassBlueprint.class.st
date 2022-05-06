@@ -334,10 +334,11 @@ NClassBlueprint >> initializeAcessors [
 { #category : #initialization }
 NClassBlueprint >> initializeAttributes [
 
-	attributes := ((entity attributes select: [ :each | 
-		               each incomingAccesses isNotEmpty and: [ 
-			               each isClassSide not ] ]) collect: [ :anAttribute | 
-		              NCBAttributeModel newFrom: anAttribute ]) sorted: [ :x :y | x name < y name ].
+	attributes := ((entity attributes reject: [ :each | each isDead ]) 
+		               collect: [ :anAttribute | 
+		               NCBAttributeModel newFrom: anAttribute ]) sorted: [ 
+		              :x 
+		              :y | x name < y name ]
 ]
 
 { #category : #initialization }
@@ -361,10 +362,11 @@ NClassBlueprint >> initializeClassVars [
 { #category : #initialization }
 NClassBlueprint >> initializeDeadAttributes [
 
-	deadAttributes := (((entity attributes select: [ :each | each isDead ]) 
+	deadAttributes := ((entity attributes select: [ :each | each isDead ]) 
 		                   collect: [ :anAttribute | 
-		                   NCBAttributeModel newFrom: anAttribute ]) select: #isDead) 
-		                  sorted: [ :x :y | x name < y name ]
+		                   NCBAttributeModel newFrom: anAttribute ]) 
+		                  sorted: [ :x :y | x name < y name ].
+
 ]
 
 { #category : #initialization }

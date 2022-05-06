@@ -18,7 +18,8 @@ Class {
 		'getAtt2Access',
 		'setAtt2Access',
 		'notPojo',
-		'doesNotImplementSerializableClass'
+		'doesNotImplementSerializableClass',
+		'classBlueprint'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }

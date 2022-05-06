@@ -22,7 +22,7 @@ NCBAttributeModel class >> newFrom: anEntity [
 
 { #category : #accessing }
 NCBAttributeModel >> accessors [ 
-	^ getter , setter
+	^ { getter . setter }
 ]
 
 { #category : #accessing }
@@ -49,6 +49,11 @@ NCBAttributeModel >> create [
 	self initializeAttributeAccess.
 	self initializeDescription.
 	self initializeType.
+]
+
+{ #category : #accessing }
+NCBAttributeModel >> getter [ 
+	^ getter
 ]
 
 { #category : #accessing }
@@ -144,6 +149,11 @@ NCBAttributeModel >> resetTypeWithClass: aFamixStClass [
 
 	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
 		ifTrue: [ self type: #'Attribute Accesses by Subclass(es)' ]
+]
+
+{ #category : #accessing }
+NCBAttributeModel >> setter [ 
+	^ setter
 ]
 
 { #category : #accessing }

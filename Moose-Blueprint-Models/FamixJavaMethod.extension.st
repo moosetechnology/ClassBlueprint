@@ -181,11 +181,15 @@ FamixJavaMethod >> isReimplemented [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isSetter [
 
-	| kindIsSetter nameBegingsWithSet hasSelfAccess hasNoOutgoingInvocations | 
-	hasSelfAccess := (self accesses anySatisfy: [ :each | each variable isSelf ]).
-	(self accesses size = 2 and: [ hasSelfAccess  and: [ self parameters size = 1 ]]) ifFalse: [  
+	| kindIsSetter nameBegingsWithSet hasSelfAccess hasNoOutgoingInvocations |
+	hasSelfAccess := self accesses anySatisfy: [ :each | 
+		                 each variable isSelf ].
+
+	(self accesses size = 2 and: [ 
+		 hasSelfAccess and: [ self parameters size = 1 ] ]) ifFalse: [ 
 		^ false ].
-	kindIsSetter := self kind = #setter. 
+
+	kindIsSetter := self kind = #setter.
 	nameBegingsWithSet := self name beginsWith: 'set'.
 	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
 	hasSelfAccess := self accesses anySatisfy: [ :acc1 | 
