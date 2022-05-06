@@ -49,7 +49,7 @@ CBAccessorsModel >> color [
 
 	"attribute isDead attribute protectors are dead "
 
-	^ self entity isDeadAccessor
+	^ self  isDeadAccessor
 		  ifTrue: [ MiNClassBlueprintPalette new colorAt: #isDeadMethod ]
 		  ifFalse: [ MiNClassBlueprintPalette new colorAt: self type ]
 ]
