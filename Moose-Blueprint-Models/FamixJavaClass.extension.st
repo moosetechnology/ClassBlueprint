@@ -9,6 +9,11 @@ FamixJavaClass >> allSuperclassesDo: aBlock [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaClass >> blueprint [
+	^ NCBView forType: self 
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaClass >> isObjectClass [
 	^ self name = 'Object'
 ]

@@ -1,6 +1,11 @@
 Extension { #name : #FamixStClass }
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStClass >> blueprint [
+	^ NCBView forType: self 
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStClass >> isObjectClass [ 
 	^ self name = 'Object'
 ]
