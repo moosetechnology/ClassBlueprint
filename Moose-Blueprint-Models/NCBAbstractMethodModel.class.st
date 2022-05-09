@@ -259,7 +259,7 @@ NCBAbstractMethodModel >> isDelegating [
 NCBAbstractMethodModel >> isExtending [
 	"Check if a method extends another by super"
 	
-	 entity isExtending ifTrue: [ ^ #isExtending ].
+	 entity isExtending ifTrue: [ ^ ##'isExtending(Key word Super)' ].
 	^ nil
 ]
 

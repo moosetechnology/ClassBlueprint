@@ -18,7 +18,7 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #isOverriden forColor: Color palePeach;
 		addName: #isDelegating
 		forColor: Color yellow darker duller slightlyWhiter;
-		addName: #isExtending forColor: Color orange darker duller;
+		addName: #'isExtending(Key word Super)' forColor: Color orange darker duller;
 		addName: #isConstant forColor: Color lightGray;
 		addName: #isSetter forColor: Color magenta duller;
 		addName: #isGetter forColor: Color pink;
