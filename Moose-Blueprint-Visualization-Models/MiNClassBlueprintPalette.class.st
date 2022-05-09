@@ -13,12 +13,12 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 	self
 		addName: #isAbstract
 		forColor: Color cyan darker darker darker duller;
-		addName: #isOverriding
+		addName: #'isOverriding(redefined locally and no super)'
 		forColor: (Color fromHexString: '#996800') duller;
-		addName: #isOverriden forColor: Color palePeach;
+		addName: #'isOverriden(redefined in subclasses)' forColor: Color palePeach;
 		addName: #isDelegating
 		forColor: Color yellow darker duller slightlyWhiter;
-		addName: #'isExtending(Key word Super)' forColor: Color orange darker duller;
+		addName: #'isExtending(invoke method via super)' forColor: Color orange darker duller;
 		addName: #isConstant forColor: Color lightGray;
 		addName: #isSetter forColor: Color magenta duller;
 		addName: #isGetter forColor: Color pink;

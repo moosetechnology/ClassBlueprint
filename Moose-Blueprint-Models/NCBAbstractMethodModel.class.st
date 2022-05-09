@@ -259,7 +259,7 @@ NCBAbstractMethodModel >> isDelegating [
 NCBAbstractMethodModel >> isExtending [
 	"Check if a method extends another by super"
 	
-	 entity isExtending ifTrue: [ ^ ##'isExtending(Key word Super)' ].
+	 entity isExtending ifTrue: [ ^ #'isExtending(invoke method via super)' ].
 	^ nil
 ]
 
@@ -279,14 +279,14 @@ NCBAbstractMethodModel >> isInternalImplementation [
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> isOverriden [
 
-	self entity isOverriden ifTrue: [ ^ #isOverriden ].
+	self entity isOverriden ifTrue: [ ^ #'isOverriden(redefined in subclasses)' ].
 	^ nil
 ]
 
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> isOverriding [
 
-	entity isOverriding ifTrue: [ ^ #isOverriding ].
+	entity isOverriding ifTrue: [ ^ #'isOverriding(redefined locally and no super)' ].
 
 	^ nil
 ]
