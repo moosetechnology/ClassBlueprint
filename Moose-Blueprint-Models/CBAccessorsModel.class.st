@@ -153,7 +153,7 @@ CBAccessorsModel >> shape [
 		         withBorder;
 		         popupText: self name asString.
 	self addHighlightableInteraction.
-	shape @ RSDraggable.
+	shape addInteraction: NCBDraggable new.
 	^ shape
 ]
 
