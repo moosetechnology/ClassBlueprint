@@ -6,6 +6,11 @@ FamixStClass >> isObjectClass [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStClass >> isPojo [ 
+	^ false
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStClass >> isTestCase [
 	<FMProperty: #isTestCase type: #Boolean>
 	<derived>
