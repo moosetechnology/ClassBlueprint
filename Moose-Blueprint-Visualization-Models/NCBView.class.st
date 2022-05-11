@@ -390,7 +390,7 @@ NCBView >> fifthLayer [
 NCBView >> firstLayer [
 
 	firstLayer ifNil: [ 
-		firstLayer := self deadMethodsComposite padding: 30 ].
+		firstLayer := self classSideMethods padding: 30 ].
 
 	^ firstLayer
 ]
@@ -398,7 +398,7 @@ NCBView >> firstLayer [
 { #category : #'as yet unclassified' }
 NCBView >> fourthLayer [
 
-	fourthLayer ifNil: [ fourthLayer := (self canvas shapeFromModel: deadAttributesLayer ).
+	fourthLayer ifNil: [ fourthLayer := (self canvas shapeFromModel: classVarsLayer ).
 	RSVerticalLineLayout new on: fourthLayer nodes.
 	fourthLayer padding: 10 ].
 	^ fourthLayer
@@ -641,7 +641,7 @@ NCBView >> setSize: dict [
 NCBView >> sixthLayer [
 
 
-	sixthLayer ifNil: [ sixthLayer := self canvas shapeFromModel: classVarsLayer.
+	sixthLayer ifNil: [ sixthLayer := self canvas shapeFromModel: deadAttributesLayer.
 	RSVerticalLineLayout new on: sixthLayer nodes.
 	sixthLayer padding: 10 ].
 	^ sixthLayer
@@ -655,7 +655,7 @@ NCBView >> superAttributesLayer [
 { #category : #'as yet unclassified' }
 NCBView >> thirdLayer [
 
-	thirdLayer ifNil: [ thirdLayer := self classSideMethods padding: 10 ].
+	thirdLayer ifNil: [ thirdLayer := self deadMethodsComposite padding: 10 ].
 	^ thirdLayer
 ]
 
