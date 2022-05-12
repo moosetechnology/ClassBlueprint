@@ -94,7 +94,7 @@ NCBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> addShapeInterractions [
 
-	shape when: RSMouseDoubleClick do: [ :evt | self openInBrowser ].
+	shape when: RSMouseDoubleClick do: [ :evt | self inspect ].
 	shape when: RSMouseEnter do: [ :evt | 
 		evt shiftPressed ifTrue: [ shape popupText: self entity sourceText ] ].
 	shape
@@ -271,7 +271,7 @@ NCBAbstractMethodModel >> isInternal [
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> isInternalImplementation [
 
-	entity isInternal ifTrue: [ 
+	(entity isInternal and: [ entity isInitializer not ]) ifTrue: [ 
 		^ #isInternalImplementation ].
 	^ nil
 ]
