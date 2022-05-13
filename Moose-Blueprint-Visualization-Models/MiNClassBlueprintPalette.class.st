@@ -31,7 +31,7 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #'isAbstract and Reimplemented in Subclass' forColor: nil;
 		addName: #'Tested Method' forColor: nil;
 		addName: #'Cyclomatic Complexity' forColor: nil;
-		addName: #'Monomorphic Border' forColor: nil;
-		addName: #'Polymorphic Border' forColor: nil;
-		addName: #'Megamorphic Border' forColor: nil
+		addName: #'Monomorphic Method' forColor: nil;
+		addName: #'Polymorphic Method' forColor: nil;
+		addName: #'Megamorphic Method' forColor: nil
 ]

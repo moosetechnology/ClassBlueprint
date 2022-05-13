@@ -20,7 +20,6 @@ NCBMethodDescription class >> megamorphicBorder [
 
 	^ RSBorder new
 		  width: 4;
-			joinMiter;
 		  color: Color black;
 		  yourself
 ]

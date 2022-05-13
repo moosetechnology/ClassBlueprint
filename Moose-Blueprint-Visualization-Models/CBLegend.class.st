@@ -100,7 +100,7 @@ CBLegend class >> megamorphicBox [
 { #category : #'as yet unclassified' }
 CBLegend class >> megamorphicShapeAssoc [
 
-	^ #'Megamorphic Border' -> self megamorphicBox 
+	^ #'Megamorphic Method' -> self megamorphicBox 
 ]
 
 { #category : #'as yet unclassified' }
@@ -116,7 +116,7 @@ CBLegend class >> monomorphicBox [
 
 { #category : #'as yet unclassified' }
 CBLegend class >> monomorphicShapeAssoc [
-	^ #'Monomorphic Border' -> self monomorphicBox
+	^ #'Monomorphic Method' -> self monomorphicBox
 ]
 
 { #category : #'as yet unclassified' }
@@ -132,7 +132,7 @@ CBLegend class >> polymorphicBox [
 { #category : #'as yet unclassified' }
 CBLegend class >> polymorphicShapeAssoc [
 
-	^ #'Polymorphic Border' -> self polymorphicBox 
+	^ #'Polymorphic Method' -> self polymorphicBox 
 ]
 
 { #category : #accessing }
