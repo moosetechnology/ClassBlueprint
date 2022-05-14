@@ -69,6 +69,7 @@ FamixJavaMethod >> isCalledByInternals [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledExternally [
 
+	self incomingInvocations ifEmpty: [ ^ false ].
 	^ self incomingInvocations anySatisfy: [ :each | 
 		  each source parentType ~= self parentType ]
 ]
@@ -78,9 +79,7 @@ FamixJavaMethod >> isCalledInternallyOnly [
 
 	| incoInvocations |
 	incoInvocations := self incomingInvocations.
-	^ incoInvocations isNotEmpty and: [ 
-		  ((incoInvocations collect: [ :i | i source ]) select: [ :m | 
-			   m parentType = self parentType ]) isNotEmpty ]
+	^ incoInvocations isNotEmpty and: [ incoInvocations allSatisfy: [ :i | i source parentType = self parentType] ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -92,16 +91,21 @@ FamixJavaMethod >> isDead [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isDeadMethod [
 
-	| isDead isDeadBranch isNotTestMethod isNotInitializer isAbstractAndNotCalled |
+	| isDead isDeadBranch isNotTestMethod isNotInitializer isAbstractAndCalled |
 	isDead := self isDead.
 	isDeadBranch := self belongsToDeadBranch.
 	isNotTestMethod := self isTestMethod not.
 	isNotInitializer := self isInitializer not.
-	isAbstractAndNotCalled := self isAbstractAndCalled not.
+	isAbstractAndCalled := self isAbstract
+		                       ifTrue: [ 
+			                       self incomingInvocations isNotEmpty or: [ 
+				                       self isSubCalledExternally or: [ 
+					                       self isSubCalledInternallyOnly ] ] ]
+		                       ifFalse: [ false ].
 
 	^ (isDead or: [ isDeadBranch ]) and: [ 
 		  isNotInitializer and: [ 
-			  isNotTestMethod and: [ isAbstractAndNotCalled ] ] ]
+			  isNotTestMethod and: [ isAbstractAndCalled not ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -213,10 +217,15 @@ FamixJavaMethod >> isSetter [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isSubCalledInternallyOnly [
 
-	| subclasses |
+	| subclasses subMethods reimplementations |
 	subclasses := self parentType subclassHierarchy.
-	^ (subclasses flatCollect: [ :c | c methods ]) allSatisfy: [ :m | 
-		  m isCalledInternallyOnly ]
+	subMethods := subclasses flatCollect: [ :c | c methods ].
+	reimplementations := subMethods select: [ :each | 
+		                     each signature = self signature ].
+	(reimplementations flatCollect: [ :m | m incomingInvocations ]) 
+		ifEmpty: [ ^ false ].
+	^ (reimplementations flatCollect: [ :c | c methods ]) allSatisfy: [ 
+		  :m | m isCalledInternallyOnly ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
