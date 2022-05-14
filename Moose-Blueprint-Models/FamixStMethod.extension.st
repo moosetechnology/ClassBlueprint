@@ -35,7 +35,7 @@ FamixStMethod >> isApiAnnotated [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledExternally [
 
-	self incomingInvocations ifEmpty: [ ^ false ].
+
 	^ self incomingInvocations anySatisfy: [ :each | 
 		  each source parentType ~= self parentType ]
 ]
@@ -94,8 +94,9 @@ FamixStMethod >> isExtending [
 FamixStMethod >> isExternal [
 
 	self isAbstract ifTrue: [ 
-		^ self isSubCalledExternally  or: [ self isCalledExternally ]
-			    ].
+		^self isDead
+			ifFalse: [ self isCalledExternally ]
+			ifTrue: [ self isSubCalledExternally ] ].
 	self isTestMethod ifTrue: [ ^ true ].
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
 	^ self isCalledExternally
@@ -115,8 +116,9 @@ FamixStMethod >> isInternal [
 	and not by an initializer method. And is not an initializer method"
 
 	self isAbstract ifTrue: [ 
-		^ (self isDead not and: [ self isSubCalledInternallyOnly  ]) or: [ 
-			  self isSubCalledInternallyOnly ] ].
+		^ self isDead
+			  ifFalse: [ self isCalledInternallyOnly  ]
+			  ifTrue: [ self isSubCalledInternallyOnly ] ].
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
 	^ self isCalledInternallyOnly
 ]

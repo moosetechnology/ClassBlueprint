@@ -69,7 +69,7 @@ FamixJavaMethod >> isCalledByInternals [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledExternally [
 
-	self incomingInvocations ifEmpty: [ ^ false ].
+
 	^ self incomingInvocations anySatisfy: [ :each | 
 		  each source parentType ~= self parentType ]
 ]
@@ -93,7 +93,7 @@ FamixJavaMethod >> isDeadMethod [
 
 	| isDead isDeadBranch isNotTestMethod isNotInitializer isAbstractAndCalled |
 	isDead := self isDead.
-	isDeadBranch := self belongsToDeadBranch.
+	isDeadBranch := self belongsToDeadBranch. 
 	isNotTestMethod := self isTestMethod not.
 	isNotInitializer := self isInitializer not.
 	isAbstractAndCalled := self isAbstract
