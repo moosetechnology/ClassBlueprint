@@ -241,8 +241,8 @@ NClassBlueprint >> create [
 
 	self initializeClassMethods.
 	self initializeInitializers.
-	self initializeExternals.
 	self initializeDeads.
+		self initializeExternals.
 	self initializeInternals.
 
 	self makeConnections.
