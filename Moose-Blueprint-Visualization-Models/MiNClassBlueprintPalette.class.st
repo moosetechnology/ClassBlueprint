@@ -15,18 +15,21 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		forColor: Color cyan darker darker darker duller;
 		addName: #'isOverriding(redefined locally and no super)'
 		forColor: (Color fromHexString: '#996800') duller;
-		addName: #'isOverriden(redefined in subclasses)' forColor: Color palePeach;
+		addName: #'isOverriden(redefined in subclasses)'
+		forColor: Color palePeach;
 		addName: #isDelegating
 		forColor: Color yellow darker duller slightlyWhiter;
-		addName: #'isExtending(invoke method via super)' forColor: Color orange darker duller;
+		addName: #'isExtending(invoke method via super)'
+		forColor: Color orange darker duller;
+		addName: #isInternalImplementation forColor: Color purple;
+		addName: #isTestMethod forColor: Color green duller;
+		addName: #isDeadMethod forColor: Color veryDarkGray;
 		addName: #isConstant forColor: Color lightGray;
 		addName: #isSetter forColor: Color magenta duller;
 		addName: #isGetter forColor: Color pink;
-		addName: #Attribute forColor: Color blue;
-		addName: #isInternalImplementation forColor: Color purple;
-		addName: #isDeadMethod forColor: Color veryDarkGray;
 		addName: #isOther forColor: Color white;
-		addName: #'Attribute Accesses by Subclass(es)'
+		addName: #Attribute forColor: Color blue;
+		addName: #'Attribute Accessed by Subclass(es)'
 		forColor: Color green muchDarker duller;
 		addName: #'isAbstract and Reimplemented in Subclass' forColor: nil;
 		addName: #'Tested Method' forColor: nil;

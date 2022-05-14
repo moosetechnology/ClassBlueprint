@@ -106,6 +106,17 @@ NCBView >> addCanvasInteractions [
 ]
 
 { #category : #'as yet unclassified' }
+NCBView >> allLayers [ 
+	^ { deadsLayer . deadAttributesLayer . initializersLayer . externalsLayer . internalsLayer . superAttributesLayer . attributesLayer . classMethodsLayer . classVarsLayer }
+]
+
+{ #category : #'as yet unclassified' }
+NCBView >> allShapes [
+
+	^ self allLayers collect: [ :each | each entities ]
+]
+
+{ #category : #'as yet unclassified' }
 NCBView >> attSide [
 
 	^ { 

@@ -94,7 +94,7 @@ NCBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> addShapeInterractions [
 
-	shape when: RSMouseDoubleClick do: [ :evt | self openInBrowser  ].
+	shape when: RSMouseDoubleClick do: [ :evt | self inspect ].
 	shape when: RSMouseEnter do: [ :evt | 
 		evt shiftPressed ifTrue: [ shape popupText: self entity sourceText ] ].
 	shape
@@ -292,6 +292,13 @@ NCBAbstractMethodModel >> isOverriding [
 ]
 
 { #category : #testing }
+NCBAbstractMethodModel >> isTestMethod [
+
+	self entity isTestMethod ifTrue: [ ^ #isTestMethod ].
+	^ nil
+]
+
+{ #category : #testing }
 NCBAbstractMethodModel >> isTested [
 
 	^ self entity isTested
@@ -377,7 +384,7 @@ NCBAbstractMethodModel >> testingBox [
 
 	^ RSBox new
 		  color: Color green;
-		  model: self;
+		  model: self class new;
 		  height: self description height / 4;
 		  width: self description width - self description border width;
 		  border: (RSBorder new

@@ -96,15 +96,16 @@ NCBAttributeModel >> initializeDescription [
 { #category : #accessing }
 NCBAttributeModel >> initializeType [
 
-	
 	| subclasses sources sourcesClasses |
 	subclasses := entity parentType subclassHierarchy.
 	sources := entity incomingAccesses collect: #source.
 	sourcesClasses := sources collect: [ :each | each parentType ].
 
 	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
-		ifTrue: [ self type: #'Attribute Accesses by Subclass(es)'. ^ self ].
-	
+		ifTrue: [ 
+			self type: #'Attribute Accessed by Subclass(es)'.
+			^ self ].
+
 	self type: #Attribute
 ]
 
@@ -148,7 +149,7 @@ NCBAttributeModel >> resetTypeWithClass: aFamixStClass [
 		^ self ].
 
 	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
-		ifTrue: [ self type: #'Attribute Accesses by Subclass(es)' ]
+		ifTrue: [ self type: #'Attribute Accessed by Subclass(es)' ]
 ]
 
 { #category : #accessing }

@@ -67,13 +67,13 @@ FamixStMethod >> isDead [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadMethod [
 
-	| isDead isDeadBranch isNotAnnotated isNotInitializer |
+	| isDead isDeadBranch isNotTestMethod isNotInitializer |
 	isDead := self isDead.
 	isDeadBranch := self belongsToDeadBranch.
-	isNotAnnotated := (self isAnnotatedWith: '<api>') not.
+	isNotTestMethod := ((self parentType superclassHierarchy collect: [ :each | each name ]) includes: #TestAsserter) not.
 	isNotInitializer := self isInitializer not.
 	
-	^ (isDead or: [ isDeadBranch ]) and: [ isNotInitializer and: [ isNotAnnotated ] ] 
+	^ (isDead or: [ isDeadBranch ]) and: [ isNotInitializer and: [ isNotTestMethod ] ] 
 	
 	
 ]
@@ -110,6 +110,8 @@ FamixStMethod >> isExternal [
 	classInitializers isEmpty ifTrue: [ ^ false ].
 	senders removeAll: classInitializers.
 	^ senders allSatisfy: [ :each | each parentType ~= self parentType ]"
+
+	self parentType isTestCase ifTrue: [ ^ true ].
 	^ self incomingInvocations isNotEmpty and: [ 
 		  self isCalledExternally and: [ self isConstructor not ] ]
 ]
@@ -172,6 +174,12 @@ FamixStMethod >> isSuperOf: aFamixMethod [
 
 	^ self parentType superclassHierarchy includes:
 		  aFamixMethod parentType
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isTestMethod [
+
+	^ self parentType isTestCase and: [ self name beginsWith: #test ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

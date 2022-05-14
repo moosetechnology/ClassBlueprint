@@ -240,15 +240,14 @@ NClassBlueprint >> create [
 	self initializeSuperAttributes.
 
 	self initializeClassMethods.
-	self initializeDeads.
 	self initializeInitializers.
 	self initializeExternals.
+	self initializeDeads.
 	self initializeInternals.
 
 	self makeConnections.
 	self attributeMethodTypes.
-	self detectComplexitySuperiorTo: complexity.
-
+	self detectComplexitySuperiorTo: complexity
 ]
 
 { #category : #accessing }
