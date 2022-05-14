@@ -93,7 +93,7 @@ FamixJavaMethod >> isDeadMethod [
 
 	| isDead isDeadBranch isNotTestMethod isNotInitializer isAbstractAndCalled |
 	isDead := self isDead.
-	isDeadBranch := self belongsToDeadBranch. 
+	isDeadBranch := self belongsToDeadBranch.
 	isNotTestMethod := self isTestMethod not.
 	isNotInitializer := self isInitializer not.
 	isAbstractAndCalled := self isAbstract
@@ -102,7 +102,7 @@ FamixJavaMethod >> isDeadMethod [
 				                       self isSubCalledExternally or: [ 
 					                       self isSubCalledInternallyOnly ] ] ]
 		                       ifFalse: [ false ].
-
+	1halt.
 	^ (isDead or: [ isDeadBranch ]) and: [ 
 		  isNotInitializer and: [ 
 			  isNotTestMethod and: [ isAbstractAndCalled not ] ] ]
