@@ -71,8 +71,7 @@ FamixJavaMethod >> isCalledExternally [
 
 	^ 
 		  self incomingInvocations anySatisfy: [ :each | 
-			  (each source inSameClassAs: self) not and: [ 
-				  (each source isSuperOf: self) not ] ] 
+			  (each source inSameClassAs: self) ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

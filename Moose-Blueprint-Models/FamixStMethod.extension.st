@@ -23,18 +23,6 @@ FamixStMethod >> inSameClassAs: aMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isAbstractAndCalled [
-
-	| subclasses reimplementations |
-	subclasses := self parentType subclassHierarchy flatCollect: [ :c | c methods ].
-	reimplementations := subclasses
-		   select: [ :each | each signature = self signature ].
-		reimplementations ifEmpty: [ ^ false ].
-	 ^ reimplementations	 anySatisfy: [ 
-		  :m | m incomingInvocations isNotEmpty ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isAccessor [
 	^ self isSetter or: [ self isGetter  ]
 ]
@@ -45,52 +33,11 @@ FamixStMethod >> isApiAnnotated [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isCalledByInitializers [
-
-	| initializers |
-	initializers := self parentType methods select: #isInitializer.
-
-	^ initializers includesAny:
-		  (self incomingInvocations collect: [ :each | each source ])
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isCalledByInternals [
-
-
-	^ (self incomingInvocations collect: #sender) anySatisfy: [ :each | 
-		  each isInternal ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledExternally [
 
 	^
 		  self incomingInvocations anySatisfy: [ :each | 
-			  (each source inSameClassAs: self) not and: [ 
-				  (each source isSuperOf: self) not ] ] 
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isCalledInHierarchy [
-
-	| superclasses subclasses hierarchyClasses |
-	superclasses := self parentType superclassHierarchy.
-	subclasses := self parentType subclassHierarchy.
-	hierarchyClasses := OrderedCollection new
-		                    addAll: superclasses , subclasses;
-		                    add: self parentType;
-		                    yourself.
-
-	^ hierarchyClasses includesAll:
-		  (self incomingInvocations collect: [ :each | 
-			   each source parentType ])
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isCalledInItsClass [ 
-	^ self incomingInvocations allSatisfy: [ :each | 
-			  each source inSameClassAs: self ]
+			  each source parentType ~= self parentType ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -191,34 +138,6 @@ FamixStMethod >> isReimplemented [
 		                  collect: [ :m | m name ].
 
 	^ subMethodNames anySatisfy: [ :n | n = self name ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isSubCalled [
-
-	| subclasses |
-	subclasses := self parentType subclassHierarchy.
-
-	^ subclasses includes:
-		  (self incomingInvocations collect: [ :each | 
-			   each source parentType ])
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isSuperCalled [ 
-		| superclasses |
-	superclasses := self parentType superclassHierarchy.
-
-	^ superclasses includes:
-		  (self incomingInvocations collect: [ :each | 
-			   each source parentType ])
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isSuperOf: aFamixMethod [
-
-	^ self parentType superclassHierarchy includes:
-		  aFamixMethod parentType
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
