@@ -72,10 +72,10 @@ FamixStMethod >> isDeadMethod [
 	isNotTestMethod := self isTestMethod not.
 	isNotInitializer := self isInitializer not.
 	isDeadAbstract := self isDeadAbstract.
-
+	isDeadAbstract ifTrue: [ ^true ].
 	^ (isDead or: [ isDeadBranch ]) and: [ 
 		  isNotInitializer and: [ 
-			  isNotTestMethod and: [ isDeadAbstract not ] ] ]
+			  isNotTestMethod ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -186,7 +186,7 @@ FamixStMethod >> isSubCalledInternallyOnly [
 		                     each signature = self signature ].
 	(reimplementations flatCollect: [ :m | m incomingInvocations ]) ifEmpty: [ 
 		^ false ].
-	^ (reimplementations flatCollect: [ :c | c methods ]) allSatisfy: [ :m | 
+	^ reimplementations allSatisfy: [ :m | 
 		  m isCalledInternallyOnly ]
 ]
 
