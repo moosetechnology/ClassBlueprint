@@ -41,6 +41,16 @@ FamixStMethod >> isCalledExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isCalledInternallyOnly [
+
+	| incoInvocations |
+	incoInvocations := self incomingInvocations.
+	^ incoInvocations isNotEmpty and: [ 
+		  ((incoInvocations collect: [ :i | i source ]) select: [ :m | 
+			   m parentType = self parentType ]) isNotEmpty ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDead [ 
 	^ self incomingInvocations isEmpty
 ]
@@ -82,12 +92,12 @@ FamixStMethod >> isExtending [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isExternal [
 
-	self isAbstractAndCalled ifTrue: [ ^ true ].
-
-	self parentType isTestCase ifTrue: [ ^ true ].
-
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self isInternal not and: [ self isInitializer not ] ]
+	self isAbstract ifTrue: [ 
+		^ (self isDead not and: [ self isCalledExternally ]) or: [ 
+			  self isSubCalledExternally ] ].
+	self isTestMethod ifTrue: [ ^true ].
+	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
+	self isCalledExternally
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -100,11 +110,14 @@ FamixStMethod >> isInitializer [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isInternal [
 
-	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
+	"For the method to be internal: it has to be called internally 
+	and not by an initializer method. And is not an initializer method"
 
-	^ self isCalledInHierarchy and: [ 
-		  self belongsToDeadBranch not "and: [ 
-			  self isCalledByInitializers not ]" ]
+	self isAbstract ifTrue: [ 
+		^ (self isDead not and: [ self isCalledInternallyOnly ]) or: [ 
+			  self isSubCalledInternallyOnly ] ].
+	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
+	self isCalledInternallyOnly
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -141,6 +154,23 @@ FamixStMethod >> isReimplemented [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isSubCalledExternally [ 
+	
+	| subclasses |
+	subclasses := self parentType subclassHierarchy.
+	^ (subclasses flatCollect: [ :c | c methods ]) anySatisfy: [ :m | 
+		  m isCalledExternally ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isSubCalledInternallyOnly [
+
+	| subclasses |
+	subclasses := self parentType subclassHierarchy.
+	^ (subclasses flatCollect: [ :c | c methods ]) allSatisfy: [ :m | m isCalledInternallyOnly  ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isTestMethod [
 
 	^ ((self parentType superclassHierarchy collect: [ :each | each name ]) 
@@ -152,17 +182,6 @@ FamixStMethod >> isTested [
 
 	^ (self incomingInvocations collect: #sender) anySatisfy: [ 
 		  :each | each parentType isTestCase ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isUsed [
-
-	| subclasses subMethodsSig |
-	subclasses := self parentType subclassHierarchy.
-	subMethodsSig := (subclasses flatCollect: [ :each | each methods ]) 
-		                  collect: [ :m | m signature ].
-
-	^ subMethodsSig anySatisfy: [ :n | n = self signature ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

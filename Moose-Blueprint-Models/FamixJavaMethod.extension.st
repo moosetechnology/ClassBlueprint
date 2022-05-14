@@ -69,9 +69,18 @@ FamixJavaMethod >> isCalledByInternals [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledExternally [
 
-	^ 
-		  self incomingInvocations anySatisfy: [ :each | 
-			  (each source inSameClassAs: self) ] 
+	^ self incomingInvocations anySatisfy: [ :each | 
+		  each source parentType ~= self parentType ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isCalledInternallyOnly [
+
+	| incoInvocations |
+	incoInvocations := self incomingInvocations.
+	^ incoInvocations isNotEmpty and: [ 
+		  ((incoInvocations collect: [ :i | i source ]) select: [ :m | 
+			   m parentType = self parentType ]) isNotEmpty ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -146,9 +155,11 @@ FamixJavaMethod >> isInternal [
 
 	"For the method to be internal: it has to be called internally and not by an initializer method. And is not an initializer method"
 
-	^ self isOnlyCalledInternally and: [ 
-		  self belongsToDeadBranch not and: [ 
-			  self isCalledByInitializers not ] ]
+	self isAbstract ifTrue: [ 
+		^ (self isDead not and: [ self isCalledInternallyOnly ]) or: [ 
+			  self isSubCalledInternallyOnly ] ].
+	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
+	self isCalledInternallyOnly
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -197,6 +208,15 @@ FamixJavaMethod >> isSetter [
 	^ kindIsSetter or: [ 
 		  nameBegingsWithSet and: [ 
 			  hasSelfAccess and: [ hasNoOutgoingInvocations ] ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isSubCalledInternallyOnly [
+
+	| subclasses |
+	subclasses := self parentType subclassHierarchy.
+	^ (subclasses flatCollect: [ :c | c methods ]) allSatisfy: [ :m | 
+		  m isCalledInternallyOnly ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

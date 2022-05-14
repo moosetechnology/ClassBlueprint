@@ -125,7 +125,7 @@ NCBAbstractMethodModel >> attributeAccess: anObject [
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> boxShape [
 
-	^ self isAbstractAndReimplementedAndUsed
+	^ self isAbstractAndReimplemented
 		  ifTrue: [ 
 			  RSComposite new
 				  add: self abstractBox;
@@ -196,11 +196,10 @@ NCBAbstractMethodModel >> isAbstract [
 ]
 
 { #category : #'as yet unclassified' }
-NCBAbstractMethodModel >> isAbstractAndReimplementedAndUsed [
+NCBAbstractMethodModel >> isAbstractAndReimplemented [
 
-	^ self entity isAbstract
-		  and: [ self entity isReimplemented  and: [ self entity isUsed ] ]
-		 
+	^ self entity isAbstract and: [ 
+		  self entity isReimplemented ]
 ]
 
 { #category : #'as yet unclassified' }
