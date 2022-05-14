@@ -1,25 +1,29 @@
 Class {
-	#name : #NCBDraggable,
+	#name : #NCBDraggableAttribute,
 	#superclass : #RSDraggable,
 	#category : #'Moose-Blueprint-Models'
 }
 
 { #category : #'event processing' }
-NCBDraggable >> processDrag: evt [
+NCBDraggableAttribute >> processDrag: evt [
 
-	| d parent shape childRectangle parentRectangle padding |
+	| d composite shape childRectangle parentRectangle padding |
 	shape := evt shape.
-	parent := shape parent.
-	d := evt camera distanceFromPixelToSpace: evt step.
-			
-	childRectangle := Rectangle
-		                  floatCenter: shape position + d
-		                  extent: shape extent.
 	
+	d := evt camera distanceFromPixelToSpace: evt step.
+
+	composite := shape parent.
+	evt shape: composite.
+
+	childRectangle := Rectangle
+		                  floatCenter: composite position + d
+		                  extent: composite extent.
+
 	padding := 2.5 asMargin.
 	childRectangle := padding expandRectangle: childRectangle.
-	parentRectangle := parent baseRectangle.
+	parentRectangle := composite baseRectangle.
 	(parentRectangle containsRect: childRectangle) ifTrue: [ 
-		shape translateBy: d ].
+		composite translateBy: d ].
+
 	evt signalUpdate
 ]

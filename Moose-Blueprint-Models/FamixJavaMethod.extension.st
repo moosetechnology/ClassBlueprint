@@ -84,15 +84,16 @@ FamixJavaMethod >> isDead [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isDeadMethod [
 
-	| isDead isDeadBranch isNotAnnotated isNotInitializer |
+	| isDead isDeadBranch isNotTestMethod isNotInitializer isAbstractAndNotCalled |
 	isDead := self isDead.
 	isDeadBranch := self belongsToDeadBranch.
-	isNotAnnotated := (self isAnnotatedWith: '<api>') not.
+	isNotTestMethod := self isTestMethod not.
 	isNotInitializer := self isInitializer not.
-	
-	^ (isDead or: [ isDeadBranch ]) and: [ isNotInitializer and: [ isNotAnnotated ] ] 
-	
-	
+	isAbstractAndNotCalled := self isAbstractAndCalled not.
+
+	^ (isDead or: [ isDeadBranch ]) and: [ 
+		  isNotInitializer and: [ 
+			  isNotTestMethod and: [ isAbstractAndNotCalled ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -162,9 +163,7 @@ FamixJavaMethod >> isInvokedByExternalMethod [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isOnlyCalledInternally [
 
-	^ self incomingInvocations isNotEmpty and: [ 
-		  self incomingInvocations allSatisfy: [ :each | 
-			  each source inSameClassAs: self ] ]
+	^ self isCalledInItsClass or: [ self isSubCalled ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

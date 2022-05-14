@@ -65,7 +65,7 @@ NCBAttributeModel >> getter: aGetter [
 NCBAttributeModel >> getterShape [
 
 	^ self hasGetter
-		  ifTrue: [ getter shape ]
+		  ifTrue: [ getter shape  ]
 		  ifFalse: [ nil ]
 ]
 
@@ -163,8 +163,11 @@ NCBAttributeModel >> setter: aSetter [
 ]
 
 { #category : #accessing }
-NCBAttributeModel >> setterShape [ 
-	^ self hasSetter ifTrue: [ setter shape ] ifFalse: [ nil ]
+NCBAttributeModel >> setterShape [
+
+	^ self hasSetter
+		  ifTrue: [ setter shape  ]
+		  ifFalse: [ nil ]
 ]
 
 { #category : #accessing }
@@ -177,10 +180,13 @@ NCBAttributeModel >> shape [
 		         height: self description height;
 		         width: self description width;
 		         popupText: self name asString.
-	shape addInteraction: NCBDraggable new.
 	self addHighlightableInteraction.
 	"	shape when: RSMouseLeftClick do: [ self inspect ]."
-	^ self withProtectorsOf: shape
+	shape := self withProtectorsOf: shape.
+	shape children do: [ :each | 
+		each addInteraction: NCBDraggableAttribute new ].
+
+	^ shape
 ]
 
 { #category : #accessing }
@@ -209,8 +215,6 @@ NCBAttributeModel >> withProtectorsOf: aShape [
 		gapSize: 1;
 		on: composite nodes.
 	composite adjustToChildren.
-
 	composite padding: 1.
-	composite addInteraction: NCBDraggable new.
 	^ composite
 ]

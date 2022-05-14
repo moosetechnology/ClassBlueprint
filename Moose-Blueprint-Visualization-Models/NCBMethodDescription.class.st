@@ -146,7 +146,7 @@ NCBMethodDescription >> initializeSize [
 { #category : #initialization }
 NCBMethodDescription >> initializeType [
 
-	type := entityModel isDeadMethod ifNil: [ 
+	type := entityModel isAbstract ifNil: [ 
 		        entityModel isExtending ifNil: [ 
 			        entityModel isOverriding ifNil: [ 
 				        entityModel isDelegating ifNil: [ 
@@ -154,7 +154,8 @@ NCBMethodDescription >> initializeType [
 						        entityModel isConstant ifNil: [ 
 							        entityModel isAccessor ifNil: [ 
 								        entityModel isInternalImplementation ifNil: [ 
-									        entityModel isAbstract ifNil: [ entityModel isTestMethod ifNil: [ #isOther ] ] ] ] ] ] ] ] ] ].
+									        entityModel isDeadMethod ifNil: [ 
+										        entityModel isTestMethod ifNil: [ #isOther ] ] ] ] ] ] ] ] ] ].
 	entityModel type: type
 ]
 

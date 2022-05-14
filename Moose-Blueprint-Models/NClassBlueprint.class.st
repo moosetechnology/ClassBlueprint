@@ -342,12 +342,13 @@ NClassBlueprint >> initializeAttributes [
 
 { #category : #initialization }
 NClassBlueprint >> initializeClassMethods [
-	classMethods := (self methods
-		                select: [ :each | each isClassSide ]).
-	
-	classMethods ifEmpty: [ ^{} ].
+
+	classMethods := self notClassifiedMethods select: [ :each | each isClassSide ].
+
+	classMethods ifEmpty: [ ^ {  } ].
 	classMethods := (classMethods collect: [ :each | 
-		                NCBClassSideMethod newFrom: each ]) sorted: [ :x :y | x name < y name ].
+		                 NCBClassSideMethod newFrom: each ]) sorted: [ :x :y | 
+		                x name < y name ]
 ]
 
 { #category : #accessing }
@@ -371,11 +372,10 @@ NClassBlueprint >> initializeDeadAttributes [
 { #category : #initialization }
 NClassBlueprint >> initializeDeadMethods [
 
-	deadMethods := (self methods
-		               select: [ :each | 
-		               each isDeadMethod  ]
-		               thenCollect: [ :each | 
-		               NCBDeadModel newFrom: each ]) sorted: [ :x :y | x name < y name ]
+	deadMethods := (self notClassifiedMethods
+		                select: [ :each | each isDeadMethod ]
+		                thenCollect: [ :each | NCBDeadModel newFrom: each ]) 
+		               sorted: [ :x :y | x name < y name ]
 ]
 
 { #category : #initialization }
@@ -388,15 +388,15 @@ NClassBlueprint >> initializeDeads [
 { #category : #initialization }
 NClassBlueprint >> initializeExternals [
 
-	externals := self methods
-		              select: [ :each | each isExternal ] thenCollect: [ :each | 
-		             NCBExternalModel newFrom: each ]
+	externals := self notClassifiedMethods
+		             select: [ :each | each isExternal ]
+		             thenCollect: [ :each | NCBExternalModel newFrom: each ]
 ]
 
 { #category : #initialization }
 NClassBlueprint >> initializeInitializers [
 
-	initializers := self methods
+	initializers := self notClassifiedMethods
 		                select: [ :each | each isInitializer ]
 		                thenCollect: [ :each | 
 		                NCBInitializationModel newFrom: each ]
@@ -405,9 +405,9 @@ NClassBlueprint >> initializeInitializers [
 { #category : #initialization }
 NClassBlueprint >> initializeInternals [
 
-	
-	internals := self methods select: [ :each | each isInternal ] thenCollect: [ :each | 
-		             NCBInternalModel newFrom: each ]
+	internals := self notClassifiedMethods
+		             select: [ :each | each isInternal ]
+		             thenCollect: [ :each | NCBInternalModel newFrom: each ]
 ]
 
 { #category : #initialization }
@@ -492,19 +492,20 @@ NClassBlueprint >> methodOccurrences: aNumber [
 ]
 
 { #category : #accessing }
-NClassBlueprint >> methods [ 
-	| alreadyClassified |
-	alreadyClassified := self methodModels collect: [ :aMethod | aMethod entity ].
-	^ (entity methods reject: [ :each | 
-		                 alreadyClassified  includes:
-			                  each ]) reject: #isAccessor
-]
-
-{ #category : #accessing }
 NClassBlueprint >> models [
 
 	^ self methodModels , self accessors , self attributes
 	  , self deadAttributes , self classVars, self superAttributes 
+]
+
+{ #category : #accessing }
+NClassBlueprint >> notClassifiedMethods [
+
+	| alreadyClassified |
+	alreadyClassified := self methodModels collect: [ :aMethod | 
+		                     aMethod entity ].
+	^ (entity methods reject: [ :each | alreadyClassified includes: each ]) 
+		  reject: #isAccessor
 ]
 
 { #category : #accessing }
