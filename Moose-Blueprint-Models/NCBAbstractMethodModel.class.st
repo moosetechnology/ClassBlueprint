@@ -387,8 +387,8 @@ NCBAbstractMethodModel >> testingBox [
 		  height: self description height / 4;
 		  width: self description width - self description border width;
 		  border: (RSBorder new
-				   width: 0.5;
-				color: Color black;
+				   width: 1;
+				   color: Color black;
 				   yourself);
 		  yourself
 ]

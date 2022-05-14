@@ -67,7 +67,7 @@ FamixStMethod >> isDeadMethod [
 		                       ifTrue: [ 
 			                       self incomingInvocations isNotEmpty or: [ 
 				                       self isSubCalledExternally or: [ 
-					                       self isSubCalledInternallyOnly ] ] ] not
+					                       self isSubCalledInternallyOnly ] ] ]
 		                       ifFalse: [ false ].
 
 	^ (isDead or: [ isDeadBranch ]) and: [ 
@@ -100,9 +100,9 @@ FamixStMethod >> isExternal [
 	self isAbstract ifTrue: [ 
 		^ (self isDead not and: [ self isCalledExternally ]) or: [ 
 			  self isSubCalledExternally ] ].
-	self isTestMethod ifTrue: [ ^true ].
+	self isTestMethod ifTrue: [ ^ true ].
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
-	self isCalledExternally
+	^ self isCalledExternally
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -122,7 +122,7 @@ FamixStMethod >> isInternal [
 		^ (self isDead not and: [ self isCalledInternallyOnly ]) or: [ 
 			  self isSubCalledInternallyOnly ] ].
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
-	self isCalledInternallyOnly
+	^ self isCalledInternallyOnly
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

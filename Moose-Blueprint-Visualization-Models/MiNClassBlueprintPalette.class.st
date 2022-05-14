@@ -22,7 +22,7 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #'isExtending(invoke method via super)'
 		forColor: Color orange darker duller;
 		addName: #isInternalImplementation forColor: Color purple;
-		addName: #isTestMethod forColor: Color green duller;
+		addName: #isTestMethod forColor: Color pink;
 		addName: #isDeadMethod forColor: Color veryDarkGray;
 		addName: #isConstant forColor: Color lightGray;
 		addName: #isSetter forColor: Color magenta duller;
