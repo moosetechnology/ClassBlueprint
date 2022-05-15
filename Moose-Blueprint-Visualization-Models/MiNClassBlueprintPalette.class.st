@@ -29,7 +29,7 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #isGetter forColor: Color pink;
 		addName: #isOther forColor: Color white;
 		addName: #Attribute forColor: Color blue;
-		addName: #'Attribute cccessed by subclass(es) of this class'
+		addName: #'Attribute accessed by subclass(es) of this class'
 		forColor: Color green muchDarker duller;
 		addName: #'isAbstract and reimplemented in subclass(es)' forColor: nil;
 		addName: #'Tested Method' forColor: nil;
