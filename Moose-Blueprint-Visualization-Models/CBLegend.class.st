@@ -14,7 +14,7 @@ Class {
 { #category : #accessing }
 CBLegend class >> abstractAndReimplementedShapeAssoc [
 
-	^ #'isAbstract and Reimplemented in Subclass'
+	^ #'isAbstract and reimplemented in subclass(es)'
 	  -> self abstractMethodUsedInSubclassDescription
 ]
 

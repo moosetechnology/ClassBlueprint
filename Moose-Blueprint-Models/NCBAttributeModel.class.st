@@ -103,7 +103,7 @@ NCBAttributeModel >> initializeType [
 
 	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
 		ifTrue: [ 
-			self type: #'Attribute Accessed by Subclass(es)'.
+			self type: #'Attribute accessed by subclass(es) of this class'.
 			^ self ].
 
 	self type: #Attribute
@@ -149,7 +149,7 @@ NCBAttributeModel >> resetTypeWithClass: aFamixStClass [
 		^ self ].
 
 	(sourcesClasses anySatisfy: [ :each | subclasses includes: each ]) 
-		ifTrue: [ self type: #'Attribute Accessed by Subclass(es)' ]
+		ifTrue: [ self type: #'Attribute accessed by subclass(es) of this class']
 ]
 
 { #category : #accessing }
