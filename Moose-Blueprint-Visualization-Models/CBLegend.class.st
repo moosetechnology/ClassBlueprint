@@ -211,7 +211,7 @@ CBLegend >> attributeboxDescription [
 	| widthLabel heightLabel attributeBox |
 	widthLabel := RSLabel new
 		              text:
-			              'Number of external accesses (from other hierarchies)';
+			              'Number of external accesses (inside the hierarchy only)';
 		              color: Color black;
 		              yourself.
 	heightLabel := RSLabel new

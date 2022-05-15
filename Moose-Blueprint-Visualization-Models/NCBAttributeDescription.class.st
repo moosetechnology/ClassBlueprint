@@ -42,26 +42,39 @@ NCBAttributeDescription >> height [
 NCBAttributeDescription >> initializeSize [
 
 	height := self numberOfInternalAccesses + NCBView defaultBoxesHeight.
-	width := self numberOfExternalAccesses + NCBView defaultBoxesWidth 
+	width := self numberOfHierarchyAcceses + NCBView defaultBoxesWidth 
 ]
 
 { #category : #operations }
 NCBAttributeDescription >> initializeSizeFrom: aFamixStClass [
 
 	height := (self numberOfInternalAccessesFrom: aFamixStClass) + NCBView defaultBoxesHeight.
-	width := self numberOfExternalAccesses + NCBView defaultBoxesWidth
+	width := self numberOfHierarchyAcceses + NCBView defaultBoxesWidth
 ]
 
 { #category : #accessing }
 NCBAttributeDescription >> numberOfExternalAccesses [
 
-	| subclasses accessorsInvokedBy  |
+	| subclasses hierarchyAccesses  |
 	subclasses := entityModel entity parentType subclassHierarchy.
-	accessorsInvokedBy := entityModel entity accessors flatCollect: [ 
+	"accessorsInvokedBy := entityModel entity accessors flatCollect: [ 
 		                      :each | each incomingInvocations ].
 	externalAccesses := (entityModel entity incomingAccesses , accessorsInvokedBy reject: [ 
-		   :each | subclasses includes: each source parentType ]) size.
-	^ externalAccesses
+		   :each | subclasses includes: each source parentType ]) size."
+	hierarchyAccesses := (entityModel entity incomingAccesses collect: [ :each | each source ]) select: [ :each | subclasses includes: each parentType ].
+	^ hierarchyAccesses size
+]
+
+{ #category : #'as yet unclassified' }
+NCBAttributeDescription >> numberOfHierarchyAcceses [
+	| subclasses hierarchyAccesses  |
+	subclasses := entityModel entity parentType subclassHierarchy.
+	"accessorsInvokedBy := entityModel entity accessors flatCollect: [ 
+		                      :each | each incomingInvocations ].
+	externalAccesses := (entityModel entity incomingAccesses , accessorsInvokedBy reject: [ 
+		   :each | subclasses includes: each source parentType ]) size."
+	hierarchyAccesses := (entityModel entity incomingAccesses collect: [ :each | each source ]) select: [ :each | subclasses includes: each parentType ].
+	^ hierarchyAccesses size
 ]
 
 { #category : #'as yet unclassified' }
