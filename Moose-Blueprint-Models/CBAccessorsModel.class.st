@@ -93,6 +93,11 @@ CBAccessorsModel >> isGetter [
 ]
 
 { #category : #testing }
+CBAccessorsModel >> isLazyInitializer [ 
+	^ self entity isLazyInitializer 
+]
+
+{ #category : #testing }
 CBAccessorsModel >> isSetter [ 
 	^ entity isSetter 
 ]

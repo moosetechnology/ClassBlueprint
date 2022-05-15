@@ -8,7 +8,8 @@ Class {
 		'attributeAccess',
 		'setter',
 		'getter',
-		'type'
+		'type',
+		'lazyInitializer'
 	],
 	#category : #'Moose-Blueprint-Models'
 }
@@ -21,12 +22,18 @@ NCBAttributeModel class >> newFrom: anEntity [
 ]
 
 { #category : #accessing }
-NCBAttributeModel >> accessors [ 
-	^ { getter . setter }
+NCBAttributeModel >> accessors [
+
+	^ { 
+		  getter.
+		  setter .
+		lazyInitializer }
 ]
 
 { #category : #accessing }
 NCBAttributeModel >> addIncoming: anAttributeAccessModel [
+
+	" check if its is an accessor first: to add the attribute to protecting:"
 
 	anAttributeAccessModel source isSetter ifTrue: [ 
 		self setter: anAttributeAccessModel source.
@@ -35,7 +42,11 @@ NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 		ifTrue: [ 
 			self getter: anAttributeAccessModel source.
 			getter protecting: self ]
-		ifFalse: [ attributeAccess add: anAttributeAccessModel ]
+		ifFalse: [ 
+			anAttributeAccessModel source isLazyInitializer
+				ifTrue: [ self lazyInitializer: self.
+					lazyInitializer protecting: self]
+				ifFalse: [ attributeAccess add: anAttributeAccessModel ] ]
 ]
 
 { #category : #accessing }
@@ -70,14 +81,21 @@ NCBAttributeModel >> getterShape [
 ]
 
 { #category : #testing }
-NCBAttributeModel >> hasGetter [ 
+NCBAttributeModel >> hasGetter [
 
-	^ getter isNil not
+	^ getter isNotNil
 ]
 
 { #category : #testing }
-NCBAttributeModel >> hasSetter [ 
-	^ setter isNil not
+NCBAttributeModel >> hasLazyInitializer [
+
+	^ lazyInitializer isNotNil
+]
+
+{ #category : #testing }
+NCBAttributeModel >> hasSetter [
+
+	^ setter isNotNil
 ]
 
 { #category : #accessing }
@@ -119,6 +137,26 @@ NCBAttributeModel >> internalAccesses [
 NCBAttributeModel >> isDead [
 
 	^ self entity isDead and: [ self accessors allSatisfy: #isDead ]
+]
+
+{ #category : #'as yet unclassified' }
+NCBAttributeModel >> lazyInitializer [
+
+	^ lazyInitializer
+]
+
+{ #category : #'as yet unclassified' }
+NCBAttributeModel >> lazyInitializer: anAccessorModel [
+
+	lazyInitializer := anAccessorModel
+]
+
+{ #category : #accessing }
+NCBAttributeModel >> lazyInitializerShape [
+
+	^ self hasLazyInitializer
+		  ifTrue: [ lazyInitializer shape ]
+		  ifFalse: [ nil ]
 ]
 
 { #category : #accessing }
@@ -212,10 +250,15 @@ NCBAttributeModel >> withProtectorsOf: aShape [
 		             addAll: shapes;
 		             model: shapes;
 		             yourself.
+	composite adjustToChildren.
+	composite padding: 1.
 	RSVerticalLineLayout new
 		gapSize: 1;
 		on: composite nodes.
-	composite adjustToChildren.
-	composite padding: 1.
+	self lazyInitializerShape ifNotNil: [  
+	composite addAll:  { self lazyInitializerShape . composite }.
+	RSHorizontalLineLayout new 
+		gapSize: 1;
+		on: { composite  } ].
 	^ composite
 ]

@@ -24,7 +24,8 @@ FamixStMethod >> inSameClassAs: aMethod [
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isAccessor [
-	^ self isSetter or: [ self isGetter  ]
+
+	^ self isSetter or: [ self isGetter or: [ self isLazyInitializer ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -110,6 +111,15 @@ FamixStMethod >> isExternal [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isGetter [
+
+	<FMProperty: #isGetter type: #Boolean>
+	<derived>
+	<FMComment: 'True if the method is a getter of an attribute'>
+	^ #getter = self kind 
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isInitializer [
 
 	^ (('*initialize*' match: self protocol) or: [ 
@@ -136,6 +146,20 @@ FamixStMethod >> isInvokedByExternalMethod [
 	^ (self incomingInvocations reject: [ :each | 
 		   each sender isInitializer ]) noneSatisfy: [ :each | 
 		  self parentType == each sender parentType ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isLazyInitializer [
+
+	| oInvoc |
+	oInvoc := self outgoingInvocations.
+	oInvoc size > 2 ifTrue: [ ^ false ].
+
+	^ (oInvoc anySatisfy: [ :i1 | 
+		   self parentType attributes includes: i1 receiver ]) and: [ 
+		  oInvoc anySatisfy: [ :i2 | 
+			  i2 receiver isAttribute not and: [ 
+				  i2 receiver isClass not and: [ i2 receiver isSelf ] ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
