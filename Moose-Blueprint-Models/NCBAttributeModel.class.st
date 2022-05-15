@@ -111,7 +111,8 @@ NCBAttributeModel >> initializeType [
 
 { #category : #accessing }
 NCBAttributeModel >> internalAccesses [ 
-	^ self entity queryIncomingAccesses select: [ :each | each source parentType = entity parentType ].
+
+	^ self entity incomingAccesses select: [ :each | each source parentType = entity parentType ].
 ]
 
 { #category : #testing }

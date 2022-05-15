@@ -138,8 +138,9 @@ NClassBlueprint >> connectAttributes [
 	"the receiver is the variable"
 
 	| sources |
+
 	deadAttributes , attributes , classVars do: [ :each | 
-		sources := each internalAccesses collect: #source.
+		sources := each internalAccesses  collect: #source.
 		self connectTarget: each entity withAll: sources asSet ].
 	superAttributes do: [ :each | 
 		sources := each entity incomingAccesses collect: #source.
@@ -333,8 +334,10 @@ NClassBlueprint >> initializeAcessors [
 { #category : #initialization }
 NClassBlueprint >> initializeAttributes [
 
-	attributes := ((entity attributes reject: [ :each | each isDead ]) 
-		               collect: [ :anAttribute | 
+	| instanceSideAttribute |
+	instanceSideAttribute := (entity attributes reject: [ :each | 
+		                          each isClassSide ]) reject: #isDead.
+	attributes := (instanceSideAttribute collect: [ :anAttribute | 
 		               NCBAttributeModel newFrom: anAttribute ]) sorted: [ 
 		              :x 
 		              :y | x name < y name ]
