@@ -98,6 +98,7 @@ FamixJavaMethod >> isDeadMethod [
 	isNotInitializer := self isInitializer not.
 	isDeadAbstract := self isDeadAbstract.
 	isDeadAbstract ifTrue: [ ^true ].
+
 	^ (isDead or: [ isDeadBranch ]) and: [ 
 		  isNotInitializer and: [ 
 			  isNotTestMethod ] ]

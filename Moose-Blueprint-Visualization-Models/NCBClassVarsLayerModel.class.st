@@ -6,5 +6,5 @@ Class {
 
 { #category : #accessing }
 NCBClassVarsLayerModel >> name [ 
-	^ #'Class Variables'
+	^ #'Class Side Variables'
 ]

@@ -6,5 +6,5 @@ Class {
 
 { #category : #accessing }
 NCBClassMethodsLayerModel >> name [ 
-	^ #'Class Methods'
+	^ #'Class Side Methods'
 ]

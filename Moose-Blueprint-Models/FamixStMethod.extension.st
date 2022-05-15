@@ -72,10 +72,10 @@ FamixStMethod >> isDeadMethod [
 	isNotTestMethod := self isTestMethod not.
 	isNotInitializer := self isInitializer not.
 	isDeadAbstract := self isDeadAbstract.
-	isDeadAbstract ifTrue: [ ^true ].
-	^ (isDead or: [ isDeadBranch ]) and: [ 
+	^ self isAbstract ifTrue: [ ^ isDeadAbstract ] ifFalse: [  
+	 (isDead or: [ isDeadBranch ]) and: [ 
 		  isNotInitializer and: [ 
-			  isNotTestMethod ] ]
+			  isNotTestMethod ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
