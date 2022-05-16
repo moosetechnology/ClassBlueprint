@@ -7,23 +7,19 @@ Class {
 { #category : #'event processing' }
 NCBDraggableAttribute >> processDrag: evt [
 
-	| d composite shape childRectangle parentRectangle padding |
-	shape := evt shape.
-	
+	| d childRectangle layer padding parentRectangle shape |
+	shape := evt shape parent.
+	layer := shape parent.
 	d := evt camera distanceFromPixelToSpace: evt step.
-
-	composite := shape parent.
-	evt shape: composite.
-
 	childRectangle := Rectangle
-		                  floatCenter: composite position + d
-		                  extent: composite extent.
-
+		                  floatCenter: shape position + d
+		                  extent: shape extent.
+	
 	padding := 2.5 asMargin.
 	childRectangle := padding expandRectangle: childRectangle.
-	parentRectangle := composite baseRectangle.
+	parentRectangle := layer baseRectangle.
 	(parentRectangle containsRect: childRectangle) ifTrue: [ 
-		composite translateBy: d ].
-
-	evt signalUpdate
+		shape translateBy: d ].
+		evt signalUpdate
+	
 ]
