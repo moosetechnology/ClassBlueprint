@@ -16,7 +16,6 @@ RSHighlightable >> withIncomingShapes [
 	self highlightShapes: [ :s | 
 		| listIncoming list |
 		list := s incomingLines collect: #yourself as: RSGroup.
-		list add: s.
 		listIncoming := s incomingLines
 			                collect: [ :aLine | aLine from ]
 			                as: RSGroup.
