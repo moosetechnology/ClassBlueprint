@@ -1,11 +1,11 @@
 Class {
-	#name : #NCBDraggableAttribute,
+	#name : #NCBDraggableCanvas,
 	#superclass : #NCBDraggable,
 	#category : #'Moose-Blueprint-Models'
 }
 
 { #category : #'event processing' }
-NCBDraggableAttribute >> processDrag: evt [
+NCBDraggableCanvas >> processDrag: evt [
 
 	| d childRectangle layer padding parentRectangle shape |
 	shape := evt shape parent.
@@ -14,12 +14,11 @@ NCBDraggableAttribute >> processDrag: evt [
 	childRectangle := Rectangle
 		                  floatCenter: shape position + d
 		                  extent: shape extent.
-	
+
 	padding := 2.5 asMargin.
 	childRectangle := padding expandRectangle: childRectangle.
 	parentRectangle := layer baseRectangle.
 	(parentRectangle containsRect: childRectangle) ifTrue: [ 
 		shape translateBy: d ].
-		evt signalUpdate
-	
+	evt signalUpdate
 ]

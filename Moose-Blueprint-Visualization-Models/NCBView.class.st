@@ -156,7 +156,7 @@ NCBView >> build [
 	        job currentValue: 90.
 	        canvas zoomToFit.
 	        super build.
-	canvas signalUpdate. ] asJob.
+	        canvas signalUpdate ] asJob.
 	canvas aaFast.
 	canvas inspectorContext: RSEmptyContextInteraction new.
 	self addCanvasInteractions.
@@ -575,16 +575,18 @@ NCBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth instanceSideWidth |
 	instanceSide := self instanceSide.
-	self setNodesOf: instanceSide withLayout: (RSHorizontalTreeLayout new verticalGap: 7).
-
+	self
+		setNodesOf: instanceSide
+		withLayout: (NCBHorizontalTreeLayout new verticalGap: 7).
 	secondLayer := (instanceSide as: RSGroup) asShapeFor: instanceSide.
-instanceSideWidth := (instanceSide collect: [ :each | each width])
+
+	instanceSideWidth := (instanceSide collect: [ :each | each width ])
 		                     sum.
 	"fix the width of the layers"
 	maxWidth := { 
 		            firstLayer width.
 		            instanceSideWidth.
-		            self thirdLayer width} max: [ :each | each ].
+		            self thirdLayer width } max: [ :each | each ].
 	secondLayer width: maxWidth.
 
 	"check if it is the biggest"
@@ -601,8 +603,7 @@ instanceSideWidth := (instanceSide collect: [ :each | each width])
 		             secondLayer.
 		             self fifthLayer } max: [ :each | each height ].
 	secondLayer height: maxHeight.
-instanceSide do: [ :each | 
-		each height: maxHeight].
+	instanceSide do: [ :each | each height: maxHeight ].
 	RSHorizontalLineLayout new
 		gapSize: 0;
 		on: secondLayer nodes.
@@ -612,10 +613,12 @@ instanceSide do: [ :each |
 ]
 
 { #category : #initialization }
-NCBView >> setNodesOf: object withLayout: aLayout [
+NCBView >> setNodesOf: layer withLayout: aLayout [
 
-	aLayout on: (object flatCollect: #nodes).
-	object do: [ :layer | layer padding: 30 ]
+	"aLayout on: (layer collect: #nodes)."
+	layer do: [ :shape |
+		aLayout on: shape nodes.
+		shape padding: 30 ]
 ]
 
 { #category : #initialization }

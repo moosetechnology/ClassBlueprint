@@ -101,7 +101,7 @@ NCBAbstractMethodModel >> addShapeInterractions [
 		when: RSMouseLeave
 		do: [ :evt | shape popupText: self name asString ].
 	self addHighlightableInteraction.
-	shape addInteraction: NCBDraggable new
+	shape addInteraction: NCBDraggableMethod new
 ]
 
 { #category : #'as yet unclassified' }
