@@ -212,5 +212,6 @@ NCBAttributeModel >> withProtectorsOf: aShape [
 		on: composite nodes.
 	composite adjustToChildren.
 	composite padding: 1.
+	composite nodes do: [ :each | each addInteraction: NCBDraggableAttribute new].
 	^ composite
 ]
