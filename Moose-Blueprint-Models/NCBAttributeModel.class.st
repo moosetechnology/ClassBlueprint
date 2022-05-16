@@ -181,9 +181,8 @@ NCBAttributeModel >> shape [
 		         height: self description height;
 		         width: self description width;
 		         popupText: self name asString.
-	"	shape when: RSMouseLeftClick do: [ self inspect ]."
-	shape := self withProtectorsOf: shape.
-	^ shape
+	self addHighlightableInteraction.
+	^ self withProtectorsOf: shape
 ]
 
 { #category : #accessing }
@@ -213,6 +212,5 @@ NCBAttributeModel >> withProtectorsOf: aShape [
 		on: composite nodes.
 	composite adjustToChildren.
 	composite padding: 1.
-	composite nodes do: [ :each | each addInteraction: NCBDraggableAttribute new].
 	^ composite
 ]
