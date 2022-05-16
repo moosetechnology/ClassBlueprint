@@ -7,18 +7,10 @@ Class {
 { #category : #'event processing' }
 NCBDraggableCanvas >> processDrag: evt [
 
-	| d childRectangle layer padding parentRectangle shape |
-	shape := evt shape parent.
-	layer := shape parent.
-	d := evt camera distanceFromPixelToSpace: evt step.
-	childRectangle := Rectangle
-		                  floatCenter: shape position + d
-		                  extent: shape extent.
+	| d canvas |
 
-	padding := 2.5 asMargin.
-	childRectangle := padding expandRectangle: childRectangle.
-	parentRectangle := layer baseRectangle.
-	(parentRectangle containsRect: childRectangle) ifTrue: [ 
-		shape translateBy: d ].
+	canvas := evt shape canvas.
+	d := evt camera distanceFromPixelToSpace: evt step.
+	canvas translateBy: d.
 	evt signalUpdate
 ]

@@ -96,13 +96,14 @@ NCBView >> accessorsLayer [
 NCBView >> addCanvasInteractions [
 
 	| methodShapes |
-
 	canvas when: RSMouseLeftClick do: [ :evt | 
-		methodShapes := self highlightedShapes. 
+		methodShapes := self highlightedShapes.
 		methodShapes do: [ :each | 
 			each model onClickHighlightableInteraction 
 				unhighlightRecordedShapes: evt ].
-		evt signalUpdate ]
+		evt signalUpdate ].
+
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -199,9 +200,10 @@ NCBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 	layer := RSComposite new
 		         model: aLayerModel;
 		         border: border.
-	layer addAll: (aGroup collect: [ :aModel | aModel shape.  ]).
+	layer addAll: (aGroup collect: [ :aModel | aModel shape ]).
 	layer popupText: aLayerModel name asString.
 	layer adjustToChildren.
+	layer addInteraction: NCBDraggableCanvas new.
 	self canvas add: layer
 ]
 
@@ -554,14 +556,13 @@ NCBView >> nestLayers [
 		          right } asGroup asShapeFor: { 
 			          left.
 			          right }.
-	self canvas
+	canvas
 		add: (layers
 				 border: border;
 				 yourself);
 		addInteraction: RSZoomableCanvasInteraction;
 		addInteraction: RSDraggableCanvasInteraction.
-
-	self canvas edges do: [ :each | each update ]
+	canvas edges do: [ :each | each update ]
 ]
 
 { #category : #'as yet unclassified' }
