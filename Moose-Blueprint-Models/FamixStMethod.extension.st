@@ -153,8 +153,8 @@ FamixStMethod >> isLazyInitializer [
 
 	| oInvoc |
 	oInvoc := self outgoingInvocations.
-	oInvoc size > 2 ifTrue: [ ^ false ].
-
+	oInvoc size ~= 2 ifTrue: [ ^ false ].
+	self name = 'citations' ifTrue:[1halt].
 	^ (oInvoc anySatisfy: [ :i1 | 
 		   self parentType attributes includes: i1 receiver ]) and: [ 
 		  oInvoc anySatisfy: [ :i2 | 

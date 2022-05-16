@@ -33,20 +33,17 @@ NCBAttributeModel >> accessors [
 { #category : #accessing }
 NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 
-	" check if its is an accessor first: to add the attribute to protecting:"
-
 	anAttributeAccessModel source isSetter ifTrue: [ 
 		self setter: anAttributeAccessModel source.
 		setter protecting: self ].
-	anAttributeAccessModel source isGetter
-		ifTrue: [ 
-			self getter: anAttributeAccessModel source.
-			getter protecting: self ]
-		ifFalse: [ 
-			anAttributeAccessModel source isLazyInitializer
-				ifTrue: [ self lazyInitializer: self.
-					lazyInitializer protecting: self]
-				ifFalse: [ attributeAccess add: anAttributeAccessModel ] ]
+	anAttributeAccessModel source isGetter ifTrue: [ 
+		self getter: anAttributeAccessModel source.
+		getter protecting: self ].
+	anAttributeAccessModel source isLazyInitializer ifTrue: [  
+	self lazyInitializer: anAttributeAccessModel source.
+	lazyInitializer protecting: self ]
+ifFalse: [ 
+		attributeAccess add: anAttributeAccessModel ].
 ]
 
 { #category : #accessing }
@@ -90,6 +87,29 @@ NCBAttributeModel >> hasGetter [
 NCBAttributeModel >> hasLazyInitializer [
 
 	^ lazyInitializer isNotNil
+]
+
+{ #category : #testing }
+NCBAttributeModel >> hasLazyInitializerWith: composite [
+
+	| lazyInitializerComposite protectedAttribute |
+	self hasLazyInitializer ifFalse: [ ^ nil ].
+	lazyInitializerComposite := RSComposite new
+		                            add: (self lazyInitializerShape
+				                             height: composite height - 8;
+				                             yourself);
+		                            model: self lazyInitializer;
+		                            height: composite height;
+		                            adjustToChildren;
+		                            yourself.
+	protectedAttribute := RSComposite new addAll: { 
+			                      lazyInitializerComposite.
+			                      composite } yourself.
+	RSHorizontalLineLayout new
+		gapSize: 1;
+		on: protectedAttribute nodes.
+	protectedAttribute padding: 1.
+	^ protectedAttribute
 ]
 
 { #category : #testing }
@@ -222,9 +242,6 @@ NCBAttributeModel >> shape [
 	self addHighlightableInteraction.
 	"	shape when: RSMouseLeftClick do: [ self inspect ]."
 	shape := self withProtectorsOf: shape.
-	shape children do: [ :each | 
-		each addInteraction: NCBDraggableAttribute new ].
-
 	^ shape
 ]
 
@@ -241,24 +258,18 @@ NCBAttributeModel >> type: aSymbol [
 { #category : #accessing }
 NCBAttributeModel >> withProtectorsOf: aShape [
 
-	| composite shapes |
+	| shapes notLazyAccessors |
 	shapes := { 
 		          self setterShape.
 		          aShape.
 		          self getterShape } reject: #isNil.
-	composite := RSComposite new
-		             addAll: shapes;
-		             model: shapes;
-		             yourself.
-	composite adjustToChildren.
-	composite padding: 1.
 	RSVerticalLineLayout new
 		gapSize: 1;
-		on: composite nodes.
-	self lazyInitializerShape ifNotNil: [  
-	composite addAll:  { self lazyInitializerShape . composite }.
-	RSHorizontalLineLayout new 
-		gapSize: 1;
-		on: { composite  } ].
-	^ composite
+		on: shapes.
+	notLazyAccessors := RSComposite new
+		                    addAll: shapes;
+		                    yourself.
+	notLazyAccessors padding: 1.
+	^ (self hasLazyInitializerWith: notLazyAccessors) ifNil: [ 
+		  notLazyAccessors ]
 ]

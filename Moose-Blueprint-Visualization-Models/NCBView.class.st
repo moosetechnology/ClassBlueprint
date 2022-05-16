@@ -341,7 +341,7 @@ NCBView >> doUnhighlight: evt [
 NCBView >> edgeBuilder [
 
 	^ NCBEdgeBuilder line
-		  shapes: (self canvas nodes flatCollect: #allChildren);
+		  shapes: ((self canvas nodes collect: #allChildren)flatCollect: [ :each | each select:#hasModel]);
 		  attachPoint: RSBorderAttachPoint new;
 		  yourself
 ]
@@ -488,6 +488,12 @@ NCBView >> instanceSide [
 { #category : #layers }
 NCBView >> internalsLayer [ 
 	^ internalsLayer
+]
+
+{ #category : #testing }
+NCBView >> isHighlightable [
+
+	^ false
 ]
 
 { #category : #initialization }

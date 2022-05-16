@@ -219,7 +219,7 @@ NCBAbstractMethodModel >> isAbstractBox [
 
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> isAccessor [
-	 (entity isGetter or: [ entity isSetter ]) ifTrue: [ ^ #accessor ].
+	 (entity isAccessor) ifTrue: [ ^ #accessor ].
 	^ nil
 ]
 

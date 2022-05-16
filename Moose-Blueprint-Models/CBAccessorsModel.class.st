@@ -93,13 +93,29 @@ CBAccessorsModel >> isGetter [
 ]
 
 { #category : #testing }
-CBAccessorsModel >> isLazyInitializer [ 
-	^ self entity isLazyInitializer 
+CBAccessorsModel >> isLazyInitializer [
+
+	^ entity isLazyInitializer
 ]
 
 { #category : #testing }
 CBAccessorsModel >> isSetter [ 
 	^ entity isSetter 
+]
+
+{ #category : #accessing }
+CBAccessorsModel >> lazyInitializerShape [
+
+	shape ifNil: [ 
+		shape := RSBox new
+			         model: self;
+			         width: 4;
+			         color: self color;
+			         withBorder;
+			         popupText: self name asString.
+		self addHighlightableInteraction.
+		shape addInteraction: NCBDraggable new ].
+	^ shape
 ]
 
 { #category : #accessing }
@@ -149,20 +165,24 @@ CBAccessorsModel >> protecting: anAttribte [
 
 { #category : #accessing }
 CBAccessorsModel >> shape [
-
-	shape := RSBox new
-		         model: self;
-		         height: 4;
-		         width: attribute description width;
-		         color: self color;
-		         withBorder;
-		         popupText: self name asString.
-	self addHighlightableInteraction.
-	shape addInteraction: NCBDraggable new.
+	entity isLazyInitializer ifTrue: [ ^ self lazyInitializerShape  ].
+	shape ifNil: [ 
+		shape := RSBox new
+			         model: self;
+			         height: 4;
+			         width: attribute description width;
+			         color: self color;
+			         withBorder;
+			         popupText: self name asString.
+		self addHighlightableInteraction.
+		shape addInteraction: NCBDraggable new ].
 	^ shape
 ]
 
 { #category : #accessing }
 CBAccessorsModel >> type [
-	^ self entity isGetter ifTrue: [ #isGetter ] ifFalse: [ #isSetter ]
+
+	self entity isGetter ifTrue: [ ^#isGetter ].
+	self entity isSetter  ifTrue: [ ^#isSetter ].
+	self entity isLazyInitializer ifTrue: [ ^#isLazyInitializer ]
 ]
