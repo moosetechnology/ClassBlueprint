@@ -41,7 +41,7 @@ FamixJavaMethod >> inSameClassAs: aMethod [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isAccessor [
 
-	^ self isSetter or: [ self isGetter ]
+	^ self isSetter or: [ self isGetter or: [ self isLazyInitializer ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -168,6 +168,20 @@ FamixJavaMethod >> isInvokedByExternalMethod [
 	^ (self incomingInvocations reject: [ :each | 
 		   each sender isInitializer ]) noneSatisfy: [ :each | 
 		  self parentType == each sender parentType ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isLazyInitializer [
+
+	| oInvoc |
+	oInvoc := self outgoingInvocations.
+	oInvoc size ~= 2 ifTrue: [ ^ false ].
+
+	^ (oInvoc anySatisfy: [ :i1 | 
+		   self parentType attributes includes: i1 receiver ]) and: [ 
+		  oInvoc anySatisfy: [ :i2 | 
+			  i2 receiver isAttribute not and: [ 
+				  i2 receiver isClass not and: [ i2 receiver isSelf ] ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

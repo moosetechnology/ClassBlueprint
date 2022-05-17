@@ -25,13 +25,15 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #isTestMethod forColor: Color pink;
 		addName: #isDeadMethod forColor: Color veryDarkGray;
 		addName: #isConstant forColor: Color lightGray;
-		addName: #isSetter forColor: Color magenta duller;
-		addName: #isGetter forColor: Color pink;
+		addName: #'isSetter or isGetter'
+		forColor: Color magenta duller duller slightlyWhiter;
+		addName: #isLazyInitializer forColor: Color orange;
 		addName: #isOther forColor: Color white;
 		addName: #Attribute forColor: Color blue;
 		addName: #'Attribute accessed by subclass(es) of this class'
 		forColor: Color green muchDarker duller;
-		addName: #'isAbstract and reimplemented in subclass(es)' forColor: nil;
+		addName: #'isAbstract and reimplemented in subclass(es)'
+		forColor: nil;
 		addName: #'Tested Method' forColor: nil;
 		addName: #'Cyclomatic Complexity' forColor: nil;
 		addName: #'Monomorphic Method' forColor: nil;

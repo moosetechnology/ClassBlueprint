@@ -93,6 +93,11 @@ CBAccessorsModel >> isGetter [
 ]
 
 { #category : #testing }
+CBAccessorsModel >> isLazyInitializer [ 
+	^ self entity isLazyInitializer 
+]
+
+{ #category : #testing }
 CBAccessorsModel >> isSetter [ 
 	^ entity isSetter 
 ]
@@ -158,5 +163,7 @@ CBAccessorsModel >> shape [
 
 { #category : #accessing }
 CBAccessorsModel >> type [
-	^ self entity isGetter ifTrue: [ #isGetter ] ifFalse: [ #isSetter ]
+
+	(self entity isPureGetter or: [ self entity isSetter ]) ifTrue: [ ^#'isSetter or isGetter' ].
+	self entity isLazyInitializer ifTrue: [ ^ #isLazyInitializer ]
 ]

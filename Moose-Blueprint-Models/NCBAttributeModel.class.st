@@ -21,8 +21,11 @@ NCBAttributeModel class >> newFrom: anEntity [
 ]
 
 { #category : #accessing }
-NCBAttributeModel >> accessors [ 
-	^ { getter . setter }
+NCBAttributeModel >> accessors [
+
+	^ { 
+		  getter.
+		  setter }
 ]
 
 { #category : #accessing }
@@ -31,7 +34,11 @@ NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 	anAttributeAccessModel source isSetter ifTrue: [ 
 		self setter: anAttributeAccessModel source.
 		setter protecting: self ].
-	anAttributeAccessModel source isGetter
+	anAttributeAccessModel source isGetter ifTrue: [ 
+		self getter: anAttributeAccessModel source.
+		getter protecting: self ].
+	(self getter isNil and: [ 
+		 anAttributeAccessModel source isLazyInitializer ])
 		ifTrue: [ 
 			self getter: anAttributeAccessModel source.
 			getter protecting: self ]

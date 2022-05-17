@@ -24,7 +24,8 @@ FamixStMethod >> inSameClassAs: aMethod [
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isAccessor [
-	^ self isSetter or: [ self isGetter  ]
+
+	^ self isSetter or: [ self isGetter ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -110,6 +111,16 @@ FamixStMethod >> isExternal [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isFlagMethod [ 
+	^ #flag: = self name
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isIfNil [
+	^ #ifNil: = self name
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isInitializer [
 
 	^ (('*initialize*' match: self protocol) or: [ 
@@ -139,6 +150,17 @@ FamixStMethod >> isInvokedByExternalMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isLazyInitializer [
+
+	| oInvoc |
+	oInvoc := self outgoingInvocations.
+	oInvoc size ~= 2 ifTrue: [ ^ false ].
+
+	^ (oInvoc anySatisfy: #isSelfInvocation) and: [ 
+		  (oInvoc anySatisfy: #isAttributeInvocation) and: [ self sourceText includesSubstring: ':=' ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isOnlyCalledExternally [
 
 	^ self incomingInvocations isNotEmpty and: [ 
@@ -150,6 +172,12 @@ FamixStMethod >> isOnlyCalledExternally [
 FamixStMethod >> isOnlyCalledInternally [
 
 	^ self isCalledInItsClass or: [ self isSubCalled or: [ self isSuperCalled ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isPureGetter [
+
+	^ #getter = self kind 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
