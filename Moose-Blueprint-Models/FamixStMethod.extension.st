@@ -81,13 +81,14 @@ FamixStMethod >> isDeadMethod [
 	| isDead isDeadBranch isNotTestMethod isNotInitializer isDeadAbstract |
 	isDead := self isDead.
 	isDeadBranch := self belongsToDeadBranch.
-	isNotTestMethod := self isTestMethod not.
+	isNotTestMethod := self parentType isTestCase not.
 	isNotInitializer := self isInitializer not.
 	isDeadAbstract := self isDeadAbstract.
-	^ self isAbstract ifTrue: [ ^ isDeadAbstract ] ifFalse: [  
-	 (isDead or: [ isDeadBranch ]) and: [ 
-		  isNotInitializer and: [ 
-			  isNotTestMethod ] ] ]
+	^ self isAbstract
+		  ifTrue: [ ^ isDeadAbstract ]
+		  ifFalse: [ 
+			  (isDead or: [ isDeadBranch ]) and: [ 
+				  isNotInitializer and: [ isNotTestMethod ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

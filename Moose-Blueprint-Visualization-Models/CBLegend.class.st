@@ -137,7 +137,7 @@ CBLegend class >> polymorphicShapeAssoc [
 
 { #category : #accessing }
 CBLegend class >> testedShape [
-
+" si la méthode est testée et que la méthode n'est pas appelée dans sa classe de test"
 	| composite box |
 	composite := RSComposite new
 		             size: 15;
