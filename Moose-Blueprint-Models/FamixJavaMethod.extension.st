@@ -241,7 +241,7 @@ FamixJavaMethod >> isSubCalledInternallyOnly [
 	(reimplementations flatCollect: [ :m | m incomingInvocations ]) 
 		ifEmpty: [ ^ false ].
 	^ (reimplementations flatCollect: [ :c | c methods ]) allSatisfy: [ 
-		  :m | m isCalledInternallyOnly ]
+		  :m | m isCalledInHierarchyOnly ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

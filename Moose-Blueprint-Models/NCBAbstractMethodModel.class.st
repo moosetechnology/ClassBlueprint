@@ -25,9 +25,9 @@ NCBAbstractMethodModel class >> abstractBox [
 				   color: Color black;
 				   yourself);
 		  height: 2.5;
-		model: self;
+		  model: self;
 		  width: 2.5;
-		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
+		  color: (MiNClassBlueprintPalette new colorAt: #'isAbstract and reimplemented in subclass(es)');
 		  yourself
 ]
 
@@ -43,13 +43,14 @@ NCBAbstractMethodModel >> abstractBox [
 
 	^ RSBox new
 		  border: (RSBorder new
-				   width: 0.5;
+				   width: 1;
 				   color: Color black;
 				   yourself);
-		model: self;
-		  height: 2.5;
-		  width: 2.5;
-		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
+		  model: self;
+		  height: 4;
+		  width: 4;
+		  color: (MiNClassBlueprintPalette new colorAt:
+				   #'isAbstract and reimplemented in subclass(es)');
 		  yourself
 ]
 
@@ -157,15 +158,15 @@ NCBAbstractMethodModel >> create [
 NCBAbstractMethodModel >> defaultShape [
 
 	| box |
-
 	box := self boxShape.
+
 	shape := box
 		         model: self;
 		         color: self description color;
 		         border: self description border;
 		         width: self description width;
 		         height: self description height.
-	
+
 	^ shape
 ]
 
@@ -200,21 +201,6 @@ NCBAbstractMethodModel >> isAbstractAndReimplemented [
 
 	^ self entity isAbstract and: [ 
 		  self entity isReimplemented ]
-]
-
-{ #category : #'as yet unclassified' }
-NCBAbstractMethodModel >> isAbstractBox [
-
-	^ RSBox new
-		  border: (RSBorder new
-				   width: 0.5;
-				   color: Color black;
-				   yourself);
-		  height: 2.5;
-		model: self;
-		  width: 2.5;
-		  color: (MiNClassBlueprintPalette new colorAt: #isAbstract);
-		  yourself
 ]
 
 { #category : #'as yet unclassified' }
@@ -358,11 +344,9 @@ NCBAbstractMethodModel >> shape [
 
 	" si la méthode est appelée dans une classe de test et que la méthode n'est pas appelée dans sa classe de test => testShape"
 
-	shape := (self isTested and: [ 
-		          self entity parentType isTestCase not ])
+	shape := (self isTested and: [ self entity parentType isTestCase not ])
 		         ifTrue: [ self testedShape ]
 		         ifFalse: [ self defaultShape ].
-
 	self addShapeInterractions.
 	^ shape
 ]
@@ -373,6 +357,7 @@ NCBAbstractMethodModel >> testedShape [
 	| box testingBox |
 	box := self boxShape.
 	testingBox := self testingBox.
+
 	shape := box
 		         model: self;
 		         color: self description color;
@@ -381,7 +366,7 @@ NCBAbstractMethodModel >> testedShape [
 		         height: self description height.
 	shape add: testingBox.
 	testingBox position:
-		0@ (testingBox height - shape height + shape border width)/2.
+		0 @ (testingBox height - shape height + shape border width) / 2.
 	^ shape
 ]
 

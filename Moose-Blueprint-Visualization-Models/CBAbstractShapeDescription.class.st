@@ -13,7 +13,7 @@ Class {
 { #category : #accessing }
 CBAbstractShapeDescription >> color [
 
-	^ MiNClassBlueprintPalette new colorAt: entityModel type 
+	^ MiNClassBlueprintPalette new colorAt: entityModel type
 ]
 
 { #category : #accessing }
