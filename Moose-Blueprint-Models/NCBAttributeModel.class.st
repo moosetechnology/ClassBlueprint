@@ -188,6 +188,7 @@ NCBAttributeModel >> shape [
 		         height: self description height;
 		         width: self description width;
 		         popupText: self name asString.
+
 	self addHighlightableInteraction.
 	^ self withProtectorsOf: shape
 ]

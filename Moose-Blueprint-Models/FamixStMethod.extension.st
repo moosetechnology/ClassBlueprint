@@ -36,17 +36,26 @@ FamixStMethod >> isApiAnnotated [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledExternally [
 
+	| inInvocSources |
+	inInvocSources := (self incomingInvocations collect: [ :each | 
+		                   each source ]) reject: [ :each | 
+		                  each parentType isTestCase ].
 
-	^ self incomingInvocations anySatisfy: [ :each | 
-		  each source parentType ~= self parentType ]
+	inInvocSources ifEmpty: [ ^ false ].
+	^ inInvocSources anySatisfy: [ :each | 
+		  each parentType ~= self parentType ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledInternallyOnly [
 
-	| incoInvocations |
-	incoInvocations := self incomingInvocations.
-	^ incoInvocations isNotEmpty and: [ incoInvocations allSatisfy: [ :i | i source parentType = self parentType] ] 
+	| incoInvocSources |
+	incoInvocSources := (self incomingInvocations collect: [ :each | 
+		                     each source ]) reject: [ :each | 
+		                    each parentType isTestCase ].
+	^ incoInvocSources isNotEmpty and: [ 
+		  incoInvocSources allSatisfy: [ :i | 
+			  i parentType = self parentType ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -102,10 +111,13 @@ FamixStMethod >> isExtending [
 FamixStMethod >> isExternal [
 
 	self isAbstract ifTrue: [ 
-		^self isDead
-			ifFalse: [ self isCalledExternally ]
-			ifTrue: [ self isSubCalledExternally ] ].
-	self isTestMethod ifTrue: [ ^ true ].
+		^ self isDead
+			  ifFalse: [ self isCalledExternally ]
+			  ifTrue: [ self isSubCalledExternally ] ].
+
+	(self isTestMethod or: [ self isTestExternalImplementation ]) 
+		ifTrue: [ ^ true ].
+
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
 	^ self isCalledExternally
 ]
@@ -135,8 +147,11 @@ FamixStMethod >> isInternal [
 
 	self isAbstract ifTrue: [ 
 		^ self isDead
-			  ifFalse: [ self isCalledInternallyOnly  ]
+			  ifFalse: [ self isCalledInternallyOnly ]
 			  ifTrue: [ self isSubCalledInternallyOnly ] ].
+	(self parentType isTestCase and: [ self isTestInternalImplementation ]) 
+		ifTrue: [ ^ true ].
+
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
 	^ self isCalledInternallyOnly
 ]
@@ -158,6 +173,13 @@ FamixStMethod >> isLazyInitializer [
 
 	^ (oInvoc anySatisfy: #isSelfInvocation) and: [ 
 		  (oInvoc anySatisfy: #isAttributeInvocation) and: [ self sourceText includesSubstring: ':=' ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isOnlyCalledByTestMethod [
+
+	^ ((self incomingInvocations collect: #source) allSatisfy: [ :each | 
+		   each isTestMethod and: [ each parentType = self parentType ] ]) or: [ self isTestInternal ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -219,10 +241,38 @@ FamixStMethod >> isSubCalledInternallyOnly [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isTestExternalImplementation [
+
+	" called fro"
+
+	self parentType isTestCase ifFalse: [ ^ false ].
+
+	^ self isCalledExternally
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isTestInternal [
+
+	^ #setUp = self name or: [ #tearDown = self name ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isTestInternalImplementation [
+
+	"theinconveince is that it might be called by another internal test implementation of another test class"
+
+	^ (((self incomingInvocations collect: [ :each | each source ]) 
+		    collect: [ :each | each parentType ]) reject: [ :each | 
+		   each isTestCase ]) allSatisfy: [ :each | each = self parentType ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isTestMethod [
 
-	^ ((self parentType superclassHierarchy collect: [ :each | each name ]) 
-		  includes: #TestAsserter) and: [ self name beginsWith: #test ]
+
+	^ self parentType isTestCase and: [ 
+		  (self name beginsWith: #test) and: [ 
+			  self name fifth isUppercase ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

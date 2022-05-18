@@ -69,17 +69,22 @@ FamixJavaMethod >> isCalledByInternals [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledExternally [
 
-
-	^ self incomingInvocations anySatisfy: [ :each | 
+	| inInvocSources |
+	inInvocSources := self incomingInvocations collect: #source.
+	^ inInvocSources anySatisfy: [ :each | 
 		  each source parentType ~= self parentType ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCalledInternallyOnly [
 
-	| incoInvocations |
-	incoInvocations := self incomingInvocations.
-	^ incoInvocations isNotEmpty and: [ incoInvocations allSatisfy: [ :i | i source parentType = self parentType] ] 
+	| incoInvocSources |
+	incoInvocSources := (self incomingInvocations collect: [ :each | 
+		                     each source ]) reject: [ :each | 
+		                    each isTestMethod ].
+	incoInvocSources ifEmpty: [ ^ true ].
+	^ incoInvocSources allSatisfy: [ :i | 
+		  i source parentType = self parentType ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

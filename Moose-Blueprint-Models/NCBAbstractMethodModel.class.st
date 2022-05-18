@@ -356,7 +356,8 @@ NCBAbstractMethodModel >> printOn: aStream [.
 { #category : #testing }
 NCBAbstractMethodModel >> shape [
 
-	shape := self isTested
+	shape := (self isTested and: [ 
+		          self entity isTestInternalImplementation not ])
 		         ifTrue: [ self testedShape ]
 		         ifFalse: [ self defaultShape ].
 	self addShapeInterractions.
@@ -387,7 +388,7 @@ NCBAbstractMethodModel >> testingBox [
 	^ RSBox new
 		  color: Color green;
 		  model: self class new;
-		  height: self description height / 4;
+		  height: 5.5;
 		  width: self description width - self description border width;
 		  border: (RSBorder new
 				   width: 1;

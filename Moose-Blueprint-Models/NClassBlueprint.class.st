@@ -232,7 +232,7 @@ NClassBlueprint >> connectTarget: aTarget withAll: sources [
 { #category : #building }
 NClassBlueprint >> create [
 
-	"the order is important"
+	"the order is important for instance: methods setUp and tearDown might not be called therefore considered dead however they are internals"
 
 	self initialize.
 	self initializeAcessors.
@@ -242,9 +242,9 @@ NClassBlueprint >> create [
 
 	self initializeClassMethods.
 	self initializeInitializers.
-	self initializeDeads.
 		self initializeExternals.
 	self initializeInternals.
+	self initializeDeads.
 
 	self makeConnections.
 	self attributeMethodTypes.
