@@ -61,6 +61,13 @@ FamixStMethod >> isApiAnnotated [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isCalledByTestClassesOnly [
+
+	^ ((self incomingInvocations collect: [ :each | each source ]) 
+		  collect: [ :each | each parentType ]) allSatisfy: [ :each | each isTestCase ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isCalledExternally [
 
 	| inInvocSources |
@@ -125,17 +132,20 @@ FamixStMethod >> isDeadAbstract [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadMethod [
 
-	| isDead isDeadBranch isNotTestMethod isNotInitializer isDeadAbstract |
+	| isDead isDeadBranch isNotTestMethod isNotInitializer isDeadAbstract calledByTestClassesOnly |
 	isDead := self isDead.
 	isDeadBranch := self belongsToDeadBranch.
 	isNotTestMethod := self parentType isTestCase not.
 	isNotInitializer := self isInitializer not.
 	isDeadAbstract := self isDeadAbstract.
+	calledByTestClassesOnly := isNotTestMethod and: [ 
+		                           self isCalledByTestClassesOnly ].
+
 	^ self isAbstract
 		  ifTrue: [ ^ isDeadAbstract ]
 		  ifFalse: [ 
-			  (isDead or: [ isDeadBranch ]) and: [ 
-				  isNotInitializer and: [ isNotTestMethod ] ] ]
+			  (isDead or: [ isDeadBranch ]) or: [ calledByTestClassesOnly and: [ 
+				  isNotInitializer  ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

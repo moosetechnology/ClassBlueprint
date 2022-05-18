@@ -25,7 +25,7 @@ NCBAttributeModel >> accessors [
 
 	^ { 
 		  getter.
-		  setter }
+		  setter } reject: #isNil
 ]
 
 { #category : #accessing }

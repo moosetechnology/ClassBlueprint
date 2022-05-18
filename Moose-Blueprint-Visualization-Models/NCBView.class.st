@@ -87,9 +87,10 @@ NCBView class >> maxWidth [
 	^ 30
 ]
 
-{ #category : #layers }
-NCBView >> accessorsLayer [ 
-	^ accessorsLayer
+{ #category : #accessing }
+NCBView >> accessors [
+
+	^ attributesLayer entities collect: [ :each | each accessors ]
 ]
 
 { #category : #adding }
@@ -109,6 +110,12 @@ NCBView >> addCanvasInteractions [
 { #category : #'as yet unclassified' }
 NCBView >> allLayers [ 
 	^ { deadsLayer . deadAttributesLayer . initializersLayer . externalsLayer . internalsLayer . superAttributesLayer . attributesLayer . classMethodsLayer . classVarsLayer }
+]
+
+{ #category : #'as yet unclassified' }
+NCBView >> allMethodsEntities [
+ 
+	^ self methodsLayers flatCollect: [ :each | each entities ]                     
 ]
 
 { #category : #'as yet unclassified' }
@@ -454,7 +461,6 @@ NCBView >> initialize [
 	initializersLayer := CBInitializersLayerModel new.
 	externalsLayer := CBExternalsLayerModel new.
 	internalsLayer := CBInternalsLayerModel new.
-	accessorsLayer := CBAccessorsLayerModel new.
 	attributesLayer := CBAttributesLayerModel new.
 	superAttributesLayer := NCBSuperAttributesLayer new.
 	deadsLayer := NCBDeadMethodsLayerModel new.
@@ -523,6 +529,11 @@ NCBView >> methodShapes [
 
 
 	^ methodShapes
+]
+
+{ #category : #'as yet unclassified' }
+NCBView >> methodsLayers [ 
+	^ { classMethodsLayer . initializersLayer . externalsLayer . internalsLayer . deadsLayer  }
 ]
 
 { #category : #accessing }
