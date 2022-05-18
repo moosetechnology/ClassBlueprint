@@ -82,6 +82,7 @@ FamixJavaMethod >> isCalledInternallyOnly [
 	incoInvocSources := (self incomingInvocations collect: [ :each | 
 		                     each source ]) reject: [ :each | 
 		                    each isTestMethod ].
+
 	incoInvocSources ifEmpty: [ ^ true ].
 	^ incoInvocSources allSatisfy: [ :i | 
 		  i source parentType = self parentType ]

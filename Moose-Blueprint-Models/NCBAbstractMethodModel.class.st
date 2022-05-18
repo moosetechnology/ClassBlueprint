@@ -360,6 +360,7 @@ NCBAbstractMethodModel >> shape [
 		          self entity isTestInternalImplementation not ])
 		         ifTrue: [ self testedShape ]
 		         ifFalse: [ self defaultShape ].
+
 	self addShapeInterractions.
 	^ shape
 ]

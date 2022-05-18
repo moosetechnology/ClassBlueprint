@@ -50,9 +50,11 @@ FamixStMethod >> isCalledExternally [
 FamixStMethod >> isCalledInternallyOnly [
 
 	| incoInvocSources |
+
 	incoInvocSources := (self incomingInvocations collect: [ :each | 
 		                     each source ]) reject: [ :each | 
 		                    each parentType isTestCase ].
+
 	^ incoInvocSources isNotEmpty and: [ 
 		  incoInvocSources allSatisfy: [ :i | 
 			  i parentType = self parentType ] ]
@@ -149,7 +151,8 @@ FamixStMethod >> isInternal [
 		^ self isDead
 			  ifFalse: [ self isCalledInternallyOnly ]
 			  ifTrue: [ self isSubCalledInternallyOnly ] ].
-	(self parentType isTestCase and: [ self isTestInternalImplementation ]) 
+
+	self isTestInternalImplementation 
 		ifTrue: [ ^ true ].
 
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
@@ -243,11 +246,16 @@ FamixStMethod >> isSubCalledInternallyOnly [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isTestExternalImplementation [
 
-	" called fro"
+	" Here we do not care if it is called by other test methods "
 
+	| incoInvocSources |
 	self parentType isTestCase ifFalse: [ ^ false ].
+	incoInvocSources := self incomingInvocations collect: [ :each | 
+		                    each source ].
 
-	^ self isCalledExternally
+	^ incoInvocSources isNotEmpty and: [ 
+		  incoInvocSources anySatisfy: [ :i | 
+			  i parentType ~= self parentType ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -261,9 +269,14 @@ FamixStMethod >> isTestInternalImplementation [
 
 	"theinconveince is that it might be called by another internal test implementation of another test class"
 
-	^ (((self incomingInvocations collect: [ :each | each source ]) 
-		    collect: [ :each | each parentType ]) reject: [ :each | 
-		   each isTestCase ]) allSatisfy: [ :each | each = self parentType ]
+	| incoInvocSources |
+	self parentType isTestCase ifFalse: [ ^false ].
+	incoInvocSources := self incomingInvocations collect: [ :each | 
+		                    each source ].
+
+	^ (incoInvocSources isNotEmpty and: [ 
+		   incoInvocSources allSatisfy: [ :i | 
+			   i parentType = self parentType ] ]) or: [ self isTestInternal ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
