@@ -186,9 +186,8 @@ NCBAttributeModel >> shape [
 		         border: self description border;
 		         color: self description color;
 		         height: self description height;
-		         width: self description width;
-		         popupText: self name asString.
-
+		         width: self description width.
+	shape addInteraction: CBLayersPopup new.
 	self addHighlightableInteraction.
 	^ self withProtectorsOf: shape
 ]

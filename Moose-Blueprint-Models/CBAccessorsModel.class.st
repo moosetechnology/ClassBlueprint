@@ -155,8 +155,8 @@ CBAccessorsModel >> shape [
 		         height: 4;
 		         width: attribute description width;
 		         color: self color;
-		         withBorder;
-		         popupText: self name asString.
+		         withBorder.
+	shape addInteraction: CBLayersPopup new.
 	self addHighlightableInteraction.
 	^ shape
 ]

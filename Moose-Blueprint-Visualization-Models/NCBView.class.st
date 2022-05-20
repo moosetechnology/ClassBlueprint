@@ -208,9 +208,9 @@ NCBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 		         model: aLayerModel;
 		         border: border.
 	layer addAll: (aGroup collect: [ :aModel | aModel shape ]).
-	layer popupText: aLayerModel name asString.
 	layer adjustToChildren.
 	layer addInteraction: NCBDraggableCanvas new.
+	layer addInteraction: CBLayersPopup new.
 	self canvas add: layer
 ]
 
@@ -256,7 +256,9 @@ NCBView >> classSideMethods [
 	| shape |
 	shape := self canvas shapeFromModel: classMethodsLayer.
 
-	RSTreeLayout new horizontalGap: self gapSize; on: shape nodes.
+	RSTreeLayout new
+		horizontalGap: self gapSize;
+		on: shape nodes.
 	shape padding: 30.
 	^ shape
 ]
@@ -266,7 +268,6 @@ NCBView >> classSideVars [
 
 	| shape |
 	shape := self canvas shapeFromModel: classVarsLayer.
-
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
 ]
@@ -281,7 +282,6 @@ NCBView >> deadAttributesComposite [
 
 	| shape |
 	shape := self canvas shapeFromModel: deadAttributesLayer.
-
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
 ]
@@ -312,7 +312,9 @@ NCBView >> deadMethodsComposite [
 		doNotUseProgressBar;
 		on: shapes."
 
-	RSTreeLayout new horizontalGap: self gapSize; on: shape nodes.
+	RSTreeLayout new
+		horizontalGap: self gapSize;
+		on: shape nodes.
 	"gapSize: 5;
 		alignTop;"
 	shape adjustToChildren.
@@ -489,8 +491,10 @@ NCBView >> instSide [
 ]
 
 { #category : #'accessing - parallel hierarchy' }
-NCBView >> instanceSide [ 
-	^ self instSide collect: [ :each | self canvas shapeFromModel: each ]
+NCBView >> instanceSide [
+
+	^ self instSide collect: [ :each | 
+		  self canvas shapeFromModel: each ]
 ]
 
 { #category : #layers }
@@ -507,14 +511,14 @@ NCBView >> layersEntities [
 		          (externalsLayer entities: classModel externals).
 		          (internalsLayer entities: classModel internals).
 		          (deadsLayer entities: classModel deadMethods).
-		         " (accessorsLayer entities: classModel accessors)."
+		          " (accessorsLayer entities: classModel accessors)."
 		          (attributesLayer entities: classModel attributes).
-		          (deadAttributesLayer entities:
-			           classModel deadAttributes).
+		          (deadAttributesLayer entities: classModel deadAttributes).
 		          (classVarsLayer entities: classModel classVars).
-		          (classMethodsLayer entities: classModel classMethods) .
+		          (classMethodsLayer entities: classModel classMethods).
 		          (superAttributesLayer entities: classModel superAttributes) }
 		          asOrderedCollection.
+
 	^ layers
 ]
 
