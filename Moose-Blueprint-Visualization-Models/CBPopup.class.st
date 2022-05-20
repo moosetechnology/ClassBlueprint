@@ -4,17 +4,18 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CBPopup >> createCodeMorph: aMethod [
 
-	| presenter window className smalltalkClass |
+	| presenter window className smalltalkClass maxX maxY currentExtent finalX finalY |
+	maxX := 450.
+	maxY := 850.
 	className := aMethod parentType name.
 	smalltalkClass := Smalltalk environment classNamed: className.
 	aMethod isClassSide ifTrue: [ 
 		smalltalkClass := smalltalkClass classSide ].
 	presenter := SpCodePresenter new
-		             text: aMethod sourceText;"
-		             withoutLineNumbers;"
+		             text: aMethod sourceText;
 		             beForMethod: smalltalkClass >> aMethod name asSymbol;
 		             beEditable;
 		             yourself.
@@ -24,9 +25,10 @@ CBPopup >> createCodeMorph: aMethod [
 		borderColor: Color black;
 		borderWidth: 1;
 		scrollbarsShowNever;
-		position: 0 @ 0;
-		extent: presenter adapter widget textArea extent.
-
+		position: 0 @ 0.
+	currentExtent := presenter adapter widget textArea extent.
+	finalY := currentExtent y min: maxY.
+	presenter adapter widget extent: maxX @ finalY.
 	^ presenter adapter widget
 ]
 
