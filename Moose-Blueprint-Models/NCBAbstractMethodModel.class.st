@@ -186,9 +186,10 @@ NCBAbstractMethodModel >> invocations: anObject [
 ]
 
 { #category : #'as yet unclassified' }
-NCBAbstractMethodModel >> isAbstract [ 
+NCBAbstractMethodModel >> isAbstract [
 
-	entity isAbstract ifTrue: [ ^ #isAbstract ].
+	(entity isAbstract and: [ self entity isDeadAbstract not ]) ifTrue: [ 
+		^ #isAbstract ].
 	^ nil
 ]
 
@@ -343,6 +344,7 @@ NCBAbstractMethodModel >> shape [
 	shape := (self isTested and: [ self entity parentType isTestCase not ])
 		         ifTrue: [ self testedShape ]
 		         ifFalse: [ self defaultShape ].
+	shape when: RSMouseClick do:[ self inspect].
 	self addShapeInterractions.
 	^ shape
 ]
