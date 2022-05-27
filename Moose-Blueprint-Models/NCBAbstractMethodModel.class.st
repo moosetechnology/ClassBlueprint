@@ -344,7 +344,7 @@ NCBAbstractMethodModel >> shape [
 	shape := (self isTested and: [ self entity parentType isTestCase not ])
 		         ifTrue: [ self testedShape ]
 		         ifFalse: [ self defaultShape ].
-	shape when: RSMouseClick do:[ self inspect].
+
 	self addShapeInterractions.
 	^ shape
 ]
