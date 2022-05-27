@@ -41,8 +41,8 @@ NCBAttributeDescription >> height [
 { #category : #operations }
 NCBAttributeDescription >> initializeSize [
 
-	height := self numberOfInternalAccesses + NCBView defaultBoxesHeight.
-	width := self numberOfHierarchyAcceses + NCBView defaultBoxesWidth 
+	height := (self numberOfInternalAccesses * self scale) + NCBView defaultBoxesHeight.
+	width := (self numberOfHierarchyAcceses * self scale) + NCBView defaultBoxesWidth
 ]
 
 { #category : #operations }
@@ -97,6 +97,11 @@ NCBAttributeDescription >> numberOfInternalAccessesFrom: aFamixStClass [
 NCBAttributeDescription >> resetWithClass: aFamixStClass [
 
 	self initializeSizeFrom: aFamixStClass 
+]
+
+{ #category : #accessing }
+NCBAttributeDescription >> scale [ 
+	^ 2
 ]
 
 { #category : #accessing }
