@@ -41,8 +41,8 @@ FamixStMethod >> isAbstractCalledExternally [
 
 	| inInvocSources hierarchy |
 	inInvocSources := (self incomingInvocations collect: [ :each | 
-		                   each source ]) reject: [ :each | 
-		                  each parentType isTestCase ].
+		                   each source ])." reject: [ :each | 
+		                  each parentType isTestCase ]."
 	hierarchy := self hierarchyOfClasses.
 	inInvocSources ifEmpty: [ ^ false ].
 	^ inInvocSources anySatisfy: [ :each | 
@@ -71,9 +71,9 @@ FamixStMethod >> isCalledByTestClassesOnly [
 FamixStMethod >> isCalledExternally [
 
 	| inInvocSources |
-	inInvocSources := (self incomingInvocations collect: [ :each | 
-		                   each source ]) reject: [ :each | 
-		                  each parentType isTestCase ].
+	inInvocSources := self incomingInvocations collect: [ :each | 
+		                  each source ]. "reject: [ :each | 
+		                  each parentType isTestCase ]."
 
 	inInvocSources ifEmpty: [ ^ false ].
 	^ inInvocSources anySatisfy: [ :each | 
@@ -87,8 +87,8 @@ FamixStMethod >> isCalledInHierarchyOnly [
 
 	| hierarchy inInvocSources classesCalling |
 	inInvocSources := (self incomingInvocations collect: [ :each | 
-		                   each source ]) reject: [ :each | 
-		                  each parentType isTestCase ].
+		                   each source ]) "reject: [ :each | 
+		                  each parentType isTestCase ]".
 	classesCalling := inInvocSources collect: [ :each | each parentType ].
 
 	classesCalling ifEmpty: [ ^ false ].
@@ -101,10 +101,9 @@ FamixStMethod >> isCalledInHierarchyOnly [
 FamixStMethod >> isCalledInternallyOnly [
 
 	| incoInvocSources |
-
 	incoInvocSources := (self incomingInvocations collect: [ :each | 
-		                     each source ]) reject: [ :each | 
-		                    each parentType isTestCase ].
+		                     each source ]) "reject: [ :each | 
+		                    each parentType isTestCase ]".
 
 	^ incoInvocSources isNotEmpty and: [ 
 		  incoInvocSources allSatisfy: [ :i | 
@@ -132,21 +131,22 @@ FamixStMethod >> isDeadAbstract [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadMethod [
 
-	| isDead isDeadBranch isNotTestMethod isInitializer isDeadAbstract calledByTestClassesOnly |
+	| isDead isDeadBranch isTestMethod isInitializer isDeadAbstract |
 	isDead := self isDead.
 	isDeadBranch := self belongsToDeadBranch.
-	isNotTestMethod := self parentType isTestCase not.
+	isTestMethod := self parentType isTestCase.
 	isInitializer := self isInitializer.
 	isDeadAbstract := self isDeadAbstract.
-	calledByTestClassesOnly := isNotTestMethod and: [ 
-		                           self isCalledByTestClassesOnly ].
-	self isInternal ifTrue: [ ^false ].
+	"calledByTestClassesOnly := isTestMethod not and: [ 
+		                           self isCalledByTestClassesOnly ]."
+
+	self isTestCaseMethod ifTrue: [ ^ false ].
 
 	^ self isAbstract
 		  ifTrue: [ ^ isDeadAbstract ]
 		  ifFalse: [ 
 			  isInitializer ifTrue: [ ^ false ].
-			  (isDead or: [ isDeadBranch ]) or: [ calledByTestClassesOnly ] ]
+			  isDead or: [ "or: [ calledByTestClassesOnly ]" isDeadBranch ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -205,7 +205,7 @@ FamixStMethod >> isInternal [
 
 	"For the method to be internal: it has to be called internally 
 	and not by an initializer method. And is not an initializer method"
-	
+
 	self isAbstract ifTrue: [ 
 		^ self isDead
 			  ifFalse: [ self isCalledInHierarchyOnly ]
@@ -298,6 +298,11 @@ FamixStMethod >> isSubCalledInternallyOnly [
 	redefinitions ifEmpty: [ ^false ].
 
 	^ redefinitions allSatisfy: [ :m | m isCalledInHierarchyOnly ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isTestCaseMethod [ 
+	^ self isTestMethod or: [ self isTestInternal or: [ self isTestExternalImplementation or: [ self isTestInternalImplementation  ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
