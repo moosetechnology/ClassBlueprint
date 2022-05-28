@@ -346,7 +346,8 @@ NClassBlueprint >> initializeAttributes [
 { #category : #initialization }
 NClassBlueprint >> initializeClassMethods [
 
-	classMethods := self notClassifiedMethods select: [ :each | each isClassSide ].
+	classMethods := self notClassifiedMethods select: [ :each | 
+		                each isClassSide ].
 
 	classMethods ifEmpty: [ ^ {  } ].
 	classMethods := (classMethods collect: [ :each | 
@@ -507,6 +508,7 @@ NClassBlueprint >> notClassifiedMethods [
 	| alreadyClassified |
 	alreadyClassified := self methodModels collect: [ :aMethod | 
 		                     aMethod entity ].
+	
 	^ (entity methods reject: [ :each | alreadyClassified includes: each ]) 
 		  reject: #isAccessor
 ]

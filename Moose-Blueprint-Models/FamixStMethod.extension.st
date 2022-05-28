@@ -146,7 +146,7 @@ FamixStMethod >> isDeadMethod [
 		  ifTrue: [ ^ isDeadAbstract ]
 		  ifFalse: [ 
 			  isInitializer ifTrue: [ ^ false ].
-			  isDead or: [ "or: [ calledByTestClassesOnly ]" isDeadBranch ] ]
+			   "or: [ calledByTestClassesOnly ]" isDeadBranch ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
