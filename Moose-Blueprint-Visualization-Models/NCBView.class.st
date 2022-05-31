@@ -109,6 +109,7 @@ NCBView >> addCanvasInteractions [
 
 { #category : #'as yet unclassified' }
 NCBView >> allLayers [ 
+
 	^ { deadsLayer . deadAttributesLayer . initializersLayer . externalsLayer . internalsLayer . superAttributesLayer . attributesLayer . classMethodsLayer . classVarsLayer }
 ]
 
@@ -390,11 +391,8 @@ NCBView >> fifthLayer [
 		             fifthLayer } max: [ :each | each height ].
 
 	fifthLayer height: maxHeight.
+	self fixHeightOf: middleAttributeSide with: maxHeight.
 
-	fifthLayer height
-	= (middleAttributeSide sum: [ :each | each height ]) ifFalse: [ 
-		middleAttributeSide do: [ :each | each nodes ifNotEmpty: [  
-			each height: each height + maxHeight / fifthLayer nodes size ] ]] .
 
 	"set Width"
 	maxWidth := { 
@@ -419,6 +417,17 @@ NCBView >> firstLayer [
 		firstLayer := self classSideMethods padding: 30 ].
 
 	^ firstLayer
+]
+
+{ #category : #'as yet unclassified' }
+NCBView >> fixHeightOf: aMiddleAttributeSide with: maxHeight [
+
+	| superAtt att |
+	superAtt := aMiddleAttributeSide first.
+	att := aMiddleAttributeSide second.
+	fifthLayer height
+	= (aMiddleAttributeSide sum: [ :each | each height ]) ifFalse: [ 
+		superAtt children isEmpty ifTrue: [ superAtt height: 30. att height: maxHeight - 30 ] ifFalse: [ aMiddleAttributeSide do: [ :each | each height: each height + maxHeight / fifthLayer nodes size ] ] ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -690,7 +699,6 @@ NCBView >> superAttributesComposite [
 	| shape |
 	shape := self canvas shapeFromModel: superAttributesLayer.
 	RSVerticalLineLayout new on: shape nodes.
-		shape height: 5.
 	^ shape
 ]
 
