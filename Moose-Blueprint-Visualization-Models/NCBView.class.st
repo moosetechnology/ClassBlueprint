@@ -127,9 +127,8 @@ NCBView >> allShapes [
 { #category : #'as yet unclassified' }
 NCBView >> attSide [
 
-	^ { 
-		  superAttributesLayer.
-		  attributesLayer } asOrderedCollection 
+	^ { self superAttributesComposite .
+		  self attributesComposite } asOrderedCollection 
 ]
 
 { #category : #accessing }
@@ -141,6 +140,14 @@ NCBView >> attributes [
 		  attributesLayer.
 		  classVarsLayer } collect: [ :each | 
 		  self canvas shapeFromModel: each ]
+]
+
+{ #category : #'as yet unclassified' }
+NCBView >> attributesComposite [ 
+		| shape |
+	shape := self canvas shapeFromModel: attributesLayer.
+	RSVerticalLineLayout new on: shape nodes.
+	^ shape
 ]
 
 { #category : #layers }
@@ -211,14 +218,16 @@ NCBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 	layer adjustToChildren.
 	layer addInteraction: NCBDraggableCanvas new.
 	layer addInteraction: CBLayersPopup new.
-	self canvas add: layer
+	self canvas add: layer.
+
 ]
 
 { #category : #shapes }
 NCBView >> buildLayers [
 
 	self layersEntities do: [ :aLayerModel | 
-		self buildLayerNamed: aLayerModel withEntities: aLayerModel entities ]
+		self buildLayerNamed: aLayerModel withEntities: aLayerModel entities ].
+	
 ]
 
 { #category : #building }
@@ -305,18 +314,10 @@ NCBView >> deadMethodsComposite [
 
 	| shape |
 	shape := self canvas shapeFromModel: deadsLayer.
-	"shapes := shape nodes copy.
-	layout := RSForceBasedLayout new.
-	layout charge: -50.
-	layout
-		doNotUseProgressBar;
-		on: shapes."
 
 	RSTreeLayout new
 		horizontalGap: self gapSize;
 		on: shape nodes.
-	"gapSize: 5;
-		alignTop;"
 	shape adjustToChildren.
 	^ shape
 ]
@@ -382,15 +383,18 @@ NCBView >> fifthLayer [
 	self setNodesOf: middleAttributeSide withLayout: RSVerticalLineLayout.
 	fifthLayer := (middleAttributeSide as: RSGroup) asShapeFor:
 		              middleAttributeSide.
+
 	"Adjust the height of the fifth layer"
 	maxHeight := { 
 		             secondLayer.
 		             fifthLayer } max: [ :each | each height ].
+
 	fifthLayer height: maxHeight.
+
 	fifthLayer height
 	= (middleAttributeSide sum: [ :each | each height ]) ifFalse: [ 
-		middleAttributeSide do: [ :each | 
-			each height: each height + maxHeight / fifthLayer nodes size ] ].
+		middleAttributeSide do: [ :each | each nodes ifNotEmpty: [  
+			each height: each height + maxHeight / fifthLayer nodes size ] ]] .
 
 	"set Width"
 	maxWidth := { 
@@ -405,7 +409,7 @@ NCBView >> fifthLayer [
 		on: (middleAttributeSide as: RSGroup).
 
 	fifthLayer adjustToChildren.
-	^ fifthLayer
+	^ fifthLayer 
 ]
 
 { #category : #composite }
@@ -493,8 +497,11 @@ NCBView >> instSide [
 { #category : #'accessing - parallel hierarchy' }
 NCBView >> instanceSide [
 
-	^ self instSide collect: [ :each | 
-		  self canvas shapeFromModel: each ]
+	| instanceSide |
+	instanceSide := self instSide collect: [ :each | 
+		  self canvas shapeFromModel: each ].
+	instanceSide do: [ :each | each height: 10 ]. 
+	^ instanceSide 
 ]
 
 { #category : #layers }
@@ -537,12 +544,15 @@ NCBView >> methodShapes [
 
 { #category : #'as yet unclassified' }
 NCBView >> methodsLayers [ 
+
 	^ { classMethodsLayer . initializersLayer . externalsLayer . internalsLayer . deadsLayer  }
 ]
 
-{ #category : #accessing }
-NCBView >> middleAttributeSide [ 
-	^ self attSide collect: [ :each | self canvas shapeFromModel: each ]
+{ #category : #'as yet unclassified' }
+NCBView >> middleAttributeSide [
+
+	^ { self superAttributesComposite .
+		  self attributesComposite } asOrderedCollection 
 ]
 
 { #category : #shapes }
@@ -632,15 +642,14 @@ NCBView >> secondLayer [
 NCBView >> setNodesOf: layer withLayout: aLayout [
 
 	"aLayout on: (layer collect: #nodes)."
-	layer do: [ :shape |
-		aLayout on: shape nodes.
-		shape padding: 30 ]
+	layer do: [ :shape | aLayout on: shape nodes. shape padding: 20 ]
 ]
 
 { #category : #initialization }
 NCBView >> setSize: dict [
 
 	| maxWidth |
+
 	maxWidth := dict values max: [ :each | each width ].
 	dict valuesDo: [ :layer | layer width: maxWidth ].
 
@@ -670,11 +679,19 @@ NCBView >> setSize: dict [
 { #category : #'as yet unclassified' }
 NCBView >> sixthLayer [
 
-
 	sixthLayer ifNil: [ sixthLayer := self canvas shapeFromModel: deadAttributesLayer.
 	RSVerticalLineLayout new on: sixthLayer nodes.
 	sixthLayer padding: 10 ].
 	^ sixthLayer
+]
+
+{ #category : #'as yet unclassified' }
+NCBView >> superAttributesComposite [ 
+	| shape |
+	shape := self canvas shapeFromModel: superAttributesLayer.
+	RSVerticalLineLayout new on: shape nodes.
+		shape height: 5.
+	^ shape
 ]
 
 { #category : #accessing }
