@@ -33,7 +33,7 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #'Attribute accessed by subclass(es) of this class'
 		forColor: Color green muchDarker duller;
 		addName: #'isAbstract and reimplemented in subclass(es)'
-		forColor: Color palePeach;
+		forColor: nil;
 		addName: #'Tested Method' forColor: nil;
 		addName: #'Cyclomatic Complexity' forColor: nil;
 		addName: #'Monomorphic Method' forColor: nil;

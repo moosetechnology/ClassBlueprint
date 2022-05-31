@@ -47,8 +47,7 @@ NCBAbstractMethodModel >> abstractBox [
 				   color: Color black;
 				   yourself);
 		  model: self;
-		  height: 4;
-		  width: 4;
+		size: 2;
 		  color: (MiNClassBlueprintPalette new colorAt:
 				   #'isAbstract and reimplemented in subclass(es)');
 		  yourself

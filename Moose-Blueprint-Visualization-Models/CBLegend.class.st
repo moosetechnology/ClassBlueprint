@@ -28,7 +28,7 @@ CBLegend class >> abstractMethodUsedInSubclassDescription [
 		             add: (RSBox new
 				              withBorder;
 				              color:
-					              (MiNClassBlueprintPalette new colorAt: #'isAbstract and reimplemented in subclass(es)');
+					              (Color palePeach);
 				              size: 5;
 				              yourself);
 		             yourself.
