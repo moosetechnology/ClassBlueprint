@@ -124,8 +124,7 @@ NCBAttributeModel >> internalAccesses [
 
 { #category : #testing }
 NCBAttributeModel >> isDead [
-^ ((self entity incomingAccesses collect: #source) removeAll: { self accessors }) isEmpty
-	 and: [ self accessors allSatisfy: #isDead ]
+^ self entity isDead
 ]
 
 { #category : #accessing }

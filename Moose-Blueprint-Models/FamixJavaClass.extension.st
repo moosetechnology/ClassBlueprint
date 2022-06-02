@@ -14,7 +14,16 @@ FamixJavaClass >> blueprint [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaClass >> isObjectClass [
+FamixJavaClass >> isAbstract [
+
+	<FMProperty: #isAbstract type: #Boolean>
+	<generated>
+	<FMComment: 'Entity can be declared abstract'>
+	^ isAbstract ifNil: [ false ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaClass >> isObjectClass [ 
 	^ self name = 'Object'
 ]
 
@@ -32,4 +41,13 @@ FamixJavaClass >> isPojo [
 
 	^ implementsSerializable and: [ 
 		  hasConstructor and: [ hasAllAccessors ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaClass >> isTestCase [
+	<FMProperty: #isTestCase type: #Boolean>
+	<derived>
+	<FMComment: 'True if the method is considered as a Java test'>
+	self allSuperclassesDo: [ :each | each name = 'TestCase' ifTrue: [ ^ true ] ].
+	^ self name = 'TestCase' 
 ]

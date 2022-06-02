@@ -252,12 +252,6 @@ FamixStMethod >> isOnlyCalledExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isOnlyCalledInternally [
-
-	^ self isCalledInItsClass or: [ self isSubCalled or: [ self isSuperCalled ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isPureGetter [
 
 	^ #getter = self kind 

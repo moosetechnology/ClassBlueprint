@@ -320,10 +320,11 @@ NCBAbstractMethodModel >> openInBrowser [
 	| class |
 	class := Smalltalk environment classNamed:
 		         self entity parentType name.
+	class
+		ifNil: [ ^ self entity inspect ].
 	self entity isClassSide
 		ifTrue: [ class := class classSide ].
 	class
-		ifNil: [ self entity inspect ]
 		ifNotNil: [ (class >> self entity name asSymbol) browse ]
 ]
 

@@ -1,9 +1,13 @@
 Extension { #name : #FamixJavaAttribute }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> hasAccessors [
+FamixJavaAttribute >> accessors [
+	^ (self incomingAccesses collectAsSet: [ :each | each source ]) select: [ :each | each isGetter or: [ each isSetter or: [ each isLazyInitializer ] ] ] 
+]
 
-	^ self accessors isNotEmpty
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaAttribute >> hasAccessors [ 
+	^ self accessors isNotEmpty 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -21,25 +25,28 @@ FamixJavaAttribute >> hasDirectAccess [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> isCalledIn: aFamixClass [
+FamixJavaAttribute >> isCalledIn: aFJClass [
 
 	^ ((self incomingAccesses collect: #source) select: [ :each | 
-		  each parentType = aFamixClass ]) isNotEmpty 
+		   each parentType = aFJClass ]) isNotEmpty
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaAttribute >> isDead [
 
-	| isNotAccessed |
-	isNotAccessed := self hasDirectAccess not and: [ 
-		                 self hasAccessorsAccess not and: [ 
-			                 self isClassSide not ] ].
-
-	^ isNotAccessed
-	"	self parentType isPojo ifFalse: [ ^ isNotAccessed ]"
+	" if it is only accessed by accessors and its accessors are not called"
+^ ((self incomingAccesses collectAsSet: #source) = self accessors ) 
+	 and: [ self accessors allSatisfy: #isDead ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaAttribute >> isSelf [ 
 	^ false
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaAttribute >> newIncomingConnection [ 
+	^ CBAttributeAccessModel new 
+		initializeDescription; 
+		yourself
 ]
