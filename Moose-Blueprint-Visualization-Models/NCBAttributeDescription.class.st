@@ -80,17 +80,35 @@ NCBAttributeDescription >> numberOfHierarchyAcceses [
 { #category : #'as yet unclassified' }
 NCBAttributeDescription >> numberOfInternalAccesses [
 
-	internalAccesses := (entityModel entity incomingAccesses select: [ :each | 
-		   each source parentType == entityModel entity parentType ]) size.
-	^ internalAccesses
+	| directAccesses accessorsAccess |
+	directAccesses := (entityModel entity incomingAccesses select: [ 
+		                   :each | 
+		                   each source parentType
+		                   == entityModel entity parentType ]) size.
+
+	accessorsAccess := (entityModel entity accessors flatCollect: [ 
+		                     :each | 
+		                     each incomingInvocations collect: #source ]) select: [ 
+		                   :each | each parentType == entityModel entity parentType ].
+
+	^ directAccesses + accessorsAccess size
 ]
 
 { #category : #'as yet unclassified' }
 NCBAttributeDescription >> numberOfInternalAccessesFrom: aFamixStClass [
 
-	internalAccesses := (entityModel entity incomingAccesses select: [ :each | 
-		   each source parentType == aFamixStClass ]) size.
-	^ internalAccesses
+	| directAccesses accessorsAccess |
+	directAccesses := (entityModel entity incomingAccesses select: [ 
+		                   :each | 
+		                   each source parentType
+		                   == entityModel entity parentType ]) size.
+
+	accessorsAccess := (entityModel entity accessors flatCollect: [ :each | 
+		                    each incomingInvocations collect: #source ]) 
+		                   select: [ :each | 
+		                   each parentType == entityModel entity parentType ].
+
+	^ directAccesses + accessorsAccess size
 ]
 
 { #category : #initialization }

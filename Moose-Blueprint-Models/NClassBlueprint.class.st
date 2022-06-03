@@ -140,7 +140,7 @@ NClassBlueprint >> connectAttributes [
 	| sources |
 
 	deadAttributes , attributes , classVars do: [ :each | 
-		sources := each internalAccesses  collect: #source.
+		sources := each directInternalAccesses  collect: #source.
 		self connectTarget: each entity withAll: sources asSet ].
 	superAttributes do: [ :each | 
 		sources := each entity incomingAccesses collect: #source.

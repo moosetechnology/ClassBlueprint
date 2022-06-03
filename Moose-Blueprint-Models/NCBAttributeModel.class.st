@@ -59,6 +59,12 @@ NCBAttributeModel >> create [
 ]
 
 { #category : #accessing }
+NCBAttributeModel >> directInternalAccesses [ 
+
+	^ self entity incomingAccesses select: [ :each | each source parentType = entity parentType ].
+]
+
+{ #category : #accessing }
 NCBAttributeModel >> getter [ 
 	^ getter
 ]
@@ -114,12 +120,6 @@ NCBAttributeModel >> initializeType [
 			^ self ].
 
 	self type: #Attribute
-]
-
-{ #category : #accessing }
-NCBAttributeModel >> internalAccesses [ 
-
-	^ self entity incomingAccesses select: [ :each | each source parentType = entity parentType ].
 ]
 
 { #category : #testing }
