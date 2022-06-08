@@ -27,7 +27,7 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		addName: #isConstant forColor: Color lightGray;
 		addName: #'isSetter or isGetter'
 		forColor: Color magenta duller duller slightlyWhiter;
-		addName: #isLazyInitializer forColor: Color orange;
+		addName: #isLazyInitializer forColor: Color yellow muchDarker;
 		addName: #isOther forColor: Color white;
 		addName: #Attribute forColor: Color blue;
 		addName: #'Attribute accessed by subclass(es) of this class'

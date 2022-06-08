@@ -87,14 +87,14 @@ FamixStMethod >> isCalledInHierarchyOnly [
 
 	| hierarchy inInvocSources classesCalling |
 	inInvocSources := (self incomingInvocations collect: [ :each | 
-		                   each source ]) "reject: [ :each | 
-		                  each parentType isTestCase ]".
+		                  each source ]) reject: [ :each | 
+		                  each parentType isTestCase ].
 	classesCalling := inInvocSources collect: [ :each | each parentType ].
 
 	classesCalling ifEmpty: [ ^ false ].
 	hierarchy := self hierarchyOfClasses.
 
-	^ hierarchy includesAll: classesCalling
+	^ hierarchy includesAll: classesCalling 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -102,8 +102,8 @@ FamixStMethod >> isCalledInternallyOnly [
 
 	| incoInvocSources |
 	incoInvocSources := (self incomingInvocations collect: [ :each | 
-		                     each source ]) "reject: [ :each | 
-		                    each parentType isTestCase ]".
+		                    each source ]) reject: [ :each | 
+		                    each parentType isTestCase ].
 
 	^ incoInvocSources isNotEmpty and: [ 
 		  incoInvocSources allSatisfy: [ :i | 

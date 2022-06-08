@@ -129,8 +129,8 @@ FamixJavaMethod >> isCalledInHierarchyOnly [
 
 	| hierarchy inInvocSources classesCalling |
 	inInvocSources := (self incomingInvocations collect: [ :each | 
-		                   each source ]) "reject: [ :each | 
-		                  each parentType isTestCase ]".
+		                   each source ]) reject: [ :each | 
+		                  each parentType isTestCase ].
 	classesCalling := inInvocSources collect: [ :each | each parentType ].
 
 	classesCalling ifEmpty: [ ^ false ].
@@ -144,8 +144,8 @@ FamixJavaMethod >> isCalledInternallyOnly [
 
 	| incoInvocSources |
 	incoInvocSources := (self incomingInvocations collect: [ :each | 
-		                     each source ]) "reject: [ :each | 
-		                    each parentType isTestCase ]".
+		                     each source ]) reject: [ :each | 
+		                    each parentType isTestCase ].
 
 	^ incoInvocSources isNotEmpty and: [ 
 		  incoInvocSources allSatisfy: [ :i | 
