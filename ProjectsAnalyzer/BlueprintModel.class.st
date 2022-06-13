@@ -50,6 +50,11 @@ BlueprintModel >> nMethods [
 ]
 
 { #category : #accessing }
+BlueprintModel >> nMonomorphicMethods [ 
+	^ nMonomorphicMethods
+]
+
+{ #category : #accessing }
 BlueprintModel >> nOverridenMethods [ 
 	^ nOverridenMethods 
 ]
@@ -62,6 +67,11 @@ BlueprintModel >> nOverridingMethods [
 { #category : #accessing }
 BlueprintModel >> nPackages [ 
 	^ nPackages 
+]
+
+{ #category : #accessing }
+BlueprintModel >> nPolymorphicMethods [ 
+	^ nPolymorphicMethods
 ]
 
 { #category : #accessing }

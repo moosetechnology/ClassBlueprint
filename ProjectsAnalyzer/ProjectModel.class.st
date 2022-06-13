@@ -2,7 +2,8 @@ Class {
 	#name : #ProjectModel,
 	#superclass : #AbstractModel,
 	#instVars : [
-		'blueprints'
+		'blueprints',
+		'methodModels'
 	],
 	#category : #ProjectsAnalyzer
 }
@@ -10,16 +11,21 @@ Class {
 { #category : #'as yet unclassified' }
 ProjectModel >> abstractMethods [
 
-	^ (blueprints collect: [ :b | 
-		  b classModel methodModels select: [ :m | m type = #isAbstract ] ])
-			  size
+	^ (methodModels select: [ :m | m type = #isAbstract ])
+		  size
+]
+
+{ #category : #accessing }
+ProjectModel >> blueprints [ 
+	^ blueprints
 ]
 
 { #category : #building }
-ProjectModel >> build [ 
+ProjectModel >> build [
+
 	super build.
 	self buildBlueprints.
-"	self initializeValues."
+	self initializeValues.
 ]
 
 { #category : #'as yet unclassified' }
@@ -33,34 +39,35 @@ ProjectModel >> buildBlueprints [
 { #category : #'as yet unclassified' }
 ProjectModel >> complexMethods [
 
-	^ (blueprints collect:
-		  [ :b | 
-		  b classModel methodModels select: [ :m | m complexity > 5 ] ]) size
+	^ (methodModels select: [ :m | m complexity > 5 ]) 
+		  size
 ]
 
 { #category : #accessing }
 ProjectModel >> deadAttributes [
 
-	^ (blueprints collect: [ :b | b classModel deadAttributes ]) size
+	^ (blueprints flatCollect: [ :b | b classModel deadAttributes ]) size
 ]
 
 { #category : #'as yet unclassified' }
 ProjectModel >> deadMethods [
 
-	^ (blueprints collect: [ :b | b classModel deadMethods ]) size
+	^ (methodModels select: [ :each | each type = #isDeadMethod ] ) size
 ]
 
 { #category : #'as yet unclassified' }
 ProjectModel >> extendingMethods [
 
-	^ (blueprints collect: [ :b | 
-		  b classModel methodModels select: [ :m | m type = #isExtending ] ])
-			  size
+	^ (methodModels select: [ :m | m type = #isExtending ]) 
+		  size
 ]
 
 { #category : #'as yet unclassified' }
 ProjectModel >> initializeValues [
 
+	Semaphore new wait: 8 seconds.
+	methodModels := blueprints flatCollect: [ :each | 
+		                each classModel methodModels ].
 	nAbstractMethods := self abstractMethods.
 	nComplexMethods := self complexMethods.
 	nDeadAttributes := self deadAttributes.
@@ -71,52 +78,46 @@ ProjectModel >> initializeValues [
 	nMonomorphicMethods := self monomorphicMethods.
 	nOverridenMethods := self overridenMethods.
 	nOverridingMethods := self overridingMethods.
-	nTestedMethods := self testedMethods 
+	nTestedMethods := self testedMethods
 ]
 
 { #category : #'as yet unclassified' }
 ProjectModel >> megamorphicMethods [
 
-	^ (blueprints collect: [ :b | 
-		  b classModel methodModels select: [ :m | 
-			  m modelType = #megamorphic ] ]) size
+	^ (methodModels select: [ :m | 
+			   m modelType = #megamorphic ])  size
 ]
 
 { #category : #'as yet unclassified' }
 ProjectModel >> monomorphicMethods [
 
-	^ (blueprints collect: [ :b | 
-		  b classModel methodModels select: [ :m | 
-			  m modelType = #monomorphic ] ]) size
+	^ (methodModels select: [ :m | 
+			   m modelType = #monomorphic ]) size
 ]
 
 { #category : #'as yet unclassified' }
 ProjectModel >> overridenMethods [
 
-	^ (blueprints collect: [ :b | 
-		  b classModel methodModels select: [ :m | m type = #isOverriden ] ])
-			  size
+	^ (methodModels select: [ :m | m type = #isOverriden ])
+		  size
 ]
 
 { #category : #'as yet unclassified' }
 ProjectModel >> overridingMethods [
 
-	^ (blueprints collect: [ :b | 
-		  b classModel methodModels select: [ :m | m type = #isOverriding ] ])
-			  size
+	^ (methodModels select: [ :m | m type = #isOverriding ])
+		  size
 ]
 
 { #category : #'as yet unclassified' }
 ProjectModel >> polymorphicMethods [
 
-	^ (blueprints collect: [ :b | 
-		  b classModel methodModels select: [ :m | 
-			  m modelType = #polymorphic ] ]) size
+	^ (methodModels select: [ :m | 
+			   m modelType = #polymorphic ])  size
 ]
 
 { #category : #'as yet unclassified' }
-ProjectModel >> testedMethods [ 
-	^ (blueprints collect: [ :b | 
-		  b classModel methodModels select: [ :m | m isTested ] ])
-			  size
+ProjectModel >> testedMethods [
+
+	^ (methodModels select: [ :m | m isTested ]) size
 ]
