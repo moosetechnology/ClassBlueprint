@@ -8,14 +8,29 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-InformationsRetriever >> buildModelOf: aCollectionOfPackages [ 
-	| classes |
-	classes := aCollectionOfPackages flatCollect: [ :each | each classes ].
-	
-	^ ProjectModel new 
-		name: (ProjectAnalyzer projectName: aCollectionOfPackages); 
-		nPackages: aCollectionOfPackages size;
-		nClasses: classes size;
-		model: aCollectionOfPackages;
-		yourself
+InformationsRetriever >> buildModelOf: aCollectionOfPackages [
+
+	| packNames modelName model context |
+	packNames := aCollectionOfPackages collect: [ :each | each name ].
+	modelName := ProjectAnalyzer projectName: aCollectionOfPackages.
+
+	model := FamixStModel new
+		         name: modelName;
+		         yourself.
+
+	context := MooseImportingContext new
+		           importMaximum;
+		           mergeClassAndMetaclass;
+		           yourself.
+
+	MoosePharoImporterTask new
+		importingContext: context;
+		importerClass: SmalltalkImporter;
+		model: model;
+		addFromPackagesNamed: packNames;
+		run.
+
+	model install.
+
+	^ BlueprintModel newFrom: model
 ]
