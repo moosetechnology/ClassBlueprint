@@ -19,7 +19,11 @@ Metacello new
 
 # Creating the Moose Model of your project:
 
-<img width="631" alt="image" src="https://user-images.githubusercontent.com/34944559/174438596-507e8efd-b930-4beb-b7d4-75b087e1a17f.png">
+1. <img width="631" alt="image" src="https://user-images.githubusercontent.com/34944559/174438596-507e8efd-b930-4beb-b7d4-75b087e1a17f.png">
+2. <img width="728" alt="image" src="https://user-images.githubusercontent.com/34944559/174438618-f1cbac39-e442-4d68-bbb4-b09f96020513.png">
+3. <img width="389" alt="image" src="https://user-images.githubusercontent.com/34944559/174438621-1ddca995-3267-4d27-bff6-8919470feefe.png">
+4. <img width="725" alt="image" src="https://user-images.githubusercontent.com/34944559/174438623-08e54bc3-587d-49b4-aefa-8d593ad5d493.png">
+
 
 
 A full presentation on how to use the visualization can be found here:
