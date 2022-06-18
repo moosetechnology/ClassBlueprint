@@ -32,6 +32,6 @@ Metacello new
 
 
 
-A full presentation on how to use the visualization can be found here:
+A full presentation on how to use the visualization can be found here: https://github.com/NourDjihan/ClassBlueprint/blob/master/ClassBlueprintV2Presentation.key
 
 
