@@ -24,6 +24,14 @@ Metacello new
 3. <img width="389" alt="image" src="https://user-images.githubusercontent.com/34944559/174438621-1ddca995-3267-4d27-bff6-8919470feefe.png">
 4. <img width="725" alt="image" src="https://user-images.githubusercontent.com/34944559/174438623-08e54bc3-587d-49b4-aefa-8d593ad5d493.png">
 
+# Inspecting the Moose Model:
+<img width="1562" alt="image" src="https://user-images.githubusercontent.com/34944559/174438649-fadb99d6-869f-4e69-8c8c-f94de8a5b1ad.png">
+
+# The visualization:
+![Screenshot 2022-06-18 at 14 58 01](https://user-images.githubusercontent.com/34944559/174438711-2c848a89-1ccd-463a-80bb-389631042054.png)
+<img width="1440" alt="Screenshot 2022-06-18 at 14 58 01 2" src="https://user-images.githubusercontent.com/34944559/174438718-9c74016e-491c-44b6-bcdb-4c10be29c68a.png">
+
+
 
 
 A full presentation on how to use the visualization can be found here:
