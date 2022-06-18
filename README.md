@@ -29,8 +29,6 @@ Metacello new
 
 # The visualization:
 ![Screenshot 2022-06-18 at 14 58 01](https://user-images.githubusercontent.com/34944559/174438711-2c848a89-1ccd-463a-80bb-389631042054.png)
-<img width="1440" alt="Screenshot 2022-06-18 at 14 58 01 2" src="https://user-images.githubusercontent.com/34944559/174438718-9c74016e-491c-44b6-bcdb-4c10be29c68a.png">
-
 
 
 
