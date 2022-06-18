@@ -17,6 +17,10 @@ Metacello new
   load.
  ```
 
+# Creating the Moose Model of your project:
+
+<img width="631" alt="image" src="https://user-images.githubusercontent.com/34944559/174438596-507e8efd-b930-4beb-b7d4-75b087e1a17f.png">
+
 
 A full presentation on how to use the visualization can be found here:
 
