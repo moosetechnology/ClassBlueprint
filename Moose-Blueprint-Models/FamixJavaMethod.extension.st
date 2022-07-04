@@ -129,14 +129,14 @@ FamixJavaMethod >> isCalledInHierarchyOnly [
 
 	| hierarchy inInvocSources classesCalling |
 	inInvocSources := (self incomingInvocations collect: [ :each | 
-		                   each source ]) reject: [ :each | 
+		                  each source ]) reject: [ :each | 
 		                  each parentType isTestCase ].
 	classesCalling := inInvocSources collect: [ :each | each parentType ].
 
 	classesCalling ifEmpty: [ ^ false ].
 	hierarchy := self hierarchyOfClasses.
 
-	^ hierarchy includesAll: classesCalling
+	^ hierarchy includesAll: classesCalling 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -144,7 +144,7 @@ FamixJavaMethod >> isCalledInternallyOnly [
 
 	| incoInvocSources |
 	incoInvocSources := (self incomingInvocations collect: [ :each | 
-		                     each source ]) reject: [ :each | 
+		                    each source ]) reject: [ :each | 
 		                    each parentType isTestCase ].
 
 	^ incoInvocSources isNotEmpty and: [ 
@@ -233,18 +233,10 @@ FamixJavaMethod >> isFlagMethod [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isGetter [
 
-	| kindIsGetter nameBegingsWithSet hasNoOutgoingInvocations hasAttributeAccess |
-	(self accesses size = 1 and: [ self parameters size isZero ]) 
-		ifFalse: [ ^ false ].
-	kindIsGetter := self kind = #getter.
-	nameBegingsWithSet := self name beginsWith: 'get'.
-	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
-	hasAttributeAccess := self accesses allSatisfy: [ :acc | 
-		                      acc variable isAttribute ].
-
-	^ kindIsGetter or: [ 
-		  nameBegingsWithSet and: [ 
-			  hasNoOutgoingInvocations and: [ hasAttributeAccess ] ] ]
+	<FMProperty: #isGetter type: #Boolean>
+	<derived>
+	<FMComment: 'True if the method is a getter of an attribute'>
+	^ #getter = self kind or: [ self isLazyInitializer ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -290,11 +282,8 @@ FamixJavaMethod >> isLazyInitializer [
 	oInvoc := self outgoingInvocations.
 	oInvoc size ~= 2 ifTrue: [ ^ false ].
 
-	^ (oInvoc anySatisfy: [ :i1 | 
-		   self parentType attributes includes: i1 receiver ]) and: [ 
-		  oInvoc anySatisfy: [ :i2 | 
-			  i2 receiver isAttribute not and: [ 
-				  i2 receiver isClass not and: [ i2 receiver isSelf ] ] ] ]
+	^ (oInvoc anySatisfy: #isSelfInvocation) and: [ 
+		  (oInvoc anySatisfy: #isAttributeInvocation) and: [ self sourceText includesSubstring: ':=' ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -321,7 +310,7 @@ FamixJavaMethod >> isOnlyCalledInternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isPureGetter [
 
-	^ self isGetter
+	^ #getter = self kind 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

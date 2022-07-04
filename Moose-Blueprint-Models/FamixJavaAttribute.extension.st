@@ -2,6 +2,8 @@ Extension { #name : #FamixJavaAttribute }
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaAttribute >> accessors [
+
+
 	^ (self incomingAccesses collectAsSet: [ :each | each source ]) select: [ :each | each isGetter or: [ each isSetter or: [ each isLazyInitializer ] ] ] 
 ]
 
@@ -25,10 +27,10 @@ FamixJavaAttribute >> hasDirectAccess [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> isCalledIn: aFJClass [
+FamixJavaAttribute >> isCalledIn: aFamixClass [
 
 	^ ((self incomingAccesses collect: #source) select: [ :each | 
-		   each parentType = aFJClass ]) isNotEmpty
+		   each parentType = aFamixClass ]) isNotEmpty
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
