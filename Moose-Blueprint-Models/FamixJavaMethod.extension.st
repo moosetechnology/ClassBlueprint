@@ -60,9 +60,9 @@ FamixJavaMethod >> isAbstract [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isAbstractCalledExternally [
+FamixJavaMethod >> isAbstractPublic [
 
-	" it must be called by a class external from its hierarchy"
+	" it must be public"
 
 	| inInvocSources hierarchy |
 	inInvocSources := (self incomingInvocations collect: [ :each | 
@@ -165,8 +165,8 @@ FamixJavaMethod >> isDeadAbstract [
 	^ self isAbstract
 		  ifTrue: [ 
 			  self incomingInvocations isEmpty and: [ 
-				  self isSubCalledExternally not and:
-					  self isSubCalledInternallyOnly not ] ]
+				  self isSubPublic not and:
+					  self isSubInternal not ] ]
 		  ifFalse: [ false ]
 ]
 
@@ -215,14 +215,14 @@ FamixJavaMethod >> isExternal [
 
 	self isAbstract ifTrue: [ 
 		^ self isDead
-			  ifFalse: [ self isCalledExternally ]
-			  ifTrue: [ self isSubCalledExternally ] ].
+			  ifFalse: [ self isPublic ]
+			  ifTrue: [ self isSubPublic ] ].
 
 	(self isTestMethod or: [ self isTestExternalImplementation ]) 
 		ifTrue: [ ^ true ].
 
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
-	^ self isCalledExternally
+	^ self isPublic
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -233,10 +233,19 @@ FamixJavaMethod >> isFlagMethod [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isGetter [
 
-	<FMProperty: #isGetter type: #Boolean>
-	<derived>
-	<FMComment: 'True if the method is a getter of an attribute'>
-	^ #getter = self kind or: [ self isLazyInitializer ]
+
+	| kindIsGetter nameBegingsWithGet hasNoOutgoingInvocations hasAttributeAccess |
+ 	(self accesses size = 1 and: [ self parameters size isZero ]) 
+ 		ifFalse: [ ^ false ].
+ 	kindIsGetter := self kind = #getter.
+ 	nameBegingsWithGet := self name beginsWith: 'get'.
+ 	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
+ 	hasAttributeAccess := self accesses allSatisfy: [ :acc | 
+ 		                      acc variable isAttribute ].
+
+ 	^ kindIsGetter or: [ self isLazyInitializer  or: [ 
+ 		  nameBegingsWithGet and: [ 
+ 			  hasNoOutgoingInvocations and: [ hasAttributeAccess ] ] ] ].
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -258,13 +267,13 @@ FamixJavaMethod >> isInternal [
 
 	self isAbstract ifTrue: [ 
 		^ self isDead
-			  ifFalse: [ self isCalledInHierarchyOnly ]
-			  ifTrue: [ self isSubCalledInternallyOnly ] ].
+			  ifFalse: [ self isPrivate or: [ self isProtected ] ]
+			  ifTrue: [ self isSubInternal ] ].
 
 	self isTestInternalImplementation ifTrue: [ ^ true ].
 
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
-	^ self isCalledInternallyOnly
+	^ self isPrivate or: [ self isProtected ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -278,12 +287,7 @@ FamixJavaMethod >> isInvokedByExternalMethod [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isLazyInitializer [
 
-	| oInvoc |
-	oInvoc := self outgoingInvocations.
-	oInvoc size ~= 2 ifTrue: [ ^ false ].
-
-	^ (oInvoc anySatisfy: #isSelfInvocation) and: [ 
-		  (oInvoc anySatisfy: #isAttributeInvocation) and: [ self sourceText includesSubstring: ':=' ] ]
+	^ self sourceText matchesRegex: self lazyInitializerRegex
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -310,7 +314,7 @@ FamixJavaMethod >> isOnlyCalledInternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isPureGetter [
 
-	^ #getter = self kind 
+	^ #getter = self kind or: [ self isGetter ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -348,7 +352,19 @@ FamixJavaMethod >> isSetter [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isSubCalledExternally [
+FamixJavaMethod >> isSubInternal [
+
+	" its redefinitions are only called in the hierarchy"
+
+	| redefinitions |
+	redefinitions := self redefinitions.
+	redefinitions ifEmpty: [ ^false ].
+
+	^ redefinitions allSatisfy: [ :m | m isPrivate or: [ m isProtected ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isSubPublic [
 
 	| subclasses subMethods reimplementations |
 	subclasses := self parentType subclassHierarchy.
@@ -358,19 +374,7 @@ FamixJavaMethod >> isSubCalledExternally [
 
 	(reimplementations flatCollect: [ :m | m incomingInvocations ]) 
 		ifEmpty: [ ^ false ].
-	^ reimplementations anySatisfy: [ :m | m isAbstractCalledExternally ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isSubCalledInternallyOnly [
-
-	" its redefinitions are only called in the hierarchy"
-
-	| redefinitions |
-	redefinitions := self redefinitions.
-	redefinitions ifEmpty: [ ^false ].
-
-	^ redefinitions allSatisfy: [ :m | m isCalledInHierarchyOnly ]
+	^ reimplementations anySatisfy: [ :m | m isPublic ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -446,6 +450,11 @@ FamixJavaMethod >> isUsed [
 		                  collect: [ :m | m signature = self signature ].
 
 	^ subMethods anySatisfy: [ :m | m isDead not or: [ m belongsToDeadBranch not ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> lazyInitializerRegex [ 
+	^ '.*(if)\s*(\()\s*[\w]*\s*(==)\s*(nul)\s*(\))\s*(\{)\s*[\w]*\s*(=)\s*(this).[\w]*\s*(;)\s*(\})\s*(return)\s*[\w]*\s*(;)\s*(\})\s*'.
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
