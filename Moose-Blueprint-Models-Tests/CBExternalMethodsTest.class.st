@@ -41,64 +41,6 @@ CBExternalMethodsTest >> externalClassDefinition [
 ]
 
 { #category : #'as yet unclassified' }
-CBExternalMethodsTest >> internalMethodCallingExternal2 [
-	" externalMethod -> external2 AND internal1 -> external2"
-	| i1 i2 |
-	external2 := FamixStMethod new
-		             name: 'external2()';
-		             protocol: 'external';
-		             mooseModel: model;
-		             yourself.
-
-	i1 := FamixStInvocation new
-		      sender: externalMethod;
-		      addCandidate: external2;
-		      receiver: external2;
-		      mooseModel: model;
-		      yourself.
-	i2 := FamixStInvocation new
-		      sender: internal1;
-		      addCandidate: external2;
-		      receiver: external2;
-		      mooseModel: model;
-		      yourself.
-
-	myClass
-		addMethod: external2;
-		addMethod: internal2
-]
-
-{ #category : #initialization }
-CBExternalMethodsTest >> internals [
-
-	| i1 i2 |
-	internal1 := FamixStMethod new
-		             name: 'internal1()';
-		             protocol: 'internal';
-		             mooseModel: model;
-		             yourself.
-	internal2 := FamixStMethod new
-		             name: 'internal2';
-		             protocol: 'internal';
-		             mooseModel: model;
-		             yourself.
-	i1 := FamixStInvocation new 
-		sender: internal1;
-		addCandidate: internal2;
-		receiver: internal2;
-		mooseModel: model;
-		yourself.
-	i2 := FamixStInvocation new 
-		sender: internal2 ;
-		addCandidate: internal1;
-		receiver: internal1;
-		mooseModel: model;
-		yourself
-		
-	
-]
-
-{ #category : #'as yet unclassified' }
 CBExternalMethodsTest >> invocationDefinitions [ 
 
 	"init0, externalMethod -> external0.
@@ -106,44 +48,63 @@ CBExternalMethodsTest >> invocationDefinitions [
 	externalMethod, internal1 -> external2.
 	external1 -> internal1.
 	internal2 -><- internal1"
-		| i1 i2 i3 i4 i5 i6 |
-	i1 := FamixStInvocation new
-		      sender: externalMethod;
-		      addCandidate: external2;
-		      receiver: external2;
-		      mooseModel: model;
-		      yourself.
-	i2 := FamixStInvocation new
-		      sender: internal1;
-		      addCandidate: external2;
-		      receiver: external2;
-		      mooseModel: model;
-		      yourself.
+		| i1 i2 i3 i4 i5 i6 i7 i8 i9 |
 
-	i3 := FamixStInvocation new
+	i1 := FamixStInvocation new
 		      sender: init0;
 		      addCandidate: external0;
 		      receiver: external0;
 		      mooseModel: model;
 		      yourself.
-	i4 := FamixStInvocation new
+	i2 := FamixStInvocation new
 		      sender: externalMethod;
 		      addCandidate: external0;
 		      receiver: external0;
 		      mooseModel: model;
 		      yourself.
-	i5 := FamixStInvocation new
+	i3 := FamixStInvocation new
 		      sender: externalMethod;
 		      addCandidate: external1;
 		      receiver: external1;
 		      mooseModel: model;
 		      yourself.
-	i6 := FamixStInvocation new
+	i4 := FamixStInvocation new
+		      sender: externalMethod;
+		      addCandidate: external2;
+		      receiver: external2;
+		      mooseModel: model;
+		      yourself.
+	i5 := FamixStInvocation new
 		      sender: external1;
 		      addCandidate: internal1;
 		      receiver: internal1;
 		      mooseModel: model;
 		      yourself.
+	i6 := FamixStInvocation new
+		      sender: externalMethod;
+		      addCandidate: external1;
+		      receiver: external1;
+		      mooseModel: model;
+		      yourself.
+	i7 := FamixStInvocation new
+		      sender: internal1;
+		      addCandidate: external2;
+		      receiver: external2;
+		      mooseModel: model;
+		      yourself.
+	i8 := FamixStInvocation new 
+		sender: internal1;
+		addCandidate: internal2;
+		receiver: internal2;
+		mooseModel: model;
+		yourself.
+	i9 := FamixStInvocation new 
+		sender: internal2 ;
+		addCandidate: internal1;
+		receiver: internal1;
+		mooseModel: model;
+		yourself
+		
 ]
 
 { #category : #accessing }
@@ -154,6 +115,16 @@ CBExternalMethodsTest >> methodDefinitions [
 		         protocol: 'initialize';
 		         mooseModel: model;
 		         yourself.
+	internal1 := FamixStMethod new name: 'internal1()';
+		             protocol: 'internal';
+		             mooseModel: model;
+		             yourself.
+	internal2 := FamixStMethod new
+		             name: 'internal2';
+		             protocol: 'internal';
+		             mooseModel: model;
+		             yourself.
+	
 	external0 := FamixStMethod new
 		             name: 'external0()';
 		             protocol: 'interface';
@@ -169,6 +140,13 @@ CBExternalMethodsTest >> methodDefinitions [
 		             protocol: 'external';
 		             mooseModel: model;
 		             yourself.
+	external1 := FamixStMethod new
+		             name: 'external1()';
+		             protocol: 'external';
+		             mooseModel: model;
+		             yourself.
+
+	
 ]
 
 { #category : #initialization }
@@ -193,27 +171,7 @@ CBExternalMethodsTest >> myClassDefinition [
 		addMethod: internal1;
 		addMethod: external2;
 		addMethod: internal2
-]
-
-{ #category : #'as yet unclassified' }
-CBExternalMethodsTest >> notCalledByInitiaizers [
-
-	| i1 |
-	external1 := FamixStMethod new
-		             name: 'external1()';
-		             protocol: 'external';
-		             mooseModel: model;
-		             yourself.
-
-	i1 := FamixStInvocation new
-		      sender: externalMethod;
-		      addCandidate: external1;
-		      receiver: external1;
-		      mooseModel: model;
-		      yourself.
-	myClass
-		addMethod: external1;
-		addMethod: internal1
+		
 ]
 
 { #category : #initialization }
@@ -228,11 +186,10 @@ CBExternalMethodsTest >> setUp [
 		               name: 'ObjectClass';
 		               mooseModel: model;
 		               yourself.
-	self internals.
+
 	self externalClassDefinition.
 	self myClassDefinition.
-	self notCalledByInitiaizers.
-	self internalMethodCallingExternal2
+
 ]
 
 { #category : #tests }
@@ -249,12 +206,17 @@ CBExternalMethodsTest >> testExternal1IsExternalMethod [
 
 { #category : #tests }
 CBExternalMethodsTest >> testExternal2IsNotExternal [ 
-	"external2 is called by an internal method and externalMethod which makes it not external"
+	"external2 is called by an internal method and externalMethod. The question is: can a private method call a public method. Some people consider this a code smell"
 	
-	self assert: external2 isExternal not
+	self assert: external2 isExternal
 ]
 
 { #category : #tests }
 CBExternalMethodsTest >> testInternals [ 
 	self assert: (internal1 isInternal and: [ internal2 isInternal  ]) 
+]
+
+{ #category : #tests }
+CBExternalMethodsTest >> testInternalsAreNotExternals [ 
+	self assert: (internal1 isExternal not and: [ internal2 isExternal not ])
 ]

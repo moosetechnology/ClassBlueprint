@@ -32,11 +32,13 @@ MBClassBlueprintForStModelTest >> accessors [
 
 	accessor1 := FamixStMethod new
 		             name: 'accessors1';
-						beGetter;
+		             beGetter;
+		             protocol: 'accessing';
 		             mooseModel: model.
 	accessor2 := FamixStMethod new
 		             name: 'accessor2';
-						beSetter;
+		             beSetter;
+			protocol: 'accessing';
 		             mooseModel: model
 ]
 
@@ -59,6 +61,7 @@ MBClassBlueprintForStModelTest >> classMethods [
 
 	classMethod1 := FamixStMethod new
 		                name: 'classMethod1()';
+							protocol: 'protocol1';
 		                isClassSide: true;
 		                mooseModel: model
 ]
@@ -86,14 +89,16 @@ MBClassBlueprintForStModelTest >> createModel [
 { #category : #accessing }
 MBClassBlueprintForStModelTest >> deads [
 
-	hibernerMethod1 := FamixStMethod new
-		                   name: 'hibernerMethod1()';
-		                   mooseModel: model.
+	deadMethod1 := FamixStMethod new
+		               name: 'deadMethod1()';
+		               protocol: 'dead';
+		               mooseModel: model.
 	deadBranchMethod := FamixStMethod new
 		                    name: 'deadBranchMethod1()';
+		                    protocol: 'dead';
 		                    mooseModel: model.
 	deadInvocation1 := FamixStInvocation new
-		                   sender: hibernerMethod1;
+		                   sender: deadMethod1;
 		                   addCandidate: deadBranchMethod;
 		                   receiver: deadBranchMethod;
 		                   mooseModel: model;
@@ -111,14 +116,14 @@ MBClassBlueprintForStModelTest >> deads [
 		                  yourself.
 	deadInvocations2 := FamixStInvocation new
 		                    sender: deadBranchMethod;
-		                    addCandidate: hibernerMethod1;
-		                    receiver: hibernerMethod1;
+		                    addCandidate: deadMethod1;
+		                    receiver: deadMethod1;
 		                    mooseModel: model;
 		                    yourself.
 
-	hibernerAttribute := FamixStAttribute new
-		                     name: 'hibernerAttribute';
-		                     mooseModel: model
+	deadAttribute := FamixStAttribute new
+		                 name: 'deadAttribute';
+		                 mooseModel: model
 ]
 
 { #category : #accessing }
@@ -126,7 +131,7 @@ MBClassBlueprintForStModelTest >> defineClass [
 
 	class := FamixStClass new
 		         name: 'class';
-		         addMethod: hibernerMethod1;
+		         addMethod: deadMethod1;
 		         addMethod: initializer1;
 		         addMethod: initializer2;
 		         addMethod: accessor1;
@@ -134,7 +139,7 @@ MBClassBlueprintForStModelTest >> defineClass [
 		         addMethod: external1;
 		         addMethod: classMethod1;
 		         addMethod: internal1;
-		         addAttribute: hibernerAttribute;
+		         addAttribute: deadAttribute;
 		         addAttribute: attribute1;
 		         addAttribute: classVar1;
 		         addAttribute: classVar2;
@@ -146,6 +151,7 @@ MBClassBlueprintForStModelTest >> externalClassConf [
 
 	externalMethod := FamixStMethod new
 		                  name: 'externalMethod()';
+			protocol: 'external method';
 		                  parentType: externalClass;
 		                  mooseModel: model.
 	externalClass := FamixStClass new
@@ -169,6 +175,7 @@ MBClassBlueprintForStModelTest >> externals [
 
 	external1 := FamixStMethod new
 		             name: 'external1()';
+		             protocol: 'externals';
 		             parentType: class;
 		             mooseModel: model.
 	self externalClassConf
@@ -179,10 +186,12 @@ MBClassBlueprintForStModelTest >> initializers [
 
 	initializer1 := FamixStMethod new
 		                name: 'initializer1()';
+		                protocol: 'initializer';
 		                isConstructor: true;
 		                mooseModel: model.
 	initializer2 := FamixStMethod new
 		                name: 'initializer2()';
+		protocol: 'initializer';
 		                isConstructor: true;
 		                mooseModel: model
 ]
@@ -192,6 +201,7 @@ MBClassBlueprintForStModelTest >> internals [
 
 	internal1 := FamixStMethod new
 		             name: 'internal1()';
+			protocol: 'internal implementation';
 		             mooseModel: model
 ]
 
@@ -212,28 +222,13 @@ MBClassBlueprintForStModelTest >> testAccessOnClassVar [
 ]
 
 { #category : #tests }
-MBClassBlueprintForStModelTest >> testAccessOnInstVar [
-
-	| mbInstVar |
-	mbInstVar := classBlueprint attributes detect: [ :cv | 
-		             cv name includesSubstring: 'attribute1' ].
-	self assert: mbInstVar attributeAccess isNotEmpty.
-	self
-		assert: mbInstVar attributeAccess first source entity
-		equals: accessor1.
-	self
-		assert: mbInstVar attributeAccess first target entity
-		equals: attribute1
-]
-
-{ #category : #tests }
 MBClassBlueprintForStModelTest >> testAttributes [
 
 	self
-		assert: (classBlueprint allAttributes collect: #entity) size
+		assert: (classBlueprint allAttributes collect: #entity) asSet size
 		equals: { 
 				attribute1.
-				hibernerAttribute.
+				deadAttribute.
 				classVar1.
 				classVar2 } size
 ]
@@ -253,15 +248,14 @@ MBClassBlueprintForStModelTest >> testClassVar [
 ]
 
 { #category : #tests }
-MBClassBlueprintForStModelTest >> testDeadAccessor [
+MBClassBlueprintForStModelTest >> testDeadAttributes [
 
-	self assert:
-		((self classBlueprint accessors collect: #entity) select: #isDeadMethod)
-			isEmpty.
 	self
-		assert: ((self classBlueprint deadMethods collect: #entity) select:
-				 #isAccessor)
-		equals: accessor1
+		assertCollection: (classBlueprint deadAttributes collect: #name)
+		hasSameElements: ({ 
+				 attribute1.
+				 deadAttribute.
+				 classVar2 } collect: #name) asOrderedCollection
 ]
 
 { #category : #tests }
@@ -273,15 +267,6 @@ MBClassBlueprintForStModelTest >> testExternals [
 		equals: true.
 	self deny: (classBlueprint methodModels detect: [ :each | 
 			 each name = 'internal1()' ]) entity isExternal
-]
-
-{ #category : #tests }
-MBClassBlueprintForStModelTest >> testHibernerAttributes [
-
-	self
-		assertCollection:
-		(classBlueprint deadAttributes collect: #entity)
-		hasSameElements: { hibernerAttribute } asOrderedCollection
 ]
 
 { #category : #tests }
@@ -307,10 +292,10 @@ MBClassBlueprintForStModelTest >> testIsInitializetMethod [
 MBClassBlueprintForStModelTest >> testModels [
 
 	self
-		assert: (classBlueprint models collect: #entity) size
+		assert: (classBlueprint models collect: #entity) asSet size
 		equals: { 
-				hibernerMethod1.
-				hibernerAttribute.
+				deadMethod1.
+				deadAttribute.
 				initializer1.
 				initializer2.
 				accessor1.

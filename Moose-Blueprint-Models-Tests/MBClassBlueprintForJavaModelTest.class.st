@@ -21,15 +21,16 @@ MBClassBlueprintForJavaModelTest >> accesses [
 ]
 
 { #category : #accessing }
-MBClassBlueprintForJavaModelTest >> accessors [ 
+MBClassBlueprintForJavaModelTest >> accessors [
 
-	accessor1 := FamixJavaMethod new 
-		name: 'accessors1()';
-		kind: #isAccessor;
-		mooseModel: model.
-	accessor2 := FamixJavaMethod new 
-		name: 'accessor2()';
-		mooseModel: model. 
+	accessor1 := FamixJavaMethod new
+		             name: 'accessors1()';
+		             kind: #isAccessor;
+		             mooseModel: model.
+	accessor2 := FamixJavaMethod new
+		             name: 'accessor2()';
+						kind: #isAccessor;
+		             mooseModel: model
 ]
 
 { #category : #accessing }
@@ -74,14 +75,14 @@ MBClassBlueprintForJavaModelTest >> createModel [
 ]
 
 { #category : #accessing }
-MBClassBlueprintForJavaModelTest >> deads [ 
+MBClassBlueprintForJavaModelTest >> deads [
 
-	hibernerMethod1 := FamixJavaMethod new 
-		name: 'hibernerMethod1()';
-		mooseModel: model.
-	hibernerAttribute := FamixJavaAttribute new 
-		name: 'hibernerAttribute';
-		mooseModel: model. 
+	deadMethod1 := FamixJavaMethod new
+		                   name: 'hibernerMethod1()';
+		                   mooseModel: model.
+	deadAttribute := FamixJavaAttribute new
+		                 name: 'deadAttribute';
+		                 mooseModel: model
 ]
 
 { #category : #accessing }
@@ -89,19 +90,19 @@ MBClassBlueprintForJavaModelTest >> defineClass [
 
 	class := FamixJavaClass new
 		         name: 'class';
-		         addMethod: hibernerMethod1;
+		         addMethod: deadMethod1;
 		         addMethod: initializer1;
 		         addMethod: initializer2;
 		         addMethod: accessor1;
 		         addMethod: accessor2;
-					addMethod: external1;
-					addMethod: classMethod1;
-					addMethod: internal1;
-					addAttribute: hibernerAttribute;
+		         addMethod: external1;
+		         addMethod: classMethod1;
+		         addMethod: internal1;
+		         addAttribute: deadAttribute;
 		         addAttribute: attribute1;
-					addAttribute: classVar1;
-					addAttribute: classVar2 ;
-		         mooseModel: model.
+		         addAttribute: classVar1;
+		         addAttribute: classVar2;
+		         mooseModel: model
 ]
 
 { #category : #accessing }
@@ -117,7 +118,7 @@ MBClassBlueprintForJavaModelTest >> externalClassConf [
 		                 mooseModel: model.
 	externalInvocation1 := FamixJavaInvocation new
 		                       sender: externalMethod;
-		addCandidate: external1;
+									addCandidate: external1;
 		                       receiver: external1;
 		                       mooseModel: model;
 		                       yourself.
@@ -183,10 +184,11 @@ MBClassBlueprintForJavaModelTest >> testAccessOnInstVar [
 
 { #category : #accessing }
 MBClassBlueprintForJavaModelTest >> testAttributes [
+	" the asSet because an attribute can belong to the class side and be dead, which makes it in two different categorizations from which we extract all the attributes"
 
 	self
-		assert: (classBlueprint allAttributes collect: #entity) size
-		equals: { attribute1 . hibernerAttribute . classVar1 . classVar2 } size
+		assert: (classBlueprint allAttributes collect: #entity) asSet size
+		equals: { attribute1 . deadAttribute . classVar1 . classVar2 } size
 ]
 
 { #category : #accessing }
@@ -201,33 +203,18 @@ MBClassBlueprintForJavaModelTest >> testClassVar [
 MBClassBlueprintForJavaModelTest >> testDeadAccessor [
 
 	self assert:
-		((self classBlueprint accessors collect: #entity) select: #isDeadMethod)
-			isEmpty.
-	self
-		assert: ((self classBlueprint deadMethods collect: #entity) select:
-				 #isAccessor)
-		equals: accessor1
+		((classBlueprint accessors collect: #entity) select:
+			 #isDeadMethod) isEmpty.
+	
 ]
 
 { #category : #accessing }
-MBClassBlueprintForJavaModelTest >> testExternals [
+MBClassBlueprintForJavaModelTest >> testDeadAttributes [
+
 
 	self
-		assert:
-			(classBlueprint methodModels detect: [ :each | each name = 'external1()' ]) entity
-				isCalledExternally 
-		equals: true.
-	self deny: (classBlueprint methodModels detect: [ :each | each name = 'internal1()' ]) entity
-				isExternal
-]
-
-{ #category : #accessing }
-MBClassBlueprintForJavaModelTest >> testHibernerAttributes [
-
-	self
-		assertCollection: (classBlueprint deadAttributes collect: #entity)
-		hasSameElements: { 
-				hibernerAttribute } asOrderedCollection
+		assertCollection: ((classBlueprint deadAttributes) collect: [ :each | each name ]) asOrderedCollection
+		hasSameElements: ({ classVar2 . deadAttribute } collect: [ :each | each name ]) asOrderedCollection 
 ]
 
 { #category : #accessing }
@@ -255,7 +242,7 @@ MBClassBlueprintForJavaModelTest >> testModels [
 
 	self assert: (classBlueprint models collect: #entity) size equals: { 
 			hibernerMethod1.
-			hibernerAttribute.
+			deadAttribute.
 			initializer1.
 			initializer2.
 			accessor1.

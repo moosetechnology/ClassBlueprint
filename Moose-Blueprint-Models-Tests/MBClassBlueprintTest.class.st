@@ -6,8 +6,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'model',
-		'hibernerMethod1',
-		'hibernerAttribute',
+		'deadMethod1',
+		'deadAttribute',
 		'initializer1',
 		'initializer2',
 		'accessor1',

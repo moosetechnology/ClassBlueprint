@@ -442,17 +442,6 @@ FamixJavaMethod >> isTested [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isUsed [
-
-	| subclasses subMethods |
-	subclasses := self parentType subclassHierarchy.
-	subMethods := (subclasses flatCollect: [ :each | each methods ]) 
-		                  collect: [ :m | m signature = self signature ].
-
-	^ subMethods anySatisfy: [ :m | m isDead not or: [ m belongsToDeadBranch not ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> lazyInitializerRegex [ 
 	^ '.*(if)\s*(\()\s*[\w]*\s*(==)\s*(nul)\s*(\))\s*(\{)\s*[\w]*\s*(=)\s*(this).[\w]*\s*(;)\s*(\})\s*(return)\s*[\w]*\s*(;)\s*(\})\s*'.
 ]

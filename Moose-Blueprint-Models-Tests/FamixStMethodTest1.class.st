@@ -165,9 +165,3 @@ FamixStMethodTest1 >> testIsReimplemented [
 
 	self assert: class11 methods first isReimplemented equals: true
 ]
-
-{ #category : #'moose-blue' }
-FamixStMethodTest1 >> testIsUsed [
-
-	self assert: class21 methods first isUsed equals: true
-]

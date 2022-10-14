@@ -196,8 +196,8 @@ FamixStMethod >> isIfNil [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isInitializer [
 
-	^ (('*initialize*' match: self protocol) or: [ 
-		   '*initialize*' match: self name ]) 
+	^ ('*initialize*' match: self protocol) or: [ 
+		  '*initialize*' match: self name ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
