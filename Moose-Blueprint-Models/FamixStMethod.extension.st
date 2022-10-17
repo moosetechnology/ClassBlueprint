@@ -52,7 +52,7 @@ FamixStMethod >> isAbstractCalledExternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isAccessor [
 
-	^ self isSetter or: [ self isGetter ]
+	^ self isSetter or: [ self isCBGetter ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

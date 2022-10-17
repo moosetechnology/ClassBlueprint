@@ -77,12 +77,30 @@ FamixJavaMethod >> isAbstractPublic [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isAccessor [
 
-	^ self isSetter or: [ self isGetter ]
+	^ self isSetter or: [ self isCBGetter ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isApiAnnotated [ 
 	^ self isAnnotatedWith: 'api'
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isCBGetter [
+
+
+	| kindIsGetter nameBegingsWithGet hasNoOutgoingInvocations hasAttributeAccess |
+ 	(self accesses size = 1 and: [ self parameters size isZero ]) 
+ 		ifFalse: [ ^ false ].
+ 	kindIsGetter := self kind = #getter.
+ 	nameBegingsWithGet := self name beginsWith: 'get'.
+ 	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
+ 	hasAttributeAccess := self accesses allSatisfy: [ :acc | 
+ 		                      acc variable isAttribute ].
+
+ 	^ kindIsGetter or: [ self isLazyInitializer  or: [ 
+ 		  nameBegingsWithGet and: [ 
+ 			  hasNoOutgoingInvocations and: [ hasAttributeAccess ] ] ] ].
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -231,24 +249,6 @@ FamixJavaMethod >> isFlagMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isGetter [
-
-
-	| kindIsGetter nameBegingsWithGet hasNoOutgoingInvocations hasAttributeAccess |
- 	(self accesses size = 1 and: [ self parameters size isZero ]) 
- 		ifFalse: [ ^ false ].
- 	kindIsGetter := self kind = #getter.
- 	nameBegingsWithGet := self name beginsWith: 'get'.
- 	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
- 	hasAttributeAccess := self accesses allSatisfy: [ :acc | 
- 		                      acc variable isAttribute ].
-
- 	^ kindIsGetter or: [ self isLazyInitializer  or: [ 
- 		  nameBegingsWithGet and: [ 
- 			  hasNoOutgoingInvocations and: [ hasAttributeAccess ] ] ] ].
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isIfNil [
 	^ #ifNil: = self name
 ]
@@ -314,7 +314,7 @@ FamixJavaMethod >> isOnlyCalledInternally [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isPureGetter [
 
-	^ #getter = self kind or: [ self isGetter ]
+	^ #getter = self kind or: [ self isCBGetter ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

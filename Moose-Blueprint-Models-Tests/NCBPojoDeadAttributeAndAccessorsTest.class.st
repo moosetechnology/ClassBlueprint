@@ -177,7 +177,7 @@ NCBPojoDeadAttributeAndAccessorsTest >> testDeadAttributeDeadGetter [
 
 { #category : #tests }
 NCBPojoDeadAttributeAndAccessorsTest >> testIsGetter [ 
-	self assert: getterAtt1 isGetter
+	self assert: getterAtt1 isCBGetter
 ]
 
 { #category : #tests }

@@ -4,7 +4,7 @@ Extension { #name : #FamixStAttribute }
 FamixStAttribute >> accessors [
 
 
-	^ (self incomingAccesses collectAsSet: [ :each | each source ]) select: [ :each | each isGetter or: [ each isSetter or: [ each isLazyInitializer ] ] ] 
+	^ (self incomingAccesses collectAsSet: [ :each | each source ]) select: [ :each | each isCBGetter or: [ each isSetter or: [ each isLazyInitializer ] ] ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

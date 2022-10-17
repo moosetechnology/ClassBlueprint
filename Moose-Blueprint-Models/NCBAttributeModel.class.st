@@ -34,7 +34,7 @@ NCBAttributeModel >> addIncoming: anAttributeAccessModel [
 	anAttributeAccessModel source isSetter ifTrue: [ 
 		self setter: anAttributeAccessModel source.
 		setter protecting: self ].
-	anAttributeAccessModel source isGetter ifTrue: [ 
+	anAttributeAccessModel source isCBGetter ifTrue: [ 
 		self getter: anAttributeAccessModel source.
 		getter protecting: self ].
 	(self getter isNil and: [ 

@@ -73,6 +73,11 @@ CBAccessorsModel >> initialize [
 ]
 
 { #category : #testing }
+CBAccessorsModel >> isCBGetter [ 
+	^ entity isCBGetter 
+]
+
+{ #category : #testing }
 CBAccessorsModel >> isDead [
 
 	^ self entity incomingInvocations isEmpty
@@ -85,11 +90,6 @@ CBAccessorsModel >> isDeadAccessor [
 	self entity parentType isPojo ifFalse: [ ^ self entity isDead ].
 
 	^ attribute isDead and: [ attribute accessors allSatisfy: #isDead ]
-]
-
-{ #category : #testing }
-CBAccessorsModel >> isGetter [ 
-	^ entity isGetter 
 ]
 
 { #category : #testing }

@@ -201,7 +201,7 @@ NCBAbstractMethodModel >> isAbstractAndReimplemented [
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> isAccessor [
 
-	(entity isGetter or: [ 
+	(entity isCBGetter or: [ 
 		 entity isSetter ]) ifTrue: [ 
 		^ #accessor ].
 	^ nil
