@@ -152,7 +152,7 @@ NCBMethodDescription >> initializeType [
 			        entityModel isExtending ifNil: [ 
 				        entityModel isOverriding ifNil: [ 
 					        entityModel isDelegating ifNil: [ 
-						        entityModel isOverriden ifNil: [ 
+						        entityModel isOverridden ifNil: [ 
 							        entityModel isConstant ifNil: [ 
 								        entityModel isAccessor ifNil: [ 
 									        entityModel isInternalImplementation ifNil: [ 

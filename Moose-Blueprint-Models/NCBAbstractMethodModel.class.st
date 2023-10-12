@@ -259,10 +259,11 @@ NCBAbstractMethodModel >> isInternalImplementation [
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
-NCBAbstractMethodModel >> isOverriden [
+{ #category : #testing }
+NCBAbstractMethodModel >> isOverridden [
 
-	self entity isOverriden ifTrue: [ ^ #'isOverriden(redefined in subclasses)' ].
+	self entity isOverridden ifTrue: [
+		^ #'isOverridden (redefined in subclasses)' ].
 	^ nil
 ]
 
