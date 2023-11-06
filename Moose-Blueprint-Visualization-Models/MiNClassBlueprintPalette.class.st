@@ -7,7 +7,7 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #visualization }
+{ #category : #style }
 MiNClassBlueprintPalette >> beDefaultStyle [
 
 	self
@@ -15,7 +15,7 @@ MiNClassBlueprintPalette >> beDefaultStyle [
 		forColor: Color cyan darker darker darker duller;
 		addName: #'isOverriding(redefined locally and no super)'
 		forColor: (Color fromHexString: '#996800') duller;
-		addName: #'isOverriden(redefined in subclasses)'
+		addName: #'isOverridden(redefined in subclasses)'
 		forColor: Color palePeach;
 		addName: #isDelegating
 		forColor: Color yellow darker duller slightlyWhiter;

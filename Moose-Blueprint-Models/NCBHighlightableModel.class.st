@@ -14,17 +14,18 @@ Class {
 
 { #category : #adding }
 NCBHighlightableModel >> addHighlightableInteraction [
-
 	"shape when: RSMouseDoubleClick do: [ self triggerInteraction ]."
 
 	"shape @ onHoverHighlightableInteraction."
 
 	shape
 		when: RSMouseLeftClick
-		do: [ self triggerOutgoingLinesHighlight ].
+		do: [ self triggerOutgoingLinesHighlight ]
+		for: self.
 	shape
 		when: RSMouseRightClick
 		do: [ self triggerIncomingLinesHighlight ]
+		for: self
 ]
 
 { #category : #initialization }

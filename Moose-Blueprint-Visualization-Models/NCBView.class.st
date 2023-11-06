@@ -97,14 +97,15 @@ NCBView >> accessors [
 NCBView >> addCanvasInteractions [
 
 	| methodShapes |
-	canvas when: RSMouseLeftClick do: [ :evt | 
-		methodShapes := self highlightedShapes.
-		methodShapes do: [ :each | 
-			each model onClickHighlightableInteraction 
-				unhighlightRecordedShapes: evt ].
-		evt signalUpdate ].
-
-
+	canvas
+		when: RSMouseLeftClick
+		do: [ :evt |
+			methodShapes := self highlightedShapes.
+			methodShapes do: [ :each |
+				each model onClickHighlightableInteraction
+					unhighlightRecordedShapes: evt ].
+			evt signalUpdate ]
+		for: self
 ]
 
 { #category : #'as yet unclassified' }
@@ -217,10 +218,11 @@ NCBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 		         border: border.
 	layer addAll: (aGroup collect: [ :aModel | aModel shape ]).
 	layer adjustToChildren.
-	layer addInteraction: NCBDraggableCanvas new.
+	layer addInteraction: (NCBDraggableCanvas new
+			 noValidateChildrenEvents;
+			 yourself).
 	layer addInteraction: CBLayersPopup new.
-	self canvas add: layer.
-
+	self canvas add: layer
 ]
 
 { #category : #shapes }

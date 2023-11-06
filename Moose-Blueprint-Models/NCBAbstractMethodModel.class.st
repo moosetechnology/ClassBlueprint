@@ -93,7 +93,10 @@ NCBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 { #category : #'as yet unclassified' }
 NCBAbstractMethodModel >> addShapeInterractions [
 
-	shape when: RSMouseDoubleClick do: [ :evt | self openInBrowser ].
+	shape
+		when: RSMouseDoubleClick
+		do: [ :evt | self openInBrowser ]
+		for: self.
 	shape addInteraction: CBPopup new.
 	self addHighlightableInteraction.
 	shape addInteraction: NCBDraggableMethod new
@@ -259,10 +262,11 @@ NCBAbstractMethodModel >> isInternalImplementation [
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
-NCBAbstractMethodModel >> isOverriden [
+{ #category : #testing }
+NCBAbstractMethodModel >> isOverridden [
 
-	self entity isOverriden ifTrue: [ ^ #'isOverriden(redefined in subclasses)' ].
+	self entity isOverridden ifTrue: [
+		^ #'isOverridden(redefined in subclasses)' ].
 	^ nil
 ]
 
