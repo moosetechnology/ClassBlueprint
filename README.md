@@ -4,7 +4,7 @@ The idea behind the original Class Blueprint visualization is to present the int
 The Class Blueprint V2 also supports dead code identification, methods under tests and calling relationships between class and instance level methods. In addition, the Class Blueprint V2 enhances the understanding of fields by showing how fields of super-/subclasses are accessed, and stresses the extension category of a method (monomorphic, polymorphic or megamorphic) to convey how a given method fits into its wider context.
 
 # Setting up the visualization:
-## In a Moose 10 or 11 image: 
+## In a Moose 11 image: 
 Load the visualization using the script:
 ``` Smalltalk
 Metacello new
@@ -12,6 +12,15 @@ Metacello new
   repository: 'github://NourDjihan/ClassBlueprint/src';
   load.
  ```
+## In a Moose 10 image: 
+Load the visualization using the script:
+``` Smalltalk
+Metacello new
+  baseline: 'ClassBlueprint';
+  repository: 'github://NourDjihan/ClassBlueprint:v2.2.2/src';
+  load.
+ ```
+
 ## In a Moose 9 image:
 1. Load the latest version of Roassal,
 <img width="823" alt="image" src="https://user-images.githubusercontent.com/34944559/174438454-0a91006e-ebb9-4ada-8960-15a507e0b920.png">
