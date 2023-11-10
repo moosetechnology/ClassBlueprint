@@ -2,167 +2,196 @@ Class {
 	#name : #NCBDeadBranchCheckerTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'myClass',
-		'root0',
-		'model',
-		'root1',
-		'aMethod1',
-		'aInvocation',
-		'root2',
-		'bMethod1',
-		'bMethod2',
-		'bInvocation21',
-		'cMethod1',
-		'cMethod2',
-		'cMethod3',
-		'cInvocation12',
-		'cInvocation23',
-		'cInvocation31',
-		'dMethod1',
-		'dMethod2',
-		'dInvocation12',
-		'dInvocation21',
-		'externalM',
-		'externalClass',
-		'eMethod1',
-		'eMethod2',
-		'eInvocation12',
-		'eInvocation21',
-		'tMethod1',
-		'tMethod2',
-		'tMethod3',
-		'invocation12',
-		'invocation23',
-		'invocation31',
-		'initialize'
+		'model'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #'as yet unclassified' }
-NCBDeadBranchCheckerTest >> cercleCall [
-
-	cMethod1 := FamixStMethod new
-		            name: 'cMethod1()';
-		            protocol: 'testing';
-		            mooseModel: model;
-		            yourself.
-
-	cMethod2 := FamixStMethod new
-		            name: 'cMethod2()';
-		            protocol: 'testing';
-		            mooseModel: model;
-		            yourself.
-
-	cMethod3 := FamixStMethod new
-		            name: 'cMethod3()';
-		protocol: 'testing';
-		            mooseModel: model;
-		            yourself.
-	cInvocation12 := FamixStInvocation new
-		                 sender: cMethod1;
-		                 addCandidate: cMethod2;
-		                 receiver: cMethod2;
-		                 mooseModel: model;
-		                 yourself.
-	cInvocation23 := FamixStInvocation new
-		                 sender: cMethod2;
-		                 addCandidate: cMethod3;
-		                 receiver: cMethod3;
-		                 mooseModel: model;
-		                 yourself.
-	cInvocation31 := FamixStInvocation new
-		                 sender: cMethod3;
-		                 addCandidate: cMethod1;
-		                 receiver: cMethod1;
-		                 mooseModel: model;
-		                 yourself
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 NCBDeadBranchCheckerTest >> deadRoot [
 
-	root0 := FamixStMethod new
-		         name: 'root0()';
-		protocol: 'testing';
-		         mooseModel: model
+	^ model newMethodNamed: 'root0()'
 ]
 
 { #category : #accessing }
-NCBDeadBranchCheckerTest >> defineClasses [
-	myClass := FamixStClass new 
-	name: 'myClass';
-	addMethod: aMethod1 ;
-	addMethod: bMethod1;
-	addMethod: bMethod2;
-	addMethod: cMethod1;
-	addMethod: cMethod2;
-	addMethod: cMethod3;
-	addMethod: dMethod1;
-	addMethod: dMethod2;
-	addMethod: eMethod1;
-	addMethod: eMethod2 ;
-	addMethod: root0;
-	addMethod: root1;
-	addMethod: root2;
-	"To delete"
-	addMethod: tMethod1;
-	addMethod: tMethod2 ;
-	addMethod:  tMethod3 ;
-	addMethod: initialize;
-	mooseModel: model. 
-	externalClass := FamixStClass new
-	name: 'ExternalClass';
-	addMethod: externalM ;
-	mooseModel: model.
+NCBDeadBranchCheckerTest >> initializeMethod [
+
+	| initializeMethod |
+	initializeMethod := (model newMethodNamed: #initialize)
+		                    protocol: 'initialization';
+		                    yourself.
+
+	(model newClassNamed: #AClass) addMethod: initializeMethod.
+
+	^ initializeMethod
 ]
 
-{ #category : #tests }
-NCBDeadBranchCheckerTest >> initializerMethod [
+{ #category : #accessing }
+NCBDeadBranchCheckerTest >> methodInATwoNodesCallGraph [
 
-	initialize := FamixStMethod new
-		              name: 'initialize()';
-		              protocol: 'initialize';
-		              mooseModel: model;
-		    	yourself
+	| root method |
+	root := model newMethodNamed: 'root1()'.
+	method := model newMethodNamed: 'aMethod1()'.
+
+	model newInvocation
+		sender: root;
+		addCandidate: method;
+		receiver: method.
+
+	^ method
+]
+
+{ #category : #accessing }
+NCBDeadBranchCheckerTest >> methodsInAThreeNodesCallGraph [
+
+	| root m1 m2 |
+	root := FamixStMethod new name: 'root2()'.
+	m1 := FamixStMethod new name: 'bMethod1()'.
+	m2 := FamixStMethod new name: 'bMethod2()'.
+
+	model newInvocation
+		sender: root;
+		addCandidate: m1;
+		receiver: m1.
+	model newInvocation
+		sender: m1;
+		addCandidate: m2;
+		receiver: m2.
+
+	^ {
+		  root.
+		  m1.
+		  m2 }
+]
+
+{ #category : #accessing }
+NCBDeadBranchCheckerTest >> methodsInATripleDeadCallGraph [
+
+	| m1 m2 m3 |
+	m1 := FamixStMethod new name: 'bMethod1()'.
+	m2 := FamixStMethod new name: 'bMethod2()'.
+	m3 := FamixStMethod new name: 'bMethod3()'.
+
+	model newInvocation
+		sender: m1;
+		addCandidate: m2;
+		receiver: m2.
+	model newInvocation
+		sender: m2;
+		addCandidate: m3;
+		receiver: m3.
+	model newInvocation
+		sender: m3;
+		addCandidate: m1;
+		receiver: m1.
+
+	^ {
+		  m1.
+		  m2.
+		  m3 }
+]
+
+{ #category : #accessing }
+NCBDeadBranchCheckerTest >> methodsInATwoWaysCallGraphExternally [
+
+	| m1 m2 externalMethod |
+	m1 := model newMethodNamed: #method1.
+	m2 := model newMethodNamed: #method2.
+	externalMethod := model newMethodNamed: #externalMethod.
+
+	model newInvocation
+		sender: m1;
+		addCandidate: m2;
+		receiver: m2.
+	model newInvocation
+		sender: m2;
+		addCandidate: m1;
+		receiver: m1.
+
+	(model newClassNamed: #MyClass)
+		addMethod: m1;
+		addMethod: m2.
+	(model newClassNamed: #ExternalClass) addMethod: externalMethod.
+
+	^ {
+		  m1.
+		  m2.
+		  externalMethod }
+]
+
+{ #category : #accessing }
+NCBDeadBranchCheckerTest >> methodsInATwoWaysCallInternalGraph [
+
+	| m1 m2 |
+	m1 := model newMethodNamed: 'eMethod1()'.
+	m2 := model newMethodNamed: 'eMethod2()'.
+
+	model newInvocation
+		sender: m1;
+		addCandidate: m2;
+		receiver: m2.
+	model newInvocation
+		sender: m2;
+		addCandidate: m1;
+		receiver: m1.
+
+	^ {
+		  m1.
+		  m2 }
+]
+
+{ #category : #accessing }
+NCBDeadBranchCheckerTest >> methodsWithCircleCall [
+
+	| m1 m2 m3 |
+	m1 := model newMethodNamed: 'cMethod1()'.
+	m2 := model newMethodNamed: 'cMethod2()'.
+	m3 := model newMethodNamed: 'cMethod3()'.
+
+	model newInvocation
+		sender: m1;
+		addCandidate: m2;
+		receiver: m2.
+	model newInvocation
+		sender: m2;
+		addCandidate: m3;
+		receiver: m3.
+	model newInvocation
+		sender: m3;
+		addCandidate: m1;
+		receiver: m1.
+
+	^ {
+		  m1.
+		  m2.
+		  m3 }
 ]
 
 { #category : #running }
 NCBDeadBranchCheckerTest >> setUp [
+
 	super setUp.
-	model := FamixStModel new.
-	self deadRoot.
-	self twoNodesCallGraph.
-	self threeNodesCallGraph.
-	self cercleCall.
-	self twoWaysCallExternally.
-	self twoWaysCallInternal.
-	self trippleCallDead.
-	self initializerMethod.
-	self defineClasses.
-	
-]
-
-{ #category : #'as yet unclassified' }
-NCBDeadBranchCheckerTest >> testDeadRoot [ 
-
-	self assert: root0 isDead equals: true.
-]
-
-{ #category : #'as yet unclassified' }
-NCBDeadBranchCheckerTest >> testInitializeMethodNotDeadMethod [ 
-	self assert: initialize isDeadMethod equals: false
+	model := FamixStModel new
 ]
 
 { #category : #tests }
-NCBDeadBranchCheckerTest >> testMethodBelongsToExternalClass [ 
+NCBDeadBranchCheckerTest >> testCircleCallGraph [
 
-		self assert: externalM parentType ~= dMethod1 parentType.
+	self methodsWithCircleCall do: [ :method |
+		self assert: method belongsToDeadBranch ]
 ]
 
-{ #category : #'as yet unclassified' }
-NCBDeadBranchCheckerTest >> testNoInvocationsRoot0 [ 
-	self assert: root0 incomingInvocations isEmpty equals: true
+{ #category : #tests }
+NCBDeadBranchCheckerTest >> testDeadRoot [
+
+	self assertEmpty: self deadRoot incomingInvocations.
+	self assert: self deadRoot isDead
+]
+
+{ #category : #tests }
+NCBDeadBranchCheckerTest >> testInitializeMethodNotDeadMethod [
+
+	self deny: self initializeMethod isDeadMethod
 ]
 
 { #category : #tests }
@@ -173,197 +202,47 @@ NCBDeadBranchCheckerTest >> testNotDeadDoNotBelongToDeadBranch [
 ]
 
 { #category : #tests }
-NCBDeadBranchCheckerTest >> testRoot2IsDead [
+NCBDeadBranchCheckerTest >> testThreeNodesCallGraph [
 
-	self assert: root2 isDead equals: true.
+	| methods |
+	methods := self methodsInAThreeNodesCallGraph.
+
+	self assert: methods first isDead.
+
+	methods allButFirstDo: [ :method |
+		self assert: method belongsToDeadBranch ]
 ]
 
 { #category : #tests }
-NCBDeadBranchCheckerTest >> testTheNodesCallGraph [ 
-	self assert: bMethod1 belongsToDeadBranch equals: true.
-	self assert: bMethod2 belongsToDeadBranch equals: true
-]
+NCBDeadBranchCheckerTest >> testTripleDeadCallGraph [
 
-{ #category : #tests }
-NCBDeadBranchCheckerTest >> testThreeCallGraph [ 
+	| methods |
+	methods := self methodsInATripleDeadCallGraph.
 
-	self assert: cMethod1 belongsToDeadBranch equals: true.
-	self assert: cMethod2 belongsToDeadBranch equals: true.
-	self assert: cMethod3 belongsToDeadBranch equals: true
-]
+	methods do: [ :method | self assert: method belongsToDeadBranch ].
 
-{ #category : #tests }
-NCBDeadBranchCheckerTest >> testTrippleCall [
-
-	self assert: tMethod1 belongsToDeadBranch equals: true.
-	self assert: tMethod2 belongsToDeadBranch equals: true.
-	self assert: tMethod3 belongsToDeadBranch equals: true.
-
-	self assert: tMethod1 isDead equals: false
+	self deny: methods first isDead
 ]
 
 { #category : #tests }
 NCBDeadBranchCheckerTest >> testTwoNodesCallGraph [
 
-	self assert: aMethod1 belongsToDeadBranch equals: true 
+	self assert: self methodInATwoNodesCallGraph belongsToDeadBranch
 ]
 
 { #category : #tests }
-NCBDeadBranchCheckerTest >> testTwoWaysCallExternally [
+NCBDeadBranchCheckerTest >> testTwoWaysCallGraphExternally [
 
+	| methods |
+	methods := self methodsInATwoWaysCallGraphExternally.
 
-	self assert: dMethod1 belongsToDeadBranch equals: true.
-	self assert: dMethod2 belongsToDeadBranch equals: true.
+	self deny: methods first parentType equals: methods last parentType.
+	methods do: [ :method | self assert: method belongsToDeadBranch ]
 ]
 
 { #category : #tests }
-NCBDeadBranchCheckerTest >> testTwoWaysCallInternal [
-	self assert: eMethod1 belongsToDeadBranch equals: true.
-	self assert: eMethod2 belongsToDeadBranch equals: true
-]
+NCBDeadBranchCheckerTest >> testTwoWaysCallGraphInternally [
 
-{ #category : #'as yet unclassified' }
-NCBDeadBranchCheckerTest >> threeNodesCallGraph [
-
-	root2 := FamixStMethod new
-		         name: 'root2()';
-		         protocol: 'testing';
-		         mooseModel: model.
-	bMethod1 := FamixStMethod new
-		            name: 'bMethod2()';
-		            protocol: 'testing';
-		            mooseModel: model.
-	bMethod2 := FamixStMethod new
-		            name: 'bMethod1()';
-		protocol: 'testing';
-		            mooseModel: model.
-
-	bInvocation21 := FamixStInvocation new
-		                 sender: root2;
-		                 addCandidate: bMethod1;
-		                 receiver: bMethod1;
-		                 mooseModel: model yourself.
-	bInvocation21 := FamixStInvocation new
-		                 sender: bMethod1;
-		                 addCandidate: bMethod2;
-		                 receiver: bMethod2;
-		                 mooseModel: model;
-		                 yourself
-]
-
-{ #category : #tests }
-NCBDeadBranchCheckerTest >> trippleCallDead [
-
-	tMethod1 := FamixStMethod new
-		            name: 'tMethod1()';
-		            protocol: 'testing';
-		            mooseModel: model;
-		            yourself.
-	tMethod2 := FamixStMethod new
-		            name: 'tMethod2()';
-		protocol: 'testing';
-		            mooseModel: model;
-		            yourself.
-	tMethod3 := FamixStMethod new
-		            name: 'tMethod3()';
-		            protocol: 'testing';
-		            mooseModel: model;
-		            yourself.
-	invocation12 := FamixStInvocation new
-		                sender: tMethod1;
-		                addCandidate: tMethod2;
-		                receiver: tMethod2;
-		                mooseModel: model;
-		                yourself.
-	invocation23 := FamixStInvocation new
-		                sender: tMethod2;
-		                addCandidate: tMethod3;
-		                receiver: tMethod3;
-		                mooseModel: model;
-		                yourself.
-	invocation31 := FamixStInvocation new
-		                sender: tMethod3;
-		                addCandidate: tMethod1;
-		                receiver: tMethod1;
-		                mooseModel: model;
-		                yourself
-]
-
-{ #category : #'as yet unclassified' }
-NCBDeadBranchCheckerTest >> twoNodesCallGraph [
-
-	root1 := FamixStMethod new
-		         name: 'root1()';
-		         protocol: 'testing';
-		         mooseModel: model.
-
-	aMethod1 := FamixStMethod new
-		            name: 'aMethod1()';
-		protocol: 'testing';
-		            mooseModel: model.
-
-	aInvocation := FamixStInvocation new
-		               sender: root1;
-		               addCandidate: aMethod1;
-		               receiver: aMethod1;
-		               mooseModel: model;
-		               yourself
-]
-
-{ #category : #'as yet unclassified' }
-NCBDeadBranchCheckerTest >> twoWaysCallExternally [
-
-	dMethod1 := FamixStMethod new
-		            name: 'dMethod1()';
-		            protocol: 'testing';
-		            mooseModel: model;
-		            yourself.
-	dMethod2 := FamixStMethod new
-		            name: 'dMethod2()';
-		            protocol: 'testing';
-		            mooseModel: model;
-		            yourself.
-	externalM := FamixStMethod new
-		             name: 'externalM()';
-		protocol: 'testing';
-		             mooseModel: model;
-		             yourself.
-	dInvocation12 := FamixStInvocation new
-		                 sender: dMethod1;
-		                 addCandidate: dMethod2;
-		                 receiver: dMethod2;
-		                 mooseModel: model;
-		                 yourself.
-	dInvocation21 := FamixStInvocation new
-		                 sender: dMethod2;
-		                 addCandidate: dMethod1;
-		                 receiver: dMethod1;
-		                 mooseModel: model;
-		                 yourself
-]
-
-{ #category : #'as yet unclassified' }
-NCBDeadBranchCheckerTest >> twoWaysCallInternal [
-
-	eMethod1 := FamixStMethod new
-		            name: 'eMethod1()';
-		            protocol: 'testing';
-		            mooseModel: model.
-
-	eMethod2 := FamixStMethod new
-		            name: 'eMethod2()';
-		protocol: 'testing';
-		            mooseModel: model.
-	eInvocation12 := FamixStInvocation new
-		                 sender: eMethod1;
-		                 addCandidate: eMethod2;
-		                 receiver: eMethod2;
-		                 mooseModel: model;
-		                 yourself.
-	eInvocation21 := FamixStInvocation new
-		                 sender: eMethod2;
-		                 addCandidate: eMethod1;
-		                 receiver: eMethod1;
-		                 mooseModel: model;
-		                 yourself
+	self methodsInATwoWaysCallInternalGraph do: [ :method |
+		self assert: method belongsToDeadBranch ]
 ]
