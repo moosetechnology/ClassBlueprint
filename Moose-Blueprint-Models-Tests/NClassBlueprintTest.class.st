@@ -22,129 +22,75 @@ Class {
 	#category : #'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #adding }
-NClassBlueprintTest >> addMethodsToClass1 [
-
-	class1
-		addMethod: self printOnMethod;
-		addMethod: self entityMethod;
-		addMethod: self initializeMethod
-]
-
-{ #category : #adding }
-NClassBlueprintTest >> addMethodsToClass2 [
-
-	class2
-		addMethod: self printOnMethod;
-		addMethod: self entityMethod
-]
-
-{ #category : #adding }
-NClassBlueprintTest >> addMethodsToClass3 [
-
-	class3 addMethod: self printOnMethod
-]
-
-{ #category : #adding }
-NClassBlueprintTest >> addMethodsToClass4 [
-
-	class4 addMethod: self printOnMethod
-]
-
-{ #category : #adding }
-NClassBlueprintTest >> addMethodsToClass5 [
-
-	class5 addMethod: self printOnMethod
-]
-
-{ #category : #adding }
-NClassBlueprintTest >> addMethodsToClass6 [
-
-	class6 addMethod: self printOnMethod
-]
-
-{ #category : #adding }
-NClassBlueprintTest >> addMethodsToClass7 [
-
-	class7 addMethod: self printOnMethod
-]
-
-{ #category : #adding }
-NClassBlueprintTest >> addMethodsToClass8 [
-
-	class8 addMethod: self printOnMethod
-]
-
-{ #category : #adding }
-NClassBlueprintTest >> addMethodsToClass9 [
-
-	class9 addMethod:self  printOnMethod
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 NClassBlueprintTest >> defineClasses [
 
-	class1 := FamixStClass new
-		          name: 'Class1';
-		          mooseModel: model;
-		          yourself.
-	class2 := FamixStClass new
-		          name: 'Class2';
-		          mooseModel: model;
-		          yourself.
-	class3 := FamixStClass new
-		          name: 'Class3';
-		          mooseModel: model;
-		          yourself.
-	class4 := FamixStClass new
-		          name: 'Class4';
-		          mooseModel: model;
-		          yourself.
-	class5 := FamixStClass new
-		          name: 'Class5';
-		          mooseModel: model;
-		          yourself.
-	class6 := FamixStClass new
-		          name: 'Class6';
-		          mooseModel: model;
-		          yourself.
-	class7 := FamixStClass new
-		          name: 'Class7';
-		          mooseModel: model;
-		          yourself.
-	class8 := FamixStClass new
-		          name: 'Class8';
-		          mooseModel: model;
-		          yourself.
-	class9 := FamixStClass new
-		          name: 'Class9';
-		          mooseModel: model;
-		          yourself
+	class1 := model newClassNamed: 'Class1'.
+	class2 := model newClassNamed: 'Class2'.
+	class3 := model newClassNamed: 'Class3'.
+	class4 := model newClassNamed: 'Class4'.
+	class5 := model newClassNamed: 'Class5'.
+	class6 := model newClassNamed: 'Class6'.
+	class7 := model newClassNamed: 'Class7'.
+	class8 := model newClassNamed: 'Class8'.
+	class9 := model newClassNamed: 'Class9'
+]
+
+{ #category : #running }
+NClassBlueprintTest >> defineMethods [
+
+	class1
+		addMethod: self newPrintOnMethod;
+		addMethod: self newEntityMethod;
+		addMethod: self newInitializeMethod.
+
+	class2
+		addMethod: self newPrintOnMethod;
+		addMethod: self newEntityMethod.
+
+	class3 addMethod: self newPrintOnMethod.
+	class4 addMethod: self newPrintOnMethod.
+	class5 addMethod: self newPrintOnMethod.
+	class6 addMethod: self newPrintOnMethod.
+	class7 addMethod: self newPrintOnMethod.
+	class8 addMethod: self newPrintOnMethod.
+	class9 addMethod: self newPrintOnMethod
 ]
 
 { #category : #accessing }
-NClassBlueprintTest >> entityMethod [ 
-	^ FamixStMethod new
-		                name: 'entity';
-		                mooseModel: model;
-		                yourself.
+NClassBlueprintTest >> entityMethodName [
+
+	^ 'entity'
 ]
 
 { #category : #accessing }
-NClassBlueprintTest >> initializeMethod [
+NClassBlueprintTest >> initializeMethodName [
 
-	^ FamixStMethod new
-		  name: 'initialize';
-		  mooseModel: model;
-		  yourself
+	^ 'initialize'
+]
+
+{ #category : #'methods creation' }
+NClassBlueprintTest >> newEntityMethod [
+
+	^ model newMethodNamed: self entityMethodName
+]
+
+{ #category : #'methods creation' }
+NClassBlueprintTest >> newInitializeMethod [
+
+	^ model newMethodNamed: self initializeMethodName
+]
+
+{ #category : #'methods creation' }
+NClassBlueprintTest >> newPrintOnMethod [
+
+	^ model newMethodNamed: self printOnMethodName
 ]
 
 { #category : #accessing }
-NClassBlueprintTest >> printOnMethod [ 
-	^ FamixStMethod new
-		                 name: 'printOn:';
-		                 mooseModel: model;
-		                 yourself.
+NClassBlueprintTest >> printOnMethodName [
+
+	^ 'printOn:'
 ]
 
 { #category : #running }
@@ -156,43 +102,35 @@ NClassBlueprintTest >> setUp [
 		         yourself.
 
 	self defineClasses.
-	self addMethodsToClass1.
-	self addMethodsToClass2.
-	self addMethodsToClass3.
-	self addMethodsToClass4.
-	self addMethodsToClass5.
-	self addMethodsToClass6.
-	self addMethodsToClass7.
-	self addMethodsToClass8.
-	self addMethodsToClass9
+	self defineMethods
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 NClassBlueprintTest >> testEntityIsPolymorphic [
 
-	| entityOccurrences |
-	entityOccurrences := (model allModelMethods select: [ :each | 
-				 each name = self entityMethod name ]) size.
-	self
-		assert: (NClassBlueprint new methodOccurrences: entityOccurrences)  
-		equals: #polymorphic
-		
-]
-
-{ #category : #'as yet unclassified' }
-NClassBlueprintTest >> testInitializeIsMonomorphic [
-
-	| initializeOccurrences |
-	initializeOccurrences := (model allModelMethods select: [ :each | 
-		                          each name = self initializeMethod name ])
-		                         size.
+	| entityMethodsInModel |
+	entityMethodsInModel := model allModelMethods select: [ :each |
+		                        each name = self entityMethodName ].
 	self
 		assert:
-		(NClassBlueprint new methodOccurrences: initializeOccurrences)
+		(NClassBlueprint new methodOccurrences: entityMethodsInModel size)
+		equals: #polymorphic
+]
+
+{ #category : #tests }
+NClassBlueprintTest >> testInitializeIsMonomorphic [
+
+	| initializeMethodsInModel |
+	initializeMethodsInModel := model allModelMethods select: [ :each |
+		                            each name = self initializeMethodName  ].
+	self
+		assert:
+		(NClassBlueprint new methodOccurrences:
+			 initializeMethodsInModel size)
 		equals: #monomorphic
 ]
 
-{ #category : #test }
+{ #category : #tests }
 NClassBlueprintTest >> testMegamorphicOccurrences [
 
 	self
@@ -200,7 +138,7 @@ NClassBlueprintTest >> testMegamorphicOccurrences [
 		equals: #megamorphic
 ]
 
-{ #category : #test }
+{ #category : #tests }
 NClassBlueprintTest >> testMonomorphicOccurrences [
 
 	self
@@ -208,7 +146,7 @@ NClassBlueprintTest >> testMonomorphicOccurrences [
 		equals: #monomorphic
 ]
 
-{ #category : #test }
+{ #category : #tests }
 NClassBlueprintTest >> testPolymorphicOccurrences [
 
 	self
@@ -216,13 +154,14 @@ NClassBlueprintTest >> testPolymorphicOccurrences [
 		equals: #polymorphic
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 NClassBlueprintTest >> testPrintOnIsMegamorphic [
 
-	| printOnOccurrences | 
-	printOnOccurrences := (model allModelMethods select: [ :each | 
-				 each name = self printOnMethod name ]) size.
+	| printOnMethodsInModel |
+	printOnMethodsInModel := model allModelMethods select: [ :each |
+		                         each name = self printOnMethodName ].
 	self
-		assert: (NClassBlueprint new methodOccurrences: printOnOccurrences) 
+		assert:
+		(NClassBlueprint new methodOccurrences: printOnMethodsInModel size)
 		equals: #megamorphic
 ]
