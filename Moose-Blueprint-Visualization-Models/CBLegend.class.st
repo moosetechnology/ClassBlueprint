@@ -91,7 +91,7 @@ CBLegend class >> legendState: aBoolean [
 { #category : #'as yet unclassified' }
 CBLegend class >> megamorphicBox [
 ^RSBox new
-		       border: NCBMethodDescription megamorphicBorder;
+		       border: CBMethodDescription megamorphicBorder;
 		       size: 15;
 		       color: Color white;
 	yourself
@@ -107,7 +107,7 @@ CBLegend class >> megamorphicShapeAssoc [
 CBLegend class >> monomorphicBox [
 
 	^ RSBox new
-		       border: NCBMethodDescription monomorphicBorder;
+		       border: CBMethodDescription monomorphicBorder;
 		       size: 15;
 		       color: Color white;
 		       yourself.
@@ -123,7 +123,7 @@ CBLegend class >> monomorphicShapeAssoc [
 CBLegend class >> polymorphicBox [
 
 	^RSBox new
-		       border: NCBMethodDescription polymorphicBorder;
+		       border: CBMethodDescription polymorphicBorder;
 		       size: 15;
 		       color: Color white;
 		       yourself.
@@ -286,7 +286,7 @@ CBLegend >> gapSize [
 { #category : #building }
 CBLegend >> legendInfo [
 
-	^ MiNClassBlueprintPalette new colorsDictionary
+	^ MiClassBlueprintPalette new colorsDictionary
 ]
 
 { #category : #constants }

@@ -3,7 +3,7 @@ Extension { #name : #FamixStMethod }
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> belongsToDeadBranch [
 
-	^ NCBDeadBranchChecker new
+	^ CBDeadBranchChecker new
 		  isInDeadBranch: self
 		  ofClass: self parentType
 ]
@@ -196,7 +196,7 @@ FamixStMethod >> isIfNil [
 { #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isInitializer [
 
-	^ ('*initialize*' match: (self protocol ifNil: [ '' ])) or: [
+	^ ('*initializ*' match: (self protocol ifNil: [ '' ])) or: [
 		  '*initialize*' match: self name ]
 ]
 
@@ -230,10 +230,11 @@ FamixStMethod >> isLazyInitializer [
 
 	| oInvoc |
 	oInvoc := self outgoingInvocations.
-	oInvoc size ~= 2 ifTrue: [ ^ false ].
+	oInvoc size = 2 ifFalse: [ ^ false ].
 
-	^ (oInvoc anySatisfy: #isSelfInvocation) and: [ 
-		  (oInvoc anySatisfy: #isAttributeInvocation) and: [ self sourceText includesSubstring: ':=' ] ]
+	^ (oInvoc anySatisfy: #isSelfInvocation) and: [
+		  (oInvoc anySatisfy: #isAttributeInvocation) and: [
+			  self sourceText includesSubstring: ':=' ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

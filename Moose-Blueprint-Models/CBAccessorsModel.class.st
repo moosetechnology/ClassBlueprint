@@ -3,7 +3,7 @@ I represent a model for getters and setters
 "
 Class {
 	#name : #CBAccessorsModel,
-	#superclass : #NCBHighlightableModel,
+	#superclass : #CBHighlightableModel,
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
@@ -50,8 +50,8 @@ CBAccessorsModel >> color [
 	"attribute isDead attribute protectors are dead "
 
 	^ self  isDeadAccessor
-		  ifTrue: [ MiNClassBlueprintPalette new colorAt: #isDeadMethod ] 
-		  ifFalse: [ MiNClassBlueprintPalette new colorAt: self type ]
+		  ifTrue: [ MiClassBlueprintPalette new colorAt: #isDeadMethod ] 
+		  ifFalse: [ MiClassBlueprintPalette new colorAt: self type ]
 ]
 
 { #category : #accessing }

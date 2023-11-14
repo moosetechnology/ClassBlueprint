@@ -3,7 +3,7 @@ Extension { #name : #FamixJavaMethod }
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> belongsToDeadBranch [
 
-	^ NCBDeadBranchChecker new
+	^ CBDeadBranchChecker new
 		  isInDeadBranch: self
 		  ofClass: self parentType
 ]

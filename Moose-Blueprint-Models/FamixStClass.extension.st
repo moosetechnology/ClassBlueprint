@@ -2,7 +2,7 @@ Extension { #name : #FamixStClass }
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStClass >> blueprint [
-	^ NCBView forType: self 
+	^ CBView forType: self 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
