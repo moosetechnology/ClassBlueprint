@@ -123,5 +123,5 @@ CBPojoTest >> testIsGetter [
 { #category : #tests }
 CBPojoTest >> testIsSetter [
 
-	self assert: setter isSetter
+	self assert: setter isCBSetter
 ]

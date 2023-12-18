@@ -3,8 +3,10 @@ Extension { #name : #FamixJavaAttribute }
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaAttribute >> accessors [
 
-
-	^ (self incomingAccesses collectAsSet: [ :each | each source ]) select: [ :each | each isCBGetter or: [ each isSetter or: [ each isLazyInitializer ] ] ] 
+	^ (self incomingAccesses collectAsSet: [ :each | each source ])
+		  select: [ :each |
+			  each isCBGetter or: [
+				  each isCBSetter or: [ each isLazyInitializer ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

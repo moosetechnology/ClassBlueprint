@@ -17,19 +17,14 @@ CBDeadBranchChecker >> initialize [
 { #category : #initialization }
 CBDeadBranchChecker >> isInDeadBranch: aMethod ofClass: aClass [
 
-	aMethod isInitializer ifTrue: [ ^false ].
+	aMethod isInitializer ifTrue: [ ^ false ].
 	aMethod isDead ifTrue: [ ^ true ].
 
 	(visitedItems includes: aMethod) ifTrue: [ ^ true ].
 
 	visitedItems add: aMethod.
-	^ aMethod calledBy allSatisfy: [ :each | 
+
+	^ aMethod calledBy allSatisfy: [ :each |
 		  each parentType ~= aClass ifTrue: [ ^ false ].
-		  self isInDeadBranch: each ofClass: aClass ] 
-]
-
-{ #category : #initialization }
-CBDeadBranchChecker >> visitedItems [
-
-	^ visitedItems
+		  self isInDeadBranch: each ofClass: aClass ]
 ]

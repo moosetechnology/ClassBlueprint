@@ -98,8 +98,9 @@ CBAccessorsModel >> isLazyInitializer [
 ]
 
 { #category : #testing }
-CBAccessorsModel >> isSetter [ 
-	^ entity isSetter 
+CBAccessorsModel >> isSetter [
+
+	^ entity isCBSetter
 ]
 
 { #category : #accessing }

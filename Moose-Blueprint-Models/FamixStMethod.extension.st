@@ -1,22 +1,6 @@
 Extension { #name : #FamixStMethod }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> belongsToDeadBranch [
-
-	^ CBDeadBranchChecker new
-		  isInDeadBranch: self
-		  ofClass: self parentType
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> calledBy [
-
-	^ (self incomingInvocations collect: [ :each | each source ]) 
-		  reject: [ :each | 
-			  each == self  ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> hierarchyOfClasses [
 
 	| superclasses subclasses |
@@ -126,27 +110,6 @@ FamixStMethod >> isDeadAbstract [
 				  self isSubCalledExternally not and:
 					  self isSubCalledInternallyOnly not ] ]
 		  ifFalse: [ false ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isDeadMethod [
-
-	| isDead isDeadBranch isTestMethod isInitializer isDeadAbstract |
-	isDead := self isDead.
-	isDeadBranch := self belongsToDeadBranch.
-	isTestMethod := self parentType isTestCase.
-	isInitializer := self isInitializer.
-	isDeadAbstract := self isDeadAbstract.
-	"calledByTestClassesOnly := isTestMethod not and: [ 
-		                           self isCalledByTestClassesOnly ]."
-
-	self isTestCaseMethod ifTrue: [ ^ false ].
-
-	^ self isAbstract
-		  ifTrue: [ ^ isDeadAbstract ]
-		  ifFalse: [ 
-			  isInitializer ifTrue: [ ^ false ].
-			   "or: [ calledByTestClassesOnly ]" isDeadBranch ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

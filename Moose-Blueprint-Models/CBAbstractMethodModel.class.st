@@ -204,9 +204,7 @@ CBAbstractMethodModel >> isAbstractAndReimplemented [
 { #category : #'as yet unclassified' }
 CBAbstractMethodModel >> isAccessor [
 
-	(entity isCBGetter or: [ 
-		 entity isSetter ]) ifTrue: [ 
-		^ #accessor ].
+	(entity isCBGetter or: [ entity isCBSetter ]) ifTrue: [ ^ #accessor ].
 	^ nil
 ]
 

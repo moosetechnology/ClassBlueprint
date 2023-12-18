@@ -1,22 +1,6 @@
 Extension { #name : #FamixJavaMethod }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> belongsToDeadBranch [
-
-	^ CBDeadBranchChecker new
-		  isInDeadBranch: self
-		  ofClass: self parentType
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> calledBy [
-
-	^ (self incomingInvocations collect: [ :each | each source ]) 
-		  reject: [ :each | 
-			  each == self  ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> computeIsGetter [
 
 	^ (self name beginsWith: 'get') and: [ 
@@ -77,7 +61,7 @@ FamixJavaMethod >> isAbstractPublic [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isAccessor [
 
-	^ self isSetter or: [ self isCBGetter ]
+	^ self isCBSetter or: [ self isCBGetter ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -88,19 +72,43 @@ FamixJavaMethod >> isApiAnnotated [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCBGetter [
 
+	| nameBegingsWithGet hasNoOutgoingInvocations hasAttributeAccess |
 
-	| kindIsGetter nameBegingsWithGet hasNoOutgoingInvocations hasAttributeAccess |
- 	(self accesses size = 1 and: [ self parameters size isZero ]) 
- 		ifFalse: [ ^ false ].
- 	kindIsGetter := self kind = #getter.
- 	nameBegingsWithGet := self name beginsWith: 'get'.
- 	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
- 	hasAttributeAccess := self accesses allSatisfy: [ :acc | 
- 		                      acc variable isAttribute ].
+	self isGetter ifTrue: [ ^ true ].
+	(self accesses size = 1 and: [ self parameters size isZero ])
+		ifFalse: [ ^ false ].
 
- 	^ kindIsGetter or: [ self isLazyInitializer  or: [ 
- 		  nameBegingsWithGet and: [ 
- 			  hasNoOutgoingInvocations and: [ hasAttributeAccess ] ] ] ].
+	nameBegingsWithGet := self name beginsWith: 'get'.
+	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
+	hasAttributeAccess := self accesses allSatisfy: [ :acc |
+		                      acc variable isAttribute ].
+
+	^ self isLazyInitializer or: [
+		  nameBegingsWithGet and: [
+			  hasNoOutgoingInvocations and: [ hasAttributeAccess ] ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isCBSetter [
+
+	| nameBegingsWithSet hasSelfAccess hasNoOutgoingInvocations |
+
+	self isSetter ifTrue: [ ^ true ].
+	hasSelfAccess := self accesses anySatisfy: [ :each |
+		                 each variable isSelf ].
+
+	(self accesses size = 2 and: [
+		 hasSelfAccess and: [ self parameters size = 1 ] ]) ifFalse: [
+		^ false ].
+
+	nameBegingsWithSet := self name beginsWith: 'set'.
+	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
+	hasSelfAccess := self accesses anySatisfy: [ :acc1 |
+		                 acc1 previous isNotNil and: [
+			                 acc1 previous variable isSelf and: [
+				                 acc1 variable isAttribute ] ] ].
+	^ nameBegingsWithSet and: [
+		  hasSelfAccess and: [ hasNoOutgoingInvocations ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -186,27 +194,6 @@ FamixJavaMethod >> isDeadAbstract [
 				  self isSubPublic not and:
 					  self isSubInternal not ] ]
 		  ifFalse: [ false ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isDeadMethod [
-
-	| isDead isDeadBranch isTestMethod isInitializer isDeadAbstract |
-	isDead := self isDead.
-	isDeadBranch := self belongsToDeadBranch.
-	isTestMethod := self parentType isTestCase.
-	isInitializer := self isInitializer.
-	isDeadAbstract := self isDeadAbstract.
-	"calledByTestClassesOnly := isTestMethod not and: [ 
-		                           self isCalledByTestClassesOnly ]."
-
-	self isTestCaseMethod ifTrue: [ ^ false ].
-
-	^ self isAbstract
-		  ifTrue: [ ^ isDeadAbstract ]
-		  ifFalse: [ 
-			  isInitializer ifTrue: [ ^ false ].
-			   "or: [ calledByTestClassesOnly ]" isDeadBranch ] 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -329,29 +316,6 @@ FamixJavaMethod >> isReimplemented [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isSetter [
-
-	| kindIsSetter nameBegingsWithSet hasSelfAccess hasNoOutgoingInvocations |
-	hasSelfAccess := self accesses anySatisfy: [ :each | 
-		                 each variable isSelf ].
-
-	(self accesses size = 2 and: [ 
-		 hasSelfAccess and: [ self parameters size = 1 ] ]) ifFalse: [ 
-		^ false ].
-
-	kindIsSetter := self kind = #setter.
-	nameBegingsWithSet := self name beginsWith: 'set'.
-	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
-	hasSelfAccess := self accesses anySatisfy: [ :acc1 | 
-		                 acc1 previous isNotNil and: [ 
-			                 acc1 previous variable isSelf and: [ 
-				                 acc1 variable isAttribute ] ] ].
-	^ kindIsSetter or: [ 
-		  nameBegingsWithSet and: [ 
-			  hasSelfAccess and: [ hasNoOutgoingInvocations ] ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isSubInternal [
 
 	" its redefinitions are only called in the hierarchy"
@@ -385,8 +349,12 @@ FamixJavaMethod >> isSuperOf: aFamixMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isTestCaseMethod [ 
-	^ self isTestMethod or: [ self isTestInternal or: [ self isTestExternalImplementation or: [ self isTestInternalImplementation  ] ] ]
+FamixJavaMethod >> isTestCaseMethod [
+
+	^ self isTestMethod or: [
+		  self isTestInternal or: [
+			  self isTestExternalImplementation or: [
+				  self isTestInternalImplementation ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

@@ -35,10 +35,8 @@ CBAbstractClassBlueprintTest >> attributeName [
 CBAbstractClassBlueprintTest >> configureExternalClass [
 
 	| externalMethodInMainClass methodFromExternalClass |
-	externalMethodInMainClass := (model newMethodNamed:
-			                              self externalMethodName)
-		                             parentType: mainClass;
-		                             yourself.
+
+	externalMethodInMainClass := self createExternalMethod.
 
 	externalClass := model newClassNamed: 'ExternalClass'.
 	methodFromExternalClass := (model newMethodNamed:
@@ -104,6 +102,14 @@ CBAbstractClassBlueprintTest >> createClassVariables [
 CBAbstractClassBlueprintTest >> createDeadChildren [
 
 	self subclassResponsibility
+]
+
+{ #category : #entities }
+CBAbstractClassBlueprintTest >> createExternalMethod [
+
+	^ (model newMethodNamed: self externalMethodName)
+		  parentType: mainClass;
+		  yourself
 ]
 
 { #category : #entities }

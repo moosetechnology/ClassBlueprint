@@ -7,13 +7,23 @@ Class {
 { #category : #entities }
 CBClassBlueprintForJavaModelTest >> createAccessors [
 
+	| setter otherMethod |
+
 	(model newMethodNamed: self accessorName , '1()')
-		kind: #isAccessor;
+		beGetter;
 		parentType: mainClass.
 
-	(model newMethodNamed: self accessorName , '2()')
-		kind: #isAccessor;
-		parentType: mainClass
+	setter := (model newMethodNamed: self accessorName , '2()')
+		          beSetter;
+		          parentType: mainClass.
+
+	"In order to have attributes, at least one accessor should be invoked"
+	otherMethod := (model newMethodNamed: 'methodIvokingAccessor()')
+		               parentType:
+		               (model newClassNamed: 'ClassCallingAccessor').
+	model newInvocation
+		source: otherMethod;
+		addCandidate: setter
 ]
 
 { #category : #entities }
@@ -22,6 +32,14 @@ CBClassBlueprintForJavaModelTest >> createDeadChildren [
 	(model newMethodNamed: 'hibernerMethod1()') parentType: mainClass.
 
 	(model newAttributeNamed: 'deadAttribute') parentType: mainClass
+]
+
+{ #category : #entities }
+CBClassBlueprintForJavaModelTest >> createExternalMethod [
+
+	^ super createExternalMethod
+		  bePublic;
+		  yourself
 ]
 
 { #category : #entities }
@@ -52,25 +70,27 @@ CBClassBlueprintForJavaModelTest >> modelClass [
 CBClassBlueprintForJavaModelTest >> testAccessOnInstVar [
 
 	| mbInstVar |
+
 	mbInstVar := classBlueprint attributes detect: [ :cv |
 		             cv name beginsWith: self attributeName ].
 
 	self denyEmpty: mbInstVar attributeAccess.
 
-	self
-		assert: mbInstVar attributeAccess first source entity
-		equals: (mainClass methods detect: [ :method |
-				 method name beginsWith: self accessorName ]).
-
-	self
-		assert: mbInstVar attributeAccess first target entity
-		equals: (mainClass attributes detect: [ :attribute |
-				 attribute name beginsWith: self attributeName ])
+	mbInstVar attributeAccess do: [ :access |
+		self assert: access source entity isAccessor.
+		self
+			assert: access target entity
+			equals: (mainClass attributes detect: [ :attribute |
+					 attribute name beginsWith: self attributeName ]) ]
 ]
 
 { #category : #tests }
 CBClassBlueprintForJavaModelTest >> testDeadAccessor [
 
-	self assertEmpty:
-		((classBlueprint accessors collect: #entity) select: #isDeadMethod)
+	self assert:
+		((classBlueprint accessors collect: #entity) detect: #isGetter)
+			isDeadMethod.
+	self deny:
+		((classBlueprint accessors collect: #entity) detect: #isSetter)
+			isDeadMethod
 ]
