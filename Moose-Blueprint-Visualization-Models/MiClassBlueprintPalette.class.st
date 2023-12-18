@@ -1,13 +1,10 @@
-"
-I am the palette for the class blueprint visualization. I hold the colors of class types.
-"
 Class {
 	#name : #MiClassBlueprintPalette,
-	#superclass : #MiVisualizationPalette,
+	#superclass : #MiPalette,
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #style }
+{ #category : #'as yet unclassified' }
 MiClassBlueprintPalette >> beDefaultStyle [
 
 	self
@@ -39,4 +36,11 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #'Monomorphic Method' forColor: nil;
 		addName: #'Polymorphic Method' forColor: nil;
 		addName: #'Megamorphic Method' forColor: nil
+]
+
+{ #category : #initialization }
+MiClassBlueprintPalette >> initialize [
+
+	super initialize.
+	self beDefaultStyle
 ]

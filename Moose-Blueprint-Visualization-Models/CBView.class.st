@@ -174,7 +174,7 @@ CBView >> build [
 	        canvas zoomToFit.
 	        super build.
 	        canvas signalUpdate ] asJob.
-	canvas aaFast.
+"	canvas aaFast."
 	canvas inspectorContext: RSEmptyContextInteraction new.
 	self addCanvasInteractions.
 	[ aJob run ] forkAt: Processor userBackgroundPriority
