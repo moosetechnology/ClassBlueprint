@@ -189,9 +189,9 @@ CBAbstractMethodModel >> invocations: anObject [
 { #category : #'as yet unclassified' }
 CBAbstractMethodModel >> isAbstract [
 
-	(entity isAbstract and: [ self entity isDeadAbstract not ]) ifTrue: [ 
-		^ #isAbstract ].
-	^ nil
+	^ (entity isAbstract and: [ self entity isDeadAbstract not ])
+		  ifTrue: [ #isAbstract ]
+		  ifFalse: [ nil ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -202,7 +202,7 @@ CBAbstractMethodModel >> isAbstractAndReimplemented [
 ]
 
 { #category : #'as yet unclassified' }
-CBAbstractMethodModel >> isAccessor [
+CBAbstractMethodModel >> isCBAccessor [
 
 	(entity isCBGetter or: [ entity isCBSetter ]) ifTrue: [ ^ #accessor ].
 	^ nil

@@ -154,7 +154,7 @@ CBMethodDescription >> initializeType [
 					        entityModel isDelegating ifNil: [ 
 						        entityModel isOverridden ifNil: [ 
 							        entityModel isConstant ifNil: [ 
-								        entityModel isAccessor ifNil: [ 
+								        entityModel isCBAccessor ifNil: [ 
 									        entityModel isInternalImplementation ifNil: [ 
 										         #isOther ] ] ] ] ] ] ] ] ] ].
 	entityModel type: type

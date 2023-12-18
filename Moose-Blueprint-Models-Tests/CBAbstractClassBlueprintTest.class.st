@@ -217,7 +217,7 @@ CBAbstractClassBlueprintTest >> testDeadAttributes [
 	self
 		assertCollection: (classBlueprint deadAttributes collect: #name)
 		hasSameElements:
-		(mainClass attributes select: #isDead thenCollect: #name)
+		(mainClass attributes select: #isCBDead thenCollect: #name)
 ]
 
 { #category : #tests }

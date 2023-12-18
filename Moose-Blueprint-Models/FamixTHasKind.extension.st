@@ -3,17 +3,11 @@ Extension { #name : #FamixTHasKind }
 { #category : #'*Moose-Blueprint-Models' }
 FamixTHasKind >> isCBGetter [
 
-	<FMProperty: #isCBGetter type: #Boolean>
-	<derived>
-	<FMComment: 'True if the method is a getter of an attribute'>
-	^ #getter = self kind or: [ self isLazyInitializer ]
+	^ self isGetter or: [ self isLazyInitializer ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixTHasKind >> isCBSetter [
 
-	<FMProperty: #isCBGetter type: #Boolean>
-	<derived>
-	<FMComment: 'True if the method is a setter of an attribute'>
-	^ #setter = self kind
+	^ self isSetter
 ]

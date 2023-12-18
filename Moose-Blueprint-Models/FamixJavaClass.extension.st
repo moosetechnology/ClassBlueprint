@@ -14,15 +14,6 @@ FamixJavaClass >> blueprint [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaClass >> isAbstract [
-
-	<FMProperty: #isAbstract type: #Boolean>
-	<generated>
-	<FMComment: 'Entity can be declared abstract'>
-	^ isAbstract ifNil: [ false ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaClass >> isObjectClass [ 
 	^ self name = 'Object'
 ]

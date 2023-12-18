@@ -24,7 +24,7 @@ FamixJavaAttribute >> hasAccessorsAccess [
 FamixJavaAttribute >> hasDirectAccess [
 
 
-	^ (self incomingAccesses reject: [ :each | each accessor isAccessor ])
+	^ (self incomingAccesses reject: [ :each | each accessor isCBAccessor ])
 		  isNotEmpty
 ]
 
@@ -33,14 +33,6 @@ FamixJavaAttribute >> isCalledIn: aFamixClass [
 
 	^ ((self incomingAccesses collect: #source) select: [ :each | 
 		   each parentType = aFamixClass ]) isNotEmpty
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> isDead [
-
-	" if it is only accessed by accessors and its accessors are not called"
-^ ((self incomingAccesses collectAsSet: #source) = self accessors ) 
-	 and: [ self accessors allSatisfy: #isDead ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

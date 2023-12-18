@@ -77,7 +77,7 @@ CBClassBlueprintForJavaModelTest >> testAccessOnInstVar [
 	self denyEmpty: mbInstVar attributeAccess.
 
 	mbInstVar attributeAccess do: [ :access |
-		self assert: access source entity isAccessor.
+		self assert: access source entity isCBAccessor.
 		self
 			assert: access target entity
 			equals: (mainClass attributes detect: [ :attribute |

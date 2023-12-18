@@ -68,7 +68,7 @@ CBClassBlueprint >> allAttributes [
 { #category : #accessing }
 CBClassBlueprint >> attributeAccess [
 
-	^  (self allAttributes flatCollect: [:each | each attributeAccess]) reject: [ :each | each source entity isAccessor ].
+	^  (self allAttributes flatCollect: [:each | each attributeAccess]) reject: [ :each | each source entity isCBAccessor ].
 ]
 
 { #category : #accessing }
@@ -325,7 +325,7 @@ CBClassBlueprint >> initialize [
 CBClassBlueprint >> initializeAcessors [
 
 	accessors := self entity methods
-		              select: [ :each | each isAccessor ] thenCollect: [ :each | 
+		              select: [ :each | each isCBAccessor ] thenCollect: [ :each | 
 		             CBAccessorsModel newFrom: each ]
 ]
 
@@ -364,11 +364,11 @@ CBClassBlueprint >> initializeClassVars [
 { #category : #initialization }
 CBClassBlueprint >> initializeDeadAttributes [
 
-	deadAttributes := ((entity attributes select: [ :each | each isDead ]) 
-		                   collect: [ :anAttribute | 
-		                   CBAttributeModel newFrom: anAttribute ]) 
-		                  sorted: [ :x :y | x name < y name ].
-
+	deadAttributes := ((entity attributes select: [ :each |
+		                    each isCBDead ]) collect: [ :anAttribute |
+		                   CBAttributeModel newFrom: anAttribute ]) sorted: [
+		                  :x
+		                  :y | x name < y name ]
 ]
 
 { #category : #initialization }
@@ -507,7 +507,7 @@ CBClassBlueprint >> notClassifiedMethods [
 		                     aMethod entity ].
 	
 	^ (entity methods reject: [ :each | alreadyClassified includes: each ]) 
-		  reject: #isAccessor
+		  reject: #isCBAccessor
 ]
 
 { #category : #accessing }

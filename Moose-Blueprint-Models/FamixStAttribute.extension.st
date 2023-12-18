@@ -20,14 +20,6 @@ FamixStAttribute >> isCalledIn: aFamixClass [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStAttribute >> isDead [
-
-	" if it is only accessed by accessors and its accessors are not called"
-^ ((self incomingAccesses collectAsSet: #source) = self accessors ) 
-	 and: [ self accessors allSatisfy: #isDead ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixStAttribute >> newIncomingConnection [ 
 	^ CBAttributeAccessModel new 
 		initializeDescription; 
