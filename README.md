@@ -9,7 +9,7 @@ Load the visualization using the script:
 ``` Smalltalk
 Metacello new
   baseline: 'ClassBlueprint';
-  repository: 'github://NourDjihan/ClassBlueprint/src';
+  repository: 'github://moosetechnology/ClassBlueprint/src';
   load.
  ```
 ## In a Moose 10 image: 
@@ -17,7 +17,7 @@ Load the visualization using the script:
 ``` Smalltalk
 Metacello new
   baseline: 'ClassBlueprint';
-  repository: 'github://NourDjihan/ClassBlueprint:v2.2.2/src';
+  repository: 'github://moosetechnology/ClassBlueprint:v2.2.2/src';
   load.
  ```
 
@@ -29,7 +29,7 @@ Metacello new
 ``` Smalltalk
 Metacello new
   baseline: 'ClassBlueprint';
-  repository: 'github://NourDjihan/ClassBlueprint:v2.2.1/src';
+  repository: 'github://moosetechnology/ClassBlueprint:v2.2.1/src';
   load.
  ```
 
