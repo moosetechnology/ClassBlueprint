@@ -3,43 +3,37 @@ Extension { #name : #FamixJavaMethod }
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCBGetter [
 
-	| nameBegingsWithGet hasNoOutgoingInvocations hasAttributeAccess |
-
 	self isGetter ifTrue: [ ^ true ].
+
 	(self accesses size = 1 and: [ self parameters size isZero ])
 		ifFalse: [ ^ false ].
 
-	nameBegingsWithGet := self name beginsWith: 'get'.
-	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
-	hasAttributeAccess := self accesses allSatisfy: [ :acc |
-		                      acc variable isAttribute ].
-
 	^ self isLazyInitializer or: [
-		  nameBegingsWithGet and: [
-			  hasNoOutgoingInvocations and: [ hasAttributeAccess ] ] ]
+		  (self name beginsWith: 'get') and: [
+			  self outgoingInvocations isEmpty and: [
+				  self accesses allSatisfy: [ :acc | acc variable isAttribute ] ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCBSetter [
 
-	| nameBegingsWithSet hasSelfAccess hasNoOutgoingInvocations |
+	| hasSelfAccess |
 
 	self isSetter ifTrue: [ ^ true ].
+
 	hasSelfAccess := self accesses anySatisfy: [ :each |
 		                 each variable isSelf ].
-
 	(self accesses size = 2 and: [
 		 hasSelfAccess and: [ self parameters size = 1 ] ]) ifFalse: [
 		^ false ].
 
-	nameBegingsWithSet := self name beginsWith: 'set'.
-	hasNoOutgoingInvocations := self outgoingInvocations isEmpty.
 	hasSelfAccess := self accesses anySatisfy: [ :acc1 |
 		                 acc1 previous isNotNil and: [
 			                 acc1 previous variable isSelf and: [
 				                 acc1 variable isAttribute ] ] ].
-	^ nameBegingsWithSet and: [
-		  hasSelfAccess and: [ hasNoOutgoingInvocations ] ]
+
+	^ (self name beginsWith: 'set') and: [
+		  hasSelfAccess and: [ self outgoingInvocations isEmpty ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -119,15 +113,6 @@ FamixJavaMethod >> isSubPublic [
 	(reimplementations flatCollect: [ :m | m incomingInvocations ])
 		ifEmpty: [ ^ false ].
 	^ reimplementations anySatisfy: [ :m | m isPublic ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaMethod >> isTestCaseMethod [
-
-	^ self isTestMethod or: [
-		  self isTestInternal or: [
-			  self isTestExternalImplementation or: [
-				  self isTestInternalImplementation ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

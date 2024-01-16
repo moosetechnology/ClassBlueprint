@@ -1,17 +1,8 @@
 Extension { #name : #FamixStClass }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStClass >> blueprint [
-	^ CBView forType: self 
-]
+FamixStClass >> isPojo [
 
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStClass >> isObjectClass [ 
-	^ self name = 'Object'
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStClass >> isPojo [ 
 	^ false
 ]
 

@@ -1,12 +1,6 @@
 Extension { #name : #FamixJavaClass }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaClass >> blueprint [
-
-	^ CBView forType: self
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaClass >> isPojo [
 
 	^ (self superclassHierarchy anySatisfy: [ :each | 

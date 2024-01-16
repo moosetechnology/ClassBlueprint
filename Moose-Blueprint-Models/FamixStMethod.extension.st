@@ -5,28 +5,15 @@ FamixStMethod >> isAbstractCalledExternally [
 
 	"It must be called by a class external from its hierarchy"
 
-	| inInvocSources |
+	| incomingInvocationSources |
 
-	inInvocSources := self incomingInvocations collect: [ :each |
+	incomingInvocationSources := self incomingInvocations collect: [ :each |
 		                  each source ].
 
-	inInvocSources ifEmpty: [ ^ false ].
-	^ inInvocSources anySatisfy: [ :each |
+	incomingInvocationSources ifEmpty: [ ^ false ].
+
+	^ incomingInvocationSources anySatisfy: [ :each |
 		  (self hierarchyOfClasses includes: each parentType) not ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isApiAnnotated [
-
-	^ self isAnnotatedWith: 'api'
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isCalledByTestClassesOnly [
-
-	^ ((self incomingInvocations collect: [ :each | each source ])
-		   collect: [ :each | each parentType ]) allSatisfy: [ :each |
-		  each isTestCase ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -66,12 +53,6 @@ FamixStMethod >> isExternal [
 
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
 	^ self isCalledExternally
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isFlagMethod [
-
-	^ #flag: = self name
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -134,13 +115,4 @@ FamixStMethod >> isSubCalledInternallyOnly [
 	redefinitions ifEmpty: [ ^ false ].
 
 	^ redefinitions allSatisfy: [ :m | m isCalledInHierarchyOnly ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isTestCaseMethod [
-
-	^ self isTestMethod or: [
-		  self isTestInternal or: [
-			  self isTestExternalImplementation or: [
-				  self isTestInternalImplementation ] ] ]
 ]

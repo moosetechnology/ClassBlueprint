@@ -10,20 +10,14 @@ FamixStAttribute >> cbAccessors [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStAttribute >> hasAccessors [ 
-	^ self cbAccessors isNotEmpty 
+FamixStAttribute >> hasAccessors [
+
+	^ self cbAccessors isNotEmpty
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStAttribute >> isCalledIn: aFamixClass [
 
-	^ ((self incomingAccesses collect: #source) select: [ :each | 
+	^ ((self incomingAccesses collect: #source) select: [ :each |
 		   each parentType = aFamixClass ]) isNotEmpty
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStAttribute >> newIncomingConnection [ 
-	^ CBAttributeAccessModel new 
-		initializeDescription; 
-		yourself
 ]

@@ -136,6 +136,15 @@ FamixTMethod >> isReimplemented [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixTMethod >> isTestCaseMethod [
+
+	^ self isTestMethod or: [
+		  self isTestInternal or: [
+			  self isTestExternalImplementation or: [
+				  self isTestInternalImplementation ] ] ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixTMethod >> isTestExternalImplementation [
 
 	"Here we do not care if it is called by other test methods"
