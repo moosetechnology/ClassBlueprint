@@ -87,12 +87,6 @@ CBView class >> maxWidth [
 	^ 30
 ]
 
-{ #category : #accessing }
-CBView >> accessors [
-
-	^ attributesLayer entities collect: [ :each | each accessors ]
-]
-
 { #category : #adding }
 CBView >> addCanvasInteractions [
 

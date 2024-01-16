@@ -1,15 +1,17 @@
 Extension { #name : #FamixStAttribute }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStAttribute >> accessors [
+FamixStAttribute >> cbAccessors [
 
-
-	^ (self incomingAccesses collectAsSet: [ :each | each source ]) select: [ :each | each isCBGetter or: [ each isSetter or: [ each isLazyInitializer ] ] ] 
+	^ (self incomingAccesses collectAsSet: [ :each | each source ])
+		  select: [ :each |
+			  each isCBGetter or: [
+				  each isCBSetter or: [ each isLazyInitializer ] ] ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
 FamixStAttribute >> hasAccessors [ 
-	^ self accessors isNotEmpty 
+	^ self cbAccessors isNotEmpty 
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

@@ -1,7 +1,7 @@
 Extension { #name : #FamixJavaAttribute }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> accessors [
+FamixJavaAttribute >> cbAccessors [
 
 	^ (self incomingAccesses collectAsSet: [ :each | each source ])
 		  select: [ :each |
@@ -10,22 +10,9 @@ FamixJavaAttribute >> accessors [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> hasAccessors [ 
-	^ self accessors isNotEmpty 
-]
+FamixJavaAttribute >> hasAccessors [
 
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> hasAccessorsAccess [
-
-	^ (self accessors flatCollect: #incomingInvocations) isNotEmpty
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> hasDirectAccess [
-
-
-	^ (self incomingAccesses reject: [ :each | each accessor isCBAccessor ])
-		  isNotEmpty
+	^ self cbAccessors isNotEmpty
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
@@ -33,16 +20,4 @@ FamixJavaAttribute >> isCalledIn: aFamixClass [
 
 	^ ((self incomingAccesses collect: #source) select: [ :each | 
 		   each parentType = aFamixClass ]) isNotEmpty
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> isSelf [ 
-	^ false
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaAttribute >> newIncomingConnection [ 
-	^ CBAttributeAccessModel new 
-		initializeDescription; 
-		yourself
 ]

@@ -7,10 +7,14 @@ Class >> blueprint [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-Class >> blueprintView [ 
+Class >> blueprintView [
 
-	| model thisClass |
-	model := MooseScripts createModelNamed: 'tempModel' with: { self package name asString }.
-	thisClass := model allModelClasses detect: [ :each | each name = self name  ].
-	^ thisClass blueprint
+	| model |
+
+	model := MooseScripts
+		         createModelNamed: 'tempModel'
+		         with: { self package name asString }.
+
+	^ (model allModelClasses detect: [ :each | each name = self name ])
+		  blueprint
 ]

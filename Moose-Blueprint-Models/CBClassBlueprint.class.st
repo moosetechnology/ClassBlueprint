@@ -31,9 +31,8 @@ CBClassBlueprint class >> newFrom: aFamixClassEntity [
 
 { #category : #accessing }
 CBClassBlueprint >> accessorInvocations [
-	^ self accessors flatCollect: [ :each | each accessorInvocations ]
-		                       
 
+	^ self accessors flatCollect: [ :each | each accessorInvocations ]
 ]
 
 { #category : #accessing }
@@ -198,35 +197,33 @@ CBClassBlueprint >> connectOutgoingInvocations [
 { #category : #building }
 CBClassBlueprint >> connectSource: source withAll: targets [
 
-	| connectionInstance sourceModel targetModels |
-	connectionInstance := source newOutgoingConnection.
+	| sourceModel targetModels |
+
 	sourceModel := self models detect: [ :each | each entity = source ].
-	targetModels := (targets asSet collect: [ :aTarget | 
+
+	targetModels := (targets asSet collect: [ :aTarget |
 		                 self models
-			                 detect: [ :model | 
-				                 model entity = aTarget "and: [ 
-					                 model entity isAccessor not ]" ]
-			                 ifNone: [ nil "connections with exterior" ] ]) 
-		                reject: #isNil.
-	targetModels ifNotEmpty: [ 
-		connectionInstance source: sourceModel targets: targetModels ]
+			                 detect: [ :model | model entity = aTarget ]
+			                 ifNone: [ nil ] ]) reject: #isNil.
+
+	targetModels ifNotEmpty: [
+		self newOutgoingInvocation source: sourceModel targets: targetModels ]
 ]
 
 { #category : #building }
 CBClassBlueprint >> connectTarget: aTarget withAll: sources [
 
-	| connectionInstance targetModel sourceModels |
+	| targetModel sourceModels |
+
 	targetModel := self models detect: [ :each | each entity = aTarget ].
-		connectionInstance := targetModel newIncomingConnection.
-	sourceModels := (sources collect: [ :aSource | 
+
+	sourceModels := (sources collect: [ :aSource |
 		                 self models
-			                 detect: [ :model | 
-				                 model entity = aSource "and: [ 
-					                 model entity isAccessor not ]" ]
-			                 ifNone: [ nil "connections with exterior" ] ]) 
-		                reject: #isNil.
-	sourceModels ifNotEmpty: [ 
-		connectionInstance target: targetModel sources: sourceModels ]
+			                 detect: [ :model | model entity = aSource ]
+			                 ifNone: [ nil ] ]) reject: #isNil.
+
+	sourceModels ifNotEmpty: [
+		self newAttributeAccess target: targetModel sources: sourceModels ]
 ]
 
 { #category : #building }
@@ -496,7 +493,21 @@ CBClassBlueprint >> methodOccurrences: aNumber [
 CBClassBlueprint >> models [
 
 	^ self methodModels , self accessors , self attributes
-	  , self deadAttributes , self classVars, self superAttributes 
+	  , self deadAttributes , self classVars , self superAttributes
+]
+
+{ #category : #building }
+CBClassBlueprint >> newAttributeAccess [
+
+	^ CBAttributeAccessModel new
+		  initializeDescription;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+CBClassBlueprint >> newOutgoingInvocation [
+
+	^ CBOutgoingInvocationsCollector new
 ]
 
 { #category : #accessing }

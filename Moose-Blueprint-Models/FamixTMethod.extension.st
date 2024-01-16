@@ -199,12 +199,6 @@ FamixTMethod >> newIncomingConnection [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixTMethod >> newOutgoingConnection [
-
-	^ CBOutgoingInvocationsCollector new
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixTMethod >> redefinitions [
 
 	| subMethods |

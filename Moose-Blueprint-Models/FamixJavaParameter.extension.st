@@ -4,8 +4,3 @@ Extension { #name : #FamixJavaParameter }
 FamixJavaParameter >> isParameter [ 
 	^ true
 ]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixJavaParameter >> isSelf [ 
-	^ false
-]

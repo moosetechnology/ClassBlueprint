@@ -81,15 +81,17 @@ CBAttributeDescription >> numberOfHierarchyAcceses [
 CBAttributeDescription >> numberOfInternalAccesses [
 
 	| directAccesses accessorsAccess |
-	directAccesses := (entityModel entity incomingAccesses select: [ 
-		                   :each | 
+
+	directAccesses := (entityModel entity incomingAccesses select: [
+		                   :each |
 		                   each source parentType
 		                   == entityModel entity parentType ]) size.
 
-	accessorsAccess := (entityModel entity accessors flatCollect: [ 
-		                     :each | 
-		                     each incomingInvocations collect: #source ]) select: [ 
-		                   :each | each parentType == entityModel entity parentType ].
+	accessorsAccess := (entityModel entity cbAccessors flatCollect: [
+		                    :each |
+		                    each incomingInvocations collect: #source ])
+		                   select: [ :each |
+		                   each parentType == entityModel entity parentType ].
 
 	^ directAccesses + accessorsAccess size
 ]
