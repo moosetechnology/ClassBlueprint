@@ -13,14 +13,11 @@ Class {
 		'initializersLayer',
 		'externalsLayer',
 		'internalsLayer',
-		'accessorsLayer',
 		'attributesLayer',
 		'deadsLayer',
 		'deadAttributesLayer',
 		'classVarsLayer',
-		'border',
 		'classMethodsLayer',
-		'shapes',
 		'secondLayer',
 		'superAttributesLayer',
 		'thirdLayer',
@@ -103,15 +100,24 @@ CBView >> addCanvasInteractions [
 ]
 
 { #category : #'as yet unclassified' }
-CBView >> allLayers [ 
+CBView >> allLayers [
 
-	^ { deadsLayer . deadAttributesLayer . initializersLayer . externalsLayer . internalsLayer . superAttributesLayer . attributesLayer . classMethodsLayer . classVarsLayer }
+	^ {
+		  deadsLayer.
+		  deadAttributesLayer.
+		  initializersLayer.
+		  externalsLayer.
+		  internalsLayer.
+		  superAttributesLayer.
+		  attributesLayer.
+		  classMethodsLayer.
+		  classVarsLayer }
 ]
 
 { #category : #'as yet unclassified' }
 CBView >> allMethodsEntities [
- 
-	^ self methodsLayers flatCollect: [ :each | each entities ]                     
+
+	^ self methodsLayers flatCollect: [ :each | each entities ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -123,8 +129,9 @@ CBView >> allShapes [
 { #category : #'as yet unclassified' }
 CBView >> attSide [
 
-	^ { self superAttributesComposite .
-		  self attributesComposite } asOrderedCollection 
+	^ {
+		  self superAttributesComposite.
+		  self attributesComposite } asOrderedCollection
 ]
 
 { #category : #accessing }
@@ -139,8 +146,10 @@ CBView >> attributes [
 ]
 
 { #category : #'as yet unclassified' }
-CBView >> attributesComposite [ 
-		| shape |
+CBView >> attributesComposite [
+
+	| shape |
+
 	shape := self canvas shapeFromModel: attributesLayer.
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
@@ -207,9 +216,10 @@ CBView >> buildEdges [
 CBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
 
 	| layer |
+
 	layer := RSComposite new
 		         model: aLayerModel;
-		         border: border.
+		         border: self newBorder.
 	layer addAll: (aGroup collect: [ :aModel | aModel shape ]).
 	layer adjustToChildren.
 	layer addInteraction: (CBDraggableCanvas new
@@ -322,8 +332,8 @@ CBView >> deadMethodsComposite [
 { #category : #'as yet unclassified' }
 CBView >> deads [
 
-	^ { 
-		  firstLayer .
+	^ {
+		  firstLayer.
 		  self deadAttributesComposite }
 ]
 
@@ -377,24 +387,24 @@ CBView >> fifthLayer [
 
 	| middleAttributeSide maxWidth maxHeight |
 	middleAttributeSide := self middleAttributeSide.
+	
 	self setNodesOf: middleAttributeSide withLayout: RSVerticalLineLayout.
+	
 	fifthLayer := (middleAttributeSide as: RSGroup) asShapeFor:
 		              middleAttributeSide.
 
 	"Adjust the height of the fifth layer"
-	maxHeight := { 
-		             secondLayer.
+	maxHeight := { secondLayer.
 		             fifthLayer } max: [ :each | each height ].
 
 	fifthLayer height: maxHeight.
 	self fixHeightOf: middleAttributeSide with: maxHeight.
 
-
 	"set Width"
-	maxWidth := { 
-		            fourthLayer.
+	maxWidth := { fourthLayer.
 		            fifthLayer.
 		            self sixthLayer } max: [ :each | each width ].
+
 	fifthLayer width: maxWidth.
 	middleAttributeSide do: [ :each | each width: maxWidth ].
 
@@ -418,20 +428,29 @@ CBView >> firstLayer [
 { #category : #'as yet unclassified' }
 CBView >> fixHeightOf: aMiddleAttributeSide with: maxHeight [
 
-	| superAtt att |
+	| superAtt |
+
 	superAtt := aMiddleAttributeSide first.
-	att := aMiddleAttributeSide second.
-	fifthLayer height
-	= (aMiddleAttributeSide sum: [ :each | each height ]) ifFalse: [ 
-		superAtt children isEmpty ifTrue: [ superAtt height: 30. att height: maxHeight - 30 ] ifFalse: [ aMiddleAttributeSide do: [ :each | each height: each height + maxHeight / fifthLayer nodes size ] ] ].
+
+	fifthLayer height = (aMiddleAttributeSide sum: [ :each | each height ]) 
+		ifFalse: [
+			superAtt children isEmpty
+				ifTrue: [
+					superAtt height: 30.
+					aMiddleAttributeSide second height: maxHeight - 30 ]
+				ifFalse: [
+					aMiddleAttributeSide do: [ :each |
+						each height: each height + maxHeight / fifthLayer nodes size ] ] ]
 ]
 
 { #category : #'as yet unclassified' }
 CBView >> fourthLayer [
 
-	fourthLayer ifNil: [ fourthLayer := (self canvas shapeFromModel: classVarsLayer ).
-	RSVerticalLineLayout new on: fourthLayer nodes.
-	fourthLayer padding: 10 ].
+	fourthLayer ifNil: [
+		fourthLayer := self canvas shapeFromModel: classVarsLayer.
+		RSVerticalLineLayout new on: fourthLayer nodes.
+		fourthLayer padding: 10 ].
+
 	^ fourthLayer
 ]
 
@@ -453,22 +472,24 @@ CBView >> highlight: aShape [
 ]
 
 { #category : #'as yet unclassified' }
-CBView >> highlightedShapes [ 	
-	
-	| result |
-	result := canvas allChildren select: [ :each | 
-			                each model isCollection not and: [ 
-				                each model isAssociation not and: [ 
-					                each model isHighlightable and: [ 
-						                each model isHighlighted ] ] ] ].
+CBView >> highlightedShapes [
 
-		^ result
+	^ canvas allChildren select: [ :each |
+		  each model isCollection not and: [
+			  each model isAssociation not and: [
+				  each model isHighlightable and: [ each model isHighlighted ] ] ] ]
 ]
 
 { #category : #initialization }
 CBView >> initialize [
 
 	super initialize.
+	self initializeLayers
+]
+
+{ #category : #initialization }
+CBView >> initializeLayers [
+
 	initializersLayer := CBInitializersLayerModel new.
 	externalsLayer := CBExternalsLayerModel new.
 	internalsLayer := CBInternalsLayerModel new.
@@ -477,11 +498,7 @@ CBView >> initialize [
 	deadsLayer := CBDeadMethodsLayerModel new.
 	deadAttributesLayer := CBDeadAttributesLayerModel new.
 	classVarsLayer := CBClassVarsLayerModel new.
-	classMethodsLayer := CBClassMethodsLayerModel new.
-	border := RSBorder new
-		          color: Color black muchDarker;
-		          width: 1;
-		          yourself
+	classMethodsLayer := CBClassMethodsLayerModel new
 ]
 
 { #category : #layers }
@@ -537,34 +554,37 @@ CBView >> layersEntities [
 { #category : #'as yet unclassified' }
 CBView >> methodShapes [
 
-	| methodShapes |
-	methodShapes := (self canvas allChildren select: [ :each | 
-		                 each model isCollection not and: [ 
-			                 each model isHighlightable and: [ 
-				                 each model entity isMethod ] ] ]) as: RSGroup.
-
-
-	^ methodShapes
+	^ (self canvas allChildren select: [ :each |
+		   each model isCollection not and: [
+			   each model isHighlightable and: [ each model entity isMethod ] ] ])
+		  as: RSGroup
 ]
 
 { #category : #'as yet unclassified' }
-CBView >> methodsLayers [ 
+CBView >> methodsLayers [
 
-	^ { classMethodsLayer . initializersLayer . externalsLayer . internalsLayer . deadsLayer  }
+	^ {
+		  classMethodsLayer.
+		  initializersLayer.
+		  externalsLayer.
+		  internalsLayer.
+		  deadsLayer }
 ]
 
 { #category : #'as yet unclassified' }
 CBView >> middleAttributeSide [
 
-	^ { self superAttributesComposite .
-		  self attributesComposite } asOrderedCollection 
+	^ {
+		  self superAttributesComposite.
+		  self attributesComposite } asOrderedCollection
 ]
 
 { #category : #shapes }
 CBView >> nestLayers [
 
 	| right left dict layers |
-	dict := { 
+
+	dict := {
 		        (self firstLayer -> self fourthLayer).
 		        (self secondLayer -> fifthLayer).
 		        (thirdLayer -> sixthLayer) } asOrderedDictionary.
@@ -572,27 +592,36 @@ CBView >> nestLayers [
 
 	left := dict keys asGroup asShapeFor: dict keys.
 	right := dict values asGroup asShapeFor: dict values.
-	{ 
+	{
 		left.
 		right } asOrderedCollection.
 
 	RSHorizontalLineLayout new
 		gapSize: 0;
-		on: { 
+		on: {
 				left.
 				right }.
-	layers := { 
+	layers := {
 		          left.
-		          right } asGroup asShapeFor: { 
+		          right } asGroup asShapeFor: {
 			          left.
 			          right }.
 	canvas
 		add: (layers
-				 border: border;
+				 border: self newBorder;
 				 yourself);
 		addInteraction: RSZoomableCanvasInteraction;
 		addInteraction: RSDraggableCanvasInteraction.
 	canvas edges do: [ :each | each update ]
+]
+
+{ #category : #initialization }
+CBView >> newBorder [
+
+	^ RSBorder new
+		  color: Color black muchDarker;
+		  width: 1;
+		  yourself
 ]
 
 { #category : #'as yet unclassified' }
@@ -605,6 +634,7 @@ CBView >> scaleMethods [
 CBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth instanceSideWidth |
+
 	instanceSide := self instanceSide.
 	self
 		setNodesOf: instanceSide
@@ -614,7 +644,7 @@ CBView >> secondLayer [
 	instanceSideWidth := (instanceSide collect: [ :each | each width ])
 		                     sum.
 	"fix the width of the layers"
-	maxWidth := { 
+	maxWidth := {
 		            firstLayer width.
 		            instanceSideWidth.
 		            self thirdLayer width } max: [ :each | each ].
@@ -622,15 +652,15 @@ CBView >> secondLayer [
 
 	"check if it is the biggest"
 
-	secondLayer width = (instanceSide sum: [ :each | each width ]) 
-		ifFalse: [ 
-			instanceSide do: [ :each | 
+	secondLayer width = (instanceSide sum: [ :each | each width ])
+		ifFalse: [
+			instanceSide do: [ :each |
 				each width:
 					each width
 					+ (maxWidth - instanceSideWidth / secondLayer nodes size) ] ].
 
 	"set height"
-	maxHeight := { 
+	maxHeight := {
 		             secondLayer.
 		             self fifthLayer } max: [ :each | each height ].
 	secondLayer height: maxHeight.
@@ -684,15 +714,18 @@ CBView >> setSize: dict [
 { #category : #'as yet unclassified' }
 CBView >> sixthLayer [
 
-	sixthLayer ifNil: [ sixthLayer := self canvas shapeFromModel: deadAttributesLayer.
-	RSVerticalLineLayout new on: sixthLayer nodes.
-	sixthLayer padding: 10 ].
+	sixthLayer ifNil: [
+		sixthLayer := self canvas shapeFromModel: deadAttributesLayer.
+		RSVerticalLineLayout new on: sixthLayer nodes.
+		sixthLayer padding: 10 ].
 	^ sixthLayer
 ]
 
 { #category : #'as yet unclassified' }
-CBView >> superAttributesComposite [ 
+CBView >> superAttributesComposite [
+
 	| shape |
+
 	shape := self canvas shapeFromModel: superAttributesLayer.
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
@@ -706,7 +739,8 @@ CBView >> superAttributesLayer [
 { #category : #'as yet unclassified' }
 CBView >> thirdLayer [
 
-	thirdLayer ifNil: [ thirdLayer := self deadMethodsComposite padding: 10 ].
+	thirdLayer ifNil: [
+		thirdLayer := self deadMethodsComposite padding: 10 ].
 	^ thirdLayer
 ]
 
