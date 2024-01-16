@@ -197,17 +197,6 @@ FamixTMethod >> isTested [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixTMethod >> newIncomingConnection [
-
-	^ self isCBAccessor
-		  ifTrue: [
-			  CBAccessorInvocationModel new
-				  initializeDescription;
-				  yourself ]
-		  ifFalse: [ CBIncomingInvocationsCollector new ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixTMethod >> redefinitions [
 
 	| subMethods |
