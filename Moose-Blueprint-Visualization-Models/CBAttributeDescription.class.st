@@ -65,7 +65,7 @@ CBAttributeDescription >> numberOfExternalAccesses [
 	^ hierarchyAccesses size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #metrics }
 CBAttributeDescription >> numberOfHierarchyAcceses [
 	| subclasses hierarchyAccesses  |
 	subclasses := entityModel entity parentType subclassHierarchy.
@@ -77,7 +77,7 @@ CBAttributeDescription >> numberOfHierarchyAcceses [
 	^ hierarchyAccesses size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #metrics }
 CBAttributeDescription >> numberOfInternalAccesses [
 
 	| directAccesses accessorsAccess |
@@ -96,7 +96,7 @@ CBAttributeDescription >> numberOfInternalAccesses [
 	^ directAccesses + accessorsAccess size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #metrics }
 CBAttributeDescription >> numberOfInternalAccessesFrom: aFamixStClass [
 
 	| directAccesses accessorsAccess |

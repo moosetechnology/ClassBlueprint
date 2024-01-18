@@ -51,7 +51,7 @@ CBMethodDescription class >> polymorphicBorder [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #border }
 CBMethodDescription >> activateRedBorder [
 	border color: Color red
 ]
@@ -113,7 +113,7 @@ CBMethodDescription >> height [
 	^ height
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #border }
 CBMethodDescription >> highComplexityBorder [
 
 	^ Color red
@@ -160,7 +160,7 @@ CBMethodDescription >> initializeType [
 	entityModel type: type
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #border }
 CBMethodDescription >> megamorphicBorder [
 
 	^ RSBorder new
@@ -178,7 +178,7 @@ CBMethodDescription >> monomorphicBorder [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #border }
 CBMethodDescription >> polymorphicBorder [
 
 	^ RSBorder new

@@ -55,7 +55,7 @@ CBPopup >> createPopupFor: aShape event: event [
 	^ popup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #hooks }
 CBPopup >> createStringMorph: aModel [
 
 	^ aModel name asString asTextMorph bold

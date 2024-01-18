@@ -381,7 +381,7 @@ CBView >> firstLayer [
 	^ firstLayer
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing layers' }
 CBView >> fixHeightOf: aMiddleAttributeSide with: maxHeight [
 
 	| superAtt |
@@ -429,7 +429,7 @@ CBView >> highlight: aShape [
 		 yourself)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #highlighting }
 CBView >> highlightedShapes [
 
 	^ canvas allChildren select: [ :each |
@@ -490,7 +490,7 @@ CBView >> layersEntities [
 		  asOrderedCollection
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing composites' }
 CBView >> middleAttributeSide [
 
 	^ {

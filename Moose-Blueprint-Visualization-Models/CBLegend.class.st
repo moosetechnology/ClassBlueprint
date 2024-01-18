@@ -164,7 +164,7 @@ CBLegend class >> testedShapeAssoc [
 	^ #'Tested Method' -> self testedShape
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #constants }
 CBLegend >> attributeInfo [
 
 	| attributeBox attributeLabel composite widthLine heightLine |
@@ -205,7 +205,7 @@ CBLegend >> attributeInfo [
 	^ composite
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #constants }
 CBLegend >> attributeboxDescription [
 
 	| widthLabel heightLabel attributeBox |
@@ -297,7 +297,7 @@ CBLegend >> marker [
 		          yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #constants }
 CBLegend >> methodBoxDescription [
 
 	| widthLabel heightLabel methodBox |
@@ -330,7 +330,7 @@ CBLegend >> methodBoxDescription [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #constants }
 CBLegend >> methodInfo [
 
 	| methodBox methodLabel composite widthLine heightLine |

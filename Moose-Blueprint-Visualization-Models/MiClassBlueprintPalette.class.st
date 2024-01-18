@@ -4,7 +4,7 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #style }
 MiClassBlueprintPalette >> beDefaultStyle [
 
 	self

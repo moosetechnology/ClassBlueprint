@@ -24,7 +24,7 @@ CBLayersPopup >> createPopupFor: aShape event: event [
 	^ popup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #hooks }
 CBLayersPopup >> createStringMorph: aModel [
 
 	^ aModel name asString asTextMorph normal
