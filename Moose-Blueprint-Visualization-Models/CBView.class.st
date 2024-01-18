@@ -30,24 +30,54 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #initialization }
+{ #category : #layers }
+CBView class >> attributesLayerName [
+
+	^ #attributes
+]
+
+{ #category : #layers }
+CBView class >> classMethodsLayerName [
+
+	^ #'Class Side Methods'
+]
+
+{ #category : #layers }
+CBView class >> classVariablesLayerName [
+
+	^ #'Class Side Variables'
+]
+
+{ #category : #layers }
+CBView class >> deadAttributesLayerName [
+
+	^ #'Dead Attributes'
+]
+
+{ #category : #layers }
+CBView class >> deadMethodsLayerName [
+
+	^ #'Dead Methods'
+]
+
+{ #category : #'default size' }
 CBView class >> defaultBorderColor [ 
 	^ Color black
 ]
 
-{ #category : #initialization }
+{ #category : #'default size' }
 CBView class >> defaultBorderWidth [
 	^ 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'default size' }
 CBView class >> defaultBoxesHeight [
 	| box | 
 	box := RSBox new size: 15.
 	^ box height
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'default size' }
 CBView class >> defaultBoxesWidth [
 
 	| box | 
@@ -57,37 +87,65 @@ CBView class >> defaultBoxesWidth [
 
 { #category : #accessing }
 CBView class >> defaultTitle [
+
 	^ 'Blueprint'
 ]
 
-{ #category : #accessing }
+{ #category : #layers }
+CBView class >> externalsLayerName [
+
+	^ #Externals
+]
+
+{ #category : #'instance creation' }
 CBView class >> forType: aFamixType [
+
 	^ self new
-		entity: aFamixType;
-		yourself
+		  entity: aFamixType;
+		  yourself
 ]
 
 { #category : #accessing }
 CBView class >> icon [
+
 	^ MooseIcons mooseBlueprint
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #layers }
+CBView class >> initializersLayerName [
+
+	^ #Initializers
+]
+
+{ #category : #layers }
+CBView class >> internalsLayerName [
+
+	^ #Internals
+]
+
+{ #category : #'default size' }
 CBView class >> maxHeight [
 
 	^ 30
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'default size' }
 CBView class >> maxWidth [
 
 	^ 30
 ]
 
-{ #category : #adding }
+{ #category : #layers }
+CBView class >> superAttributesLayerName [
+
+	^ #'Superclass Attributes'
+]
+
+{ #category : #building }
 CBView >> addCanvasInteractions [
 
 	| methodShapes |
+
 	canvas
 		when: RSMouseLeftClick
 		do: [ :evt |
@@ -99,53 +157,18 @@ CBView >> addCanvasInteractions [
 		for: self
 ]
 
-{ #category : #'as yet unclassified' }
-CBView >> allLayers [
-
-	^ {
-		  deadsLayer.
-		  deadAttributesLayer.
-		  initializersLayer.
-		  externalsLayer.
-		  internalsLayer.
-		  superAttributesLayer.
-		  attributesLayer.
-		  classMethodsLayer.
-		  classVarsLayer }
-]
-
-{ #category : #'as yet unclassified' }
-CBView >> allMethodsEntities [
-
-	^ self methodsLayers flatCollect: [ :each | each entities ]
-]
-
-{ #category : #'as yet unclassified' }
-CBView >> allShapes [
-
-	^ self allLayers collect: [ :each | each entities ]
-]
-
-{ #category : #'as yet unclassified' }
-CBView >> attSide [
-
-	^ {
-		  self superAttributesComposite.
-		  self attributesComposite } asOrderedCollection
-]
-
 { #category : #accessing }
 CBView >> attributes [
 
-	^ { 
+	^ {
 		  deadAttributesLayer.
 		  superAttributesLayer.
 		  attributesLayer.
-		  classVarsLayer } collect: [ :each | 
+		  classVarsLayer } collect: [ :each |
 		  self canvas shapeFromModel: each ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing composites' }
 CBView >> attributesComposite [
 
 	| shape |
@@ -155,16 +178,12 @@ CBView >> attributesComposite [
 	^ shape
 ]
 
-{ #category : #layers }
-CBView >> attributesLayer [ 
-	^ attributesLayer
-]
-
-{ #category : #shapes }
+{ #category : #building }
 CBView >> build [
 
 	| aJob |
-	aJob := [ :job | 
+
+	aJob := [ :job |
 	        job title: 'Building the visualization'.
 	        job currentValue: 20.
 	        classModel := CBClassBlueprint newFrom: entity.
@@ -177,13 +196,12 @@ CBView >> build [
 	        canvas zoomToFit.
 	        super build.
 	        canvas signalUpdate ] asJob.
-"	canvas aaFast."
 	canvas inspectorContext: RSEmptyContextInteraction new.
 	self addCanvasInteractions.
 	[ aJob run ] forkAt: Processor userBackgroundPriority
 ]
 
-{ #category : #shapes }
+{ #category : #building }
 CBView >> buildEdges [
 
 	| builder edges |
@@ -212,29 +230,26 @@ CBView >> buildEdges [
 	edges do: #pushBack
 ]
 
-{ #category : #shapes }
-CBView >> buildLayerNamed: aLayerModel withEntities: aGroup [
+{ #category : #building }
+CBView >> buildLayer: aLayerModel [
 
-	| layer |
-
-	layer := RSComposite new
-		         model: aLayerModel;
-		         border: self newBorder.
-	layer addAll: (aGroup collect: [ :aModel | aModel shape ]).
-	layer adjustToChildren.
-	layer addInteraction: (CBDraggableCanvas new
-			 noValidateChildrenEvents;
-			 yourself).
-	layer addInteraction: CBLayersPopup new.
-	self canvas add: layer
+	canvas add: (RSComposite new
+			 model: aLayerModel;
+			 border: self newBorder;
+			 addAll: (aLayerModel entities collect: [ :aModel | aModel shape ]);
+			 adjustToChildren;
+			 addInteraction: (CBDraggableCanvas new
+					  noValidateChildrenEvents;
+					  yourself);
+			 addInteraction: CBLayersPopup new;
+			 yourself)
 ]
 
-{ #category : #shapes }
+{ #category : #building }
 CBView >> buildLayers [
 
-	self layersEntities do: [ :aLayerModel | 
-		self buildLayerNamed: aLayerModel withEntities: aLayerModel entities ].
-	
+	self layersEntities do: [ :aLayerModel |
+		self buildLayer: aLayerModel ]
 ]
 
 { #category : #building }
@@ -243,25 +258,10 @@ CBView >> buildLegend [
 	CBLegend buildFor: self
 ]
 
-{ #category : #layers }
-CBView >> classMethodsLayer [ 
-	^ classMethodsLayer 
-]
-
-{ #category : #accessing }
-CBView >> classModel [
-	^ classModel
-]
-
-{ #category : #accessing }
-CBView >> classModel: aClassModel [ 
-	classModel := aClassModel
-]
-
 { #category : #'accessing - parallel hierarchy' }
 CBView >> classSide [
 
-	^ { 
+	^ {
 		  self classSideMethods.
 		  self classSideVars }
 ]
@@ -270,6 +270,7 @@ CBView >> classSide [
 CBView >> classSideMethods [
 
 	| shape |
+
 	shape := self canvas shapeFromModel: classMethodsLayer.
 
 	RSTreeLayout new
@@ -283,43 +284,17 @@ CBView >> classSideMethods [
 CBView >> classSideVars [
 
 	| shape |
+
 	shape := self canvas shapeFromModel: classVarsLayer.
 	RSVerticalLineLayout new on: shape nodes.
 	^ shape
 ]
 
-{ #category : #layers }
-CBView >> classVarsLayer [ 
-	^ classVarsLayer
-]
-
-{ #category : #'attributes composites' }
-CBView >> deadAttributesComposite [
-
-	| shape |
-	shape := self canvas shapeFromModel: deadAttributesLayer.
-	RSVerticalLineLayout new on: shape nodes.
-	^ shape
-]
-
-{ #category : #layers }
-CBView >> deadAttributesLayer [
-
-	^ deadAttributesLayer
-]
-
-{ #category : #accessing }
-CBView >> deadLayers [
-
-	^ { 
-		  deadAttributesLayer.
-		  deadsLayer } asOrderedCollection 
-]
-
-{ #category : #composite }
+{ #category : #'accessing composites' }
 CBView >> deadMethodsComposite [
 
 	| shape |
+
 	shape := self canvas shapeFromModel: deadsLayer.
 
 	RSTreeLayout new
@@ -329,34 +304,21 @@ CBView >> deadMethodsComposite [
 	^ shape
 ]
 
-{ #category : #'as yet unclassified' }
-CBView >> deads [
-
-	^ {
-		  firstLayer.
-		  self deadAttributesComposite }
-]
-
-{ #category : #layers }
-CBView >> deadsLayer [
-	^ deadsLayer 
-]
-
 { #category : #highlighting }
 CBView >> doHighlight: evt [
 
-		evt shape pushFront.
+	evt shape pushFront.
 	evt interaction record: evt shape selector: #color value: Color red
 ]
 
 { #category : #highlighting }
 CBView >> doUnhighlight: evt [
 
-	 evt shape pushBack.
-			 evt interaction restore: evt shape selector: #color
+	evt shape pushBack.
+	evt interaction restore: evt shape selector: #color
 ]
 
-{ #category : #shapes }
+{ #category : #building }
 CBView >> edgeBuilder [
 
 	^ CBEdgeBuilder line
@@ -366,23 +328,18 @@ CBView >> edgeBuilder [
 ]
 
 { #category : #accessing }
-CBView >> entities [ 
+CBView >> entities [
+
 	^ classModel models
 ]
 
 { #category : #accessing }
 CBView >> entity: anEntity [
 
-	entity := anEntity.
-
+	entity := anEntity
 ]
 
-{ #category : #layers }
-CBView >> externalsLayer [ 
-	^ externalsLayer
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing layers' }
 CBView >> fifthLayer [
 
 	| middleAttributeSide maxWidth maxHeight |
@@ -416,11 +373,10 @@ CBView >> fifthLayer [
 	^ fifthLayer 
 ]
 
-{ #category : #composite }
+{ #category : #'accessing layers' }
 CBView >> firstLayer [
 
-	firstLayer ifNil: [ 
-		firstLayer := self classSideMethods padding: 30 ].
+	firstLayer ifNil: [ firstLayer := self classSideMethods padding: 30 ].
 
 	^ firstLayer
 ]
@@ -443,7 +399,7 @@ CBView >> fixHeightOf: aMiddleAttributeSide with: maxHeight [
 						each height: each height + maxHeight / fifthLayer nodes size ] ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing layers' }
 CBView >> fourthLayer [
 
 	fourthLayer ifNil: [
@@ -455,7 +411,8 @@ CBView >> fourthLayer [
 ]
 
 { #category : #accessing }
-CBView >> gapSize [ 
+CBView >> gapSize [
+
 	^ 7
 ]
 
@@ -463,6 +420,7 @@ CBView >> gapSize [
 CBView >> highlight: aShape [
 
 	| highlightable |
+
 	highlightable := RSHighlightable new.
 	aShape nodes @ (highlightable
 		 when: RSHighlightEvent send: #doHighlight: to: self;
@@ -484,91 +442,52 @@ CBView >> highlightedShapes [
 CBView >> initialize [
 
 	super initialize.
-	self initializeLayers
-]
-
-{ #category : #initialization }
-CBView >> initializeLayers [
-
-	initializersLayer := CBInitializersLayerModel new.
-	externalsLayer := CBExternalsLayerModel new.
-	internalsLayer := CBInternalsLayerModel new.
-	attributesLayer := CBAttributesLayerModel new.
-	superAttributesLayer := CBSuperAttributesLayer new.
-	deadsLayer := CBDeadMethodsLayerModel new.
-	deadAttributesLayer := CBDeadAttributesLayerModel new.
-	classVarsLayer := CBClassVarsLayerModel new.
-	classMethodsLayer := CBClassMethodsLayerModel new
-]
-
-{ #category : #layers }
-CBView >> initializersLayer [ 
-	^ initializersLayer
+	
+	initializersLayer := CBLayerModel named: self class initializersLayerName.
+	externalsLayer := CBLayerModel named: self class externalsLayerName.
+	internalsLayer := CBLayerModel named: self class internalsLayerName.
+	attributesLayer := CBLayerModel named: self class attributesLayerName.
+	superAttributesLayer := CBLayerModel named: self class superAttributesLayerName.
+	deadsLayer := CBLayerModel named: self class deadMethodsLayerName.
+	deadAttributesLayer := CBLayerModel named: self class deadAttributesLayerName.
+	classVarsLayer := CBLayerModel named: self class classVariablesLayerName.
+	classMethodsLayer := CBLayerModel named: self class classMethodsLayerName
 ]
 
 { #category : #accessing }
 CBView >> instSide [
 
-	^ { 
+	^ {
 		  initializersLayer.
 		  externalsLayer.
-		  internalsLayer".
-		  accessorsLayer" } asOrderedCollection
+		  internalsLayer } asOrderedCollection
 ]
 
 { #category : #'accessing - parallel hierarchy' }
 CBView >> instanceSide [
 
 	| instanceSide |
-	instanceSide := self instSide collect: [ :each | 
-		  self canvas shapeFromModel: each ].
-	instanceSide do: [ :each | each height: 10 ]. 
-	^ instanceSide 
-]
 
-{ #category : #layers }
-CBView >> internalsLayer [ 
-	^ internalsLayer
+	instanceSide := self instSide collect: [ :each |
+		                self canvas shapeFromModel: each ].
+	instanceSide do: [ :each | each height: 10 ].
+	^ instanceSide
 ]
 
 { #category : #initialization }
 CBView >> layersEntities [
 
-	| layers |
-	layers := { 
-		          (initializersLayer entities: classModel initializers).
-		          (externalsLayer entities: classModel externals).
-		          (internalsLayer entities: classModel internals).
-		          (deadsLayer entities: classModel deadMethods).
-		          " (accessorsLayer entities: classModel accessors)."
-		          (attributesLayer entities: classModel attributes).
-		          (deadAttributesLayer entities: classModel deadAttributes).
-		          (classVarsLayer entities: classModel classVars).
-		          (classMethodsLayer entities: classModel classMethods).
-		          (superAttributesLayer entities: classModel superAttributes) }
-		          asOrderedCollection.
-
-	^ layers
-]
-
-{ #category : #'as yet unclassified' }
-CBView >> methodShapes [
-
-	^ (self canvas allChildren select: [ :each |
-		   each model isCollection not and: [
-			   each model isHighlightable and: [ each model entity isMethod ] ] ])
-		  as: RSGroup
-]
-
-{ #category : #'as yet unclassified' }
-CBView >> methodsLayers [
-
 	^ {
-		  classMethodsLayer.
-		  initializersLayer.
-		  externalsLayer.
-		  internalsLayer.
-		  deadsLayer }
+		  (initializersLayer entities: classModel initializers).
+		  (externalsLayer entities: classModel externals).
+		  (internalsLayer entities: classModel internals).
+		  (deadsLayer entities: classModel deadMethods).
+		  (attributesLayer entities: classModel attributes).
+		  (deadAttributesLayer entities: classModel deadAttributes).
+		  (classVarsLayer entities: classModel classVars).
+		  (classMethodsLayer entities: classModel classMethods).
+		  (superAttributesLayer entities: classModel superAttributes) }
+		  asOrderedCollection
 ]
 
 { #category : #'as yet unclassified' }
@@ -579,7 +498,7 @@ CBView >> middleAttributeSide [
 		  self attributesComposite } asOrderedCollection
 ]
 
-{ #category : #shapes }
+{ #category : #building }
 CBView >> nestLayers [
 
 	| right left dict layers |
@@ -624,13 +543,7 @@ CBView >> newBorder [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
-CBView >> scaleMethods [
-
-	firstLayer addInteraction: CBMethodsScale new
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing layers' }
 CBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth instanceSideWidth |
@@ -676,8 +589,9 @@ CBView >> secondLayer [
 { #category : #initialization }
 CBView >> setNodesOf: layer withLayout: aLayout [
 
-	"aLayout on: (layer collect: #nodes)."
-	layer do: [ :shape | aLayout on: shape nodes. shape padding: 20 ]
+	layer do: [ :shape |
+		aLayout on: shape nodes.
+		shape padding: 20 ]
 ]
 
 { #category : #initialization }
@@ -711,7 +625,7 @@ CBView >> setSize: dict [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing layers' }
 CBView >> sixthLayer [
 
 	sixthLayer ifNil: [
@@ -721,7 +635,7 @@ CBView >> sixthLayer [
 	^ sixthLayer
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing composites' }
 CBView >> superAttributesComposite [
 
 	| shape |
@@ -731,12 +645,7 @@ CBView >> superAttributesComposite [
 	^ shape
 ]
 
-{ #category : #accessing }
-CBView >> superAttributesLayer [ 
-	^ superAttributesLayer 
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing layers' }
 CBView >> thirdLayer [
 
 	thirdLayer ifNil: [
@@ -744,7 +653,8 @@ CBView >> thirdLayer [
 	^ thirdLayer
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 CBView >> windowTitle [
-	^ classModel entity name , ' blueprint' 
+
+	^ classModel entity name , ' blueprint'
 ]
