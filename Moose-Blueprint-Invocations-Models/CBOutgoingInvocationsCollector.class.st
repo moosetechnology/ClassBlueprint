@@ -26,7 +26,7 @@ CBOutgoingInvocationsCollector >> addOutgoingConnection [
 
 ]
 
-{ #category : #adding }
+{ #category : #printing }
 CBOutgoingInvocationsCollector >> printOn: aStream [
 
 	aStream nextPutAll: '('.
@@ -36,7 +36,7 @@ CBOutgoingInvocationsCollector >> printOn: aStream [
 
 	aStream nextPutAll: '->('.
 	(self targets collect: #name) asString printOn: aStream.
-	aStream nextPutAll: ')'.
+	aStream nextPutAll: ')'
 ]
 
 { #category : #adding }

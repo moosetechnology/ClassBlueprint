@@ -17,20 +17,6 @@ FamixStMethod >> isAbstractCalledExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isCalledExternally [
-
-	| invocationSources |
-
-	invocationSources := self incomingInvocations collect: [ :each |
-		                  each source ].
-
-	invocationSources ifEmpty: [ ^ false ].
-
-	^ invocationSources anySatisfy: [ :each |
-		  each parentType ~= self parentType ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadAbstract [
 
 	"Called only when the method is abstract"

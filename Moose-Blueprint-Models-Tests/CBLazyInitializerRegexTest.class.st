@@ -3,11 +3,7 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'javaModel',
-		'javaClass',
-		'famixClass',
-		'javaMethod',
-		'smalltalkMethod',
-		'smalltalkModel'
+		'javaMethod'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'
 }

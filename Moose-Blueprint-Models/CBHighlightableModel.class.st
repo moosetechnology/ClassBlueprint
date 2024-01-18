@@ -83,12 +83,15 @@ CBHighlightableModel >> triggerIncomingLinesHighlight [
 	shape signalUpdate
 ]
 
-{ #category : #'as yet unclassified' }
-CBHighlightableModel >> triggerOutgoingLinesHighlight [ 
+{ #category : #adding }
+CBHighlightableModel >> triggerOutgoingLinesHighlight [
+
 	isHighlighted := isHighlighted not.
 
 	isHighlighted
-		ifTrue: [ onClickHighlightableOutgoingLinesInteraction doHighlight: shape ]
-		ifFalse: [ onClickHighlightableOutgoingLinesInteraction doUnhighlight: shape ].
+		ifTrue: [
+		onClickHighlightableOutgoingLinesInteraction doHighlight: shape ]
+		ifFalse: [
+		onClickHighlightableOutgoingLinesInteraction doUnhighlight: shape ].
 	shape signalUpdate
 ]

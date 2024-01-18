@@ -4,7 +4,7 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
-{ #category : #'event processing' }
+{ #category : #events }
 CBDraggable >> processDrag: evt [ 
 	self subclassResponsibility 
 ]

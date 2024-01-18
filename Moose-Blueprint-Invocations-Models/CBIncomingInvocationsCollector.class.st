@@ -25,7 +25,7 @@ CBIncomingInvocationsCollector >> addIncomingConnections [
 	sources do: [ :each |  each addOutgoing: (invocationsModels detect: [ :invocation | invocation source = each ])  ] ]
 ]
 
-{ #category : #adding }
+{ #category : #printing }
 CBIncomingInvocationsCollector >> printOn: aStream [
 
 	aStream nextPutAll: '(Source:'.
@@ -35,8 +35,7 @@ CBIncomingInvocationsCollector >> printOn: aStream [
 
 	aStream nextPutAll: '->(Target:'.
 	(self sources collect: #name) asString printOn: aStream.
-	aStream nextPutAll: ')'.
-	
+	aStream nextPutAll: ')'
 ]
 
 { #category : #adding }
@@ -67,9 +66,4 @@ CBIncomingInvocationsCollector >> target: aTarget sources: collection [
 		  sources: (collection reject: [ :each | each = aTarget ]);
 		  addIncomingConnections;
 		  yourself
-]
-
-{ #category : #adding }
-CBIncomingInvocationsCollector >> type [ 
-	^ #methodInvocation
 ]

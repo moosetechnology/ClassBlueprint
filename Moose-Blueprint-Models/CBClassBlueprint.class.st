@@ -79,7 +79,7 @@ CBClassBlueprint >> attributeAccessesFrom: aSource [
 				^ result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 CBClassBlueprint >> attributeMethodTypes [
 
 	" This method needs to be changes/decomposed"
@@ -124,7 +124,7 @@ CBClassBlueprint >> classVars: aCollection [
 	classVars := aCollection 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 CBClassBlueprint >> connectAccessors [
 
 	self connectOutgoingAccesses.
@@ -146,7 +146,7 @@ CBClassBlueprint >> connectAttributes [
 		self connectTarget: each entity withAll: sources asSet ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 CBClassBlueprint >> connectIncomingAccesses [
 	
 	 accessors do: [ :each | 
@@ -173,7 +173,7 @@ CBClassBlueprint >> connectInvocations [
 	self connectIncomingInvocations
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 CBClassBlueprint >> connectOutgoingAccesses [
 	
 	 accessors do: [ :accessor | 
@@ -263,7 +263,7 @@ CBClassBlueprint >> deadMethods [
 	^ deadMethods 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 CBClassBlueprint >> detectComplexityBetween: beginning and: end [
 
 	| methods |
@@ -272,7 +272,7 @@ CBClassBlueprint >> detectComplexityBetween: beginning and: end [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 CBClassBlueprint >> detectComplexitySuperiorTo: aValue [
 
 	| methods |
@@ -480,7 +480,7 @@ CBClassBlueprint >> methodModels [
 	^ initializers , externals , internals , deadMethods, classMethods 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 CBClassBlueprint >> methodOccurrences: aNumber [
 
 	aNumber = 1 ifTrue: [ ^ #monomorphic ].

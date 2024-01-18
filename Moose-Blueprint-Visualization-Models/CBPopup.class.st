@@ -7,19 +7,20 @@ Class {
 { #category : #accessing }
 CBPopup >> createCodeMorph: aMethod [
 
-	| presenter window className smalltalkClass maxX maxY currentExtent finalX finalY |
+	| presenter window className smalltalkClass maxX maxY currentExtent finalY |
+
 	maxX := 450.
 	maxY := 850.
 	className := aMethod parentType name.
 	smalltalkClass := Smalltalk environment classNamed: className.
-	aMethod isClassSide ifTrue: [ 
+	aMethod isClassSide ifTrue: [
 		smalltalkClass := smalltalkClass classSide ].
 	presenter := SpCodePresenter new
 		             text: aMethod sourceText;
 		             beForMethod: smalltalkClass >> aMethod name asSymbol;
 		             beEditable;
 		             yourself.
-	window := presenter openWithSpec.
+	window := presenter open.
 	window delete.
 	presenter adapter widget
 		borderColor: Color black;
@@ -36,6 +37,7 @@ CBPopup >> createCodeMorph: aMethod [
 CBPopup >> createPopupFor: aShape event: event [
 
 	| popup vertices targetMorph world |
+
 	targetMorph := event shiftPressed
 		               ifTrue: [ self createCodeMorph: aShape model entity ]
 		               ifFalse: [ self createStringMorph: aShape model ].
@@ -48,7 +50,7 @@ CBPopup >> createPopupFor: aShape event: event [
 		         borderColor: Color transparent;
 		         color: Color transparent.
 	world := event canvas morph world.
-	"color: self backgroundColor;"
+
 	world ifNil: [ ^ popup ].
 	world addMorphFront: popup.
 	world activeHand balloonHelp: popup.

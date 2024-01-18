@@ -17,13 +17,13 @@ CBAbstractAccessingModel >> addIncomingConnections [
 	self subclassResponsibility 
 ]
 
-{ #category : #adding }
+{ #category : #initialization }
 CBAbstractAccessingModel >> initializeDescription [
 
 	description := CBInvocationDescription newFrom: self
 ]
 
-{ #category : #adding }
+{ #category : #printing }
 CBAbstractAccessingModel >> printOn: aStream [
 
 	aStream nextPutAll: '('.

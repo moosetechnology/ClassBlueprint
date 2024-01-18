@@ -135,7 +135,7 @@ CBAttributeModel >> newIncomingConnection [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : #printing }
 CBAttributeModel >> printOn: aStream [
 
 	aStream nextPutAll: '('.

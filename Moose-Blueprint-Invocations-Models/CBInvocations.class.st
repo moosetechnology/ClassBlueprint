@@ -12,33 +12,26 @@ Class {
 }
 
 { #category : #initialization }
-CBInvocations >> incoming [ 
+CBInvocations >> incoming [
+
 	^ incoming
 ]
 
 { #category : #initialization }
-CBInvocations >> incoming: aCollection [ 
-	incoming := aCollection 
-]
+CBInvocations >> initialize [
 
-{ #category : #initialization }
-CBInvocations >> initialize [ 
 	super initialize.
 	incoming := OrderedCollection new.
 	outgoing := OrderedCollection new
 ]
 
 { #category : #initialization }
-CBInvocations >> outgoing [ 
+CBInvocations >> outgoing [
+
 	^ outgoing
 ]
 
-{ #category : #initialization }
-CBInvocations >> outgoing: aCollection [ 
-	outgoing := aCollection 
-]
-
-{ #category : #initialization }
+{ #category : #printing }
 CBInvocations >> printOn: aStream [
 
 	aStream

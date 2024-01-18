@@ -5,6 +5,7 @@ Class {
 }
 
 { #category : #accessing }
-CBAbstractInvocationsCollector >> type [ 
+CBAbstractInvocationsCollector >> type [
+
 	^ #methodInvocation
 ]

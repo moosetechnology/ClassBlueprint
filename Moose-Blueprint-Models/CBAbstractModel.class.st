@@ -28,13 +28,14 @@ CBAbstractModel >> entity: anEntity [
 	entity := anEntity 
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 CBAbstractModel >> initializeDescription [
-	self subclassResponsibility 
+
+	self subclassResponsibility
 ]
 
-{ #category : #accessing }
-CBAbstractModel >> isHighlightable [ 
+{ #category : #testing }
+CBAbstractModel >> isHighlightable [
 	^ false
 ]
 

@@ -14,9 +14,6 @@ Class {
 		'class6',
 		'class7',
 		'class8',
-		'printOnMethod',
-		'entityMethod',
-		'initializeMethod',
 		'class9'
 	],
 	#category : #'Moose-Blueprint-Models-Tests'

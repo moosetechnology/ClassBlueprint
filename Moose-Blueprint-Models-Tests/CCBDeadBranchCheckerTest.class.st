@@ -198,7 +198,6 @@ CCBDeadBranchCheckerTest >> testInitializeMethodNotDeadMethod [
 CCBDeadBranchCheckerTest >> testNotDeadDoNotBelongToDeadBranch [
 
 	self flag: #TODO
-	
 ]
 
 { #category : #tests }

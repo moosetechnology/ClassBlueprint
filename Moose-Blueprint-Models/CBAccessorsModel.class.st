@@ -54,17 +54,7 @@ CBAccessorsModel >> color [
 		  ifFalse: [ MiClassBlueprintPalette new colorAt: self type ]
 ]
 
-{ #category : #accessing }
-CBAccessorsModel >> entity [ 
-	^ entity
-]
-
-{ #category : #accessing }
-CBAccessorsModel >> entity: anEntity [ 
-	entity := anEntity 
-]
-
-{ #category : #accessing }
+{ #category : #initialization }
 CBAccessorsModel >> initialize [
 
 	super initialize.
@@ -114,11 +104,6 @@ CBAccessorsModel >> modelType: aSymbol [
 ]
 
 { #category : #accessing }
-CBAccessorsModel >> name [ 
-	^ entity name
-]
-
-{ #category : #accessing }
 CBAccessorsModel >> newIncomingConnection [ 
 
 	^ CBAccessorInvocationModel new 
@@ -136,11 +121,12 @@ CBAccessorsModel >> occurrences: aNumber [
 	occurrences := aNumber
 ]
 
-{ #category : #accessing }
-CBAccessorsModel >> printOn: aStream [ 
-	aStream nextPutAll: '('. 
+{ #category : #printing }
+CBAccessorsModel >> printOn: aStream [
+
+	aStream nextPutAll: '('.
 	self name asString printOn: aStream.
-	aStream nextPutAll: ')'.
+	aStream nextPutAll: ')'
 ]
 
 { #category : #accessing }

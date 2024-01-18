@@ -16,7 +16,7 @@ Class {
 	#category : #'Moose-Blueprint-Models'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBAbstractMethodModel class >> abstractBox [
 
 	^ RSBox new
@@ -39,7 +39,7 @@ CBAbstractMethodModel class >> newFrom: anEntity [
 		  create
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBAbstractMethodModel >> abstractBox [
 
 	^ RSBox new
@@ -53,29 +53,29 @@ CBAbstractMethodModel >> abstractBox [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CBAbstractMethodModel >> accessorInvocations [
 	^ accessorInvocations
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CBAbstractMethodModel >> accessorInvocations: anObject [
 
 	accessorInvocations := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBAbstractMethodModel >> activateRedBorder [ 
 	self description complex: true
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #invocations }
 CBAbstractMethodModel >> addAccessorInvocation: aConnection [ 
 	accessorInvocations add: aConnection 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #invocations }
 CBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
 
 	((self invocations incoming collect: #source) includes:
@@ -83,7 +83,7 @@ CBAbstractMethodModel >> addIncoming: aMethodInvocationModel [
 		invocations incoming add: aMethodInvocationModel ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #invocations }
 CBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 
 	((self invocations outgoing collect: #target) includes:
@@ -91,7 +91,7 @@ CBAbstractMethodModel >> addOutgoing: aMethodInvocationModel [
 		invocations outgoing add: aMethodInvocationModel ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBAbstractMethodModel >> addShapeInterractions [
 
 	shape
@@ -103,25 +103,25 @@ CBAbstractMethodModel >> addShapeInterractions [
 	shape addInteraction: CBDraggableMethod new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #invocations }
 CBAbstractMethodModel >> allInvocations [
 
 	^ self invocations incoming , self invocations  outgoing
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CBAbstractMethodModel >> attributeAccess [
 
 	^ attributeAccess
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CBAbstractMethodModel >> attributeAccess: anObject [
 
 	attributeAccess := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBAbstractMethodModel >> boxShape [
 
 	^ self isAbstractAndReimplemented
@@ -132,17 +132,17 @@ CBAbstractMethodModel >> boxShape [
 		  ifFalse: [ RSComposite new ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CBAbstractMethodModel >> complexity [
 	^ entity computeCyclomaticComplexity 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CBAbstractMethodModel >> complexity: aNumber [
 	complexity := aNumber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 CBAbstractMethodModel >> create [
 
 	accessorInvocations := OrderedCollection new.
@@ -151,7 +151,7 @@ CBAbstractMethodModel >> create [
 	complexity := entity computeCyclomaticComplexity
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBAbstractMethodModel >> defaultShape [
 
 	| box |
@@ -167,26 +167,26 @@ CBAbstractMethodModel >> defaultShape [
 	^ shape
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 CBAbstractMethodModel >> initializeDescription [
 
 	description := CBMethodDescription newFrom: self.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CBAbstractMethodModel >> invocations [
 
 	^ invocations
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CBAbstractMethodModel >> invocations: anObject [
 
 	invocations := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isAbstract [
 
 	^ (entity isAbstract and: [ self entity isDeadAbstract not ])
@@ -194,33 +194,33 @@ CBAbstractMethodModel >> isAbstract [
 		  ifFalse: [ nil ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isAbstractAndReimplemented [
 
 	^ self entity isAbstract and: [ 
 		  self entity isReimplemented ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isCBAccessor [
 
 	(entity isCBGetter or: [ entity isCBSetter ]) ifTrue: [ ^ #accessor ].
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isConstant [ 
 	"A method that returns a constant value"
 	entity isConstant ifTrue: [ ^ #isConstant ].
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isDead [ 
 	^ self entity isDead
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isDeadMethod [
 
 	(self entity isDeadMethod) ifTrue: [ 
@@ -228,31 +228,31 @@ CBAbstractMethodModel >> isDeadMethod [
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isDelegating [
 
 	"Checks if the method delegates an invocation i.e, forwars the method call to another object"
-
-	" entity isDelegating ifTrue: [ ^ #isDelegating ]."
 
 	entity isDelegating ifTrue: [ ^ #isDelegating ].
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isExtending [
+
 	"Check if a method extends another by super"
-	
-	 entity isExtending ifTrue: [ ^ #'isExtending(invoke method via super)' ].
+
+	entity isExtending ifTrue: [
+		^ #'isExtending(invoke method via super)' ].
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isInternal [ 
 	^ entity isInternal
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isInternalImplementation [
 
 	(entity isInternal and: [ entity isInitializer not ]) ifTrue: [ 
@@ -260,7 +260,7 @@ CBAbstractMethodModel >> isInternalImplementation [
 	^ nil
 ]
 
-{ #category : #testing }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isOverridden [
 
 	self entity isOverridden ifTrue: [
@@ -268,7 +268,7 @@ CBAbstractMethodModel >> isOverridden [
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isOverriding [
 
 	entity isOverriding ifTrue: [ ^ #'isOverriding(redefined locally and no super)' ].
@@ -276,47 +276,47 @@ CBAbstractMethodModel >> isOverriding [
 	^ nil
 ]
 
-{ #category : #testing }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isTestMethod [
 
 	self entity isTestMethod ifTrue: [ ^ #isTestMethod ].
 	^ nil
 ]
 
-{ #category : #testing }
+{ #category : #'properties - boolean' }
 CBAbstractMethodModel >> isTested [
 
 	^ self entity isTested
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 CBAbstractMethodModel >> modelType [ 
 	^ modelType
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 CBAbstractMethodModel >> modelType: aSymbol [
 	modelType := aSymbol 
 ]
 
-{ #category : #testing }
+{ #category : #invocations }
 CBAbstractMethodModel >> newIncomingConnection [ 
 
 	^ CBIncomingInvocationsCollector new 
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 CBAbstractMethodModel >> occurrences [ 
 	^ occurrences
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 CBAbstractMethodModel >> occurrences: aNumber [
 
 	occurrences := aNumber 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #opening }
 CBAbstractMethodModel >> openInBrowser [
 
 	| class |
@@ -330,14 +330,15 @@ CBAbstractMethodModel >> openInBrowser [
 		ifNotNil: [ (class >> self entity name asSymbol) browse ]
 ]
 
-{ #category : #testing }
-CBAbstractMethodModel >> printOn: aStream [.
-	aStream nextPutAll: '('. 
+{ #category : #printing }
+CBAbstractMethodModel >> printOn: aStream [
+
+	aStream nextPutAll: '('.
 	self name asString printOn: aStream.
-	aStream nextPutAll: ')'.
+	aStream nextPutAll: ')'
 ]
 
-{ #category : #testing }
+{ #category : #shapes }
 CBAbstractMethodModel >> shape [
 
 	" si la méthode est appelée dans une classe de test et que la méthode n'est pas appelée dans sa classe de test => testShape"
@@ -350,7 +351,7 @@ CBAbstractMethodModel >> shape [
 	^ shape
 ]
 
-{ #category : #testing }
+{ #category : #shapes }
 CBAbstractMethodModel >> testedShape [
 
 	| box testingBox |
@@ -369,7 +370,7 @@ CBAbstractMethodModel >> testedShape [
 	^ shape
 ]
 
-{ #category : #testing }
+{ #category : #shapes }
 CBAbstractMethodModel >> testingBox [
 
 	^ RSBox new
@@ -384,12 +385,12 @@ CBAbstractMethodModel >> testingBox [
 		  yourself
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 CBAbstractMethodModel >> type [
 	^ type
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 CBAbstractMethodModel >> type: aType [ 
 	type := aType 
 ]

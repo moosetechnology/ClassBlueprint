@@ -6,9 +6,7 @@ Class {
 	#superclass : #CBAbstractShapeDescription,
 	#instVars : [
 		'height',
-		'width',
-		'externalAccesses',
-		'internalAccesses'
+		'width'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -52,28 +50,15 @@ CBAttributeDescription >> initializeSizeFrom: aFamixStClass [
 	width := self numberOfHierarchyAcceses + CBView defaultBoxesWidth
 ]
 
-{ #category : #accessing }
-CBAttributeDescription >> numberOfExternalAccesses [
-
-	| subclasses hierarchyAccesses  |
-	subclasses := entityModel entity parentType subclassHierarchy.
-	"accessorsInvokedBy := entityModel entity accessors flatCollect: [ 
-		                      :each | each incomingInvocations ].
-	externalAccesses := (entityModel entity incomingAccesses , accessorsInvokedBy reject: [ 
-		   :each | subclasses includes: each source parentType ]) size."
-	hierarchyAccesses := (entityModel entity incomingAccesses collect: [ :each | each source ]) select: [ :each | subclasses includes: each parentType ].
-	^ hierarchyAccesses size
-]
-
 { #category : #metrics }
 CBAttributeDescription >> numberOfHierarchyAcceses [
-	| subclasses hierarchyAccesses  |
+
+	| subclasses hierarchyAccesses |
+
 	subclasses := entityModel entity parentType subclassHierarchy.
-	"accessorsInvokedBy := entityModel entity accessors flatCollect: [ 
-		                      :each | each incomingInvocations ].
-	externalAccesses := (entityModel entity incomingAccesses , accessorsInvokedBy reject: [ 
-		   :each | subclasses includes: each source parentType ]) size."
-	hierarchyAccesses := (entityModel entity incomingAccesses collect: [ :each | each source ]) select: [ :each | subclasses includes: each parentType ].
+	hierarchyAccesses := (entityModel entity incomingAccesses collect: [
+		                      :each | each source ]) select: [ :each |
+		                     subclasses includes: each parentType ].
 	^ hierarchyAccesses size
 ]
 

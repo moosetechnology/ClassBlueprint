@@ -5,8 +5,7 @@ Class {
 	#name : #CBLegend,
 	#superclass : #Object,
 	#classInstVars : [
-		'legendState',
-		'additionalShapesDict'
+		'legendState'
 	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
@@ -60,13 +59,13 @@ CBLegend class >> buildFor: aVisualization [
 		buildFor: aVisualization 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #associations }
 CBLegend class >> cyclomaticComplexityAssoc [
 
 	^ #'Cyclomatic Complexity'-> self cyclomaticComplexityBox
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBLegend class >> cyclomaticComplexityBox [
 
 	^ RSBox new
@@ -88,7 +87,7 @@ CBLegend class >> legendState: aBoolean [
 	 legendState := aBoolean
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBLegend class >> megamorphicBox [
 ^RSBox new
 		       border: CBMethodDescription megamorphicBorder;
@@ -97,13 +96,13 @@ CBLegend class >> megamorphicBox [
 	yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #associations }
 CBLegend class >> megamorphicShapeAssoc [
 
 	^ #'Megamorphic Method' -> self megamorphicBox 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBLegend class >> monomorphicBox [
 
 	^ RSBox new
@@ -114,12 +113,12 @@ CBLegend class >> monomorphicBox [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #associations }
 CBLegend class >> monomorphicShapeAssoc [
 	^ #'Monomorphic Method' -> self monomorphicBox
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #shapes }
 CBLegend class >> polymorphicBox [
 
 	^RSBox new
@@ -129,7 +128,7 @@ CBLegend class >> polymorphicBox [
 		       yourself.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #associations }
 CBLegend class >> polymorphicShapeAssoc [
 
 	^ #'Polymorphic Method' -> self polymorphicBox 

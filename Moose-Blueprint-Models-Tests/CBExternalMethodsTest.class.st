@@ -87,9 +87,10 @@ CBExternalMethodsTest >> createMethods [
 		  (external2 := model newMethodNamed: 'external2()') }
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 CBExternalMethodsTest >> setUp [
 
+	super setUp.
 	model := FamixStModel new.
 	self createMainClass.
 	self createExternalMethod
@@ -97,6 +98,7 @@ CBExternalMethodsTest >> setUp [
 
 { #category : #tests }
 CBExternalMethodsTest >> testExternal0IsExternalMethod [
+
 	"external0 is called internally by 
 	- an initialize method
 	- an external method from ExternalClass"
@@ -113,6 +115,7 @@ CBExternalMethodsTest >> testExternal1IsExternalMethod [
 
 { #category : #tests }
 CBExternalMethodsTest >> testExternal2IsNotExternal [
+
 	"external2 is called by an internal method and externalMethod. 
 	The question is: Can a private method call a public method? 
 	This may be considered a code smell"

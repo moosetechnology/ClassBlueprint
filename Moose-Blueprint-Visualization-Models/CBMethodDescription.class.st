@@ -6,7 +6,6 @@ Class {
 	#name : #CBMethodDescription,
 	#superclass : #CBAbstractShapeDescription,
 	#instVars : [
-		'type',
 		'height',
 		'width',
 		'border',
@@ -15,7 +14,7 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #borders }
 CBMethodDescription class >> megamorphicBorder [
 
 	^ RSBorder new
@@ -41,7 +40,7 @@ CBMethodDescription class >> newFrom: aMethodModel [
 		create
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #borders }
 CBMethodDescription class >> polymorphicBorder [
 
 	^ RSBorder new
@@ -77,11 +76,6 @@ CBMethodDescription >> border: aBorder [
 ]
 
 { #category : #accessing }
-CBMethodDescription >> complex [ 
-	^ complex
-]
-
-{ #category : #accessing }
 CBMethodDescription >> complex: aBoolean [
 	 complex := aBoolean
 ]
@@ -113,24 +107,6 @@ CBMethodDescription >> height [
 	^ height
 ]
 
-{ #category : #border }
-CBMethodDescription >> highComplexityBorder [
-
-	^ Color red
-]
-
-{ #category : #initialization }
-CBMethodDescription >> initializeBorder [
-	" the borderDict keys: booleans values: aColor"
-	| borderDict borderColor |
-	border := RSBorder new.
-	borderDict := self borderDictionary.
-	borderColor := (borderDict keys
-			 detect: [ :condition | condition ]
-			 ifNone: [ CBView defaultBorderColor ]).
-	border color: Color black
-]
-
 { #category : #initialization }
 CBMethodDescription >> initializeSize [
 
@@ -146,18 +122,19 @@ CBMethodDescription >> initializeSize [
 { #category : #initialization }
 CBMethodDescription >> initializeType [
 
-	type := entityModel isAbstract ifNil: [ 
-		        entityModel isTestMethod ifNil: [ 
-			entityModel isDeadMethod ifNil: [
-			        entityModel isExtending ifNil: [ 
-				        entityModel isOverriding ifNil: [ 
-					        entityModel isDelegating ifNil: [ 
-						        entityModel isOverridden ifNil: [ 
-							        entityModel isConstant ifNil: [ 
-								        entityModel isCBAccessor ifNil: [ 
-									        entityModel isInternalImplementation ifNil: [ 
-										         #isOther ] ] ] ] ] ] ] ] ] ].
-	entityModel type: type
+	| methodType |
+	methodType := entityModel isAbstract ifNil: [
+		              entityModel isTestMethod ifNil: [
+			              entityModel isDeadMethod ifNil: [
+				              entityModel isExtending ifNil: [
+					              entityModel isOverriding ifNil: [
+						              entityModel isDelegating ifNil: [
+							              entityModel isOverridden ifNil: [
+								              entityModel isConstant ifNil: [
+									              entityModel isCBAccessor ifNil: [
+										              entityModel isInternalImplementation ifNil: [
+											              #isOther ] ] ] ] ] ] ] ] ] ].
+	entityModel type: methodType
 ]
 
 { #category : #border }

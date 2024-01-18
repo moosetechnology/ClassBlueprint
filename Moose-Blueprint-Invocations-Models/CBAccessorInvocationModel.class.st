@@ -21,11 +21,6 @@ CBAccessorInvocationModel >> addIncomingConnections [
 ]
 
 { #category : #adding }
-CBAccessorInvocationModel >> signature [ 
-	^ entity signature
-]
-
-{ #category : #adding }
 CBAccessorInvocationModel >> type [ 
 	^ #accessorInvocation
 ]
