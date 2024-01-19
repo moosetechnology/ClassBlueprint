@@ -1,27 +1,33 @@
 Class {
 	#name : #CBPopup,
 	#superclass : #RSMorphicPopupInteraction,
+	#instVars : [
+		'shouldShowCode'
+	],
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #accessing }
+{ #category : #hooks }
 CBPopup >> createCodeMorph: aMethod [
 
-	| presenter window className smalltalkClass maxX maxY currentExtent finalY |
+	| presenter window smalltalkClass maxX maxY currentExtent finalY |
 
 	maxX := 450.
 	maxY := 850.
-	className := aMethod parentType name.
-	smalltalkClass := Smalltalk environment classNamed: className.
+
+	smalltalkClass := Smalltalk environment classNamed:
+		                  aMethod parentType name.
+
 	aMethod isClassSide ifTrue: [
 		smalltalkClass := smalltalkClass classSide ].
+
 	presenter := SpCodePresenter new
 		             text: aMethod sourceText;
 		             beForMethod: smalltalkClass >> aMethod name asSymbol;
 		             beEditable;
 		             yourself.
 	window := presenter open.
-	window delete.
+	window delete. "presenter build."
 	presenter adapter widget
 		borderColor: Color black;
 		borderWidth: 1;
@@ -36,25 +42,9 @@ CBPopup >> createCodeMorph: aMethod [
 { #category : #hooks }
 CBPopup >> createPopupFor: aShape event: event [
 
-	| popup vertices targetMorph world |
+	shouldShowCode := event shiftPressed.
 
-	targetMorph := event shiftPressed
-		               ifTrue: [ self createCodeMorph: aShape model entity ]
-		               ifFalse: [ self createStringMorph: aShape model ].
-	vertices := SimpleBalloonMorph getVertices: targetMorph bounds.
-
-	popup := SimpleBalloonMorph new
-		         addMorph: targetMorph;
-		         setTarget: nil;
-		         setVertices: vertices;
-		         borderColor: Color transparent;
-		         color: Color transparent.
-	world := event canvas morph world.
-
-	world ifNil: [ ^ popup ].
-	world addMorphFront: popup.
-	world activeHand balloonHelp: popup.
-	^ popup
+	^ super createPopupFor: aShape event: event
 ]
 
 { #category : #hooks }
@@ -66,4 +56,12 @@ CBPopup >> createStringMorph: aModel [
 		  borderWidth: 1;
 		  margins: 5;
 		  yourself
+]
+
+{ #category : #hooks }
+CBPopup >> popupFor: model [
+
+	^ shouldShowCode
+		  ifTrue: [ self createCodeMorph: model entity ]
+		  ifFalse: [ self createStringMorph: model ]
 ]
