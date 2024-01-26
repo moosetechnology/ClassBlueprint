@@ -8,7 +8,7 @@ Class {
 BaselineOfClassBlueprint >> baseline: spec [
 
 	<baseline>
-	spec for: #common do: [ "External dependencies""Packages"
+	spec for: #common do: [ "Packages"
 		spec
 			package: 'Moose-Blueprint-Models';
 			package: 'Moose-Blueprint-Invocations-Models'
@@ -16,7 +16,5 @@ BaselineOfClassBlueprint >> baseline: spec [
 			package: 'Moose-Blueprint-Visualization-Models'
 			with: [ spec requires: #( 'Moose-Blueprint-Invocations-Models' ) ];
 			package: 'Moose-Blueprint-Models-Tests'
-			with: [ spec requires: #( 'Moose-Blueprint-Visualization-Models' ) ];
-			package: 'MooseIDE-ClassBlueprint'
-			with: [spec requires: #( 'Moose-Blueprint-Visualization-Models' ) ] ]
+			with: [ spec requires: #( 'Moose-Blueprint-Visualization-Models' ) ] ]
 ]
