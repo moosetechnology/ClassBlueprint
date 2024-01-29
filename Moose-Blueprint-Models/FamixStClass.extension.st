@@ -1,18 +1,15 @@
 Extension { #name : #FamixStClass }
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStClass >> isPojo [
+FamixStClass >> isCBTestCase [
 
+	self withSuperclassesDo: [ :each |
+		each name = 'TestCase' ifTrue: [ ^ true ] ].
 	^ false
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixStClass >> isTestCase [
+FamixStClass >> isPojo [
 
-	<FMProperty: #isTestCase type: #Boolean>
-	<derived>
-	<FMComment: 'True if the method is considered as a Java test'>
-	self withSuperclassesDo: [ :each |
-		each name = 'TestCase' ifTrue: [ ^ true ] ].
 	^ false
 ]
