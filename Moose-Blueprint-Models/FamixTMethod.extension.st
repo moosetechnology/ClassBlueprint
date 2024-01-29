@@ -96,23 +96,6 @@ FamixTMethod >> isDeadMethod [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
-FamixTMethod >> isDelegating [
-
-	^ (self outgoingInvocations flatCollect: #target) anySatisfy: [ :each |
-		  each signature == self signature and: [
-			  (each inSameClassAs: self) not ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixTMethod >> isExtending [
-
-	^ (self outgoingInvocations reject: [ :each | each receiver isNil ])
-		  anySatisfy: [ :each |
-			  each receiver name = 'super' and: [
-				  (each candidates collect: #signature) includes: self signature ] ]
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
 FamixTMethod >> isIfNil [
 
 	^ #ifNil: = self name
