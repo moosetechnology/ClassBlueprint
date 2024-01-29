@@ -61,8 +61,8 @@ FamixTMethod >> isCalledInHierarchyOnly [
 	| invokingTypes |
 
 	invokingTypes := (self incomingInvocations collect: [ :each |
-		                   each source parentType ]) reject: [ :each |
-		                  each isTestCase ].
+		                  each source parentType ]) reject: [ :each |
+		                 each isCBTestCase ].
 
 	invokingTypes ifEmpty: [ ^ false ].
 
@@ -76,7 +76,7 @@ FamixTMethod >> isCalledInternallyOnly [
 
 	incoInvocSources := (self incomingInvocations collect: [ :each |
 		                     each source ]) reject: [ :each |
-		                    each parentType isTestCase ].
+		                    each parentType isCBTestCase ].
 
 	^ incoInvocSources isNotEmpty and: [
 		  incoInvocSources allSatisfy: [ :i |
@@ -151,7 +151,7 @@ FamixTMethod >> isTestExternalImplementation [
 
 	| invocationSources |
 
-	self parentType isTestCase ifFalse: [ ^ false ].
+	self parentType isCBTestCase ifFalse: [ ^ false ].
 	invocationSources := self incomingInvocations collect: [ :each |
 		                     each source ].
 
@@ -173,7 +173,7 @@ FamixTMethod >> isTestInternalImplementation [
 
 	| invocationSources |
 
-	self parentType isTestCase ifFalse: [ ^ false ].
+	self parentType isCBTestCase ifFalse: [ ^ false ].
 	invocationSources := self incomingInvocations collect: [ :each |
 		                     each source ].
 
@@ -185,7 +185,7 @@ FamixTMethod >> isTestInternalImplementation [
 { #category : #'*Moose-Blueprint-Models' }
 FamixTMethod >> isTestMethod [
 
-	^ self parentType isTestCase and: [
+	^ self parentType isCBTestCase and: [
 		  (self name beginsWith: #test) and: [ self name fifth isUppercase ] ]
 ]
 
@@ -193,7 +193,7 @@ FamixTMethod >> isTestMethod [
 FamixTMethod >> isTested [
 
 	^ (self incomingInvocations collect: #sender) anySatisfy: [ :each |
-		  each parentType isTestCase ]
+		  each parentType isCBTestCase ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
