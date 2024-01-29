@@ -7,35 +7,35 @@ Class {
 	#category : #'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #hooks }
-CBPopup >> createCodeMorph: aMethod [
+{ #category : #'code popup' }
+CBPopup >> configureCodePopup: presenter [
 
-	| presenter window smalltalkClass maxX maxY currentExtent finalY |
-
-	maxX := 450.
-	maxY := 850.
-
-	smalltalkClass := Smalltalk environment classNamed:
-		                  aMethod parentType name.
-
-	aMethod isClassSide ifTrue: [
-		smalltalkClass := smalltalkClass classSide ].
-
-	presenter := SpCodePresenter new
-		             text: aMethod sourceText;
-		             beForMethod: smalltalkClass >> aMethod name asSymbol;
-		             beEditable;
-		             yourself.
-	window := presenter open.
-	window delete. "presenter build."
 	presenter adapter widget
 		borderColor: Color black;
 		borderWidth: 1;
 		scrollbarsShowNever;
-		position: 0 @ 0.
-	currentExtent := presenter adapter widget textArea extent.
-	finalY := currentExtent y min: maxY.
-	presenter adapter widget extent: maxX @ finalY.
+		position: 0 @ 0
+]
+
+{ #category : #'code popup' }
+CBPopup >> createCodeMorph: aMethod [
+
+	| presenter |
+
+	presenter := SpCodePresenter new
+		             text: aMethod sourceText;
+		             beForMethod:
+			             aMethod smalltalkClass >> aMethod name asSymbol;
+		             beNotEditable;
+		             yourself.
+
+	"January 2024: Tried to replace the following with `presenter build`
+	but the extent of the text area is too large. No idea where this is set."
+	presenter open delete.
+	
+	self configureCodePopup: presenter.
+	self trimExtentOfPresenter: presenter.
+
 	^ presenter adapter widget
 ]
 
@@ -47,7 +47,7 @@ CBPopup >> createPopupFor: aShape event: event [
 	^ super createPopupFor: aShape event: event
 ]
 
-{ #category : #hooks }
+{ #category : #'name popup' }
 CBPopup >> createStringMorph: aModel [
 
 	^ aModel name asString asTextMorph bold
@@ -61,7 +61,21 @@ CBPopup >> createStringMorph: aModel [
 { #category : #hooks }
 CBPopup >> popupFor: model [
 
-	^ shouldShowCode
+	^ (model entity class = FamixStMethod and: [ shouldShowCode ])
 		  ifTrue: [ self createCodeMorph: model entity ]
 		  ifFalse: [ self createStringMorph: model ]
+]
+
+{ #category : #'code popup' }
+CBPopup >> trimExtentOfPresenter: presenter [
+
+	| maxX maxY currentExtent finalY |
+
+	maxX := 450.
+	maxY := 850.
+	currentExtent := presenter adapter widget textArea extent.
+
+	finalY := currentExtent y min: maxY.
+
+	presenter adapter widget extent: maxX @ finalY
 ]
