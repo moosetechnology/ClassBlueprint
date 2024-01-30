@@ -17,6 +17,13 @@ FamixStMethod >> isAbstractCalledExternally [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixStMethod >> isCBInitializer [
+
+	^ ('*initializ*' match: (self protocol ifNil: [ '' ])) or: [
+		  '*initialize*' match: self name ]
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadAbstract [
 
 	"Called only when the method is abstract"
@@ -39,13 +46,6 @@ FamixStMethod >> isExternal [
 
 	(self isDead or: [ self belongsToDeadBranch ]) ifTrue: [ ^ false ].
 	^ self isCalledExternally
-]
-
-{ #category : #'*Moose-Blueprint-Models' }
-FamixStMethod >> isInitializer [
-
-	^ ('*initializ*' match: (self protocol ifNil: [ '' ])) or: [
-		  '*initialize*' match: self name ]
 ]
 
 { #category : #'*Moose-Blueprint-Models' }

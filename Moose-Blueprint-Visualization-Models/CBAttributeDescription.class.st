@@ -23,7 +23,7 @@ CBAttributeDescription >> border [
 	^ RSBorder new
 		  width: 1;
 		  color: Color black;
-		yourself
+		  yourself
 ]
 
 { #category : #operations }

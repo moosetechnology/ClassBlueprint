@@ -28,16 +28,17 @@ CBMethodDescription class >> monomorphicBorder [
 
 	^ RSBorder new
 		  width: 1;
-			joinMiter;
+		  joinMiter;
 		  color: Color black;
 		  yourself
 ]
 
 { #category : #'instance creation' }
-CBMethodDescription class >> newFrom: aMethodModel [ 
-	^ self new 
-		entity: aMethodModel;
-		create
+CBMethodDescription class >> newFrom: aMethodModel [
+
+	^ self new
+		  entity: aMethodModel;
+		  create
 ]
 
 { #category : #borders }
@@ -45,13 +46,14 @@ CBMethodDescription class >> polymorphicBorder [
 
 	^ RSBorder new
 		  width: 2.5;
-		joinMiter;
+		  joinMiter;
 		  color: Color black;
 		  yourself
 ]
 
 { #category : #border }
 CBMethodDescription >> activateRedBorder [
+
 	border color: Color red
 ]
 
@@ -60,24 +62,26 @@ CBMethodDescription >> border [
 
 	border := entityModel modelType = #monomorphic
 		          ifTrue: [ self monomorphicBorder ]
-		          ifFalse: [ 
+		          ifFalse: [
 			          entityModel modelType = #polymorphic
 				          ifTrue: [ self polymorphicBorder ]
-				          ifFalse: [ 
-					          entityModel modelType = #megamorphic ifTrue: [ 
+				          ifFalse: [
+					          entityModel modelType = #megamorphic ifTrue: [
 						          self megamorphicBorder ] ] ].
 	complex ifTrue: [ self activateRedBorder ].
 	^ border
 ]
 
 { #category : #accessing }
-CBMethodDescription >> border: aBorder [ 
-	border := aBorder 
+CBMethodDescription >> border: aBorder [
+
+	border := aBorder
 ]
 
 { #category : #accessing }
 CBMethodDescription >> complex: aBoolean [
-	 complex := aBoolean
+
+	complex := aBoolean
 ]
 
 { #category : #'instance creation' }
@@ -85,19 +89,21 @@ CBMethodDescription >> create [
 
 	self initializeType.
 	self initializeSize.
-	complex := false.
+	complex := false
 ]
 
 { #category : #defaults }
-CBMethodDescription >> defaultBorder [ 
+CBMethodDescription >> defaultBorder [
+
 	^ RSBorder new
 		  width: 1;
-		color: Color black;
+		  color: Color black;
 		  yourself
 ]
 
 { #category : #initialization }
-CBMethodDescription >> defaultBorderColor [ 
+CBMethodDescription >> defaultBorderColor [
+
 	^ Color black
 ]
 
@@ -114,7 +120,7 @@ CBMethodDescription >> initializeSize [
 	          + CBView defaultBoxesHeight.
 	width := entityModel invocations outgoing isEmpty
 		         ifTrue: [ CBView defaultBoxesWidth ]
-		         ifFalse: [ 
+		         ifFalse: [
 			         entityModel invocations outgoing size * 2
 			         + CBView defaultBoxesWidth ]
 ]
@@ -123,6 +129,7 @@ CBMethodDescription >> initializeSize [
 CBMethodDescription >> initializeType [
 
 	| methodType |
+
 	methodType := entityModel isAbstract ifNil: [
 		              entityModel isTestMethod ifNil: [
 			              entityModel isDeadMethod ifNil: [
@@ -166,5 +173,6 @@ CBMethodDescription >> polymorphicBorder [
 
 { #category : #accessing }
 CBMethodDescription >> width [
+
 	^ width
 ]
