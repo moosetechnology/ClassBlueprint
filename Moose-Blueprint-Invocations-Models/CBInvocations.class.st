@@ -31,6 +31,13 @@ CBInvocations >> outgoing [
 	^ outgoing
 ]
 
+{ #category : #'as yet unclassified' }
+CBInvocations >> outgoingSourceAndTargetAssociations [
+
+	^ self outgoing collect: [ :invocation |
+		  invocation source -> invocation target ]
+]
+
 { #category : #printing }
 CBInvocations >> printOn: aStream [
 

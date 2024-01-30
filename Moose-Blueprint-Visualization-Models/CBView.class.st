@@ -204,30 +204,28 @@ CBView >> build [
 { #category : #building }
 CBView >> buildEdges [
 
-	| builder edges |
-	"method Invocations"
-	builder := self edgeBuilder.
-	edges := (classModel methodInvocations flatCollect: #outgoing) 
-		         collect: [ :each | 
-		         builder connectFrom: each source toAll: { each target } ].
+	| builder edges invocationSourceAndTargets |
 
-	edges do: #pushBack.
+	"Method Invocations"
+	builder := self edgeBuilder.
+	invocationSourceAndTargets := classModel methodInvocations
+		                              flatCollect: [ :invocations |
+		                              invocations
+			                              outgoingSourceAndTargetAssociations ].
+	edges := builder useAssociations: invocationSourceAndTargets.
+
 	"Access Invocations"
-	edges := classModel accessorInvocations flattened collect: [ :each | 
-	
+	edges := classModel accessorInvocations flattened collect: [ :each |
 		         builder
 			         connectFrom: each source
 			         toAll: (classModel accessorInvocationsFrom: each source) ].
 
-	edges do: #pushBack.
 	"Attribute Access"
 
-	edges := classModel attributeAccess flattened collect: [ :each | 
+	edges := classModel attributeAccess flattened collect: [ :each |
 		         builder
 			         connectFrom: each source
-			         toAll: (classModel attributeAccessesFrom: each source) ].
-
-	edges do: #pushBack
+			         toAll: (classModel attributeAccessesFrom: each source) ]
 ]
 
 { #category : #building }
@@ -321,9 +319,11 @@ CBView >> doUnhighlight: evt [
 { #category : #building }
 CBView >> edgeBuilder [
 
-	^ CBEdgeBuilder line
-		  shapes: (self canvas nodes flatCollect: #allChildren);
-		  attachPoint: RSBorderAttachPoint new;
+	^ RSEdgeBuilder line
+		  shapes: self canvas deepNodes;
+		  withBorderAttachPoint;
+		  color: Color black;
+		  moveBehind;
 		  yourself
 ]
 
