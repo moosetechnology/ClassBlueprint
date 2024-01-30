@@ -15,6 +15,14 @@ FamixJavaMethod >> isCBGetter [
 ]
 
 { #category : #'*Moose-Blueprint-Models' }
+FamixJavaMethod >> isCBInitializer [
+
+	"This method is here for polymorphism with FamixStMethod. It should be removed when harmonizing #isInitializer between class blueprint and Famix"
+
+	^ self isInitializer
+]
+
+{ #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCBSetter [
 
 	| hasSelfAccess |
