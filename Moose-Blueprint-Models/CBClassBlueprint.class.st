@@ -341,12 +341,12 @@ CBClassBlueprint >> initializeAttributes [
 { #category : #initialization }
 CBClassBlueprint >> initializeClassMethods [
 
-	classMethods := self notClassifiedMethods select: [ :each | 
+	classMethods := self notClassifiedMethods select: [ :each |
 		                each isClassSide ].
 
 	classMethods ifEmpty: [ ^ {  } ].
-	classMethods := (classMethods collect: [ :each | 
-		                 CBClassSideMethod newFrom: each ]) sorted: [ :x :y | 
+	classMethods := (classMethods collect: [ :each |
+		                 CBMethodModel newFrom: each ]) sorted: [ :x :y |
 		                x name < y name ]
 ]
 
@@ -373,7 +373,7 @@ CBClassBlueprint >> initializeDeadMethods [
 
 	deadMethods := (self notClassifiedMethods
 		                select: [ :each | each isDeadMethod ]
-		                thenCollect: [ :each | CBDeadModel newFrom: each ]) 
+		                thenCollect: [ :each | CBMethodModel newFrom: each ])
 		               sorted: [ :x :y | x name < y name ]
 ]
 
@@ -389,7 +389,7 @@ CBClassBlueprint >> initializeExternals [
 
 	externals := self notClassifiedMethods
 		             select: [ :each | each isExternal ]
-		             thenCollect: [ :each | CBExternalModel newFrom: each ]
+		             thenCollect: [ :each | CBMethodModel newFrom: each ]
 ]
 
 { #category : #initialization }
@@ -397,8 +397,7 @@ CBClassBlueprint >> initializeInitializers [
 
 	initializers := self notClassifiedMethods
 		                select: [ :each | each isCBInitializer ]
-		                thenCollect: [ :each |
-		                CBInitializationModel newFrom: each ]
+		                thenCollect: [ :each | CBMethodModel newFrom: each ]
 ]
 
 { #category : #initialization }
@@ -406,7 +405,7 @@ CBClassBlueprint >> initializeInternals [
 
 	internals := self notClassifiedMethods
 		             select: [ :each | each isInternal ]
-		             thenCollect: [ :each | CBInternalModel newFrom: each ]
+		             thenCollect: [ :each | CBMethodModel newFrom: each ]
 ]
 
 { #category : #initialization }
