@@ -6,4 +6,4 @@ on:
     
 jobs:
   run:
-    uses: moosetechnology/.github/.github/workflows/run-tests.yml
+    uses: moosetechnology/.github/.github/workflows/run-tests.yml@main
