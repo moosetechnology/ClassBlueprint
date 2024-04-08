@@ -1,0 +1,9 @@
+name: Run tests
+
+on:
+  push:
+    branches: [ "master" ]
+    
+jobs:
+  run:
+    uses: moosetechnology/.github/.github/workflows/run-tests.yml
