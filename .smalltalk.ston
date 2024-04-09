@@ -2,7 +2,7 @@ SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'ClassBlueprint',
-      #directory : 'src',
+      #directory : 'src'
     }
   ]
 }
