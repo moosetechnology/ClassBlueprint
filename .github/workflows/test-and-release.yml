@@ -7,4 +7,4 @@ on:
 jobs:
   run-tests-and-update-release:
     name: Run tests and update release
-    uses: moosetechnology/.github/.github/workflows/run-and-release.yml@main
+    uses: moosetechnology/.github/.github/workflows/test-and-release.yml@main
