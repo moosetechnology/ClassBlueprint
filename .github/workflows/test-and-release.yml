@@ -1,0 +1,10 @@
+name: Run tests and update release
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  run-tests-and-update-release:
+    name: Run tests and update release
+    uses: moosetechnology/.github/.github/workflows/run-and-release.yml@main
