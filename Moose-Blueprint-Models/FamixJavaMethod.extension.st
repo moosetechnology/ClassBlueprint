@@ -127,5 +127,5 @@ FamixJavaMethod >> isSubPublic [
 { #category : #'*Moose-Blueprint-Models' }
 FamixJavaMethod >> lazyInitializerRegex [
 
-	^ '.*if\s*\(\s*(this\.)?\w+\s*==\s*null\s*\)\s*\{\s*(this\.)?\w+\s*=.*;\s*\}\s*return\s*(this\.)\w+\s*;\s*\}\s*'
+	^ '.*if\s*\(\s*(this\.)?\w+\s*==\s*null\s*\)\s*\{\s*(this\.)?\w+\s*=.*;\s*\}\s*return\s+(this\.)?\w+\s*;\s*\}\s*'
 ]
