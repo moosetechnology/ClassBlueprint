@@ -26,19 +26,20 @@ FamixJavaMethod >> isCBInitializer [
 FamixJavaMethod >> isCBSetter [
 
 	| hasSelfAccess |
-
 	self isSetter ifTrue: [ ^ true ].
 
 	hasSelfAccess := self accesses anySatisfy: [ :each |
-		                 each variable isSelf ].
+		                 each variable isImplicitVariable and: [
+			                 each variable isSelf ] ].
 	(self accesses size = 2 and: [
 		 hasSelfAccess and: [ self parameters size = 1 ] ]) ifFalse: [
 		^ false ].
 
 	hasSelfAccess := self accesses anySatisfy: [ :acc1 |
 		                 acc1 previous isNotNil and: [
-			                 acc1 previous variable isSelf and: [
-				                 acc1 variable isAttribute ] ] ].
+			                 acc1 previous variable isImplicitVariable and: [
+				                 acc1 previous variable isSelf and: [
+					                 acc1 variable isAttribute ] ] ] ].
 
 	^ (self name beginsWith: 'set') and: [
 		  hasSelfAccess and: [ self outgoingInvocations isEmpty ] ]
