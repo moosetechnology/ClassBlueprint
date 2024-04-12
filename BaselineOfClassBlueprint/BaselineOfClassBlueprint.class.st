@@ -16,5 +16,28 @@ BaselineOfClassBlueprint >> baseline: spec [
 			package: 'Moose-Blueprint-Visualization-Models'
 			with: [ spec requires: #( 'Moose-Blueprint-Invocations-Models' ) ];
 			package: 'Moose-Blueprint-Models-Tests'
-			with: [ spec requires: #( 'Moose-Blueprint-Visualization-Models' ) ] ]
+			with: [ spec requires: #( 'Moose-Blueprint-Visualization-Models' ) ] ].
+	spec for: #NoFamix do: [
+		self famix: spec.
+		spec
+			package: 'Moose-Blueprint-Models'
+			with: [ spec requires: #( 'Famix' ) ] ]
+]
+
+{ #category : #'as yet unclassified' }
+BaselineOfClassBlueprint >> customProjectAttributes [
+
+	^ RPackageOrganizer default packages
+		  detect: [ :package | package name = 'BaselineOfFamix' ]
+		  ifFound: [ #( #WithFamix ) ]
+		  ifNone: [ #( #NoFamix ) ]
+]
+
+{ #category : #dependencies }
+BaselineOfClassBlueprint >> famix: spec [
+
+	spec
+		baseline: 'Famix'
+		with: [
+		spec repository: 'github://moosetechnology/Famix:development/src' ]
 ]
