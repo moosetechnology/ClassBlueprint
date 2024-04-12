@@ -13,7 +13,7 @@ CBLazyInitializerRegexTest >> javaSourceCode1 [
 
 	^ javaModel newSourceTextAnchor
 		  source: 'public void myAttribute()
-   if (myAttribute == nul ) {
+   if (myAttribute == null) {
       myAttribute = this.initializeMyAttribute;
     }
     return myAttribute ;
@@ -28,7 +28,7 @@ CBLazyInitializerRegexTest >> javaSourceCode2 [
 		  source: 'public void myAttribute()
    if (
 
-myAttribute == nul ) {
+myAttribute == null) {
       myAttribute = this.initializeMyAttribute;
     }
 
@@ -42,7 +42,7 @@ CBLazyInitializerRegexTest >> javaSourceCode3 [
 
 	^ javaModel newSourceTextAnchor
 		  source: 'public void myAttribute() {  
-   if ( myAttribute == nul ) {
+   if ( myAttribute == null ) {
       myAttribute = this.initializeMyAttribute;
     								}
 	return myAttribute ;
