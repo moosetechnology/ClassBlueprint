@@ -7,3 +7,5 @@ on:
 jobs:
   run:
     uses: moosetechnology/.github/.github/workflows/run-tests.yml@main
+    with:
+      pharo-versions: "[ Pharo64-11 ]"
