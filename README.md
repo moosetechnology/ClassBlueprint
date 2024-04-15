@@ -10,7 +10,7 @@ Load the visualization using the script:
 Metacello new
   baseline: 'ClassBlueprint';
   repository: 'github://moosetechnology/ClassBlueprint/src';
-  load.
+  load
  ```
 ## In a Moose 10 image: 
 Load the visualization using the script:
@@ -18,7 +18,7 @@ Load the visualization using the script:
 Metacello new
   baseline: 'ClassBlueprint';
   repository: 'github://moosetechnology/ClassBlueprint:v2.2.2/src';
-  load.
+  load
  ```
 
 ## In a Moose 9 image:
@@ -30,7 +30,7 @@ Metacello new
 Metacello new
   baseline: 'ClassBlueprint';
   repository: 'github://moosetechnology/ClassBlueprint:v2.2.1/src';
-  load.
+  load
  ```
 
 # Creating the Moose Model of your project:
