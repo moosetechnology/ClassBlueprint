@@ -15,5 +15,5 @@ PackagesCollector >> build [
 { #category : #'instance creation' }
 PackagesCollector >> from: aNameSpace [
 
-	project := RPackage organizer packages select: [ :package | package name beginsWith: aNameSpace].
+	project := self packageOrganizer packages select: [ :package | package name beginsWith: aNameSpace].
 ]
