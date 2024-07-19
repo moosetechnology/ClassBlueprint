@@ -27,10 +27,8 @@ BaselineOfClassBlueprint >> baseline: spec [
 { #category : #'as yet unclassified' }
 BaselineOfClassBlueprint >> customProjectAttributes [
 
-	^ RPackageOrganizer default packages
-		  detect: [ :package | package name = 'BaselineOfFamix' ]
-		  ifFound: [ #( #WithFamix ) ]
-		  ifNone: [ #( #NoFamix ) ]
+	'BaselineOfFamix' asPackageIfAbsent: [ ^ #( #NoFamix ) ].
+	^ #( #WithFamix )
 ]
 
 { #category : #dependencies }
