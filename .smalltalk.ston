@@ -3,5 +3,11 @@ SmalltalkCISpec {
     SCIMetacelloLoadSpec {
       #baseline : 'ClassBlueprint'
     }
-  ]
+  ], 
+  #testing : {
+    #coverage : {
+      #packages : [ 'Moose-Blueprint.*' ],
+      #format : #lcov
+    }
+  }
 }
