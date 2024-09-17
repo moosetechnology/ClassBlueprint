@@ -1,10 +1,11 @@
 Class {
-	#name : #CBLayersPopup,
-	#superclass : #RSMorphicPopupInteraction,
-	#category : #'Moose-Blueprint-Visualization-Models'
+	#name : 'CBLayersPopup',
+	#superclass : 'RSMorphicPopupInteraction',
+	#category : 'Moose-Blueprint-Visualization-Models',
+	#package : 'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 CBLayersPopup >> popupFor: aModel [
 
 	^ aModel name asString asTextMorph normal

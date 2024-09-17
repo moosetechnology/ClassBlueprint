@@ -1,10 +1,11 @@
 Class {
-	#name : #CBHorizontalTreeLayout,
-	#superclass : #RSHorizontalTreeLayout,
-	#category : #'Moose-Blueprint-Visualization-Models'
+	#name : 'CBHorizontalTreeLayout',
+	#superclass : 'RSHorizontalTreeLayout',
+	#category : 'Moose-Blueprint-Visualization-Models',
+	#package : 'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #hook }
+{ #category : 'hook' }
 CBHorizontalTreeLayout >> doExecute: elements [
 
 	| rootNodes | 

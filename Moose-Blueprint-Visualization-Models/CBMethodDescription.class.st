@@ -3,18 +3,19 @@ I represent the type of the method: an abstract method, extending method, overri
 Where each type has a specific color defined in MiClassBlueprintPalette
 "
 Class {
-	#name : #CBMethodDescription,
-	#superclass : #CBAbstractShapeDescription,
+	#name : 'CBMethodDescription',
+	#superclass : 'CBAbstractShapeDescription',
 	#instVars : [
 		'height',
 		'width',
 		'border',
 		'complex'
 	],
-	#category : #'Moose-Blueprint-Visualization-Models'
+	#category : 'Moose-Blueprint-Visualization-Models',
+	#package : 'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #borders }
+{ #category : 'borders' }
 CBMethodDescription class >> megamorphicBorder [
 
 	^ RSBorder new
@@ -23,7 +24,7 @@ CBMethodDescription class >> megamorphicBorder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodDescription class >> monomorphicBorder [
 
 	^ RSBorder new
@@ -33,7 +34,7 @@ CBMethodDescription class >> monomorphicBorder [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBMethodDescription class >> newFrom: aMethodModel [
 
 	^ self new
@@ -41,7 +42,7 @@ CBMethodDescription class >> newFrom: aMethodModel [
 		  create
 ]
 
-{ #category : #borders }
+{ #category : 'borders' }
 CBMethodDescription class >> polymorphicBorder [
 
 	^ RSBorder new
@@ -51,13 +52,13 @@ CBMethodDescription class >> polymorphicBorder [
 		  yourself
 ]
 
-{ #category : #border }
+{ #category : 'border' }
 CBMethodDescription >> activateRedBorder [
 
 	border color: Color red
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodDescription >> border [
 
 	border := entityModel modelType = #monomorphic
@@ -72,19 +73,19 @@ CBMethodDescription >> border [
 	^ border
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodDescription >> border: aBorder [
 
 	border := aBorder
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodDescription >> complex: aBoolean [
 
 	complex := aBoolean
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBMethodDescription >> create [
 
 	self initializeType.
@@ -92,7 +93,7 @@ CBMethodDescription >> create [
 	complex := false
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 CBMethodDescription >> defaultBorder [
 
 	^ RSBorder new
@@ -101,19 +102,19 @@ CBMethodDescription >> defaultBorder [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBMethodDescription >> defaultBorderColor [
 
 	^ Color black
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodDescription >> height [
 
 	^ height
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBMethodDescription >> initializeSize [
 
 	height := entityModel entity numberOfLinesOfCode
@@ -125,7 +126,7 @@ CBMethodDescription >> initializeSize [
 			         + CBView defaultBoxesWidth ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBMethodDescription >> initializeType [
 
 	| methodType |
@@ -144,7 +145,7 @@ CBMethodDescription >> initializeType [
 	entityModel type: methodType
 ]
 
-{ #category : #border }
+{ #category : 'border' }
 CBMethodDescription >> megamorphicBorder [
 
 	^ RSBorder new
@@ -153,7 +154,7 @@ CBMethodDescription >> megamorphicBorder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodDescription >> monomorphicBorder [
 
 	^ RSBorder new
@@ -162,7 +163,7 @@ CBMethodDescription >> monomorphicBorder [
 		  yourself
 ]
 
-{ #category : #border }
+{ #category : 'border' }
 CBMethodDescription >> polymorphicBorder [
 
 	^ RSBorder new
@@ -171,7 +172,7 @@ CBMethodDescription >> polymorphicBorder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodDescription >> width [
 
 	^ width

@@ -1,13 +1,14 @@
 Class {
-	#name : #CBPopup,
-	#superclass : #RSMorphicPopupInteraction,
+	#name : 'CBPopup',
+	#superclass : 'RSMorphicPopupInteraction',
 	#instVars : [
 		'shouldShowCode'
 	],
-	#category : #'Moose-Blueprint-Visualization-Models'
+	#category : 'Moose-Blueprint-Visualization-Models',
+	#package : 'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #'code popup' }
+{ #category : 'code popup' }
 CBPopup >> configureCodePopup: presenter [
 
 	presenter adapter widget
@@ -17,7 +18,7 @@ CBPopup >> configureCodePopup: presenter [
 		position: 0 @ 0
 ]
 
-{ #category : #'code popup' }
+{ #category : 'code popup' }
 CBPopup >> createCodeMorph: aMethod [
 
 	| presenter |
@@ -39,7 +40,7 @@ CBPopup >> createCodeMorph: aMethod [
 	^ presenter adapter widget
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 CBPopup >> createPopupFor: aShape event: event [
 
 	shouldShowCode := event shiftPressed.
@@ -47,7 +48,7 @@ CBPopup >> createPopupFor: aShape event: event [
 	^ super createPopupFor: aShape event: event
 ]
 
-{ #category : #'name popup' }
+{ #category : 'name popup' }
 CBPopup >> createStringMorph: aModel [
 
 	^ aModel name asString asTextMorph bold
@@ -58,7 +59,7 @@ CBPopup >> createStringMorph: aModel [
 		  yourself
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 CBPopup >> popupFor: model [
 
 	^ (model entity class = FamixStMethod and: [ shouldShowCode ])
@@ -66,7 +67,7 @@ CBPopup >> popupFor: model [
 		  ifFalse: [ self createStringMorph: model ]
 ]
 
-{ #category : #'code popup' }
+{ #category : 'code popup' }
 CBPopup >> trimExtentOfPresenter: presenter [
 
 	| maxX maxY currentExtent finalY |

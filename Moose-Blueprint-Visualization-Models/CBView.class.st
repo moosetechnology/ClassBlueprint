@@ -6,8 +6,8 @@ I am the model class of the Class Blueprint visualization. I have the classModel
 - Accessors: Getters and Setters
 "
 Class {
-	#name : #CBView,
-	#superclass : #MooseAbstractVisualization,
+	#name : 'CBView',
+	#superclass : 'MooseAbstractVisualization',
 	#instVars : [
 		'classModel',
 		'initializersLayer',
@@ -27,57 +27,58 @@ Class {
 		'sixthLayer',
 		'entity'
 	],
-	#category : #'Moose-Blueprint-Visualization-Models'
+	#category : 'Moose-Blueprint-Visualization-Models',
+	#package : 'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #layers }
+{ #category : 'layers' }
 CBView class >> attributesLayerName [
 
 	^ #attributes
 ]
 
-{ #category : #layers }
+{ #category : 'layers' }
 CBView class >> classMethodsLayerName [
 
 	^ #'Class Side Methods'
 ]
 
-{ #category : #layers }
+{ #category : 'layers' }
 CBView class >> classVariablesLayerName [
 
 	^ #'Class Side Variables'
 ]
 
-{ #category : #layers }
+{ #category : 'layers' }
 CBView class >> deadAttributesLayerName [
 
 	^ #'Dead Attributes'
 ]
 
-{ #category : #layers }
+{ #category : 'layers' }
 CBView class >> deadMethodsLayerName [
 
 	^ #'Dead Methods'
 ]
 
-{ #category : #'default size' }
+{ #category : 'default size' }
 CBView class >> defaultBorderColor [ 
 	^ Color black
 ]
 
-{ #category : #'default size' }
+{ #category : 'default size' }
 CBView class >> defaultBorderWidth [
 	^ 1
 ]
 
-{ #category : #'default size' }
+{ #category : 'default size' }
 CBView class >> defaultBoxesHeight [
 	| box | 
 	box := RSBox new size: 15.
 	^ box height
 ]
 
-{ #category : #'default size' }
+{ #category : 'default size' }
 CBView class >> defaultBoxesWidth [
 
 	| box | 
@@ -85,19 +86,19 @@ CBView class >> defaultBoxesWidth [
 	^ box width
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView class >> defaultTitle [
 
 	^ 'Blueprint'
 ]
 
-{ #category : #layers }
+{ #category : 'layers' }
 CBView class >> externalsLayerName [
 
 	^ #Externals
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBView class >> forType: aFamixType [
 
 	^ self new
@@ -105,43 +106,43 @@ CBView class >> forType: aFamixType [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView class >> icon [
 
 	^ MooseIcons mooseBlueprint
 ]
 
-{ #category : #layers }
+{ #category : 'layers' }
 CBView class >> initializersLayerName [
 
 	^ #Initializers
 ]
 
-{ #category : #layers }
+{ #category : 'layers' }
 CBView class >> internalsLayerName [
 
 	^ #Internals
 ]
 
-{ #category : #'default size' }
+{ #category : 'default size' }
 CBView class >> maxHeight [
 
 	^ 30
 ]
 
-{ #category : #'default size' }
+{ #category : 'default size' }
 CBView class >> maxWidth [
 
 	^ 30
 ]
 
-{ #category : #layers }
+{ #category : 'layers' }
 CBView class >> superAttributesLayerName [
 
 	^ #'Superclass Attributes'
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBView >> addCanvasInteractions [
 
 	| methodShapes |
@@ -157,7 +158,7 @@ CBView >> addCanvasInteractions [
 		for: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView >> attributes [
 
 	^ {
@@ -168,7 +169,7 @@ CBView >> attributes [
 		  self canvas shapeFromModel: each ]
 ]
 
-{ #category : #'accessing composites' }
+{ #category : 'accessing composites' }
 CBView >> attributesComposite [
 
 	| shape |
@@ -178,30 +179,24 @@ CBView >> attributesComposite [
 	^ shape
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBView >> build [
 
-	| aJob |
-
-	aJob := [ :job |
-	        job title: 'Building the visualization'.
-	        job currentValue: 20.
-	        classModel := CBClassBlueprint newFrom: entity.
-	        self buildLayers.
-	        job currentValue: 50.
-	        self buildEdges.
-	        job currentValue: 70.
-	        self nestLayers.
-	        job currentValue: 90.
-	        canvas zoomToFit.
-	        super build.
-	        canvas signalUpdate ] asJob.
 	canvas inspectorContext: RSEmptyContextInteraction new.
 	self addCanvasInteractions.
-	[ aJob run ] forkAt: Processor userBackgroundPriority
+
+	classModel := CBClassBlueprint newFrom: entity.
+
+	self buildLayers.
+	self buildEdges.
+	self nestLayers.
+
+	canvas zoomToFit.
+	super build.
+	canvas signalUpdate
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBView >> buildEdges [
 
 	| builder edges invocationSourceAndTargets |
@@ -228,7 +223,7 @@ CBView >> buildEdges [
 			         toAll: (classModel attributeAccessesFrom: each source) ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBView >> buildLayer: aLayerModel [
 
 	canvas add: (RSComposite new
@@ -243,20 +238,20 @@ CBView >> buildLayer: aLayerModel [
 			 yourself)
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBView >> buildLayers [
 
 	self layersEntities do: [ :aLayerModel |
 		self buildLayer: aLayerModel ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBView >> buildLegend [
 
 	CBLegend buildFor: self
 ]
 
-{ #category : #'accessing - parallel hierarchy' }
+{ #category : 'accessing - parallel hierarchy' }
 CBView >> classSide [
 
 	^ {
@@ -264,7 +259,7 @@ CBView >> classSide [
 		  self classSideVars }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView >> classSideMethods [
 
 	| shape |
@@ -278,7 +273,7 @@ CBView >> classSideMethods [
 	^ shape
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView >> classSideVars [
 
 	| shape |
@@ -288,7 +283,7 @@ CBView >> classSideVars [
 	^ shape
 ]
 
-{ #category : #'accessing composites' }
+{ #category : 'accessing composites' }
 CBView >> deadMethodsComposite [
 
 	| shape |
@@ -302,21 +297,21 @@ CBView >> deadMethodsComposite [
 	^ shape
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 CBView >> doHighlight: evt [
 
 	evt shape pushFront.
 	evt interaction record: evt shape selector: #color value: Color red
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 CBView >> doUnhighlight: evt [
 
 	evt shape pushBack.
 	evt interaction restore: evt shape selector: #color
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBView >> edgeBuilder [
 
 	^ RSEdgeBuilder line
@@ -327,19 +322,19 @@ CBView >> edgeBuilder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView >> entities [
 
 	^ classModel models
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView >> entity: anEntity [
 
 	entity := anEntity
 ]
 
-{ #category : #'accessing layers' }
+{ #category : 'accessing layers' }
 CBView >> fifthLayer [
 
 	| middleAttributeSide maxWidth maxHeight |
@@ -373,7 +368,7 @@ CBView >> fifthLayer [
 	^ fifthLayer 
 ]
 
-{ #category : #'accessing layers' }
+{ #category : 'accessing layers' }
 CBView >> firstLayer [
 
 	firstLayer ifNil: [ firstLayer := self classSideMethods padding: 30 ].
@@ -381,7 +376,7 @@ CBView >> firstLayer [
 	^ firstLayer
 ]
 
-{ #category : #'accessing layers' }
+{ #category : 'accessing layers' }
 CBView >> fixHeightOf: aMiddleAttributeSide with: maxHeight [
 
 	| superAtt |
@@ -399,7 +394,7 @@ CBView >> fixHeightOf: aMiddleAttributeSide with: maxHeight [
 						each height: each height + maxHeight / fifthLayer nodes size ] ] ]
 ]
 
-{ #category : #'accessing layers' }
+{ #category : 'accessing layers' }
 CBView >> fourthLayer [
 
 	fourthLayer ifNil: [
@@ -410,13 +405,13 @@ CBView >> fourthLayer [
 	^ fourthLayer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView >> gapSize [
 
 	^ 7
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 CBView >> highlight: aShape [
 
 	| highlightable |
@@ -429,7 +424,7 @@ CBView >> highlight: aShape [
 		 yourself)
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 CBView >> highlightedShapes [
 
 	^ canvas allChildren select: [ :each |
@@ -438,7 +433,7 @@ CBView >> highlightedShapes [
 				  each model isHighlightable and: [ each model isHighlighted ] ] ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBView >> initialize [
 
 	super initialize.
@@ -454,7 +449,7 @@ CBView >> initialize [
 	classMethodsLayer := CBLayerModel named: self class classMethodsLayerName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView >> instSide [
 
 	^ {
@@ -463,7 +458,7 @@ CBView >> instSide [
 		  internalsLayer } asOrderedCollection
 ]
 
-{ #category : #'accessing - parallel hierarchy' }
+{ #category : 'accessing - parallel hierarchy' }
 CBView >> instanceSide [
 
 	| instanceSide |
@@ -474,7 +469,7 @@ CBView >> instanceSide [
 	^ instanceSide
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBView >> layersEntities [
 
 	^ {
@@ -490,7 +485,7 @@ CBView >> layersEntities [
 		  asOrderedCollection
 ]
 
-{ #category : #'accessing composites' }
+{ #category : 'accessing composites' }
 CBView >> middleAttributeSide [
 
 	^ {
@@ -498,7 +493,7 @@ CBView >> middleAttributeSide [
 		  self attributesComposite } asOrderedCollection
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBView >> nestLayers [
 
 	| right left dict layers |
@@ -534,7 +529,7 @@ CBView >> nestLayers [
 	canvas edges do: [ :each | each update ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBView >> newBorder [
 
 	^ RSBorder new
@@ -543,7 +538,7 @@ CBView >> newBorder [
 		  yourself
 ]
 
-{ #category : #'accessing layers' }
+{ #category : 'accessing layers' }
 CBView >> secondLayer [
 
 	| instanceSide maxHeight maxWidth instanceSideWidth |
@@ -586,7 +581,7 @@ CBView >> secondLayer [
 	^ secondLayer
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBView >> setNodesOf: layer withLayout: aLayout [
 
 	layer do: [ :shape |
@@ -594,7 +589,7 @@ CBView >> setNodesOf: layer withLayout: aLayout [
 		shape padding: 20 ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBView >> setSize: dict [
 
 	| maxWidth |
@@ -625,7 +620,7 @@ CBView >> setSize: dict [
 	
 ]
 
-{ #category : #'accessing layers' }
+{ #category : 'accessing layers' }
 CBView >> sixthLayer [
 
 	sixthLayer ifNil: [
@@ -635,7 +630,7 @@ CBView >> sixthLayer [
 	^ sixthLayer
 ]
 
-{ #category : #'accessing composites' }
+{ #category : 'accessing composites' }
 CBView >> superAttributesComposite [
 
 	| shape |
@@ -645,7 +640,7 @@ CBView >> superAttributesComposite [
 	^ shape
 ]
 
-{ #category : #'accessing layers' }
+{ #category : 'accessing layers' }
 CBView >> thirdLayer [
 
 	thirdLayer ifNil: [
@@ -653,7 +648,7 @@ CBView >> thirdLayer [
 	^ thirdLayer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBView >> windowTitle [
 
 	^ classModel entity name , ' blueprint'

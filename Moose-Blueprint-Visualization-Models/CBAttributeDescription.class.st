@@ -2,22 +2,23 @@
 i am the description object of the attribute model. I contain the visualization informations
 "
 Class {
-	#name : #CBAttributeDescription,
-	#superclass : #CBAbstractShapeDescription,
+	#name : 'CBAttributeDescription',
+	#superclass : 'CBAbstractShapeDescription',
 	#instVars : [
 		'height',
 		'width'
 	],
-	#category : #'Moose-Blueprint-Visualization-Models'
+	#category : 'Moose-Blueprint-Visualization-Models',
+	#package : 'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBAttributeDescription class >> newFrom: anAttributeModel [
 
 	^ self new entity: anAttributeModel;create
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeDescription >> border [
 
 	^ RSBorder new
@@ -26,31 +27,31 @@ CBAttributeDescription >> border [
 		  yourself
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 CBAttributeDescription >> create [ 
 	self initializeSize.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeDescription >> height [ 
 	^ height 
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 CBAttributeDescription >> initializeSize [
 
 	height := (self numberOfInternalAccesses * self scale) + CBView defaultBoxesHeight.
 	width := (self numberOfHierarchyAcceses * self scale) + CBView defaultBoxesWidth
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 CBAttributeDescription >> initializeSizeFrom: aFamixStClass [
 
 	height := (self numberOfInternalAccessesFrom: aFamixStClass) + CBView defaultBoxesHeight.
 	width := self numberOfHierarchyAcceses + CBView defaultBoxesWidth
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 CBAttributeDescription >> numberOfHierarchyAcceses [
 
 	| subclasses hierarchyAccesses |
@@ -62,7 +63,7 @@ CBAttributeDescription >> numberOfHierarchyAcceses [
 	^ hierarchyAccesses size
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 CBAttributeDescription >> numberOfInternalAccesses [
 
 	| directAccesses accessorsAccess |
@@ -81,7 +82,7 @@ CBAttributeDescription >> numberOfInternalAccesses [
 	^ directAccesses + accessorsAccess size
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 CBAttributeDescription >> numberOfInternalAccessesFrom: aFamixStClass [
 
 	| directAccesses accessorsAccess |
@@ -98,18 +99,18 @@ CBAttributeDescription >> numberOfInternalAccessesFrom: aFamixStClass [
 	^ directAccesses + accessorsAccess size
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBAttributeDescription >> resetWithClass: aFamixStClass [
 
 	self initializeSizeFrom: aFamixStClass 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeDescription >> scale [ 
 	^ 2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeDescription >> width [
 	^ width
 ]

@@ -2,16 +2,17 @@
 I am the superclass of the class blueprint layers
 "
 Class {
-	#name : #CBLayerModel,
-	#superclass : #Object,
+	#name : 'CBLayerModel',
+	#superclass : 'Object',
 	#instVars : [
 		'entities',
 		'name'
 	],
-	#category : #'Moose-Blueprint-Visualization-Models'
+	#category : 'Moose-Blueprint-Visualization-Models',
+	#package : 'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBLayerModel class >> named: aString [
 
 	^ self new
@@ -19,28 +20,28 @@ CBLayerModel class >> named: aString [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLayerModel >> entities [ 
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLayerModel >> entities: aCollection [
 	 entities := aCollection 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBLayerModel >> isHighlightable [ 
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLayerModel >> name [
 
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLayerModel >> name: anObject [
 
 	name := anObject

@@ -2,27 +2,28 @@
 I represent the informations about the shape of the models
 "
 Class {
-	#name : #CBAbstractShapeDescription,
-	#superclass : #Object,
+	#name : 'CBAbstractShapeDescription',
+	#superclass : 'Object',
 	#instVars : [
 		'entityModel'
 	],
-	#category : #'Moose-Blueprint-Visualization-Models'
+	#category : 'Moose-Blueprint-Visualization-Models',
+	#package : 'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAbstractShapeDescription >> color [
 
 	^ MiClassBlueprintPalette new colorAt: entityModel type
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAbstractShapeDescription >> entity [
 
 	^ entityModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAbstractShapeDescription >> entity: anEntityModel [
 
 	entityModel := anEntityModel

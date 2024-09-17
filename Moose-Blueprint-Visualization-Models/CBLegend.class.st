@@ -2,22 +2,23 @@
 I am a small class representing the legend of the ClassBlueprint visualization
 "
 Class {
-	#name : #CBLegend,
-	#superclass : #Object,
+	#name : 'CBLegend',
+	#superclass : 'Object',
 	#classInstVars : [
 		'legendState'
 	],
-	#category : #'Moose-Blueprint-Visualization-Models'
+	#category : 'Moose-Blueprint-Visualization-Models',
+	#package : 'Moose-Blueprint-Visualization-Models'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLegend class >> abstractAndReimplementedShapeAssoc [
 
 	^ #'isAbstract and reimplemented in subclass(es)'
 	  -> self abstractMethodUsedInSubclassDescription
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLegend class >> abstractMethodUsedInSubclassDescription [
 
 	| composite |
@@ -34,7 +35,7 @@ CBLegend class >> abstractMethodUsedInSubclassDescription [
 	^ composite
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLegend class >> additionalShapesDict [
 
 	^ Dictionary new
@@ -47,25 +48,25 @@ CBLegend class >> additionalShapesDict [
 		  yourself
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBLegend class >> build [
 
 	^ self new build
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBLegend class >> buildFor: aVisualization [ 
 	^ self new 
 		buildFor: aVisualization 
 ]
 
-{ #category : #associations }
+{ #category : 'associations' }
 CBLegend class >> cyclomaticComplexityAssoc [
 
 	^ #'Cyclomatic Complexity'-> self cyclomaticComplexityBox
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBLegend class >> cyclomaticComplexityBox [
 
 	^ RSBox new
@@ -75,19 +76,19 @@ CBLegend class >> cyclomaticComplexityBox [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLegend class >> legendState [
 
 	^ legendState ifNil: [  false ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLegend class >> legendState: aBoolean [
 
 	 legendState := aBoolean
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBLegend class >> megamorphicBox [
 ^RSBox new
 		       border: CBMethodDescription megamorphicBorder;
@@ -96,13 +97,13 @@ CBLegend class >> megamorphicBox [
 	yourself
 ]
 
-{ #category : #associations }
+{ #category : 'associations' }
 CBLegend class >> megamorphicShapeAssoc [
 
 	^ #'Megamorphic Method' -> self megamorphicBox 
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBLegend class >> monomorphicBox [
 
 	^ RSBox new
@@ -113,12 +114,12 @@ CBLegend class >> monomorphicBox [
 
 ]
 
-{ #category : #associations }
+{ #category : 'associations' }
 CBLegend class >> monomorphicShapeAssoc [
 	^ #'Monomorphic Method' -> self monomorphicBox
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBLegend class >> polymorphicBox [
 
 	^RSBox new
@@ -128,13 +129,13 @@ CBLegend class >> polymorphicBox [
 		       yourself.
 ]
 
-{ #category : #associations }
+{ #category : 'associations' }
 CBLegend class >> polymorphicShapeAssoc [
 
 	^ #'Polymorphic Method' -> self polymorphicBox 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLegend class >> testedShape [
 " si la méthode est testée et que la méthode n'est pas appelée dans sa classe de test"
 	| composite box |
@@ -157,13 +158,13 @@ CBLegend class >> testedShape [
 	^ composite
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLegend class >> testedShapeAssoc [
 
 	^ #'Tested Method' -> self testedShape
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 CBLegend >> attributeInfo [
 
 	| attributeBox attributeLabel composite widthLine heightLine |
@@ -204,7 +205,7 @@ CBLegend >> attributeInfo [
 	^ composite
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 CBLegend >> attributeboxDescription [
 
 	| widthLabel heightLabel attributeBox |
@@ -240,7 +241,7 @@ CBLegend >> attributeboxDescription [
 		  yourself
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBLegend >> buildFor: aVisualization [
 
 	| legend |
@@ -276,19 +277,19 @@ CBLegend >> buildFor: aVisualization [
 	^ legend
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBLegend >> gapSize [
 
 	^ 3
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBLegend >> legendInfo [
 
 	^ MiClassBlueprintPalette new colorsDictionary
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 CBLegend >> marker [ 
 	^ 	RSShapeFactory arrow
 		          size: 10;
@@ -296,7 +297,7 @@ CBLegend >> marker [
 		          yourself.
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 CBLegend >> methodBoxDescription [
 
 	| widthLabel heightLabel methodBox |
@@ -329,7 +330,7 @@ CBLegend >> methodBoxDescription [
 		  yourself
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 CBLegend >> methodInfo [
 
 	| methodBox methodLabel composite widthLine heightLine |
@@ -371,7 +372,7 @@ CBLegend >> methodInfo [
 	^ composite
 ]
 
-{ #category : #interactions }
+{ #category : 'interactions' }
 CBLegend >> onClick [ 
 	self class legendState: self class legendState not
 ]
