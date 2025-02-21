@@ -1,19 +1,20 @@
 Class {
-	#name : #CCBDeadBranchCheckerTest,
-	#superclass : #TestCase,
+	#name : 'CCBDeadBranchCheckerTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CCBDeadBranchCheckerTest >> deadRoot [
 
 	^ model newMethodNamed: 'root0()'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CCBDeadBranchCheckerTest >> initializeMethod [
 
 	| initializeMethod |
@@ -26,7 +27,7 @@ CCBDeadBranchCheckerTest >> initializeMethod [
 	^ initializeMethod
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CCBDeadBranchCheckerTest >> methodInATwoNodesCallGraph [
 
 	| root method |
@@ -41,7 +42,7 @@ CCBDeadBranchCheckerTest >> methodInATwoNodesCallGraph [
 	^ method
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CCBDeadBranchCheckerTest >> methodsInAThreeNodesCallGraph [
 
 	| root m1 m2 |
@@ -64,7 +65,7 @@ CCBDeadBranchCheckerTest >> methodsInAThreeNodesCallGraph [
 		  m2 }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CCBDeadBranchCheckerTest >> methodsInATripleDeadCallGraph [
 
 	| m1 m2 m3 |
@@ -91,7 +92,7 @@ CCBDeadBranchCheckerTest >> methodsInATripleDeadCallGraph [
 		  m3 }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CCBDeadBranchCheckerTest >> methodsInATwoWaysCallGraphExternally [
 
 	| m1 m2 externalMethod |
@@ -119,7 +120,7 @@ CCBDeadBranchCheckerTest >> methodsInATwoWaysCallGraphExternally [
 		  externalMethod }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CCBDeadBranchCheckerTest >> methodsInATwoWaysCallInternalGraph [
 
 	| m1 m2 |
@@ -140,7 +141,7 @@ CCBDeadBranchCheckerTest >> methodsInATwoWaysCallInternalGraph [
 		  m2 }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CCBDeadBranchCheckerTest >> methodsWithCircleCall [
 
 	| m1 m2 m3 |
@@ -167,40 +168,40 @@ CCBDeadBranchCheckerTest >> methodsWithCircleCall [
 		  m3 }
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CCBDeadBranchCheckerTest >> setUp [
 
 	super setUp.
 	model := FamixStModel new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CCBDeadBranchCheckerTest >> testCircleCallGraph [
 
 	self methodsWithCircleCall do: [ :method |
 		self assert: method belongsToDeadBranch ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CCBDeadBranchCheckerTest >> testDeadRoot [
 
 	self assertEmpty: self deadRoot incomingInvocations.
 	self assert: self deadRoot isDead
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CCBDeadBranchCheckerTest >> testInitializeMethodNotDeadMethod [
 
 	self deny: self initializeMethod isDeadMethod
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CCBDeadBranchCheckerTest >> testNotDeadDoNotBelongToDeadBranch [
 
 	self flag: #TODO
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CCBDeadBranchCheckerTest >> testThreeNodesCallGraph [
 
 	| methods |
@@ -212,7 +213,7 @@ CCBDeadBranchCheckerTest >> testThreeNodesCallGraph [
 		self assert: method belongsToDeadBranch ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CCBDeadBranchCheckerTest >> testTripleDeadCallGraph [
 
 	| methods |
@@ -223,13 +224,13 @@ CCBDeadBranchCheckerTest >> testTripleDeadCallGraph [
 	self deny: methods first isDead
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CCBDeadBranchCheckerTest >> testTwoNodesCallGraph [
 
 	self assert: self methodInATwoNodesCallGraph belongsToDeadBranch
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CCBDeadBranchCheckerTest >> testTwoWaysCallGraphExternally [
 
 	| methods |
@@ -239,7 +240,7 @@ CCBDeadBranchCheckerTest >> testTwoWaysCallGraphExternally [
 	methods do: [ :method | self assert: method belongsToDeadBranch ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CCBDeadBranchCheckerTest >> testTwoWaysCallGraphInternally [
 
 	self methodsInATwoWaysCallInternalGraph do: [ :method |

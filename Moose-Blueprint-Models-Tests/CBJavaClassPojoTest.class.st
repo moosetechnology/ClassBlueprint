@@ -1,15 +1,16 @@
 Class {
-	#name : #CBJavaClassPojoTest,
-	#superclass : #TestCase,
+	#name : 'CBJavaClassPojoTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model',
 		'pojo',
 		'notPojo'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 CBJavaClassPojoTest >> doesNotHaveAGetter [
 
 	notPojo
@@ -21,7 +22,7 @@ CBJavaClassPojoTest >> doesNotHaveAGetter [
 		subclass: notPojo
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBJavaClassPojoTest >> doesNotHaveASetter [
 
 	notPojo
@@ -33,7 +34,7 @@ CBJavaClassPojoTest >> doesNotHaveASetter [
 		subclass: notPojo
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBJavaClassPojoTest >> doesNotHaveAccessor [
 
 	notPojo addMethod: (self newConstructorMethodFor: notPojo).
@@ -43,7 +44,7 @@ CBJavaClassPojoTest >> doesNotHaveAccessor [
 		subclass: notPojo
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBJavaClassPojoTest >> doesNotHaveConstructor [
 
 	notPojo
@@ -55,7 +56,7 @@ CBJavaClassPojoTest >> doesNotHaveConstructor [
 		subclass: notPojo
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBJavaClassPojoTest >> doesNotImplementSerializable [
 
 	notPojo
@@ -64,7 +65,7 @@ CBJavaClassPojoTest >> doesNotImplementSerializable [
 		addMethod: (self newConstructorMethodFor: notPojo)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBJavaClassPojoTest >> initializeNotPojoClass [
 
 	| attribute1 attribute2 |
@@ -78,7 +79,7 @@ CBJavaClassPojoTest >> initializeNotPojoClass [
 		addAttribute: attribute2
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBJavaClassPojoTest >> initializePojoClass [
 
 	| attribute1 |
@@ -97,7 +98,7 @@ CBJavaClassPojoTest >> initializePojoClass [
 		subclass: pojo
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBJavaClassPojoTest >> newConstructorMethodFor: aFamixjavaClass [
 
 	^ (model newMethodNamed: ('{1}()' format: aFamixjavaClass name))
@@ -105,7 +106,7 @@ CBJavaClassPojoTest >> newConstructorMethodFor: aFamixjavaClass [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBJavaClassPojoTest >> newGetterFor: aFamixJavaAttribute [
 
 	| getter |
@@ -121,7 +122,7 @@ CBJavaClassPojoTest >> newGetterFor: aFamixJavaAttribute [
 	^ getter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBJavaClassPojoTest >> newSetterFor: aFamixJavaAttribute [
 
 	| setter |
@@ -137,7 +138,7 @@ CBJavaClassPojoTest >> newSetterFor: aFamixJavaAttribute [
 	^ setter
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBJavaClassPojoTest >> setUp [
 
 	super setUp.
@@ -147,7 +148,7 @@ CBJavaClassPojoTest >> setUp [
 	self initializeNotPojoClass
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBJavaClassPojoTest >> testDoesNotHaveAGetter [
 
 	self doesNotHaveAGetter.
@@ -155,7 +156,7 @@ CBJavaClassPojoTest >> testDoesNotHaveAGetter [
 	self deny: notPojo isPojo
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBJavaClassPojoTest >> testDoesNotHaveASetter [
 
 	self doesNotHaveASetter.
@@ -163,7 +164,7 @@ CBJavaClassPojoTest >> testDoesNotHaveASetter [
 	self deny: notPojo isPojo
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBJavaClassPojoTest >> testDoesNotHaveConstructor [
 
 	self doesNotHaveConstructor.
@@ -171,7 +172,7 @@ CBJavaClassPojoTest >> testDoesNotHaveConstructor [
 	self deny: notPojo isPojo
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBJavaClassPojoTest >> testDoesNotImplementSerializableClass [
 
 	self doesNotImplementSerializable.
@@ -179,7 +180,7 @@ CBJavaClassPojoTest >> testDoesNotImplementSerializableClass [
 	self deny: notPojo isPojo
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBJavaClassPojoTest >> testIsPojo [
 
 	self assert: pojo isPojo

@@ -2,8 +2,8 @@
 A NClassBlueprintTest is a test class for testing the behavior of NClassBlueprint
 "
 Class {
-	#name : #CBClassBlueprintTest,
-	#superclass : #TestCase,
+	#name : 'CBClassBlueprintTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model',
 		'class1',
@@ -16,10 +16,11 @@ Class {
 		'class8',
 		'class9'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 CBClassBlueprintTest >> defineClasses [
 
 	class1 := model newClassNamed: 'Class1'.
@@ -33,7 +34,7 @@ CBClassBlueprintTest >> defineClasses [
 	class9 := model newClassNamed: 'Class9'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBClassBlueprintTest >> defineMethods [
 
 	class1
@@ -54,43 +55,43 @@ CBClassBlueprintTest >> defineMethods [
 	class9 addMethod: self newPrintOnMethod
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprintTest >> entityMethodName [
 
 	^ 'entity'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprintTest >> initializeMethodName [
 
 	^ 'initialize'
 ]
 
-{ #category : #'methods creation' }
+{ #category : 'methods creation' }
 CBClassBlueprintTest >> newEntityMethod [
 
 	^ model newMethodNamed: self entityMethodName
 ]
 
-{ #category : #'methods creation' }
+{ #category : 'methods creation' }
 CBClassBlueprintTest >> newInitializeMethod [
 
 	^ model newMethodNamed: self initializeMethodName
 ]
 
-{ #category : #'methods creation' }
+{ #category : 'methods creation' }
 CBClassBlueprintTest >> newPrintOnMethod [
 
 	^ model newMethodNamed: self printOnMethodName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprintTest >> printOnMethodName [
 
 	^ 'printOn:'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBClassBlueprintTest >> setUp [
 
 	super setUp.
@@ -102,7 +103,7 @@ CBClassBlueprintTest >> setUp [
 	self defineMethods
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintTest >> testEntityIsPolymorphic [
 
 	| entityMethodsInModel |
@@ -114,7 +115,7 @@ CBClassBlueprintTest >> testEntityIsPolymorphic [
 		equals: #polymorphic
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintTest >> testInitializeIsMonomorphic [
 
 	| initializeMethodsInModel |
@@ -127,7 +128,7 @@ CBClassBlueprintTest >> testInitializeIsMonomorphic [
 		equals: #monomorphic
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintTest >> testMegamorphicOccurrences [
 
 	self
@@ -135,7 +136,7 @@ CBClassBlueprintTest >> testMegamorphicOccurrences [
 		equals: #megamorphic
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintTest >> testMonomorphicOccurrences [
 
 	self
@@ -143,7 +144,7 @@ CBClassBlueprintTest >> testMonomorphicOccurrences [
 		equals: #monomorphic
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintTest >> testPolymorphicOccurrences [
 
 	self
@@ -151,7 +152,7 @@ CBClassBlueprintTest >> testPolymorphicOccurrences [
 		equals: #polymorphic
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintTest >> testPrintOnIsMegamorphic [
 
 	| printOnMethodsInModel |

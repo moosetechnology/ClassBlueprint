@@ -1,10 +1,11 @@
 Class {
-	#name : #CBClassBlueprintForJavaModelTest,
-	#superclass : #CBAbstractClassBlueprintTest,
-	#category : #'Moose-Blueprint-Models-Tests'
+	#name : 'CBClassBlueprintForJavaModelTest',
+	#superclass : 'CBAbstractClassBlueprintTest',
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForJavaModelTest >> createAccessors [
 
 	| setter otherMethod |
@@ -26,7 +27,7 @@ CBClassBlueprintForJavaModelTest >> createAccessors [
 		addCandidate: setter
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForJavaModelTest >> createDeadChildren [
 
 	(model newMethodNamed: 'hibernerMethod1()') parentType: mainClass.
@@ -34,7 +35,7 @@ CBClassBlueprintForJavaModelTest >> createDeadChildren [
 	(model newAttributeNamed: 'deadAttribute') parentType: mainClass
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForJavaModelTest >> createExternalMethod [
 
 	^ super createExternalMethod
@@ -42,7 +43,7 @@ CBClassBlueprintForJavaModelTest >> createExternalMethod [
 		  yourself
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForJavaModelTest >> createInitializers [
 
 	(model newMethodNamed: 'initializer1()')
@@ -54,19 +55,19 @@ CBClassBlueprintForJavaModelTest >> createInitializers [
 		parentType: mainClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprintForJavaModelTest >> initializerMethodNames [
 
 	^ { 'initializer1()'. 'initializer2()' }
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForJavaModelTest >> modelClass [
 
 	^ FamixJavaModel
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintForJavaModelTest >> testAccessOnInstVar [
 
 	| mbInstVar |
@@ -84,7 +85,7 @@ CBClassBlueprintForJavaModelTest >> testAccessOnInstVar [
 					 attribute name beginsWith: self attributeName ]) ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintForJavaModelTest >> testDeadAccessor [
 
 	self assert:

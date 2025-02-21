@@ -1,10 +1,11 @@
 Class {
-	#name : #CBPojoDeadAttributeAndAccessorsTest,
-	#superclass : #CBPojoTest,
-	#category : #'Moose-Blueprint-Models-Tests'
+	#name : 'CBPojoDeadAttributeAndAccessorsTest',
+	#superclass : 'CBPojoTest',
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 CBPojoDeadAttributeAndAccessorsTest >> setUp [
 
 	super setUp.
@@ -14,7 +15,7 @@ CBPojoDeadAttributeAndAccessorsTest >> setUp [
 		subclass: class
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoDeadAttributeAndAccessorsTest >> testDeadAttributeAndAccessors [
 
 	self buildClassBlueprint.
@@ -24,7 +25,7 @@ CBPojoDeadAttributeAndAccessorsTest >> testDeadAttributeAndAccessors [
 			 #isDeadAccessor)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoDeadAttributeAndAccessorsTest >> testDeadAttributeDeadGetter [
 
 	self setDeadAttributeAndDeadGetter.
@@ -36,13 +37,13 @@ CBPojoDeadAttributeAndAccessorsTest >> testDeadAttributeDeadGetter [
 	self deny: classBlueprint attributes first setter isDeadAccessor
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoDeadAttributeAndAccessorsTest >> testIsPojo [
 
 	self assert: class isPojo
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoDeadAttributeAndAccessorsTest >> testNotDeadAttributeAndDeadAccessors [
 
 	self setNotDeadAttributeAndDeadAccessors.
@@ -57,7 +58,7 @@ CBPojoDeadAttributeAndAccessorsTest >> testNotDeadAttributeAndDeadAccessors [
 			 #isDeadAccessor)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoDeadAttributeAndAccessorsTest >> testNotDeadAttributeAndNotDeadAccessors [
 
 	self setNotDeadAttribueAndNotDeadAccessors.

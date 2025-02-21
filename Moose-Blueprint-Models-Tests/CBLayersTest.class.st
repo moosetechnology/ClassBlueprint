@@ -1,6 +1,6 @@
 Class {
-	#name : #CBLayersTest,
-	#superclass : #TestCase,
+	#name : 'CBLayersTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'externalMethod',
 		'model',
@@ -9,10 +9,11 @@ Class {
 		'internalSender',
 		'methodCalledByTests'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 CBLayersTest >> initializeRessources [
 
 	externalMethod := model newMethodNamed: 'externalMethod'.
@@ -29,7 +30,7 @@ CBLayersTest >> initializeRessources [
 		addMethod: internalSender
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBLayersTest >> initializeTestRessources [
 
 	| testClass |
@@ -44,7 +45,7 @@ CBLayersTest >> initializeTestRessources [
 		              yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBLayersTest >> setUp [
 
 	super setUp.
@@ -55,7 +56,7 @@ CBLayersTest >> setUp [
 	self initializeTestRessources
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBLayersTest >> testExternalCalledByTestClass [
 
 	self triggerExternalCall.
@@ -63,7 +64,7 @@ CBLayersTest >> testExternalCalledByTestClass [
 	self assert: externalMethod isExternal
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBLayersTest >> testExternalCalledByTestsOnly [
 
 	self triggerExternalCalledByTestsOnly.
@@ -76,7 +77,7 @@ CBLayersTest >> testExternalCalledByTestsOnly [
 		equals: testMethod
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBLayersTest >> testInternalCalledByTestClass [
 
 	self triggerInternalCall.
@@ -84,7 +85,7 @@ CBLayersTest >> testInternalCalledByTestClass [
 	self assert: internalMethod isInternal
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBLayersTest >> triggerExternalCall [
 
 	model newInvocation
@@ -102,7 +103,7 @@ CBLayersTest >> triggerExternalCall [
 		addCandidate: externalMethod
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBLayersTest >> triggerExternalCalledByTestsOnly [
 
 	model newInvocation
@@ -110,7 +111,7 @@ CBLayersTest >> triggerExternalCalledByTestsOnly [
 		addCandidate: methodCalledByTests
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBLayersTest >> triggerInternalCall [
 
 	model newInvocation

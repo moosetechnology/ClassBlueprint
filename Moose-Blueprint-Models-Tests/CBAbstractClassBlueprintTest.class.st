@@ -2,36 +2,37 @@
 A MBClassBlueprintTest is a test class for testing the behavior of MBClassBlueprint
 "
 Class {
-	#name : #CBAbstractClassBlueprintTest,
-	#superclass : #TestCase,
+	#name : 'CBAbstractClassBlueprintTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model',
 		'classBlueprint',
 		'externalClass',
 		'mainClass'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBAbstractClassBlueprintTest class >> isAbstract [
 
 	^ self = CBAbstractClassBlueprintTest
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAbstractClassBlueprintTest >> accessorName [
 
 	^ 'accessor'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAbstractClassBlueprintTest >> attributeName [
 
 	^ 'attribute'
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> configureExternalClass [
 
 	| externalMethodInMainClass methodFromExternalClass |
@@ -49,7 +50,7 @@ CBAbstractClassBlueprintTest >> configureExternalClass [
 		addCandidate: externalMethodInMainClass
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> createAccesses [
 
 	(mainClass methods select: [ :method |
@@ -64,25 +65,25 @@ CBAbstractClassBlueprintTest >> createAccesses [
 		variable: (mainClass attributes detect: #isClassSide)
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> createAccessors [
 
 	self subclassResponsibility
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> createAttribute [
 
 	(model newAttributeNamed: self attributeName) parentType: mainClass
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBAbstractClassBlueprintTest >> createClassBlueprint [
 
 	classBlueprint := CBClassBlueprint newFrom: mainClass
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> createClassMethod [
 
 	(model newMethodNamed: 'classMethod')
@@ -90,7 +91,7 @@ CBAbstractClassBlueprintTest >> createClassMethod [
 		parentType: mainClass
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> createClassVariables [
 
 	(model newAttributeNamed: 'classVar')
@@ -98,13 +99,13 @@ CBAbstractClassBlueprintTest >> createClassVariables [
 		parentType: mainClass
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> createDeadChildren [
 
 	self subclassResponsibility
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> createExternalMethod [
 
 	^ (model newMethodNamed: self externalMethodName)
@@ -112,19 +113,19 @@ CBAbstractClassBlueprintTest >> createExternalMethod [
 		  yourself
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> createInitializers [
 
 	self subclassResponsibility
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> createInternalMethod [
 
 	(model newMethodNamed: self internalMethodName) parentType: mainClass
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBAbstractClassBlueprintTest >> createModel [
 
 	model := self modelClass new.
@@ -143,31 +144,31 @@ CBAbstractClassBlueprintTest >> createModel [
 	self configureExternalClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAbstractClassBlueprintTest >> externalMethodName [
 
 	^ 'external'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAbstractClassBlueprintTest >> initializerMethodNames [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAbstractClassBlueprintTest >> internalMethodName [
 
 	^ 'internalMethod'
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBAbstractClassBlueprintTest >> modelClass [
 
 	self subclassResponsibility
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBAbstractClassBlueprintTest >> setUp [
 
 	super setUp.
@@ -176,7 +177,7 @@ CBAbstractClassBlueprintTest >> setUp [
 	classBlueprint := CBClassBlueprint newFrom: mainClass
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBAbstractClassBlueprintTest >> testAccessOnClassVar [
 
 	| mbVarClass |
@@ -194,7 +195,7 @@ CBAbstractClassBlueprintTest >> testAccessOnClassVar [
 		equals: (mainClass attributes detect: #isClassSide)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBAbstractClassBlueprintTest >> testAttributes [
 	" the asSet because an attribute can belong to the class side and be dead, which makes it in two different categorizations from which we extract all the attributes"
 
@@ -203,7 +204,7 @@ CBAbstractClassBlueprintTest >> testAttributes [
 		equals: mainClass attributes size
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBAbstractClassBlueprintTest >> testClassVar [
 
 	self
@@ -211,7 +212,7 @@ CBAbstractClassBlueprintTest >> testClassVar [
 		hasSameElements: (mainClass attributes select: #isClassSide)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBAbstractClassBlueprintTest >> testDeadAttributes [
 
 	self
@@ -220,7 +221,7 @@ CBAbstractClassBlueprintTest >> testDeadAttributes [
 		(mainClass attributes select: #isCBDead thenCollect: #name)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBAbstractClassBlueprintTest >> testInitializers [
 
 	self
@@ -228,14 +229,14 @@ CBAbstractClassBlueprintTest >> testInitializers [
 		hasSameElements: self initializerMethodNames
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBAbstractClassBlueprintTest >> testIsInitializerMethod [
 
 	self assert: (classBlueprint models detect: [ :each |
 			 each name includesSubstring: 'initialize' ]) entity isInitializer
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBAbstractClassBlueprintTest >> testModels [
 
 	self

@@ -1,6 +1,6 @@
 Class {
-	#name : #CBExternalMethodsTest,
-	#superclass : #TestCase,
+	#name : 'CBExternalMethodsTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model',
 		'init0',
@@ -10,10 +10,11 @@ Class {
 		'external2',
 		'internal2'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBExternalMethodsTest >> createExternalMethod [
 
 	| externalMethod |
@@ -37,7 +38,7 @@ CBExternalMethodsTest >> createExternalMethod [
 		addCandidate: external2
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBExternalMethodsTest >> createInternalInvocations [
 
 	"init0 -> external0"
@@ -64,7 +65,7 @@ CBExternalMethodsTest >> createInternalInvocations [
 		addCandidate: external2
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBExternalMethodsTest >> createMainClass [
 
 	| mainClass |
@@ -75,7 +76,7 @@ CBExternalMethodsTest >> createMainClass [
 	self createInternalInvocations
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBExternalMethodsTest >> createMethods [
 
 	^ {
@@ -87,7 +88,7 @@ CBExternalMethodsTest >> createMethods [
 		  (external2 := model newMethodNamed: 'external2()') }
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBExternalMethodsTest >> setUp [
 
 	super setUp.
@@ -96,7 +97,7 @@ CBExternalMethodsTest >> setUp [
 	self createExternalMethod
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBExternalMethodsTest >> testExternal0IsExternalMethod [
 
 	"external0 is called internally by 
@@ -106,14 +107,14 @@ CBExternalMethodsTest >> testExternal0IsExternalMethod [
 	self assert: external0 isExternal
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBExternalMethodsTest >> testExternal1IsExternalMethod [
 	"external1 is called by an externalMethod only"
 
 	self assert: external1 isExternal
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBExternalMethodsTest >> testExternal2IsNotExternal [
 
 	"external2 is called by an internal method and externalMethod. 
@@ -123,7 +124,7 @@ CBExternalMethodsTest >> testExternal2IsNotExternal [
 	self assert: external2 isExternal
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBExternalMethodsTest >> testInternals [
 
 	self assert: internal1 isInternal.
@@ -131,7 +132,7 @@ CBExternalMethodsTest >> testInternals [
 	self assert: internal2 isInternal
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBExternalMethodsTest >> testInternalsAreNotExternals [
 
 	self deny: internal1 isExternal.

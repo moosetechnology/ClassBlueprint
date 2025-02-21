@@ -1,14 +1,15 @@
 Class {
-	#name : #CBLazyInitializerRegexTest,
-	#superclass : #TestCase,
+	#name : 'CBLazyInitializerRegexTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'javaModel',
 		'javaMethod'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #'source code' }
+{ #category : 'source code' }
 CBLazyInitializerRegexTest >> javaSourceCode1 [
 
 	^ javaModel newSourceTextAnchor
@@ -21,7 +22,7 @@ CBLazyInitializerRegexTest >> javaSourceCode1 [
 		  yourself
 ]
 
-{ #category : #'source code' }
+{ #category : 'source code' }
 CBLazyInitializerRegexTest >> javaSourceCode2 [
 
 	^ javaModel newSourceTextAnchor
@@ -37,7 +38,7 @@ myAttribute == null) {
 		  yourself
 ]
 
-{ #category : #'source code' }
+{ #category : 'source code' }
 CBLazyInitializerRegexTest >> javaSourceCode3 [
 
 	^ javaModel newSourceTextAnchor
@@ -50,7 +51,7 @@ CBLazyInitializerRegexTest >> javaSourceCode3 [
 		  yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBLazyInitializerRegexTest >> setUp [
 
 	super setUp.
@@ -58,21 +59,21 @@ CBLazyInitializerRegexTest >> setUp [
 	javaMethod := javaModel newMethodNamed: 'javaMethod()'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBLazyInitializerRegexTest >> testJavaSourceCode1 [
 
 	javaMethod sourceAnchor: self javaSourceCode1.
 	self assert: javaMethod isLazyInitializer
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBLazyInitializerRegexTest >> testJavaSourceCode2 [
 
 	javaMethod sourceAnchor: self javaSourceCode2.
 	self assert: javaMethod isLazyInitializer
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBLazyInitializerRegexTest >> testJavaSourceCode3 [
 
 	javaMethod sourceAnchor: self javaSourceCode3.

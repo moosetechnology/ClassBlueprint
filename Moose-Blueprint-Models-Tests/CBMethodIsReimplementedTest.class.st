@@ -1,14 +1,15 @@
 Class {
-	#name : #CBMethodIsReimplementedTest,
-	#superclass : #TestCase,
+	#name : 'CBMethodIsReimplementedTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'overridden',
 		'otherMethod'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 CBMethodIsReimplementedTest >> setUp [
 
 	| model superclass subclass overriding |
@@ -33,13 +34,13 @@ CBMethodIsReimplementedTest >> setUp [
 		               yourself
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBMethodIsReimplementedTest >> testIsNotReimplemented [
 
 	self deny: otherMethod isReimplemented
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBMethodIsReimplementedTest >> testIsReimplemented [
 
 	self assert: overridden isReimplemented

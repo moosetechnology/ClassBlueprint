@@ -1,13 +1,14 @@
 Class {
-	#name : #CBClassBlueprintForStModelTest,
-	#superclass : #CBAbstractClassBlueprintTest,
+	#name : 'CBClassBlueprintForStModelTest',
+	#superclass : 'CBAbstractClassBlueprintTest',
 	#instVars : [
 		'deadBranchMethod'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForStModelTest >> configureExternalClass [
 
 	super configureExternalClass.
@@ -16,7 +17,7 @@ CBClassBlueprintForStModelTest >> configureExternalClass [
 		(model newPackageNamed: 'ExternalPackage')
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForStModelTest >> createAccessors [
 
 	(model newMethodNamed: self accessorName)
@@ -30,7 +31,7 @@ CBClassBlueprintForStModelTest >> createAccessors [
 		parentType: mainClass
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForStModelTest >> createDeadChildren [
 
 	| stub deadMethod |
@@ -59,7 +60,7 @@ CBClassBlueprintForStModelTest >> createDeadChildren [
 	(model newAttributeNamed: 'deadAttribute') parentType: mainClass
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForStModelTest >> createInitializers [
 
 	(model newMethodNamed: #initialize) parentType: mainClass.
@@ -69,26 +70,26 @@ CBClassBlueprintForStModelTest >> createInitializers [
 		parentType: mainClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprintForStModelTest >> initializerMethodNames [
 
 	^ { #initialize. #randomName }
 ]
 
-{ #category : #entities }
+{ #category : 'entities' }
 CBClassBlueprintForStModelTest >> modelClass [
 
 	^ FamixStModel
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintForStModelTest >> testCheckDead [
 
 	self flag: 'The next sentence does not sound right.'.
 	self deny: deadBranchMethod belongsToDeadBranch
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBClassBlueprintForStModelTest >> testIsExternal [
 
 	self assert: (classBlueprint methodModels detect: [ :each |

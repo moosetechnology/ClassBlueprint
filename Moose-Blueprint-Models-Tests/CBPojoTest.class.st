@@ -1,6 +1,6 @@
 Class {
-	#name : #CBPojoTest,
-	#superclass : #TestCase,
+	#name : 'CBPojoTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model',
 		'class',
@@ -9,16 +9,17 @@ Class {
 		'getter',
 		'setter'
 	],
-	#category : #'Moose-Blueprint-Models-Tests'
+	#category : 'Moose-Blueprint-Models-Tests',
+	#package : 'Moose-Blueprint-Models-Tests'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBPojoTest >> buildClassBlueprint [
 
 	classBlueprint := CBClassBlueprint newFrom: class
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBPojoTest >> defineAccesses [
 
 	| getterAccess setterAccess selfAccess |
@@ -42,7 +43,7 @@ CBPojoTest >> defineAccesses [
 	selfAccess next: setterAccess
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoTest >> setDeadAttributeAndDeadGetter [
 
 	| method |
@@ -50,12 +51,11 @@ CBPojoTest >> setDeadAttributeAndDeadGetter [
 
 	model newInvocation
 		sender: method;
-		receiver: setter;
 		addCandidate: setter.
 	class addMethod: method
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoTest >> setNotDeadAttribueAndNotDeadAccessors [
 
 	| method |
@@ -63,18 +63,16 @@ CBPojoTest >> setNotDeadAttribueAndNotDeadAccessors [
 
 	model newInvocation
 		sender: method;
-		receiver: setter;
 		addCandidate: setter.
 
 	model newInvocation
 		sender: method;
-		receiver: getter;
 		addCandidate: getter.
 
 	class addMethod: method
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoTest >> setNotDeadAttributeAndDeadAccessors [
 
 	| method |
@@ -87,7 +85,7 @@ CBPojoTest >> setNotDeadAttributeAndDeadAccessors [
 	class addMethod: method
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CBPojoTest >> setUp [
 
 	| constructor |
@@ -114,13 +112,13 @@ CBPojoTest >> setUp [
 		addAttribute: attribute
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoTest >> testIsGetter [
 
 	self assert: getter isCBGetter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CBPojoTest >> testIsSetter [
 
 	self assert: setter isCBSetter
