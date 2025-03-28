@@ -2,25 +2,26 @@
 I represent a model for class attributes
 "
 Class {
-	#name : #CBAttributeModel,
-	#superclass : #CBHighlightableModel,
+	#name : 'CBAttributeModel',
+	#superclass : 'CBHighlightableModel',
 	#instVars : [
 		'attributeAccess',
 		'setter',
 		'getter',
 		'type'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : 'Moose-Blueprint-Models',
+	#package : 'Moose-Blueprint-Models'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBAttributeModel class >> newFrom: anEntity [ 
 	^ self new
 		entity: anEntity ;
 		create
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> accessors [
 
 	^ { 
@@ -28,7 +29,7 @@ CBAttributeModel >> accessors [
 		  setter } reject: #isNil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> addIncoming: anAttributeAccessModel [
 
 	anAttributeAccessModel source isSetter ifTrue: [ 
@@ -45,12 +46,12 @@ CBAttributeModel >> addIncoming: anAttributeAccessModel [
 		ifFalse: [ attributeAccess add: anAttributeAccessModel ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> attributeAccess [
 	^ attributeAccess
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 CBAttributeModel >> create [
 
 	self initializeAttributeAccess.
@@ -58,23 +59,23 @@ CBAttributeModel >> create [
 	self initializeType.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> directInternalAccesses [ 
 
 	^ self entity incomingAccesses select: [ :each | each source parentType = entity parentType ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> getter [ 
 	^ getter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> getter: aGetter [
 	getter := aGetter 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> getterShape [
 
 	^ self hasGetter
@@ -82,31 +83,31 @@ CBAttributeModel >> getterShape [
 		  ifFalse: [ nil ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBAttributeModel >> hasGetter [ 
 
 	^ getter isNil not
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBAttributeModel >> hasSetter [ 
 	^ setter isNil not
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> initializeAttributeAccess [
 
 	attributeAccess := OrderedCollection new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> initializeDescription [
 
 	description := CBAttributeDescription newFrom: self.
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> initializeType [
 
 	| subclasses sources sourcesClasses |
@@ -122,12 +123,12 @@ CBAttributeModel >> initializeType [
 	self type: #Attribute
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBAttributeModel >> isDead [
 ^ self entity isDead
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> newIncomingConnection [
 
 	^ CBAttributeAccessModel new
@@ -135,7 +136,7 @@ CBAttributeModel >> newIncomingConnection [
 		  yourself
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 CBAttributeModel >> printOn: aStream [
 
 	aStream nextPutAll: '('.
@@ -143,7 +144,7 @@ CBAttributeModel >> printOn: aStream [
 	aStream nextPutAll: ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> resetTypeWithClass: aFamixStClass [
 
 	| subclasses sources sourcesClasses |
@@ -159,17 +160,17 @@ CBAttributeModel >> resetTypeWithClass: aFamixStClass [
 		ifTrue: [ self type: #'Attribute accessed by subclass(es) of this class']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> setter [ 
 	^ setter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> setter: aSetter [ 
 	setter := aSetter 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> setterShape [
 
 	^ self hasSetter
@@ -177,7 +178,7 @@ CBAttributeModel >> setterShape [
 		  ifFalse: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> shape [
 
 	shape := RSBox new
@@ -191,17 +192,17 @@ CBAttributeModel >> shape [
 	^ self withProtectorsOf: shape
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> type [ 
 	^ type
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> type: aSymbol [ 
 	type := aSymbol 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAttributeModel >> withProtectorsOf: aShape [
 
 	| composite shapes |

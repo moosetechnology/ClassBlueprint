@@ -2,8 +2,8 @@
 I represent a model for a FAMIXClass
 "
 Class {
-	#name : #CBClassBlueprint,
-	#superclass : #Object,
+	#name : 'CBClassBlueprint',
+	#superclass : 'Object',
 	#instVars : [
 		'attributes',
 		'initializers',
@@ -18,10 +18,11 @@ Class {
 		'superAttributes',
 		'complexity'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : 'Moose-Blueprint-Models',
+	#package : 'Moose-Blueprint-Models'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBClassBlueprint class >> newFrom: aFamixClassEntity [
 
 	^ self new 
@@ -29,48 +30,48 @@ CBClassBlueprint class >> newFrom: aFamixClassEntity [
 		create
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> accessorInvocations [
 
 	^ self accessors flatCollect: [ :each | each accessorInvocations ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> accessorInvocationsFrom: aSource [
 
 	^ (self accessorInvocations asSet flattened select: [ :each | 
 		   each source = aSource ]) collect: [ :each | each target ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> accessors [ 
 	^ accessors
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> accessors: accessorMethods [
 	accessors :=accessorMethods 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> allAttributeAccesses [
 
 	^ self models collect: [ :each | each attributeAccess ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> allAttributes [
 
 	^ deadAttributes, superAttributes , attributes  , classVars
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> attributeAccess [
 
 	^  (self allAttributes flatCollect: [:each | each attributeAccess]) reject: [ :each | each source entity isCBAccessor ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> attributeAccessesFrom: aSource [
 	| result |
 	result := (self attributeAccess asSet flattened select: [ :each | 
@@ -79,7 +80,7 @@ CBClassBlueprint >> attributeAccessesFrom: aSource [
 				^ result
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> attributeMethodTypes [
 
 	" This method needs to be changes/decomposed"
@@ -99,39 +100,39 @@ CBClassBlueprint >> attributeMethodTypes [
 		each modelType: (self methodOccurrences: occurrences) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> attributes [ 
 	^ attributes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> attributes: attributeModels [
 	attributes := attributeModels
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> classMethods [ 
 	^ classMethods
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> classVars [ 
 	^ classVars
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> classVars: aCollection [ 
 	classVars := aCollection 
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> connectAccessors [
 
 	self connectOutgoingAccesses.
 	self connectIncomingAccesses.
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> connectAttributes [
 
 	"the receiver is the variable"
@@ -146,7 +147,7 @@ CBClassBlueprint >> connectAttributes [
 		self connectTarget: each entity withAll: sources asSet ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> connectIncomingAccesses [
 	
 	 accessors do: [ :each | 
@@ -155,7 +156,7 @@ CBClassBlueprint >> connectIncomingAccesses [
 		sources ifNotEmpty: [ self connectTarget: each entity withAll: sources ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> connectIncomingInvocations [ 
 
 	self models do: [ :each | 
@@ -166,14 +167,14 @@ CBClassBlueprint >> connectIncomingInvocations [
 		sources ifNotEmpty: [ self connectTarget: each entity withAll: sources ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> connectInvocations [
 
 	self connectOutgoingInvocations.
 	self connectIncomingInvocations
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> connectOutgoingAccesses [
 	
 	 accessors do: [ :accessor | 
@@ -183,7 +184,7 @@ CBClassBlueprint >> connectOutgoingAccesses [
 			self connectSource: accessor entity withAll: att ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> connectOutgoingInvocations [
 
 	self methodModels do: [ :each | 
@@ -194,7 +195,7 @@ CBClassBlueprint >> connectOutgoingInvocations [
 			self connectSource: each entity withAll: candidateTargets asSet ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> connectSource: source withAll: targets [
 
 	| sourceModel targetModels |
@@ -210,7 +211,7 @@ CBClassBlueprint >> connectSource: source withAll: targets [
 		self newOutgoingInvocation source: sourceModel targets: targetModels ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> connectTarget: aTarget withAll: sources [
 
 	| targetModel sourceModels |
@@ -226,7 +227,7 @@ CBClassBlueprint >> connectTarget: aTarget withAll: sources [
 		self newAttributeAccess target: targetModel sources: sourceModels ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> create [
 	"the order is important for instance: methods setUp and tearDown might not be called therefore considered dead however they are internals"
 
@@ -246,24 +247,24 @@ CBClassBlueprint >> create [
 	self detectComplexitySuperiorTo: complexity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> deadAttributes [
 
 	^ deadAttributes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> deadAttributes: aCollection [ 
 	deadAttributes := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> deadMethods [
 
 	^ deadMethods 
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> detectComplexityBetween: beginning and: end [
 
 	| methods |
@@ -272,7 +273,7 @@ CBClassBlueprint >> detectComplexityBetween: beginning and: end [
 	
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> detectComplexitySuperiorTo: aValue [
 
 	| methods |
@@ -281,28 +282,28 @@ CBClassBlueprint >> detectComplexitySuperiorTo: aValue [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> entity [ 
 	^ entity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> entity: aClass [
 
 	 entity := aClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> externals [ 
 	^ externals
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> externals: externalMethods [
 	externals := externalMethods
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initialize [
 
 	accessors := OrderedCollection new.
@@ -318,7 +319,7 @@ CBClassBlueprint >> initialize [
 	complexity := 5.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeAcessors [
 
 	accessors := self entity methods
@@ -326,7 +327,7 @@ CBClassBlueprint >> initializeAcessors [
 		             CBAccessorsModel newFrom: each ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeAttributes [
 
 	| instanceSideAttribute |
@@ -338,7 +339,7 @@ CBClassBlueprint >> initializeAttributes [
 		              :y | x name < y name ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeClassMethods [
 
 	classMethods := self notClassifiedMethods select: [ :each |
@@ -350,7 +351,7 @@ CBClassBlueprint >> initializeClassMethods [
 		                x name < y name ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> initializeClassVars [
 
 	classVars := ((entity attributes select: [ :each | 
@@ -358,7 +359,7 @@ CBClassBlueprint >> initializeClassVars [
 		             CBAttributeModel newFrom: each ]) sorted: [ :x :y | x name < y name ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeDeadAttributes [
 
 	deadAttributes := ((entity attributes select: [ :each |
@@ -368,7 +369,7 @@ CBClassBlueprint >> initializeDeadAttributes [
 		                  :y | x name < y name ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeDeadMethods [
 
 	deadMethods := (self notClassifiedMethods
@@ -377,14 +378,14 @@ CBClassBlueprint >> initializeDeadMethods [
 		               sorted: [ :x :y | x name < y name ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeDeads [
 
 	self initializeDeadMethods.
 	self initializeDeadAttributes
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeExternals [
 
 	externals := self notClassifiedMethods
@@ -392,7 +393,7 @@ CBClassBlueprint >> initializeExternals [
 		             thenCollect: [ :each | CBMethodModel newFrom: each ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeInitializers [
 
 	initializers := self notClassifiedMethods
@@ -400,7 +401,7 @@ CBClassBlueprint >> initializeInitializers [
 		                thenCollect: [ :each | CBMethodModel newFrom: each ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeInternals [
 
 	internals := self notClassifiedMethods
@@ -408,13 +409,13 @@ CBClassBlueprint >> initializeInternals [
 		             thenCollect: [ :each | CBMethodModel newFrom: each ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeModelDescriptions [
 
 	self methodModels do: [ :each | each initializeDescription ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBClassBlueprint >> initializeSuperAttributes [
 
 	superAttributes := ((((self entity superclassHierarchy flatCollect: [ 
@@ -429,27 +430,27 @@ CBClassBlueprint >> initializeSuperAttributes [
 		                    att ]) sorted: [ :x :y | x name < y name ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> initializers [
 	^ initializers
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> initializers: initializerMethods [
 	initializers := initializerMethods
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> internals [
 	^ internals
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> internals: internalMethods [
 	internals := internalMethods
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> makeConnections [
 
 	self connectAttributes.
@@ -458,7 +459,7 @@ CBClassBlueprint >> makeConnections [
 	self initializeModelDescriptions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> methodInvocations [
 	| result |
 	result :=  self methodModels collect: [ :each | each invocations ].
@@ -466,20 +467,20 @@ CBClassBlueprint >> methodInvocations [
 	^ result
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> methodInvocationsFrom: aSource [
 
 	^ ((self methodInvocations flatCollect: #outgoing) select: [ :each | 
 		   each source = aSource ]) collect: [ :each | each target ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> methodModels [
 
 	^ initializers , externals , internals , deadMethods, classMethods 
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> methodOccurrences: aNumber [
 
 	aNumber = 1 ifTrue: [ ^ #monomorphic ].
@@ -488,14 +489,14 @@ CBClassBlueprint >> methodOccurrences: aNumber [
 	aNumber >= 8 ifTrue: [ ^ #megamorphic ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> models [
 
 	^ self methodModels , self accessors , self attributes
 	  , self deadAttributes , self classVars , self superAttributes
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 CBClassBlueprint >> newAttributeAccess [
 
 	^ CBAttributeAccessModel new
@@ -503,13 +504,13 @@ CBClassBlueprint >> newAttributeAccess [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBClassBlueprint >> newOutgoingInvocation [
 
 	^ CBOutgoingInvocationsCollector new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> notClassifiedMethods [
 
 	| alreadyClassified |
@@ -520,12 +521,12 @@ CBClassBlueprint >> notClassifiedMethods [
 		  reject: #isCBAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> superAttributes [
 	^ superAttributes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBClassBlueprint >> superAttributes: aCollection [ 
 	superAttributes := aCollection 
 ]

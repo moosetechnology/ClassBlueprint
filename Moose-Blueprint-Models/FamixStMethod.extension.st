@@ -1,6 +1,6 @@
-Extension { #name : #FamixStMethod }
+Extension { #name : 'FamixStMethod' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStMethod >> isAbstractCalledExternally [
 
 	"It must be called by a class external from its hierarchy"
@@ -16,14 +16,14 @@ FamixStMethod >> isAbstractCalledExternally [
 		  (self hierarchyOfClasses includes: each parentType) not ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStMethod >> isCBInitializer [
 
 	^ ('*initializ*' match: (self protocol ifNil: [ '' ])) or: [
 		  '*initialize*' match: self name ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStMethod >> isDeadAbstract [
 
 	"Called only when the method is abstract"
@@ -33,7 +33,7 @@ FamixStMethod >> isDeadAbstract [
 			  self isSubCalledInternallyOnly not ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStMethod >> isExternal [
 
 	self isAbstract ifTrue: [ 
@@ -48,7 +48,7 @@ FamixStMethod >> isExternal [
 	^ self isCalledExternally
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStMethod >> isInternal [
 
 	"For the method to be internal: it has to be called internally 
@@ -65,7 +65,7 @@ FamixStMethod >> isInternal [
 	^ self isCalledInternallyOnly
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStMethod >> isLazyInitializer [
 
 	| oInvoc |
@@ -77,7 +77,7 @@ FamixStMethod >> isLazyInitializer [
 			  self sourceText includesSubstring: ':=' ] ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStMethod >> isSubCalledExternally [
 
 	| subMethods reimplementations |
@@ -92,7 +92,7 @@ FamixStMethod >> isSubCalledExternally [
 	^ reimplementations anySatisfy: [ :m | m isAbstractCalledExternally ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStMethod >> isSubCalledInternallyOnly [
 
 	| redefinitions |

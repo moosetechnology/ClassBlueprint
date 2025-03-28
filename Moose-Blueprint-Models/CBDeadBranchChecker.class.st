@@ -1,20 +1,21 @@
 Class {
-	#name : #CBDeadBranchChecker,
-	#superclass : #Object,
+	#name : 'CBDeadBranchChecker',
+	#superclass : 'Object',
 	#instVars : [
 		'visitedItems'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : 'Moose-Blueprint-Models',
+	#package : 'Moose-Blueprint-Models'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBDeadBranchChecker >> initialize [
 
 	super initialize.
 	visitedItems := Set new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBDeadBranchChecker >> isInDeadBranch: aMethod ofClass: aClass [
 
 	aMethod isInitializer ifTrue: [ ^ false ].

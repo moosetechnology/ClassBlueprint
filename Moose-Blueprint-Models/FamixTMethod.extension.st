@@ -1,6 +1,6 @@
-Extension { #name : #FamixTMethod }
+Extension { #name : 'FamixTMethod' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> belongsToDeadBranch [
 
 	^ CBDeadBranchChecker new
@@ -8,7 +8,7 @@ FamixTMethod >> belongsToDeadBranch [
 		  ofClass: self parentType
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
@@ -16,32 +16,32 @@ FamixTMethod >> calledBy [
 			  each == self  ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> hierarchyOfClasses [
 
 	^ self parentType withSuperclassHierarchy
 	  , self parentType subclassHierarchy
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> inSameClassAs: aMethod [
 
 	^ aMethod parentType == self parentType 
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isCBAccessor [
 
 	^ self isCBSetter or: [ self isCBGetter ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isCBDead [
 
 	^ self incomingInvocations isEmpty
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isCalledExternally [
 
 	| invocationSources |
@@ -55,7 +55,7 @@ FamixTMethod >> isCalledExternally [
 		  each parentType ~= self parentType ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isCalledInHierarchyOnly [
 
 	| invokingTypes |
@@ -69,7 +69,7 @@ FamixTMethod >> isCalledInHierarchyOnly [
 	^ self hierarchyOfClasses includesAll: invokingTypes
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isCalledInternallyOnly [
 
 	| incoInvocSources |
@@ -83,7 +83,7 @@ FamixTMethod >> isCalledInternallyOnly [
 			  i parentType = self parentType ] ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isDeadMethod [
 
 	self isTestCaseMethod ifTrue: [ ^ false ].
@@ -95,19 +95,19 @@ FamixTMethod >> isDeadMethod [
 			  self belongsToDeadBranch ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isIfNil [
 
 	^ #ifNil: = self name
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isPureGetter [
 
 	^ #getter = self kind or: [ self isCBGetter ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isReimplemented [
 
 	| subMethodNames |
@@ -118,7 +118,7 @@ FamixTMethod >> isReimplemented [
 	^ subMethodNames anySatisfy: [ :n | n = self name ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTestCaseMethod [
 
 	^ self isTestMethod or: [
@@ -127,7 +127,7 @@ FamixTMethod >> isTestCaseMethod [
 				  self isTestInternalImplementation ] ] ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTestExternalImplementation [
 
 	"Here we do not care if it is called by other test methods"
@@ -143,13 +143,13 @@ FamixTMethod >> isTestExternalImplementation [
 			  i parentType ~= self parentType ] ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTestInternal [
 
 	^ { #setUp. #tearDown } includes: self name
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTestInternalImplementation [
 
 	"theinconveince is that it might be called by another internal test implementation of another test class"
@@ -165,21 +165,21 @@ FamixTMethod >> isTestInternalImplementation [
 			   i parentType = self parentType ] ]) or: [ self isTestInternal ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTestMethod [
 
 	^ self parentType isCBTestCase and: [
 		  (self name beginsWith: #test) and: [ self name fifth isUppercase ] ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTested [
 
 	^ (self incomingInvocations collect: #sender) anySatisfy: [ :each |
 		  each parentType isCBTestCase ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> redefinitions [
 
 	| subMethods |

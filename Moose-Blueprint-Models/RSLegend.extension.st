@@ -1,6 +1,6 @@
-Extension { #name : #RSLegend }
+Extension { #name : 'RSLegend' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 RSLegend >> text: aString withBoxColor: color [
 
 	^ color

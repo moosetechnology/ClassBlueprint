@@ -1,10 +1,11 @@
 Class {
-	#name : #CBDraggableAttribute,
-	#superclass : #CBDraggable,
-	#category : #'Moose-Blueprint-Models'
+	#name : 'CBDraggableAttribute',
+	#superclass : 'CBDraggable',
+	#category : 'Moose-Blueprint-Models',
+	#package : 'Moose-Blueprint-Models'
 }
 
-{ #category : #'event processing' }
+{ #category : 'event processing' }
 CBDraggableAttribute >> processDrag: evt [
 
 	| d childRectangle layer padding parentRectangle shape |

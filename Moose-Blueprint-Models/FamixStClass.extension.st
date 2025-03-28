@@ -1,6 +1,6 @@
-Extension { #name : #FamixStClass }
+Extension { #name : 'FamixStClass' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStClass >> isCBTestCase [
 
 	self withSuperclassesDo: [ :each |
@@ -8,7 +8,7 @@ FamixStClass >> isCBTestCase [
 	^ false
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStClass >> isPojo [
 
 	^ false

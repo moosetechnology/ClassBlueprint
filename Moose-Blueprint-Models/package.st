@@ -1,1 +1,1 @@
-Package { #name : #'Moose-Blueprint-Models' }
+Package { #name : 'Moose-Blueprint-Models' }

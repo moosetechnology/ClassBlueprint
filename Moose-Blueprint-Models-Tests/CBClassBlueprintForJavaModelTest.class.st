@@ -95,3 +95,29 @@ CBClassBlueprintForJavaModelTest >> testDeadAccessor [
 		((classBlueprint accessors collect: #entity) detect: #isSetter)
 			isDeadMethod
 ]
+
+{ #category : 'tests' }
+CBClassBlueprintForJavaModelTest >> testIsCBTestCase [
+
+	| famixClass famixClass2 class1 testcase inh1 inh2 testAnnotation testAnnotationInstance famixMethod |
+	famixClass := FamixJavaClass new.
+	class1 := FamixJavaClass new.
+	testcase := FamixJavaClass named: 'TestCase'.
+	inh1 := FamixJavaInheritance new
+		        superclass: testcase;
+		        subclass: class1.
+	inh2 := FamixJavaInheritance new
+		        superclass: class1;
+		        subclass: famixClass.
+	famixClass2 := FamixJavaClass new.
+	testAnnotation := FamixJavaAnnotationType new name: 'Test'.
+	testAnnotationInstance := FamixJavaAnnotationInstance new
+		                          annotationType: testAnnotation.
+	famixMethod := FamixJavaMethod new name: 'someMethodAnnotated'.
+	famixClass2 addMethod: famixMethod.
+	famixMethod annotationInstances add: testAnnotationInstance.
+	"JUnit3"
+	self assert: famixClass isCBTestCase.
+	"JUnit4 and fllowing"
+	self assert: famixClass2 isCBTestCase.
+]

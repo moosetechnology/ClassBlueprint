@@ -2,8 +2,8 @@
 I represent a method of Class Blueprint.
 "
 Class {
-	#name : #CBMethodModel,
-	#superclass : #CBHighlightableModel,
+	#name : 'CBMethodModel',
+	#superclass : 'CBHighlightableModel',
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
@@ -13,10 +13,11 @@ Class {
 		'complexity',
 		'occurrences'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : 'Moose-Blueprint-Models',
+	#package : 'Moose-Blueprint-Models'
 }
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBMethodModel class >> abstractBox [
 
 	^ RSBox new
@@ -31,7 +32,7 @@ CBMethodModel class >> abstractBox [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBMethodModel class >> newFrom: anEntity [
 
 	^ self new
@@ -39,7 +40,7 @@ CBMethodModel class >> newFrom: anEntity [
 		  create
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBMethodModel >> abstractBox [
 
 	^ RSBox new
@@ -53,29 +54,29 @@ CBMethodModel >> abstractBox [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> accessorInvocations [
 	^ accessorInvocations
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> accessorInvocations: anObject [
 
 	accessorInvocations := anObject
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBMethodModel >> activateRedBorder [ 
 	self description complex: true
 
 ]
 
-{ #category : #invocations }
+{ #category : 'invocations' }
 CBMethodModel >> addAccessorInvocation: aConnection [ 
 	accessorInvocations add: aConnection 
 ]
 
-{ #category : #invocations }
+{ #category : 'invocations' }
 CBMethodModel >> addIncoming: aMethodInvocationModel [
 
 	((self invocations incoming collect: #source) includes:
@@ -83,7 +84,7 @@ CBMethodModel >> addIncoming: aMethodInvocationModel [
 		invocations incoming add: aMethodInvocationModel ]
 ]
 
-{ #category : #invocations }
+{ #category : 'invocations' }
 CBMethodModel >> addOutgoing: aMethodInvocationModel [
 
 	((self invocations outgoing collect: #target) includes:
@@ -91,7 +92,7 @@ CBMethodModel >> addOutgoing: aMethodInvocationModel [
 		invocations outgoing add: aMethodInvocationModel ]
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBMethodModel >> addShapeInterractions [
 
 	shape
@@ -103,25 +104,25 @@ CBMethodModel >> addShapeInterractions [
 	shape addInteraction: CBDraggableMethod new
 ]
 
-{ #category : #invocations }
+{ #category : 'invocations' }
 CBMethodModel >> allInvocations [
 
 	^ self invocations incoming , self invocations  outgoing
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> attributeAccess [
 
 	^ attributeAccess
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> attributeAccess: anObject [
 
 	attributeAccess := anObject
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBMethodModel >> boxShape [
 
 	^ self isAbstractAndReimplemented
@@ -132,17 +133,17 @@ CBMethodModel >> boxShape [
 		  ifFalse: [ RSComposite new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> complexity [
 	^ entity computeCyclomaticComplexity 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> complexity: aNumber [
 	complexity := aNumber
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBMethodModel >> create [
 
 	accessorInvocations := OrderedCollection new.
@@ -151,7 +152,7 @@ CBMethodModel >> create [
 	complexity := entity computeCyclomaticComplexity
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBMethodModel >> defaultShape [
 
 	| box |
@@ -167,26 +168,26 @@ CBMethodModel >> defaultShape [
 	^ shape
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBMethodModel >> initializeDescription [
 
 	description := CBMethodDescription newFrom: self.
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> invocations [
 
 	^ invocations
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> invocations: anObject [
 
 	invocations := anObject
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isAbstract [
 
 	^ (entity isAbstract and: [ self entity isDeadAbstract not ])
@@ -194,33 +195,33 @@ CBMethodModel >> isAbstract [
 		  ifFalse: [ nil ]
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isAbstractAndReimplemented [
 
 	^ self entity isAbstract and: [ 
 		  self entity isReimplemented ]
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isCBAccessor [
 
 	(entity isCBGetter or: [ entity isCBSetter ]) ifTrue: [ ^ #accessor ].
 	^ nil
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isConstant [ 
 	"A method that returns a constant value"
 	entity isConstant ifTrue: [ ^ #isConstant ].
 	^ nil
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isDead [ 
 	^ self entity isDead
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isDeadMethod [
 
 	(self entity isDeadMethod) ifTrue: [ 
@@ -228,7 +229,7 @@ CBMethodModel >> isDeadMethod [
 	^ nil
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isDelegating [
 
 	"Checks if the method delegates an invocation i.e, forwars the method call to another object"
@@ -237,7 +238,7 @@ CBMethodModel >> isDelegating [
 	^ nil
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isExtending [
 
 	"Check if a method extends another by super"
@@ -247,12 +248,12 @@ CBMethodModel >> isExtending [
 	^ nil
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isInternal [ 
 	^ entity isInternal
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isInternalImplementation [
 
 	(entity isInternal and: [ entity isInitializer not ]) ifTrue: [ 
@@ -260,7 +261,7 @@ CBMethodModel >> isInternalImplementation [
 	^ nil
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isOverridden [
 
 	self entity isOverridden ifTrue: [
@@ -268,7 +269,7 @@ CBMethodModel >> isOverridden [
 	^ nil
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isOverriding [
 
 	entity isOverriding ifTrue: [ ^ #'isOverriding(redefined locally and no super)' ].
@@ -276,47 +277,47 @@ CBMethodModel >> isOverriding [
 	^ nil
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isTestMethod [
 
 	self entity isTestMethod ifTrue: [ ^ #isTestMethod ].
 	^ nil
 ]
 
-{ #category : #'properties - boolean' }
+{ #category : 'properties - boolean' }
 CBMethodModel >> isTested [
 
 	^ self entity isTested
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> modelType [ 
 	^ modelType
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> modelType: aSymbol [
 	modelType := aSymbol 
 ]
 
-{ #category : #invocations }
+{ #category : 'invocations' }
 CBMethodModel >> newIncomingConnection [ 
 
 	^ CBIncomingInvocationsCollector new 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> occurrences [ 
 	^ occurrences
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> occurrences: aNumber [
 
 	occurrences := aNumber 
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 CBMethodModel >> openInBrowser [
 
 	| class |
@@ -330,7 +331,7 @@ CBMethodModel >> openInBrowser [
 		ifNotNil: [ (class >> self entity name asSymbol) browse ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 CBMethodModel >> printOn: aStream [
 
 	aStream nextPutAll: '('.
@@ -338,7 +339,7 @@ CBMethodModel >> printOn: aStream [
 	aStream nextPutAll: ')'
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBMethodModel >> shape [
 
 	" si la méthode est appelée dans une classe de test et que la méthode n'est pas appelée dans sa classe de test => testShape"
@@ -352,7 +353,7 @@ CBMethodModel >> shape [
 	^ shape
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBMethodModel >> testedShape [
 
 	| box testingBox |
@@ -371,7 +372,7 @@ CBMethodModel >> testedShape [
 	^ shape
 ]
 
-{ #category : #shapes }
+{ #category : 'shapes' }
 CBMethodModel >> testingBox [
 
 	^ RSBox new
@@ -386,12 +387,12 @@ CBMethodModel >> testingBox [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> type [
 	^ type
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBMethodModel >> type: aType [ 
 	type := aType 
 ]

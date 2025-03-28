@@ -1,10 +1,11 @@
 Class {
-	#name : #CBDraggableCanvas,
-	#superclass : #CBDraggable,
-	#category : #'Moose-Blueprint-Models'
+	#name : 'CBDraggableCanvas',
+	#superclass : 'CBDraggable',
+	#category : 'Moose-Blueprint-Models',
+	#package : 'Moose-Blueprint-Models'
 }
 
-{ #category : #'event processing' }
+{ #category : 'event processing' }
 CBDraggableCanvas >> processDrag: evt [
 
 	| d canvas |

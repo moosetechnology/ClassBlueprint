@@ -1,6 +1,6 @@
-Extension { #name : #RSLineBuilder }
+Extension { #name : 'RSLineBuilder' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 RSLineBuilder >> edgeFrom: source to: target [
 
     "source and target are elements"

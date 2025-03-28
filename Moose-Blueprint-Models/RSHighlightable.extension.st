@@ -1,6 +1,6 @@
-Extension { #name : #RSHighlightable }
+Extension { #name : 'RSHighlightable' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 RSHighlightable >> withIncomingLines [
 
 	self highlightShapes: [ :s | 
@@ -10,7 +10,7 @@ RSHighlightable >> withIncomingLines [
 		list ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 RSHighlightable >> withIncomingShapes [
 
 	self highlightShapes: [ :s | 
