@@ -26,6 +26,7 @@ FamixJavaMethod >> isCBInitializer [
 FamixJavaMethod >> isCBSetter [
 
 	| hasSelfAccess |
+self deprecated: 'please use isSetter'  transformWith:  '`@receiver isCBSetter -> `@receiver isSetter '.
 	self isSetter ifTrue: [ ^ true ].
 
 	hasSelfAccess := self accesses anySatisfy: [ :each |
