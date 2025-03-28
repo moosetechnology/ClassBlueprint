@@ -1,6 +1,6 @@
-Extension { #name : #FamixStInvocation }
+Extension { #name : 'FamixStInvocation' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStInvocation >> isAttributeInvocation [
 
 	(self receiver isNil or: [ self candidates isEmpty ]) 
@@ -9,7 +9,7 @@ FamixStInvocation >> isAttributeInvocation [
 		  self candidates allSatisfy: #isIfNil ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStInvocation >> isSelfInvocation [
 
 	(self receiver isNil or: [

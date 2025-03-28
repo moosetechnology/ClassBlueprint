@@ -1,6 +1,6 @@
-Extension { #name : #FamixJavaMethod }
+Extension { #name : 'FamixJavaMethod' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCBGetter [
 
 	self isGetter ifTrue: [ ^ true ].
@@ -14,7 +14,7 @@ FamixJavaMethod >> isCBGetter [
 				  self accesses allSatisfy: [ :acc | acc variable isAttribute ] ] ] ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCBInitializer [
 
 	"This method is here for polymorphism with FamixStMethod. It should be removed when harmonizing #isInitializer between class blueprint and Famix"
@@ -22,7 +22,7 @@ FamixJavaMethod >> isCBInitializer [
 	^ self isInitializer
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCBSetter [
 
 	| hasSelfAccess |
@@ -45,7 +45,7 @@ FamixJavaMethod >> isCBSetter [
 		  hasSelfAccess and: [ self outgoingInvocations isEmpty ] ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isDeadAbstract [
 
 	"Called only when the method is abstract"
@@ -54,7 +54,7 @@ FamixJavaMethod >> isDeadAbstract [
 		  self isSubPublic not and: self isSubInternal not ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isExternal [
 
 	self isAbstract ifTrue: [ 
@@ -69,13 +69,13 @@ FamixJavaMethod >> isExternal [
 	^ self isPublic
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isInitializer [
 
 	^ self isConstructor 
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isInternal [
 
 	"For the method to be internal: it has to be called internally 
@@ -92,13 +92,13 @@ FamixJavaMethod >> isInternal [
 	^ self isPrivate or: [ self isProtected ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isLazyInitializer [
 
 	^ self sourceText matchesRegex: self lazyInitializerRegex
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isSubInternal [
 
 	| redefinitions |
@@ -109,7 +109,7 @@ FamixJavaMethod >> isSubInternal [
 	^ redefinitions allSatisfy: [ :m | m isPrivate or: [ m isProtected ] ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isSubPublic [
 
 	| subMethods reimplementations |
@@ -124,7 +124,7 @@ FamixJavaMethod >> isSubPublic [
 	^ reimplementations anySatisfy: [ :m | m isPublic ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> lazyInitializerRegex [
 
 	^ '.*if\s*\(\s*(this\.)?\w+\s*==\s*null\s*\)\s*\{\s*(this\.)?\w+\s*=.*;\s*\}\s*return\s+(this\.)?\w+\s*;\s*\}\s*'

@@ -1,14 +1,12 @@
-Extension { #name : #FamixJavaClass }
+Extension { #name : 'FamixJavaClass' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaClass >> isCBTestCase [
 
-	self withSuperclassesDo: [ :each |
-		each name = 'TestCase' ifTrue: [ ^ true ] ].
-	^ false
+	^ self isJUnit4TestCase or: [ self inheritsFromTestCase or: [self name = 'TestCase' ]  ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaClass >> isPojo [
 
 	^ (self superclassHierarchy anySatisfy: [ :each | 

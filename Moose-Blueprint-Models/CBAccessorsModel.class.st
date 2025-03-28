@@ -2,8 +2,8 @@
 I represent a model for getters and setters
 "
 Class {
-	#name : #CBAccessorsModel,
-	#superclass : #CBHighlightableModel,
+	#name : 'CBAccessorsModel',
+	#superclass : 'CBHighlightableModel',
 	#instVars : [
 		'accessorInvocations',
 		'attributeAccess',
@@ -11,40 +11,41 @@ Class {
 		'occurrences',
 		'attribute'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : 'Moose-Blueprint-Models',
+	#package : 'Moose-Blueprint-Models'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CBAccessorsModel class >> newFrom: aMethod [ 
 	^ self new
 		  entity: aMethod;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> accessorInvocations [
 	^ accessorInvocations
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> addIncoming: anInvocation [ 
 	((accessorInvocations collect: #target) includes: anInvocation target) ifFalse: [  
 	accessorInvocations add: anInvocation ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> addOutgoing: anAttributeAccess [
 
 	((attributeAccess collect: #source) includes: anAttributeAccess source) ifFalse: [  
 	attributeAccess add: anAttributeAccess ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> attributeAccess [ 
 	^ attributeAccess
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> color [
 
 	"attribute isDead attribute protectors are dead "
@@ -54,7 +55,7 @@ CBAccessorsModel >> color [
 		  ifFalse: [ MiClassBlueprintPalette new colorAt: self type ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBAccessorsModel >> initialize [
 
 	super initialize.
@@ -62,18 +63,18 @@ CBAccessorsModel >> initialize [
 	attributeAccess := OrderedCollection new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBAccessorsModel >> isCBGetter [ 
 	^ entity isCBGetter 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBAccessorsModel >> isDead [
 
-	^ self entity incomingInvocations isEmpty
+	^ self entity isDead
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBAccessorsModel >> isDeadAccessor [
 
 
@@ -82,28 +83,28 @@ CBAccessorsModel >> isDeadAccessor [
 	^ attribute isDead and: [ attribute accessors allSatisfy: #isDead ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBAccessorsModel >> isLazyInitializer [ 
 	^ self entity isLazyInitializer 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBAccessorsModel >> isSetter [
 
 	^ entity isCBSetter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> modelType [
 	^ modelType
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> modelType: aSymbol [
 	modelType := aSymbol 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> newIncomingConnection [ 
 
 	^ CBAccessorInvocationModel new 
@@ -111,17 +112,17 @@ CBAccessorsModel >> newIncomingConnection [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> occurrences [
 	^ occurrences
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> occurrences: aNumber [
 	occurrences := aNumber
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 CBAccessorsModel >> printOn: aStream [
 
 	aStream nextPutAll: '('.
@@ -129,12 +130,12 @@ CBAccessorsModel >> printOn: aStream [
 	aStream nextPutAll: ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> protecting: anAttribte [ 
 	attribute := anAttribte 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> shape [
 
 	shape := RSBox new
@@ -148,7 +149,7 @@ CBAccessorsModel >> shape [
 	^ shape
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBAccessorsModel >> type [
 
 	(self entity isPureGetter or: [ self entity isSetter ]) ifTrue: [ ^#'isSetter or isGetter' ].

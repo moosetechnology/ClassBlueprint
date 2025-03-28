@@ -1,12 +1,12 @@
-Extension { #name : #Class }
+Extension { #name : 'Class' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 Class >> blueprint [ 
 
 	^ self blueprintView asInspectorPresenter open.
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 Class >> blueprintView [
 
 	| model |

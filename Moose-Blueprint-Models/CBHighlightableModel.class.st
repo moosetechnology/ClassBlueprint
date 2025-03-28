@@ -1,6 +1,6 @@
 Class {
-	#name : #CBHighlightableModel,
-	#superclass : #CBAbstractModel,
+	#name : 'CBHighlightableModel',
+	#superclass : 'CBAbstractModel',
 	#instVars : [
 		'shape',
 		'isHighlighted',
@@ -9,10 +9,11 @@ Class {
 		'onClickHighlightableOutgoingLinesInteraction',
 		'onClickHighlightableIncomingInteraction'
 	],
-	#category : #'Moose-Blueprint-Models'
+	#category : 'Moose-Blueprint-Models',
+	#package : 'Moose-Blueprint-Models'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 CBHighlightableModel >> addHighlightableInteraction [
 	"shape when: RSMouseDoubleClick do: [ self triggerInteraction ]."
 
@@ -28,7 +29,7 @@ CBHighlightableModel >> addHighlightableInteraction [
 		for: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 CBHighlightableModel >> initialize [
 
 	super initialize.
@@ -43,34 +44,34 @@ CBHighlightableModel >> initialize [
 	onHoverHighlightableInteraction := RSHighlightable red withLines
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CBHighlightableModel >> isHighlightable [ 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBHighlightableModel >> isHighlighted [ 
 	^ isHighlighted
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBHighlightableModel >> onClickHighlightableIncomingInteraction [
 
 	^ onClickHighlightableIncomingInteraction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBHighlightableModel >> onClickHighlightableInteraction [
 
 	^ onClickHighlightableInteraction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBHighlightableModel >> onHoverHighlightableInteraction [ 
 	^ onHoverHighlightableInteraction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CBHighlightableModel >> triggerIncomingLinesHighlight [
 
 	isHighlighted := isHighlighted not.
@@ -83,7 +84,7 @@ CBHighlightableModel >> triggerIncomingLinesHighlight [
 	shape signalUpdate
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 CBHighlightableModel >> triggerOutgoingLinesHighlight [
 
 	isHighlighted := isHighlighted not.

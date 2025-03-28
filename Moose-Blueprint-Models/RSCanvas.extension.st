@@ -1,6 +1,6 @@
-Extension { #name : #RSCanvas }
+Extension { #name : 'RSCanvas' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 RSCanvas >> translateBy: delta [
 
 	"instead of moving the shapes move the camera position"

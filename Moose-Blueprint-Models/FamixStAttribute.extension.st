@@ -1,6 +1,6 @@
-Extension { #name : #FamixStAttribute }
+Extension { #name : 'FamixStAttribute' }
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStAttribute >> cbAccessors [
 
 	^ (self incomingAccesses collectAsSet: [ :each | each source ])
@@ -9,13 +9,13 @@ FamixStAttribute >> cbAccessors [
 				  each isCBSetter or: [ each isLazyInitializer ] ] ]
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStAttribute >> hasAccessors [
 
 	^ self cbAccessors isNotEmpty
 ]
 
-{ #category : #'*Moose-Blueprint-Models' }
+{ #category : '*Moose-Blueprint-Models' }
 FamixStAttribute >> isCalledIn: aFamixClass [
 
 	^ ((self incomingAccesses collect: #source) select: [ :each |
