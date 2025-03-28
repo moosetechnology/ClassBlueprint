@@ -91,7 +91,7 @@ CBAccessorsModel >> isLazyInitializer [
 { #category : 'testing' }
 CBAccessorsModel >> isSetter [
 
-	^ entity isCBSetter
+	^ entity isSetter
 ]
 
 { #category : 'accessing' }
