@@ -18,7 +18,7 @@ FamixStMethod >> isAbstractCalledExternally [
 
 { #category : '*Moose-Blueprint-Models' }
 FamixStMethod >> isCBInitializer [
-
+self deprecated: 'please use isInitializer'  transformWith:  '`@receiver isInitializer' -> '`@receiver isInitializer '.
 	^ ('*initializ*' match: (self protocol ifNil: [ '' ])) or: [
 		  '*initialize*' match: self name ]
 ]

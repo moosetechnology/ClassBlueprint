@@ -18,7 +18,7 @@ self deprecated: 'please use isGetter'  transformWith:  '`@receiver isCBGetter' 
 FamixJavaMethod >> isCBInitializer [
 
 	"This method is here for polymorphism with FamixStMethod. It should be removed when harmonizing #isInitializer between class blueprint and Famix"
-
+self deprecated: 'please use isInitializer'  transformWith:  '`@receiver isInitializer' -> '`@receiver isInitializer '.
 	^ self isInitializer
 ]
 
