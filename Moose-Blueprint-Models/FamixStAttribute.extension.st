@@ -6,7 +6,7 @@ FamixStAttribute >> cbAccessors [
 	^ (self incomingAccesses collectAsSet: [ :each | each source ])
 		  select: [ :each |
 			  each isCBGetter or: [
-				  each isCBSetter or: [ each isLazyInitializer ] ] ]
+				  each isSetter or: [ each isLazyInitializer ] ] ]
 ]
 
 { #category : '*Moose-Blueprint-Models' }

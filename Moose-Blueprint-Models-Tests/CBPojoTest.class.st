@@ -101,6 +101,7 @@ CBPojoTest >> setUp [
 	getter := model newMethodNamed: 'getAttribute()'.
 	setter := (model newMethodNamed: 'setAttribute()')
 		          parameters: { (model newParameterNamed: 'anObject') };
+					declaredType: (FamixJavaPrimitiveType new name: 'void')
 		          yourself.
 
 	self defineAccesses.
@@ -121,5 +122,5 @@ CBPojoTest >> testIsGetter [
 { #category : 'tests' }
 CBPojoTest >> testIsSetter [
 
-	self assert: setter isCBSetter
+	self assert: setter isSetter
 ]
