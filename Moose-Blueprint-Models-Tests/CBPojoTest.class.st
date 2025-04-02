@@ -98,7 +98,7 @@ CBPojoTest >> setUp [
 	constructor := (model newMethodNamed: 'constructor()')
 		               isConstructor: true;
 		               yourself.
-	getter := model newMethodNamed: 'getAttribute()'.
+	getter := (model newMethodNamed: 'getAttribute()') declaredType: (FamixJavaPrimitiveType new name: 'String'); yourself.
 	setter := (model newMethodNamed: 'setAttribute()')
 		          parameters: { (model newParameterNamed: 'anObject') };
 					declaredType: (FamixJavaPrimitiveType new name: 'void')
@@ -116,7 +116,7 @@ CBPojoTest >> setUp [
 { #category : 'tests' }
 CBPojoTest >> testIsGetter [
 
-	self assert: getter isCBGetter
+	self assert: getter isGetter
 ]
 
 { #category : 'tests' }

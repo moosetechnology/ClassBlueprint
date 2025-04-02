@@ -205,7 +205,7 @@ CBMethodModel >> isAbstractAndReimplemented [
 { #category : 'properties - boolean' }
 CBMethodModel >> isCBAccessor [
 
-	(entity isCBGetter or: [ entity isSetter ]) ifTrue: [ ^ #accessor ].
+	(entity isGetter or: [ entity isSetter ]) ifTrue: [ ^ #accessor ].
 	^ nil
 ]
 

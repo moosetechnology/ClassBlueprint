@@ -5,8 +5,7 @@ FamixJavaAttribute >> cbAccessors [
 
 	^ (self incomingAccesses collectAsSet: [ :each | each source ])
 		  select: [ :each |
-			  each isCBGetter or: [
-				  each isSetter or: [ each isLazyInitializer ] ] ]
+			  each isGetter or: [ each isSetter or: [ each isLazyInitializer ] ] ]
 ]
 
 { #category : '*Moose-Blueprint-Models' }

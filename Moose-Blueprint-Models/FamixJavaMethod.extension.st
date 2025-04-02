@@ -2,7 +2,7 @@ Extension { #name : 'FamixJavaMethod' }
 
 { #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isCBGetter [
-
+self deprecated: 'please use isGetter'  transformWith:  '`@receiver isCBGetter' -> '`@receiver isGetter '.
 	self isGetter ifTrue: [ ^ true ].
 
 	(self accesses size = 1 and: [ self parameters size isZero ])
@@ -26,7 +26,7 @@ FamixJavaMethod >> isCBInitializer [
 FamixJavaMethod >> isCBSetter [
 
 	| hasSelfAccess |
-self deprecated: 'please use isSetter'  transformWith:  '`@receiver isCBSetter -> `@receiver isSetter '.
+self deprecated: 'please use isSetter'  transformWith:  '`@receiver isCBSetter' -> '`@receiver isSetter '.
 	self isSetter ifTrue: [ ^ true ].
 
 	hasSelfAccess := self accesses anySatisfy: [ :each |

@@ -32,7 +32,7 @@ FamixTMethod >> inSameClassAs: aMethod [
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isCBAccessor [
 
-	^ self isSetter or: [ self isCBGetter ]
+	^ self isSetter or: [ self isGetter ]
 ]
 
 { #category : '*Moose-Blueprint-Models' }

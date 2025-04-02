@@ -65,7 +65,7 @@ CBAccessorsModel >> initialize [
 
 { #category : 'testing' }
 CBAccessorsModel >> isCBGetter [ 
-	^ entity isCBGetter 
+	^ entity isGetter 
 ]
 
 { #category : 'testing' }
