@@ -397,7 +397,7 @@ CBClassBlueprint >> initializeExternals [
 CBClassBlueprint >> initializeInitializers [
 
 	initializers := self notClassifiedMethods
-		                select: [ :each | each isCBInitializer ]
+		                select: [ :each | each isInitializer ]
 		                thenCollect: [ :each | CBMethodModel newFrom: each ]
 ]
 
