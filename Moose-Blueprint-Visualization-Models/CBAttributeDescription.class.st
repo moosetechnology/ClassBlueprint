@@ -73,7 +73,7 @@ CBAttributeDescription >> numberOfInternalAccesses [
 		                   each source parentType
 		                   == entityModel entity parentType ]) size.
 
-	accessorsAccess := (entityModel entity cbAccessors flatCollect: [
+	accessorsAccess := (entityModel entity accessorMethods flatCollect: [
 		                    :each |
 		                    each incomingInvocations collect: #source ])
 		                   select: [ :each |
