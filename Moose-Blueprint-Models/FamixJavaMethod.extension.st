@@ -126,6 +126,11 @@ FamixJavaMethod >> isSubPublic [
 ]
 
 { #category : '*Moose-Blueprint-Models' }
+FamixJavaMethod >> isTestMethod [
+	 ^ self belongsToTestCase and: [ self nameBeginsWithTest or: [ self isJUnit4Test ] ]
+]
+
+{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> lazyInitializerRegex [
 
 	^ '.*if\s*\(\s*(this\.)?\w+\s*==\s*null\s*\)\s*\{\s*(this\.)?\w+\s*=.*;\s*\}\s*return\s+(this\.)?\w+\s*;\s*\}\s*'

@@ -9,6 +9,12 @@ FamixTMethod >> belongsToDeadBranch [
 ]
 
 { #category : '*Moose-Blueprint-Models' }
+FamixTMethod >> belongsToTestCase [
+
+	^ self parentType isTestCase
+]
+
+{ #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> calledBy [
 
 	^ (self incomingInvocations collect: [ :each | each source ]) 
@@ -19,8 +25,7 @@ FamixTMethod >> calledBy [
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> hierarchyOfClasses [
 
-	^ self parentType withSuperclassHierarchy
-	  , self parentType subclassHierarchy
+	^ self parentType hierarchyOfClasses 
 ]
 
 { #category : '*Moose-Blueprint-Models' }
@@ -163,15 +168,20 @@ FamixTMethod >> isTestInternalImplementation [
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTestMethod [
 
-	^ self parentType isTestCase and: [
-		  (self name beginsWith: #test) and: [ self name fifth isUppercase ] ]
+	^ self subclassResponsibility 
 ]
 
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTested [
 
 	^ (self incomingInvocations collect: #sender) anySatisfy: [ :each |
-		  each parentType isTestCase ]
+		  each isTestCase ]
+]
+
+{ #category : '*Moose-Blueprint-Models' }
+FamixTMethod >> nameBeginsWithTest [ 
+
+	^ self name beginsWith: 'test'
 ]
 
 { #category : '*Moose-Blueprint-Models' }

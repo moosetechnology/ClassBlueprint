@@ -102,3 +102,8 @@ FamixStMethod >> isSubCalledInternallyOnly [
 
 	^ redefinitions allSatisfy: [ :m | m isCalledInHierarchyOnly ]
 ]
+
+{ #category : '*Moose-Blueprint-Models' }
+FamixStMethod >> isTestMethod [
+	 ^ self belongsToTestCase and: [ self nameBeginsWithTest ] 
+]
