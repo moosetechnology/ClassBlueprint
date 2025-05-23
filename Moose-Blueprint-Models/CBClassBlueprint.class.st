@@ -323,8 +323,8 @@ CBClassBlueprint >> initialize [
 CBClassBlueprint >> initializeAcessors [
 
 	accessors := self entity methods
-		              select: [ :each | each isCBAccessor ] thenCollect: [ :each | 
-		             CBAccessorsModel newFrom: each ]
+		             select: [ :each | each isAccessor ]
+		             thenCollect: [ :each | CBAccessorsModel newFrom: each ]
 ]
 
 { #category : 'initialization' }
