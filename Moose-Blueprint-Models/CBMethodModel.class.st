@@ -345,7 +345,7 @@ CBMethodModel >> shape [
 	" si la méthode est appelée dans une classe de test et que la méthode n'est pas appelée dans sa classe de test => testShape"
 
 	shape := (self isTested and: [
-		          self entity parentType isCBTestCase not ])
+		          self entity parentType isTestCase not ])
 		         ifTrue: [ self testedShape ]
 		         ifFalse: [ self defaultShape ].
 	"shape when: RSMouseClick do: [ self inspect ]."

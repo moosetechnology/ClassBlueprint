@@ -116,7 +116,7 @@ CBClassBlueprintForJavaModelTest >> testIsCBTestCase [
 	famixClass2 addMethod: famixMethod.
 	famixMethod annotationInstances add: testAnnotationInstance.
 	"JUnit3"
-	self assert: famixClass isCBTestCase.
+	self assert: famixClass isTestCase.
 	"JUnit4 and fllowing"
-	self assert: famixClass2 isCBTestCase.
+	self assert: famixClass2 isTestCase
 ]
