@@ -62,7 +62,7 @@ FamixTMethod >> isCalledInHierarchyOnly [
 
 	invokingTypes := (self incomingInvocations collect: [ :each |
 		                  each source parentType ]) reject: [ :each |
-		                 each isCBTestCase ].
+		                 each isTestCase ].
 
 	invokingTypes ifEmpty: [ ^ false ].
 
@@ -73,10 +73,9 @@ FamixTMethod >> isCalledInHierarchyOnly [
 FamixTMethod >> isCalledInternallyOnly [
 
 	| incoInvocSources |
-
 	incoInvocSources := (self incomingInvocations collect: [ :each |
 		                     each source ]) reject: [ :each |
-		                    each parentType isCBTestCase ].
+		                    each parentType isTestCase ].
 
 	^ incoInvocSources isNotEmpty and: [
 		  incoInvocSources allSatisfy: [ :i |
@@ -129,12 +128,10 @@ FamixTMethod >> isTestCaseMethod [
 
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTestExternalImplementation [
-
 	"Here we do not care if it is called by other test methods"
 
 	| invocationSources |
-
-	self parentType isCBTestCase ifFalse: [ ^ false ].
+	self parentType isTestCase ifFalse: [ ^ false ].
 	invocationSources := self incomingInvocations collect: [ :each |
 		                     each source ].
 
@@ -151,12 +148,10 @@ FamixTMethod >> isTestInternal [
 
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTestInternalImplementation [
-
 	"theinconveince is that it might be called by another internal test implementation of another test class"
 
 	| invocationSources |
-
-	self parentType isCBTestCase ifFalse: [ ^ false ].
+	self parentType isTestCase ifFalse: [ ^ false ].
 	invocationSources := self incomingInvocations collect: [ :each |
 		                     each source ].
 
@@ -168,7 +163,7 @@ FamixTMethod >> isTestInternalImplementation [
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isTestMethod [
 
-	^ self parentType isCBTestCase and: [
+	^ self parentType isTestCase and: [
 		  (self name beginsWith: #test) and: [ self name fifth isUppercase ] ]
 ]
 
@@ -176,7 +171,7 @@ FamixTMethod >> isTestMethod [
 FamixTMethod >> isTested [
 
 	^ (self incomingInvocations collect: #sender) anySatisfy: [ :each |
-		  each parentType isCBTestCase ]
+		  each parentType isTestCase ]
 ]
 
 { #category : '*Moose-Blueprint-Models' }

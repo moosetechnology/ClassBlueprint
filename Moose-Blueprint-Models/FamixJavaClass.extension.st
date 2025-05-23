@@ -2,7 +2,7 @@ Extension { #name : 'FamixJavaClass' }
 
 { #category : '*Moose-Blueprint-Models' }
 FamixJavaClass >> isCBTestCase [
-
+	self deprecated: 'please use isTestCase'  transformWith:  '`@receiver isCBTestCase' -> '`@receiver isTestCase '.
 	^ self isJUnit4TestCase or: [ self inheritsFromTestCase or: [self name = 'TestCase' ]  ]
 ]
 
