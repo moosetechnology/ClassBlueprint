@@ -363,7 +363,7 @@ CBClassBlueprint >> initializeClassVars [
 CBClassBlueprint >> initializeDeadAttributes [
 
 	deadAttributes := ((entity attributes select: [ :each |
-		                    each isCBDead ]) collect: [ :anAttribute |
+		                    each isDead ]) collect: [ :anAttribute |
 		                   CBAttributeModel newFrom: anAttribute ]) sorted: [
 		                  :x
 		                  :y | x name < y name ]

@@ -37,7 +37,7 @@ self deprecated: 'please use isAccessor'  transformWith:  '`@receiver isCBAccess
 
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isCBDead [
-
+self deprecated: 'please use isDead'  transformWith:  '`@receiver isCBDead' -> '`@receiver isDead '.
 	^ self incomingInvocations isEmpty
 ]
 
