@@ -98,10 +98,17 @@ CBPojoTest >> setUp [
 	constructor := (model newMethodNamed: 'constructor()')
 		               isConstructor: true;
 		               yourself.
-	getter := (model newMethodNamed: 'getAttribute()') declaredType: (FamixJavaPrimitiveType new name: 'String'); yourself.
+	getter := (model newMethodNamed: 'getAttribute()')
+		          typing: (model newEntityTyping
+				           declaredType:
+					           (FamixJavaPrimitiveType new name: 'String');
+				           yourself);
+		          yourself.
 	setter := (model newMethodNamed: 'setAttribute()')
 		          parameters: { (model newParameterNamed: 'anObject') };
-					declaredType: (FamixJavaPrimitiveType new name: 'void')
+		          typing: (model newEntityTyping
+				           declaredType: (FamixJavaPrimitiveType new name: 'void');
+				           yourself);
 		          yourself.
 
 	self defineAccesses.
