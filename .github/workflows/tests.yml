@@ -4,7 +4,7 @@ on: [ push, workflow_dispatch ]
  
 jobs:
   run:
-    uses: moosetechnology/.github/.github/workflows/run-tests.yml@main
+    uses: moosetechnology/.github/.github/workflows/run-tests.yml@gha-improvements
     with:
      run-coverage: true
      pharo-versions: ${{ vars.MOOSE_PHARO_VERSIONS['Moose-latest'] }}
