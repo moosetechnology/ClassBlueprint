@@ -68,7 +68,8 @@ CBClassBlueprint >> allAttributes [
 { #category : 'accessing' }
 CBClassBlueprint >> attributeAccess [
 
-	^  (self allAttributes flatCollect: [:each | each attributeAccess]) reject: [ :each | each source entity isCBAccessor ].
+	^ (self allAttributes flatCollect: [ :each | each attributeAccess ])
+		  reject: [ :each | each source entity isAccessor ]
 ]
 
 { #category : 'accessing' }

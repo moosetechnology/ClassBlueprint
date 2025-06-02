@@ -3,7 +3,7 @@ Extension { #name : 'Class' }
 { #category : '*Moose-Blueprint-Models' }
 Class >> blueprint [ 
 
-	^ self blueprintView asInspectorPresenter open.
+	^ self blueprintView open.
 ]
 
 { #category : '*Moose-Blueprint-Models' }

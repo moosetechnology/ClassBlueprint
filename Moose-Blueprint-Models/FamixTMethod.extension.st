@@ -108,7 +108,7 @@ FamixTMethod >> isIfNil [
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isPureGetter [
 
-	^ #getter = self kind or: [ self isCBGetter ]
+	^ #getter = self kind or: [ self isGetter ]
 ]
 
 { #category : '*Moose-Blueprint-Models' }
@@ -175,7 +175,7 @@ FamixTMethod >> isTestMethod [
 FamixTMethod >> isTested [
 
 	^ (self incomingInvocations collect: #sender) anySatisfy: [ :each |
-		  each isTestCase ]
+		  each isTestCaseMethod ]
 ]
 
 { #category : '*Moose-Blueprint-Models' }
