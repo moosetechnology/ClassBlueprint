@@ -9,12 +9,18 @@ Class >> blueprint [
 { #category : '*Moose-Blueprint-Models' }
 Class >> blueprintView [
 
-	| model |
+	| model importer |
+	model := FamixStModel new.
+	model name: 'tempModelFor' , self name.
 
-	model := MooseScripts
-		         createModelNamed: 'tempModel'
-		         with: { self package name asString }.
+	importer := FamixStPharoImporterTask new.
+	importer importingContext mergeClassAndMetaclass.
 
-	^ (model allModelClasses detect: [ :each | each name = self name ])
+	importer
+		model: model;
+		addFromPackage: self package;
+		runWithProgress.
+
+	^ (model allModelClasses detect: [ :cls | cls name = self name ])
 		  blueprint
 ]
