@@ -157,12 +157,10 @@ FamixTMethod >> isTestInternalImplementation [
 
 	| invocationSources |
 	self parentType isTestCase ifFalse: [ ^ false ].
-	invocationSources := self incomingInvocations collect: [ :each |
-		                     each source ].
+	invocationSources := self incomingInvocations collect: #source.
 
-	^ (invocationSources isNotEmpty and: [
-		   invocationSources allSatisfy: [ :i |
-			   i parentType = self parentType ] ]) or: [ self isTestInternal ]
+	^ (invocationSources isNotEmpty and: [ invocationSources allSatisfy: [ :invocationSource | invocationSource parentType = self parentType ] ]) or: [
+		  self isTestInternal ]
 ]
 
 { #category : '*Moose-Blueprint-Models' }
