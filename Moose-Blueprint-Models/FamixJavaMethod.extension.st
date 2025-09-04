@@ -71,12 +71,6 @@ FamixJavaMethod >> isExternal [
 ]
 
 { #category : '*Moose-Blueprint-Models' }
-FamixJavaMethod >> isInitializer [
-
-	^ self isConstructor 
-]
-
-{ #category : '*Moose-Blueprint-Models' }
 FamixJavaMethod >> isInternal [
 
 	"For the method to be internal: it has to be called internally 
