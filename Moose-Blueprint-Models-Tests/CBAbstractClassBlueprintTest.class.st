@@ -239,7 +239,5 @@ CBAbstractClassBlueprintTest >> testIsInitializerMethod [
 { #category : 'tests' }
 CBAbstractClassBlueprintTest >> testModels [
 
-	self
-		assertCollection: (classBlueprint models collect: #name)
-		hasSameElements: (mainClass children collect: #name)
+	self assertCollection: (classBlueprint models collect: #name) hasSameElements: (mainClass containedEntities collect: #name)
 ]
