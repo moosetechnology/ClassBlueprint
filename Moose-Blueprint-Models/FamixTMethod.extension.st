@@ -36,8 +36,9 @@ FamixTMethod >> inSameClassAs: aMethod [
 
 { #category : '*Moose-Blueprint-Models' }
 FamixTMethod >> isCBAccessor [
-self deprecated: 'please use isAccessor'  transformWith:  '`@receiver isCBAccessor' -> '`@receiver isAccessor '.
-	^ self isSetter or: [ self isGetter ]
+
+	self deprecated: 'please use isAccessor' transformWith: '`@receiver isCBAccessor' -> '`@receiver isAccessor '.
+	^ self isAccessor
 ]
 
 { #category : '*Moose-Blueprint-Models' }

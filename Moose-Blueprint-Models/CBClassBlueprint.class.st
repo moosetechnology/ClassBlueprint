@@ -515,11 +515,9 @@ CBClassBlueprint >> newOutgoingInvocation [
 CBClassBlueprint >> notClassifiedMethods [
 
 	| alreadyClassified |
-	alreadyClassified := self methodModels collect: [ :aMethod | 
-		                     aMethod entity ].
-	
-	^ (entity methods reject: [ :each | alreadyClassified includes: each ]) 
-		  reject: #isCBAccessor
+	alreadyClassified := self methodModels collect: [ :aMethod | aMethod entity ].
+
+	^ (entity methods reject: [ :each | alreadyClassified includes: each ]) reject: #isAccessor
 ]
 
 { #category : 'accessing' }
