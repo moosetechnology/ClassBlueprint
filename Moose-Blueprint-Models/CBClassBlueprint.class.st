@@ -179,7 +179,7 @@ CBClassBlueprint >> connectInvocations [
 CBClassBlueprint >> connectOutgoingAccesses [
 
 	accessors do: [ :accessor |
-		((accessor entity queryOutgoing: FamixTAccess) collect: #target) asSet ifNotEmpty: [ :att | self connectSource: accessor entity withAll: att ] ]
+		(accessor entity query outgoing objects dependenciesOfType: FamixTAccess) asSet ifNotEmpty: [ :att | self connectSource: accessor entity withAll: att ] ]
 ]
 
 { #category : 'building' }
