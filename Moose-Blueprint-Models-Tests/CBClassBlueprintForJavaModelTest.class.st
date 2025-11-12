@@ -46,19 +46,15 @@ CBClassBlueprintForJavaModelTest >> createExternalMethod [
 { #category : 'entities' }
 CBClassBlueprintForJavaModelTest >> createInitializers [
 
-	(model newMethodNamed: 'initializer1()')
-		isConstructor: true;
-		parentType: mainClass.
+	(model newInitializerNamed: mainClass name) parentType: mainClass.
 
-	(model newMethodNamed: 'initializer2()')
-		isConstructor: true;
-		parentType: mainClass
+	(model newInitializerNamed: mainClass name) parentType: mainClass
 ]
 
 { #category : 'accessing' }
 CBClassBlueprintForJavaModelTest >> initializerMethodNames [
 
-	^ { 'initializer1()'. 'initializer2()' }
+	^ { mainClass name }
 ]
 
 { #category : 'entities' }

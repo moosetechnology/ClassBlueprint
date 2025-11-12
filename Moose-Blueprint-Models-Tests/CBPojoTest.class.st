@@ -88,16 +88,12 @@ CBPojoTest >> setNotDeadAttributeAndDeadAccessors [
 { #category : 'running' }
 CBPojoTest >> setUp [
 
-	| constructor |
 	super setUp.
 	model := FamixJavaModel new.
 	class := model newClassNamed: 'Pojo'.
 
 	attribute := model newAttributeNamed: 'attribute'.
 
-	constructor := (model newMethodNamed: 'constructor()')
-		               isConstructor: true;
-		               yourself.
 	getter := (model newMethodNamed: 'getAttribute()')
 		          typing: (model newEntityTyping
 				           declaredType:
@@ -116,7 +112,7 @@ CBPojoTest >> setUp [
 	class
 		addMethod: getter;
 		addMethod: setter;
-		addMethod: constructor;
+		addMethod: (model newInitializerNamed: 'Pojo');
 		addAttribute: attribute
 ]
 
