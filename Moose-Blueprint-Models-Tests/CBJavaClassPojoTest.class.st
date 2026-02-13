@@ -101,9 +101,7 @@ CBJavaClassPojoTest >> initializePojoClass [
 { #category : 'initialization' }
 CBJavaClassPojoTest >> newConstructorMethodFor: aFamixjavaClass [
 
-	^ (model newMethodNamed: ('{1}()' format: aFamixjavaClass name))
-		  isConstructor: true;
-		  yourself
+	^ model newInitializerNamed: aFamixjavaClass name
 ]
 
 { #category : 'initialization' }

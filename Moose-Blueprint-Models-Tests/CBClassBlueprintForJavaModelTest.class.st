@@ -46,19 +46,14 @@ CBClassBlueprintForJavaModelTest >> createExternalMethod [
 { #category : 'entities' }
 CBClassBlueprintForJavaModelTest >> createInitializers [
 
-	(model newMethodNamed: 'initializer1()')
-		isConstructor: true;
-		parentType: mainClass.
-
-	(model newMethodNamed: 'initializer2()')
-		isConstructor: true;
-		parentType: mainClass
+	(model newInitializerNamed: mainClass name) parentType: mainClass.
+	(model newInitializerNamed: mainClass name) parentType: mainClass
 ]
 
 { #category : 'accessing' }
 CBClassBlueprintForJavaModelTest >> initializerMethodNames [
 
-	^ { 'initializer1()'. 'initializer2()' }
+	^ Array new: 2 withAll: mainClass name
 ]
 
 { #category : 'entities' }
@@ -119,4 +114,11 @@ CBClassBlueprintForJavaModelTest >> testIsCBTestCase [
 	self assert: famixClass isTestCase.
 	"JUnit4 and fllowing"
 	self assert: famixClass2 isTestCase
+]
+
+{ #category : 'tests' }
+CBClassBlueprintForJavaModelTest >> testIsInitializerMethod [
+
+	self assert: (classBlueprint models detect: [ :each |
+			 each name = each entity parentType name ]) entity isInitializer
 ]
