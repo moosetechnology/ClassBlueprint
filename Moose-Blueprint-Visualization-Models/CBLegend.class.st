@@ -251,7 +251,7 @@ CBLegend >> buildFor: aVisualization [
 	legend defaultLabel color: Color black.
 	legend defaultTitle color: Color black.
 	self legendInfo keysAndValuesDo: [ :key :value | 
-		legend text: key withBoxColor: value ].
+		value ifNotNil: [ legend text: key withBoxColor: value] ifNil: [ legend text: key withShape: (self class additionalShapesDict at: key) ] ].
 	legend layout layout gapSize: self gapSize.
 	legend shapes
 		add: self methodBoxDescription;
