@@ -38,9 +38,10 @@ CBHighlightableModel >> initialize [
 	onClickHighlightableOutgoingLinesInteraction := RSHighlightable red
 		                                                withOutgoingLines.
 	onClickHighlightableIncomingInteraction := (RSHighlightable color:
-		                                            Color green darker
-			                                            darker duller)
-		                                           withIncomingShapes.
+			                                            Color green darker
+				                                            darker duller)
+		                                           withIncomingShapes;
+		                                           withIncomingLines.
 	onHoverHighlightableInteraction := RSHighlightable red withLines
 ]
 
