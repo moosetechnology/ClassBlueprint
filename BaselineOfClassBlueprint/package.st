@@ -1,1 +1,1 @@
-Package { #name : #BaselineOfClassBlueprint }
+Package { #name : 'BaselineOfClassBlueprint' }

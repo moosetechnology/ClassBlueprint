@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfClassBlueprint,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfClassBlueprint
+	#name : 'BaselineOfClassBlueprint',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfClassBlueprint',
+	#package : 'BaselineOfClassBlueprint'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfClassBlueprint >> baseline: spec [
 
 	<baseline>
@@ -24,18 +25,18 @@ BaselineOfClassBlueprint >> baseline: spec [
 			with: [ spec requires: #( 'Famix' ) ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 BaselineOfClassBlueprint >> customProjectAttributes [
 
 	'BaselineOfFamix' asPackageIfAbsent: [ ^ #( #NoFamix ) ].
 	^ #( #WithFamix )
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfClassBlueprint >> famix: spec [
 
 	spec
 		baseline: 'Famix'
 		with: [
-		spec repository: 'github://moosetechnology/Famix:development/src' ]
+		spec repository: 'github://moosetechnology/Famix:1.x.x/src' ]
 ]
